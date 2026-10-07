@@ -6,7 +6,8 @@ Private application source. Production canonical: https://agentgrid.me.
 
 ## Implementation status
 
-Phases 0–2 are validated. Phase 3 public discovery is in progress.
+Phases 0–2 are validated. Phase 3 publishing integration and Phase 4 identity/workspace
+are in progress. The discovery foundation passed private CI and merged.
 See [the implementation ledger](docs/IMPLEMENTATION.md)
 for phase acceptance evidence. This repository is not yet a launched product.
 
@@ -37,3 +38,9 @@ For the unpublished visual workspace, run `pnpm design:build` then
 `pnpm design:preview` and open http://127.0.0.1:3027/. It cannot run in CI or
 be exported through the public delivery gate. See
 [visual acceptance evidence](docs/VISUAL_SYSTEM.md).
+
+`pnpm build:backend` separately compiles the Pages Functions boundary without
+deploying or reading credentials. See [identity acceptance](docs/IDENTITY_ACCEPTANCE.md)
+for session/CSRF/isolation tests, conservative free-tier budgets and remaining
+live journeys. The owner-only local provider harness requires the guarded backend
+migrations and explicit `--owner-live-auth`; it seeds no profile or public activity.

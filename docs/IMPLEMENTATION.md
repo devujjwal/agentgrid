@@ -11,7 +11,7 @@ than treating existing code as completed functionality.
 | 1 — Contracts and content        | Validated   | Portable/editorial gates, six isolated migrations, protected remote rollout, owned-data extraction and ten broad representative drafts; full host-tested inventory remains Phase 6    |
 | 2 — Visual system                | Validated   | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
-| 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
+| 4 — Identity/workspace           | In progress | Encrypted session/CSRF boundary, private user-token data layer and entry screens; real application and complete workspace journeys remain open                                        |
 | 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
 | 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
 | 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
@@ -323,3 +323,28 @@ than treating existing code as completed functionality.
   retain 99 performance / 100 accessibility / 100 best practices, with zero CLS:
   discovery LCP 2.05s/TBT 35ms and detail LCP 2.04s/TBT 26ms. SEO remains
   intentionally noindex; field INP and production cross-browser acceptance are open.
+
+## Phase 3 private CI integration
+
+- Exact discovery head `e33166caeaad85160ab8bf9033206a15b2a9901d` passed Validate,
+  including database isolation/extraction:
+  https://github.com/devujjwal/agentgrid/actions/runs/37602360838.
+  Private PR 4 merged preserving its two logical commits (`690e24a`).
+- Integrated real publishing and editorial/indexing gates remain open. No product
+  deployment, invented community data or license selection accompanied this merge.
+
+## Phase 4 identity/workspace boundary — local implementation
+
+- Implemented encrypted flows and provider-session state, single-use browser-bound
+  email/Google verification, exact-origin CSRF, opaque HttpOnly sessions, safe
+  redirects, redacted private responses and user-bearer workspace operations.
+- Two additive migrations remain local: bounded owned ephemeral state and a
+  self-only live identity/consent projection. Eight-migration database tests pass,
+  preserving protected fixtures/default grants and owned-data extraction checks.
+- Tests caught a microsecond expiry-constraint race; creation and expiry now share
+  one timestamp. Refresh race tests verify convergence and prevent session
+  resurrection after logout. No managed Auth or protected application DDL changes.
+- Sign-in/workspace screens are being integrated and reviewed in Chrome. Profile
+  onboarding is still closed; no actual consent, profile, role or activity is seeded.
+- See `IDENTITY_ACCEPTANCE.md` for bounds, evidence and remaining gates. Phase 4
+  is not complete, and live server credentials have not been deployed.

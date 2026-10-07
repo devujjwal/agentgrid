@@ -21,9 +21,7 @@ begin
    raise exception 'Unexpected direct application-table mutation grant'; end if;
  if exists(select 1 from information_schema.role_column_grants
    where table_schema='public' and table_name like 'agentgrid\_%' escape '\'
-   and grantee in ('anon','authenticated','service_role') and privilege_type<>'SELECT'
-   and not (table_name='agentgrid_profiles' and grantee='authenticated' and privilege_type='UPDATE'
-     and column_name in ('display_name','bio','website_url'))) then
+   and grantee in ('anon','authenticated','service_role') and privilege_type<>'SELECT') then
    raise exception 'Unexpected direct column mutation grant'; end if;
 end;
 $agentgrid_schema_boundary$;

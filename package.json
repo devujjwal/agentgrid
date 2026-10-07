@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3027",
     "build": "next build && node scripts/prune-unpublished-export.mjs && node scripts/verify-export.mjs",
+    "build:backend": "node scripts/build-functions.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",

@@ -40,7 +40,8 @@ select pg_temp.agentgrid_assert(public.agentgrid_profile_id() <> auth.uid(),'bus
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_identities','42501');
 select pg_temp.agentgrid_assert(not public.agentgrid_has_role(array['administrator','moderator']),'ordinary profile has no privileged roles');
 select pg_temp.agentgrid_assert((select count(*)=1 from public.agentgrid_profiles),'owner reads own private profile');
-update public.agentgrid_profiles set bio='A synthetic profile update.' where id=public.agentgrid_profile_id();
+select pg_temp.agentgrid_expect_error($statement$update public.agentgrid_profiles set bio='Unbounded direct write'$statement$,'42501');
+select public.agentgrid_update_profile('Fixture owner','A synthetic profile update.',null);
 select pg_temp.agentgrid_expect_error($statement$update public.agentgrid_profiles set status='active'$statement$,'42501');
 select pg_temp.agentgrid_expect_error($statement$update public.agentgrid_profiles set username='stolen_handle'$statement$,'42501');
 select pg_temp.agentgrid_expect_error($statement$insert into public.agentgrid_user_roles(user_id,role) values(public.agentgrid_profile_id(),'administrator')$statement$,'42501');
@@ -65,7 +66,7 @@ update public.agentgrid_profiles set status='suspended' where id='10000000-0000-
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_assert((select count(*)=0 from public.agentgrid_profiles where username='fixture_owner'),'other member cannot read private owner profile');
-update public.agentgrid_profiles set bio='Unauthorized modification' where username='fixture_owner';
+select pg_temp.agentgrid_expect_error($statement$update public.agentgrid_profiles set bio='Unauthorized modification' where username='fixture_owner'$statement$,'42501');
 select pg_temp.agentgrid_assert((select count(*)=0 from public.agentgrid_user_roles),'other member cannot read staff roles');
 reset role;
 select pg_temp.agentgrid_assert((select bio='A synthetic profile update.' from public.agentgrid_profiles where username='fixture_owner'),'other member update had no effect');

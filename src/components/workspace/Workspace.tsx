@@ -1,0 +1,184 @@
+'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import {
+  WorkspaceIdentitySchema,
+  WorkspaceListSchema,
+  type WorkspaceIdentity,
+  type WorkspaceList,
+} from '../../domain/workspace';
+import { communityRequest } from '../../services/community';
+import { useIdentity } from '../identity/useIdentity';
+import { ProfileEditor } from './ProfileEditor';
+import { Onboarding } from './Onboarding';
+import { WorkspaceResources } from './WorkspaceResources';
+
+function ConnectedWorkspace({
+  csrf,
+  email,
+  signedOut,
+}: {
+  csrf: string;
+  email: string;
+  signedOut: (csrf: string) => void;
+}) {
+  const router = useRouter();
+  const [retry, setRetry] = useState(0),
+    [offset, setOffset] = useState(0);
+  const [snapshot, setSnapshot] = useState<{
+    retry: number;
+    offset: number;
+    identity: WorkspaceIdentity | null;
+    list: WorkspaceList | null;
+    error: string | null;
+  }>({ retry: -1, offset: -1, identity: null, list: null, error: null });
+  const [busy, setBusy] = useState(false),
+    [logoutError, setLogoutError] = useState<string | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    void communityRequest('/api/workspace/', WorkspaceIdentitySchema, undefined, controller.signal)
+      .then(async (identity) => {
+        const list =
+          identity.profile?.status === 'active'
+            ? await communityRequest(
+                '/api/workspace/agents/?offset=' + offset,
+                WorkspaceListSchema,
+                undefined,
+                controller.signal,
+              )
+            : null;
+        if (!controller.signal.aborted) setSnapshot({ retry, offset, identity, list, error: null });
+      })
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted)
+          setSnapshot({
+            retry,
+            offset,
+            identity: null,
+            list: null,
+            error: error instanceof Error ? error.message : 'Workspace could not be loaded.',
+          });
+      });
+    return () => controller.abort();
+  }, [retry, offset]);
+  async function logout() {
+    setBusy(true);
+    setLogoutError(null);
+    try {
+      const result = await communityRequest(
+        '/api/identity/logout/',
+        z.strictObject({ signedIn: z.literal(false), csrf: z.string() }),
+        { csrf, body: {} },
+      );
+      signedOut(result.csrf); // Unmount private state before navigating away.
+      router.replace('/sign-in/');
+    } catch (error) {
+      setLogoutError(error instanceof Error ? error.message : 'Sign-out did not complete.');
+      setBusy(false);
+    }
+  }
+  const pending = snapshot.retry !== retry || snapshot.offset !== offset;
+  const refresh = () => setRetry((value) => value + 1);
+  return (
+    <>
+      <header className="workspace-heading">
+        <div>
+          <p className="eyebrow">Your network / private workspace</p>
+          <h1>
+            A space for
+            <br />
+            <em>useful intelligence.</em>
+          </h1>
+        </div>
+        <div className="workspace-session">
+          <p>Connected as {email}</p>
+          <button
+            type="button"
+            className="action-secondary"
+            disabled={busy}
+            onClick={() => void logout()}
+          >
+            {busy ? 'Signing out…' : 'Sign out'}
+          </button>
+          {logoutError && <p role="alert">{logoutError}</p>}
+        </div>
+      </header>
+      <div className="workspace-body" aria-busy={pending}>
+        {pending && <p role="status">Loading your workspace…</p>}
+        {snapshot.error && (
+          <section className="identity-panel">
+            <h2>Connection interrupted.</h2>
+            <p role="alert">{snapshot.error}</p>
+            <button className="action-secondary" onClick={refresh}>
+              Reconnect
+            </button>
+          </section>
+        )}
+        {snapshot.identity && !snapshot.identity.profile && (
+          <Onboarding configuration={snapshot.identity.onboarding} csrf={csrf} refresh={refresh} />
+        )}
+        {snapshot.identity?.profile?.status === 'active' && (
+          <>
+            <WorkspaceResources
+              list={snapshot.list}
+              pending={pending}
+              offset={offset}
+              changeOffset={setOffset}
+            />
+            <ProfileEditor
+              key={snapshot.identity.profile.id}
+              profile={snapshot.identity.profile}
+              csrf={csrf}
+              refresh={refresh}
+            />
+          </>
+        )}
+        {snapshot.identity?.profile && snapshot.identity.profile.status !== 'active' && (
+          <section className="identity-panel">
+            <h2>Workspace access is restricted.</h2>
+            <p>
+              Your profile is {snapshot.identity.profile.status}. Editing and community actions are
+              unavailable.
+            </p>
+            <Link prefetch={false} href="/agents/">
+              Continue exploring agents
+            </Link>
+          </section>
+        )}
+      </div>
+    </>
+  );
+}
+export function Workspace() {
+  const { identity, pending, error, reload, signedOut } = useIdentity();
+  if (identity?.signedIn)
+    return <ConnectedWorkspace csrf={identity.csrf} email={identity.email} signedOut={signedOut} />;
+  return (
+    <section className="workspace-connect identity-panel">
+      <p className="eyebrow">Your network / private workspace</p>
+      <h1>{pending ? 'Connecting…' : 'Make this space yours.'}</h1>
+      {error && (
+        <>
+          <p role="alert">{error}</p>
+          <button type="button" className="action-secondary" onClick={reload}>
+            Reconnect
+          </button>
+        </>
+      )}
+      {!pending && !error && (
+        <>
+          <p>Sign in to keep your saved agents and work in progress together.</p>
+          <Link
+            prefetch={false}
+            className="action-primary"
+            href="/sign-in/?returnTo=%2Fworkspace%2F"
+          >
+            Connect to AgentGrid <span aria-hidden="true">→</span>
+          </Link>
+        </>
+      )}
+    </section>
+  );
+}

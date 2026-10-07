@@ -1,5 +1,7 @@
 node_modules/
 .next/
+.agentgrid-functions/
+.agentgrid-local-preview/
 out/
 pnpm-lock.yaml
 next-env.d.ts
