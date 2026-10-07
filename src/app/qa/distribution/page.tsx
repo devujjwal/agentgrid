@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { notFound } from 'next/navigation';
 import { parseAgentSpecification } from '../../../domain/agent-specification';
 import { ResourceSetup } from '../../../components/resource/ResourceSetup';
+import { SaveAgent } from '../../../components/resource/SaveAgent';
 import { SiteFrame } from '../../../components/layout/SiteFrame';
 import type { PublicResource } from '../../../domain/public-resource';
 
@@ -46,6 +47,9 @@ export default function DistributionQaPage() {
           not a published agent, real creator, host verification or community activity. Nothing is
           written to Supabase or deployed.
         </p>
+        <div className="resource-action-row">
+          <SaveAgent resourceId={fixture.resource_id} slug="article-structure-editor" />
+        </div>
         <ResourceSetup specification={specification} publication={fixture} />
       </main>
     </SiteFrame>

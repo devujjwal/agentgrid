@@ -107,7 +107,8 @@ IDs through the separate managed-identity reassociation strategy.
 
 ## Remaining gates
 
-1. Exact-head private CI for the provider-shape correction and compiled runtime gate.
+1. Exact-head private CI for each workspace increment. The provider-shape correction
+   and compiled runtime gate passed private PR/main CI and merged at `4698fd0`.
 2. Real session-refresh/concurrency and cross-account HTTP journeys beyond the
    passing synthetic/database checks. Provider interoperability and the proven
    owner sign-in/logout flows alone do not establish all community behavior.
@@ -125,3 +126,35 @@ IDs through the separate managed-identity reassociation strategy.
 The infrastructure-only deployment workflow intentionally refuses a repository
 containing Functions. A separately guarded live application release is required;
 adding server code must never silently broaden the old infrastructure release.
+
+## Live saved-agent increment — 7 October 2026
+
+- Migration 009 adds two self-only, authenticated RPCs over existing favorites.
+  It creates no application table, profile, role, seed activity or shared Auth
+  configuration. The disposable nine-migration acceptance gate passes actor
+  isolation, 21-row lookahead, stable paging, immediate withdrawal, removable
+  unavailable resources, forged metadata, suspension, protected fixtures and
+  extraction/reassociation. Remote rollout remains a separate exact-main gate.
+- The verified user bearer reads the fixed RPCs; strict projections refuse
+  private fields and malformed/excessive results. GET parameters are bounded,
+  mutation origin/CSRF is enforced, and private JSON remains no-store/noindex.
+- `/saves/` provides live paging/removal and an unavailable-resource tombstone.
+  Resource Save controls initiate identity lookup only on deliberate interaction;
+  ordinary public page views make no private-session request. Saving is idempotent
+  and only confirmed server success activates the control. No client token or
+  private list is persisted locally.
+- Private identity subtrees clear on document hiding/page freeze and require
+  fresh verification on restoration. Real owner Google sign-in returns to
+  `/saves/`. The owner has no community profile and receives explicit registration
+  guidance. The local Save fixture similarly refuses to fabricate membership or
+  write an invented save. Real logout followed by browser Back restores the
+  signed-out saved-page gate, with no console errors.
+- Signed-out entry checks at 320/393/768/1024/1440px show no horizontal overflow;
+  primary controls are at least 48px high. Local mobile Lighthouse: performance
+  98, accessibility 100, best practices 96; LCP 2.23s, TBT 60.5ms, CLS 0.0504.
+  SEO 63 is intentional for this noindex private route. This is lab entry-state
+  evidence, not member-list performance, field INP or production launch proof.
+- Formatting/lint/strict typecheck, 61 Node plus 11 Python tests, production
+  export and compiled workerd checks pass locally. Full real member save/remove,
+  cross-device and withdrawal UI journeys remain acceptance gates after deliberate
+  consent and genuine public-resource publication. Registration remains closed.

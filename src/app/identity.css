@@ -200,6 +200,13 @@
   color: var(--muted);
   overflow-wrap: anywhere;
 }
+.workspace-session > a {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  padding-inline: 1rem;
+  color: var(--ink);
+}
 .workspace-body {
   display: grid;
   grid-template-columns: 1fr 1fr;

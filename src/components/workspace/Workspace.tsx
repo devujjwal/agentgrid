@@ -94,6 +94,9 @@ function ConnectedWorkspace({
         </div>
         <div className="workspace-session">
           <p>Connected as {email}</p>
+          <Link prefetch={false} href="/saves/">
+            Your saved agents
+          </Link>
           <button
             type="button"
             className="action-secondary"
