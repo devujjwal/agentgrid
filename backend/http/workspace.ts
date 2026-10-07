@@ -41,6 +41,7 @@ export function workspaceHandler(
           '/api/workspace/agents/',
           '/api/workspace/saved/',
           '/api/workspace/versions/',
+          '/api/workspace/version/',
         ].includes(url.pathname) ||
         (['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
           request.method === 'GET');
@@ -86,6 +87,18 @@ export function workspaceHandler(
         if (!resource.success || !/^\d{1,4}$/.test(offset))
           throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.versions(resource.data, Number(offset)));
+      }
+      if (url.pathname.endsWith('/version/')) {
+        if (
+          [...url.searchParams.keys()].some((key) => !['resourceId', 'versionId'].includes(key)) ||
+          url.searchParams.getAll('resourceId').length !== 1 ||
+          url.searchParams.getAll('versionId').length !== 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const resource = z.uuid().safeParse(url.searchParams.get('resourceId')),
+          version = z.uuid().safeParse(url.searchParams.get('versionId'));
+        if (!resource.success || !version.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.versionDocument(resource.data, version.data));
       }
       if (url.pathname.endsWith('/submit/')) {
         const value = await input(request, SubmitVersionSchema);

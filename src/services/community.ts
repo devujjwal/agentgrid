@@ -31,7 +31,7 @@ export async function communityRequest<T>(
   signal?: AbortSignal,
 ): Promise<T> {
   if (
-    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36}(?:&offset=\d{1,4})?)?$/.test(
+    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36}(?:&offset=\d{1,4}|&versionId=[a-fA-F0-9-]{36})?)?$/.test(
       path,
     )
   )

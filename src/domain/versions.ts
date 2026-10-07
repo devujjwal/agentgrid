@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { AgentSpecificationSchema } from './agent-specification.ts';
 
 export const SubmissionStateSchema = z.enum(['pending', 'approved', 'rejected', 'withdrawn']);
 export const VersionNumberSchema = z
@@ -30,6 +31,15 @@ export const SubmitVersionSchema = z.strictObject({
   resourceId: z.uuid(),
   expectedRevision: z.int().positive(),
 });
+export const OwnedVersionDocumentSchema = z
+  .strictObject({
+    resourceId: z.uuid(),
+    sourceVersionId: z.uuid().nullable(),
+    record: OwnedVersionSchema,
+    specification: AgentSpecificationSchema,
+  })
+  .refine((value) => value.record.version === value.specification.version);
+export type OwnedVersionDocument = z.infer<typeof OwnedVersionDocumentSchema>;
 export const WithdrawVersionSchema = z.strictObject({
   resourceId: z.uuid(),
   versionId: z.uuid(),

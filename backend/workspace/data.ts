@@ -30,6 +30,7 @@ export interface WorkspaceData {
   versions: ReturnType<typeof versionResources>['versions'];
   submitVersion: ReturnType<typeof versionResources>['submitVersion'];
   withdrawVersion: ReturnType<typeof versionResources>['withdrawVersion'];
+  versionDocument: ReturnType<typeof versionResources>['versionDocument'];
 }
 export function workspaceData(
   configuration: AuthConfiguration,

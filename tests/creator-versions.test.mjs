@@ -19,6 +19,8 @@ async function dataFixture() {
     owner: true,
     failure: null,
     immutable: null,
+    frozenSpecification: null,
+    documentOverride: undefined,
     submission: null,
     ledger: { versions: [], submissionEnabled: false, pendingVersionId: null, latestVersion: null },
     acknowledgement: versionId,
@@ -80,7 +82,29 @@ async function dataFixture() {
           created_at: date,
         };
         state.submission = { state: 'pending', reason: '', reviewed_at: null };
+        state.frozenSpecification = structuredClone(state.specification);
         return Response.json(state.acknowledgement);
+      }
+      if (url.pathname.endsWith('/agentgrid_owned_version_document')) {
+        assert.deepEqual(body, { resource_id: resourceId, resource_version_id: versionId });
+        if (state.failure) return Response.json(state.failure, { status: 403 });
+        if (!state.owner) return Response.json({ code: '42501' }, { status: 403 });
+        return Response.json(
+          state.documentOverride ?? {
+            resourceId,
+            sourceVersionId: null,
+            record: {
+              id: state.immutable.id,
+              version: state.immutable.version,
+              contentDigest: state.immutable.content_digest,
+              submittedAt: date,
+              state: state.submission.state,
+              reason: state.submission.reason,
+              reviewedAt: state.submission.reviewed_at,
+            },
+            specification: state.frozenSpecification,
+          },
+        );
       }
       if (url.pathname.endsWith('/agentgrid_agent_versions')) {
         assert.equal(url.searchParams.get('submitted_by'), 'eq.' + profileId);
@@ -184,6 +208,48 @@ test('submission refuses unfinished content, stale revisions, lost ownership, da
     await assert.rejects(data.submitVersion(resourceId, 3), fails(status, code));
   }
 });
+test('on-demand owned documents retain immutable instructions, follow live withdrawal state and refuse malformed or unauthorized projections', async () => {
+  const { state, data, calls } = await dataFixture();
+  await data.submitVersion(resourceId, 3);
+  const original = structuredClone(state.specification);
+  state.specification.execution.instructions = 'Synthetic revised private draft, never frozen.';
+  state.specification.version = '2.0.0';
+  const snapshot = await data.versionDocument(resourceId, versionId);
+  assert.deepEqual(snapshot.specification, original);
+  assert.equal(snapshot.record.state, 'pending');
+  assert.equal(
+    calls.filter((call) => call.url.pathname.endsWith('/agentgrid_owned_version_document')).length,
+    1,
+  );
+  await data.withdrawVersion(
+    resourceId,
+    versionId,
+    'Synthetic deliberate withdrawal before review.',
+  );
+  assert.equal((await data.versionDocument(resourceId, versionId)).record.state, 'withdrawn');
+  for (const override of [
+    { ...snapshot, resourceId: '20000000-0000-4000-8000-000000000002' },
+    { ...snapshot, record: { ...snapshot.record, id: '30000000-0000-4000-8000-000000000002' } },
+    { ...snapshot, editorial: { private: 'Never export this' } },
+    { ...snapshot, specification: { ...snapshot.specification, version: '9.0.0' } },
+    {
+      ...snapshot,
+      specification: {
+        ...snapshot.specification,
+        execution: { ...snapshot.specification.execution, instructions: '' },
+      },
+    },
+  ]) {
+    state.documentOverride = override;
+    await assert.rejects(data.versionDocument(resourceId, versionId), fails(503));
+  }
+  state.documentOverride = undefined;
+  state.owner = false;
+  await assert.rejects(data.versionDocument(resourceId, versionId), fails(403));
+  state.owner = true;
+  state.active = false;
+  await assert.rejects(data.versionDocument(resourceId, versionId), fails(403));
+});
 test('history is bounded with lookahead and refuses private metadata, duplicate identities or malformed live state', async () => {
   const { state, data } = await dataFixture();
   assert.deepEqual(await data.versions(resourceId, 0), {
@@ -242,6 +308,10 @@ test('creator version HTTP requires exact session/CSRF and refuses client specif
       calls.push(['history', ...args]);
       return { versions: [] };
     },
+    versionDocument: async (...args) => {
+      calls.push(['document', ...args]);
+      return { resourceId, sourceVersionId: null };
+    },
     withdrawVersion: async (...args) => {
       calls.push(['withdraw', ...args]);
       return { id: versionId };
@@ -285,6 +355,19 @@ test('creator version HTTP requires exact session/CSRF and refuses client specif
     'resourceId=' + resourceId + '&ownerId=' + profileId,
   ])
     assert.equal((await handle(make('/api/workspace/versions/?' + query))).status, 400);
+  for (const query of [
+    'resourceId=' + resourceId,
+    'resourceId=' + resourceId + '&versionId=invalid',
+    'resourceId=' + resourceId + '&versionId=' + versionId + '&versionId=' + versionId,
+    'resourceId=' + resourceId + '&versionId=' + versionId + '&ownerId=' + profileId,
+  ])
+    assert.equal((await handle(make('/api/workspace/version/?' + query))).status, 400);
+  const document = await handle(
+    make('/api/workspace/version/?resourceId=' + resourceId + '&versionId=' + versionId),
+  );
+  assert.equal(document.status, 200);
+  assert.equal(document.headers.get('cache-control'), 'private, no-store');
+  assert.match(document.headers.get('x-robots-tag'), /noindex/);
   const submitted = await handle(
     make('/api/workspace/submit/', { resourceId, expectedRevision: 3 }, csrf),
   );
@@ -316,7 +399,7 @@ test('creator version HTTP requires exact session/CSRF and refuses client specif
   );
   assert.deepEqual(
     calls.map((x) => x[0]),
-    ['submit', 'history', 'withdraw'],
+    ['document', 'submit', 'history', 'withdraw'],
   );
 });
 

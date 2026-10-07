@@ -3,9 +3,13 @@ import { z } from 'zod';
 import {
   OwnedVersionSchema,
   OwnedVersionsSchema,
+  OwnedVersionDocumentSchema,
   VersionNumberSchema,
 } from '../../src/domain/versions.ts';
-import { parseAgentSpecification } from '../../src/domain/agent-specification.ts';
+import {
+  parseAgentSpecification,
+  assertJsonDocumentBounds,
+} from '../../src/domain/agent-specification.ts';
 import type { draftResources } from './drafts.ts';
 import { HttpFailure } from '../http/guard.ts';
 import { databaseFailure } from './failure.ts';
@@ -79,6 +83,23 @@ export function versionResources(
   }
   return {
     versions: history,
+    async versionDocument(resourceId: string, versionId: string) {
+      await member();
+      const result = await client.rpc('agentgrid_owned_version_document', {
+        resource_id: resourceId,
+        resource_version_id: versionId,
+      });
+      if (result.error) databaseFailure(result.error);
+      try {
+        assertJsonDocumentBounds(result.data);
+        const document = OwnedVersionDocumentSchema.parse(result.data);
+        if (document.resourceId !== resourceId || document.record.id !== versionId)
+          throw new Error('Owned immutable identity mismatch');
+        return document;
+      } catch {
+        throw new HttpFailure(503, 'service-unavailable');
+      }
+    },
     async submitVersion(resourceId: string, expectedRevision: number) {
       const profile = await member();
       const current = await drafts.draft(resourceId);
