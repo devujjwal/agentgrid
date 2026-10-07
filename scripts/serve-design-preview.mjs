@@ -18,13 +18,19 @@ if (process.env.CI || process.env.GITHUB_ACTIONS)
   throw new Error('Local preview is forbidden in CI.');
 if (!(await readFile(resolve(root, 'index.html'), 'utf8')).includes('Local design preview'))
   throw new Error('Build the local preview first.');
-const privateBoundary = process.argv.includes('--owner-live-auth')
-  ? await (await import('./owner-identity-preview.mjs')).ownerIdentityPreview()
-  : null;
+const synthetic = process.argv.includes('--synthetic-community-qa');
+const port = 3027;
+const privateBoundary = synthetic
+  ? await (await import('./synthetic-community-preview.mjs')).syntheticCommunityPreview()
+  : process.argv.includes('--owner-live-auth')
+    ? await (await import('./owner-identity-preview.mjs')).ownerIdentityPreview()
+    : null;
 const server = createServer(async (request, response) => {
   if (
     privateBoundary &&
-    (request.url?.startsWith('/api/') || request.url?.startsWith('/auth/callback/'))
+    (request.url?.startsWith('/api/') ||
+      request.url?.startsWith('/auth/callback/') ||
+      (synthetic && ['/qa-control/', '/qa-tools.js'].includes(request.url)))
   ) {
     await privateBoundary.request(request, response);
     return;
@@ -38,7 +44,9 @@ const server = createServer(async (request, response) => {
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
   );
   if (
-    !['127.0.0.1:3027', 'localhost:3027'].includes(request.headers.host ?? '') ||
+    !(synthetic ? ['localhost:3027'] : ['127.0.0.1:3027', 'localhost:3027']).includes(
+      request.headers.host ?? '',
+    ) ||
     !['GET', 'HEAD'].includes(request.method ?? '') ||
     (request.url?.length ?? 0) > 2048
   ) {
@@ -63,7 +71,15 @@ const server = createServer(async (request, response) => {
     )
       throw new Error('Not a preview asset');
     response.setHeader('Content-Type', type + (type.startsWith('text/') ? '; charset=utf-8' : ''));
-    const bytes = await readFile(path);
+    const original = await readFile(path);
+    const bytes =
+      synthetic && type === 'text/html'
+        ? Buffer.from(
+            original
+              .toString('utf8')
+              .replace('</body>', '<script src="/qa-tools.js"></script></body>'),
+          )
+        : original;
     const compress =
       /\bgzip\b/.test(request.headers['accept-encoding'] ?? '') &&
       bytes.byteLength > 1024 &&
@@ -81,11 +97,13 @@ const server = createServer(async (request, response) => {
       .end(request.method === 'HEAD' ? undefined : await readFile(resolve(root, '404.html')));
   }
 });
-server.listen(3027, '127.0.0.1', () =>
+server.listen(port, '127.0.0.1', () =>
   console.log(
-    privateBoundary
-      ? 'Local owner-only live identity acceptance: http://localhost:3027/sign-in/ (no profile seeding)'
-      : 'Local optimized design preview: http://127.0.0.1:3027/',
+    synthetic
+      ? 'Synthetic memory-only community acceptance: http://localhost:3027/sign-in/ (no provider traffic)'
+      : privateBoundary
+        ? 'Local owner-only live identity acceptance: http://localhost:3027/sign-in/ (no profile seeding)'
+        : 'Local optimized design preview: http://127.0.0.1:3027/',
   ),
 );
 if (privateBoundary) {

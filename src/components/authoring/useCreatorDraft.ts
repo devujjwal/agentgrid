@@ -16,8 +16,22 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
   const email = identity?.signedIn ? identity.email : null;
   const [retry, setRetry] = useState(0),
     [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState<string | null>(null),
-    [error, setError] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<{
+    connection: IdentityResponse | null;
+    id: string | null;
+    message: string | null;
+    error: string | null;
+  } | null>(null);
+  function setNotice(kind: 'message' | 'error', value: string | null) {
+    setFeedback((current) => ({
+      connection: identity,
+      id: resourceId,
+      message:
+        current?.connection === identity && current.id === resourceId ? current.message : null,
+      error: current?.connection === identity && current.id === resourceId ? current.error : null,
+      [kind]: value,
+    }));
+  }
   const active = useRef<AbortController | null>(null);
   const [snapshot, setSnapshot] = useState<{
     connection: IdentityResponse | null;
@@ -164,8 +178,8 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     const controller = new AbortController();
     active.current = controller;
     setBusy(true);
-    setMessage(null);
-    setError(null);
+    setNotice('message', null);
+    setNotice('error', null);
     try {
       const result = await action(controller.signal);
       return controller.signal.aborted ? null : result;
@@ -182,7 +196,8 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
             : current,
         );
       if (!controller.signal.aborted)
-        setError(
+        setNotice(
+          'error',
           error instanceof z.ZodError
             ? error.issues.slice(0, 8).map(formatAuthoringIssue).join(' ')
             : error instanceof Error
@@ -203,8 +218,14 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     loadError: ready ? snapshot.error : null,
     buffer: owned,
     busy,
-    message,
-    error,
+    message:
+      ready && feedback?.connection === identity && feedback.id === resourceId
+        ? feedback.message
+        : null,
+    error:
+      ready && feedback?.connection === identity && feedback.id === resourceId
+        ? feedback.error
+        : null,
     section,
     setSection,
     reload: () => setRetry((value) => value + 1),
@@ -213,8 +234,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     },
     discard: () => {
       setBuffer(null);
-      setMessage(null);
-      setError(null);
+      setFeedback(null);
       setRetry((value) => value + 1);
     },
     create: async (value: DraftSpecification) =>
@@ -246,11 +266,11 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
       );
       if (!result) return;
       if (result.revision !== owned.record.revision + 1) {
-        setError('The saved revision could not be confirmed. Reload before continuing.');
+        setNotice('error', 'The saved revision could not be confirmed. Reload before continuing.');
         return;
       }
       setBuffer({ ...owned, record: { ...owned.record, revision: result.revision }, dirty: false });
-      setMessage('Private draft saved.');
+      setNotice('message', 'Private draft saved.');
       setRetry((value) => value + 1);
     },
   };

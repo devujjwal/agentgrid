@@ -158,3 +158,54 @@ adding server code must never silently broaden the old infrastructure release.
   export and compiled workerd checks pass locally. Full real member save/remove,
   cross-device and withdrawal UI journeys remain acceptance gates after deliberate
   consent and genuine public-resource publication. Registration remains closed.
+
+## Creator authoring increment — implementation and partial acceptance
+
+- `/workspace/agent/` creates and edits owned private drafts. Query/return paths
+  accept only one valid resource UUID; caller ownership/editorial authority is
+  never accepted. Server reads use the verified user bearer plus an explicit
+  owner predicate even for staff. Writes preserve editorial context, enforce the
+  current revision and acknowledge only the expected next revision.
+- Guided sections cover all portable definition fields except externally owned
+  workflow artifacts/extension data, which use the advanced bounded import.
+  Unfinished prose can be saved privately; security envelopes and explicit rights
+  remain validated. Standard licenses are chosen deliberately, source terms
+  cannot be replaced, and writes always require approval. Public structural
+  readiness, editorial approval and real host tests remain distinct gates.
+- Private edit buffers are scoped to the verified identity/resource and retained
+  only in component memory. Concealment removes the rendered private subtree;
+  a freshly verified connection and current membership/owned draft are required
+  before the buffer can render again. Conflicting revisions retain edits for
+  download and refuse overwrite. Internal links and document unload warn about
+  unsaved edits. Browser Back/Forward protection is not yet accepted.
+- Local component QA covers section switching/retained edits, adding inputs,
+  mandatory write approval, unfinished readiness and private acknowledgement.
+  Mobile review found and corrected an intrinsic grid overflow. Adding/removing
+  rows now moves keyboard focus; generated identifiers avoid surviving-row
+  collisions. These latest changes still require browser reinspection.
+- Disposable synthetic community acceptance uses the actual HTTP/identity and
+  creator application code with explicitly labelled memory-only adapters. It
+  cannot contact a real provider or reuse real credentials, and no synthetic
+  profile/resource is written to shared infrastructure. Synthetic sign-in,
+  owned draft loading and a competing-revision refusal were observed in Chrome.
+  Confirmation recovery, successful create/save, session concealment/restoration,
+  suspension/revocation, profile edits and fresh console checks remain open.
+- Formatting/lint/strict typecheck, the previous 64 Node/11 Python suite,
+  production export and compiled worker checks pass. An additional targeted
+  race/malformed-projection test passes (65 Node tests now defined). Private CI,
+  all required breakpoints, keyboard/error/reduced-motion states, performance and
+  accessibility measurements remain required before this increment is accepted.
+- Remote migration 009 passed exact-main CI and was applied with protected
+  resources unchanged. The creator authoring increment adds no migration or
+  managed authentication setting. Actual member acceptance waits for deliberate
+  consent rather than seeding the owner's consent/profile.
+- Extended disposable HTTP acceptance also passes new resource creation,
+  confirmed read/save, stale revision rejection, profile update, suspension,
+  resumption and session revocation. This is application-boundary acceptance with
+  memory adapters; it does not substitute for browser interaction or real member
+  journeys. Fresh Lighthouse logs contain no console errors.
+- Optimized signed-out authoring-entry mobile lab: performance 99, accessibility
+  100, best practices 96; LCP 2.27s, TBT 11ms, CLS 0. Private-route SEO 63 is
+  intentional. The known static inline-script CSP work in `OPERATIONS.md` remains
+  a public-launch gate. These measurements do not establish signed-in editor
+  performance, field INP or visual acceptance across breakpoints.

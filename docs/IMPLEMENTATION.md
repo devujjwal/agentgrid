@@ -368,3 +368,25 @@ than treating existing code as completed functionality.
 - Signed-in workspace measurements at 320/393/768/1024/1440px confirm no overflow
   and a 48px logout control. Full authoring, saved-list and profile journeys are
   still required before Phase 4 acceptance.
+
+## Phase 4 saved-resource rollout and creator authoring — continued
+
+- Private PR 7 passed exact-head CI (run `37612178073`) and merged at
+  `36f5f2b43a61a77cff5c5edc9c02883114448aa8`. Its exact-main CI also passed.
+  The guarded operator applied migration 009 from that commit. Nine owned
+  migrations are now recorded; protected shared resources were unchanged.
+- Creator authoring is implemented behind verified identity, current active
+  membership, explicit ownership and revision checks. Guided private definitions
+  cover purpose, behavior, inputs/outputs, platforms, access, examples, safety
+  and deliberate reuse terms. They do not infer host compatibility or licenses.
+- Portable import/download is bounded and retains resource paths/source terms.
+  Definition readiness is separate from editorial approval and genuine host-test
+  evidence. Saving never publishes a resource.
+- Local automated acceptance passes private draft validation, denied ownership,
+  race/acknowledgement handling, bounded projections and origin/CSRF checks.
+  Production static export and compiled workerd acceptance pass without provider
+  traffic. See `IDENTITY_ACCEPTANCE.md` for browser evidence and remaining gates.
+- Authoring is **not accepted as complete**. Session restoration, creation/save,
+  profile editing, full responsive/a11y checks and private CI remain required.
+  Registration remains closed pending the legal operator information and reviewed
+  consent documents. No genuine creator profile or invented activity was seeded.
