@@ -8,7 +8,7 @@ than treating existing code as completed functionality.
 | Phase                            | Status      | Exit evidence                                                                                                                                                                         |
 | -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0 — Ownership and infrastructure | Validated   | Personal ownership/CI, free Cloudflare exact-commit delivery, protected Supabase baseline, real email OTP and Google PKCE sign-in; unpublished previews restricted to local loopback. |
-| 1 — Contracts and content        | In progress | Strict portable specification; identity/schema isolation matrix passes locally; immutable resources, editorial/publication gates and broad draft inventory still pending              |
+| 1 — Contracts and content        | In progress | Portable/editorial gates and five isolated backend migrations pass locally; CI, guarded remote rollout, extraction rehearsal and broad representative drafts still pending            |
 | 2 — Visual system                | Not started | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | Not started | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
@@ -197,3 +197,42 @@ than treating existing code as completed functionality.
 - No AgentGrid schema or data has been applied to the shared remote project.
   Immutable agent versions, editorial/publication gates and community schemas
   remain work in progress; Phase 1 is not yet accepted.
+
+## Phase 1 resource/community data boundaries — local acceptance
+
+- Five reproducible migrations now cover identities, normalized category/platform
+  vocabulary, private revisioned drafts, immutable spec/editorial versions,
+  submissions/live releases, licensing/fork lineage, saves, moderated reviews,
+  confidential reporting, append-only moderation history, staff governance and
+  exact public projections. No PicMagic application table is referenced.
+- Database actor matrices pass for resource creation, stale saves/submissions,
+  version immutability/monotonicity, unauthorized approval, source license
+  retention, unpublished content denial, private saved lists, review edit
+  invalidation, real-record aggregates, duplicate reports and staff decisions.
+- Public projections keep quality artifacts, consent/Auth links, staff roles and
+  private draft/review reasons out of public output. Only the configured genuine
+  owner can receive first-party attribution. Blocked source instructions stay
+  private while independent licensed forks retain minimal source lineage;
+  managed deletion produces a deidentified attribution tombstone.
+- Staff checks apply immediately to existing JWTs. Last-admin protection covers
+  AgentGrid-controlled changes but does not block external managed Auth deletion.
+  Explicit AgentGrid deactivation removes private drafts/saves and archives/hides
+  live resources while preserving shared identities and immutable retention records.
+- The publication gate binds actual current host artifacts to the exact portable
+  specification, requires all three scenarios per declared platform, rejects
+  failed/illustrative/mismatched evidence and credentials, and verifies owned JSON
+  artifact bytes/checksums. Editorial context, source checks, rights, related
+  links and broad inventory coverage are core contracts, not late SEO additions.
+- Latest acceptance: 32 Node/Python tests, formatting/lint/strict typecheck and
+  production export pass. All five migration matrices pass in a fresh pinned
+  local database and leave protected synthetic schema/data/default grants unchanged.
+  Initial identity CI also passed:
+  https://github.com/devujjwal/agentgrid/actions/runs/37586076829.
+- A fresh real read-only Supabase audit confirms protected resources unchanged,
+  with only the separately recorded approved Google config transition. Anonymous
+  and ordinary authenticated PicMagic denial checks still pass.
+- These are backend **contract/database** results. HTTP auth/abuse protections,
+  asset delivery, creator UI, actual host-tested inventory, public/static takedown,
+  operator recovery and production community journeys remain unimplemented gates.
+  No schema, test release, fake review/profile or application data has been written
+  to the remote shared project. Phase 1 remains in progress.
