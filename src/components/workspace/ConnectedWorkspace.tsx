@@ -108,11 +108,18 @@ export function ConnectedWorkspace({
           <Link prefetch={false} href="/workspace/reports/">
             Your reports
           </Link>
+          {!pending &&
+            snapshot.identity?.profile?.status === 'active' &&
+            snapshot.identity.roles.length > 0 && (
+              <Link prefetch={false} href="/workspace/moderation/">
+                Review moderation
+              </Link>
+            )}
           {memory.hasUnsaved ? (
             <ConfirmAction
               label={busy ? 'Signing out…' : 'Sign out'}
               title="Sign out and discard held edits?"
-              description="Your unsaved draft, profile, report and review edits held in this tab will be discarded. Saved content stays in your account."
+              description="Your unsaved draft, profile, report, review and moderation edits held in this tab will be discarded. Saved content stays in your account."
               confirmation="Discard held edits and sign out"
               disabled={busy}
               confirm={() => void logout()}

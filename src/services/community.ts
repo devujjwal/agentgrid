@@ -30,12 +30,15 @@ export async function communityRequest<T>(
   mutation?: { csrf: string; body: unknown },
   signal?: AbortSignal,
 ): Promise<T> {
-  if (
-    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36}(?:&offset=\d{1,4}|&versionId=[a-fA-F0-9-]{36})?)?$/.test(
+  const creatorPath =
+    /^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36}(?:&offset=\d{1,4}|&versionId=[a-fA-F0-9-]{36})?)?$/.test(
       path,
-    )
-  )
-    throw new CommunityError('request-refused');
+    );
+  const staffPath =
+    /^\/api\/moderation\/(?:reviews\/\?state=(?:pending|published|hidden)&offset=\d{1,4}|review\/\?reviewId=[a-fA-F0-9-]{36}|decision\/)$/.test(
+      path,
+    );
+  if (!creatorPath && !staffPath) throw new CommunityError('request-refused');
   let response: Response;
   try {
     response = await fetch(path, {

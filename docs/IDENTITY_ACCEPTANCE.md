@@ -380,3 +380,34 @@ adding server code must never silently broaden the old infrastructure release.
   acceptance. Exact final-head/main CI and guarded migration rollout remain
   release requirements. Real membership, moderation UI and production launch
   are separate outstanding product gates.
+
+## Staff review moderation acceptance (8 October 2026)
+
+Synthetic loopback fixtures only; no real appointment, review or moderation
+activity was created. Appointed moderator access is independent of shared Auth
+metadata and PicMagic tables. Anonymous users and ordinary members see access
+gates; every backend operation and database RPC rechecks active staff authority.
+
+- Review queue pages 20 then 3 records; pagination focuses the queue heading.
+- Confirmation focuses Keep current state. Escape cancels and restores its trigger.
+- Approval acknowledges exact content/decision revisions and records the explanation.
+- A competing staff decision yields a conflict. Refresh shows the new decision,
+  retains notes and requires explicit reconciliation before another action.
+- A dropped acknowledgement blocks retries. Recovery displays the committed
+  decision revision and explanation instead of claiming the write failed.
+- Self-authored and author-withdrawn reviews disable decisions; database tests
+  independently reject both. Revoked staff can no longer read review details.
+- Notes survive internal navigation in bounded tab memory, and are concealed
+  until fresh identity/staff verification. No localStorage/sessionStorage is used.
+- Workspace sign-out cancellation preserves notes; confirmed sign-out clears
+  them. Anonymous history conceals the review; signing in again leaves notes empty.
+- Browser console inspection returned no errors. Responsive checks at 320, 768,
+  1024 and 1440px show no overflow and 48px review-outcome hit areas.
+
+Ignored local evidence: `phase5-staff-review-{320,768,1024,1440}.png`,
+`phase5-staff-signout-mobile.png`, `phase5-staff-queue-mobile.json` and its actual
+signed-in viewport `phase5-staff-queue-mobile-lab.jpg`. Lighthouse: performance
+97/accessibility 100/best practices 96/private noindex SEO 63; LCP 2355.862ms,
+TBT 45.5ms and CLS 0.061325. Known inline-script CSP work is still a launch gate.
+The audit used temporary local synthetic cookies, deleted after completion; it
+made no provider request and does not establish production performance or INP.
