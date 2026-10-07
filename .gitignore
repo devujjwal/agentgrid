@@ -14,3 +14,6 @@ supabase/.branches/
 *.log
 *.tsbuildinfo
 backups/
+__pycache__/
+*.pyc
+docs/evidence/*.jpg
