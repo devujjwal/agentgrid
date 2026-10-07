@@ -9,6 +9,8 @@ import { workspaceHandler } from '../backend/http/workspace.ts';
 import { workspaceData } from '../backend/workspace/data.ts';
 import { privateFailure } from '../backend/http/guard.ts';
 import { newDraft } from '../src/domain/draft.ts';
+import { publicCommunityHandler } from '../backend/http/community.ts';
+import { publicReviewData } from '../backend/community/reviews.ts';
 import { isLaterVersion } from '../src/domain/versions.ts';
 
 export async function syntheticCommunityPreview() {
@@ -68,6 +70,52 @@ export async function syntheticCommunityPreview() {
   const privateReports = new Map();
   let reportAcknowledgementUnavailable = false;
   let submissionsOpen = true;
+  const reviewTarget = '00000000-0000-4000-8000-000000000001';
+  let reviewVersion = { id: '00000000-0000-4000-8000-000000000002', version: '1.0.0' };
+  let ownReview = null,
+    reviewAcknowledgementUnavailable = false,
+    reviewBlocked = false,
+    reviewOwnSource = false;
+  let pagingReviews = [];
+  const reviewPublic = () =>
+    ownReview?.state === 'published' && profile.status === 'active'
+      ? [
+          {
+            id: ownReview.id,
+            usedVersionId: ownReview.usedVersionId,
+            version: ownReview.version,
+            rating: ownReview.rating,
+            title: ownReview.title,
+            body: ownReview.body,
+            experience: ownReview.experience,
+            createdAt: ownReview.createdAt,
+            updatedAt: ownReview.updatedAt,
+            author: { name: 'Community member', username: null },
+          },
+        ]
+      : [];
+  const publicTransport = async (input, init) => {
+    const url = new URL(String(input)),
+      headers = new Headers(init.headers),
+      body = JSON.parse(init.body);
+    if (
+      url.origin !== configuration.supabaseOrigin ||
+      !url.pathname.endsWith('/agentgrid_public_reviews') ||
+      headers.get('apikey') !== configuration.publishableKey ||
+      headers.get('authorization') !== 'Bearer ' + configuration.publishableKey
+    )
+      throw new Error('Synthetic anonymous projection required.');
+    if (body.resource_id !== reviewTarget || reviewBlocked) return Response.json(null);
+    const reviews = [...reviewPublic(), ...pagingReviews];
+    return Response.json({
+      resourceId: reviewTarget,
+      reviewCount: reviews.length,
+      averageRating: reviews.length
+        ? Number((reviews.reduce((sum, row) => sum + row.rating, 0) / reviews.length).toFixed(2))
+        : null,
+      reviews: reviews.slice(body.requested_offset, body.requested_offset + 21),
+    });
+  };
   const transport = async (input, init) => {
     const url = new URL(String(input));
     if (url.origin !== configuration.supabaseOrigin) throw new Error('Outbound traffic refused.');
@@ -89,6 +137,66 @@ export async function syntheticCommunityPreview() {
         { code: '42501', message: 'Synthetic membership denied' },
         { status: 403 },
       );
+    if (url.pathname.endsWith('/agentgrid_review_context')) {
+      const available = body.resource_id === reviewTarget && !reviewBlocked;
+      return Response.json({
+        resourceId: body.resource_id,
+        review: body.resource_id === reviewTarget ? ownReview : null,
+        available,
+        canReview: available && !reviewOwnSource,
+        currentVersion: available ? reviewVersion : null,
+      });
+    }
+    if (url.pathname.endsWith('/agentgrid_owned_review')) {
+      if (reviewAcknowledgementUnavailable)
+        return Response.json({ code: 'XX000' }, { status: 503 });
+      return Response.json(body.resource_id === reviewTarget ? ownReview : null);
+    }
+    if (url.pathname.endsWith('/agentgrid_write_review')) {
+      if (
+        body.resource_id !== reviewTarget ||
+        reviewBlocked ||
+        reviewOwnSource ||
+        ![reviewVersion.id, ownReview?.usedVersionId].includes(body.used_version)
+      )
+        return Response.json({ code: '42501' }, { status: 403 });
+      if (body.expected_revision !== (ownReview?.revision ?? 0))
+        return Response.json({ code: '40001' }, { status: 409 });
+      ownReview = {
+        id: ownReview?.id ?? randomUUID(),
+        resourceId: reviewTarget,
+        usedVersionId: body.used_version,
+        version: body.used_version === reviewVersion.id ? reviewVersion.version : ownReview.version,
+        rating: body.requested_rating,
+        title: body.requested_title,
+        body: body.requested_body,
+        experience: body.experience,
+        revision: (ownReview?.revision ?? 0) + 1,
+        createdAt: ownReview?.createdAt ?? new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        state: 'pending',
+        reason: '',
+        reviewedAt: null,
+        withdrawnAt: null,
+      };
+      return Response.json(ownReview.id);
+    }
+    if (url.pathname.endsWith('/agentgrid_withdraw_review')) {
+      if (body.resource_id !== reviewTarget || !ownReview)
+        return Response.json({ code: '42501' }, { status: 403 });
+      if (body.expected_revision !== ownReview.revision || ownReview.state === 'withdrawn')
+        return Response.json({ code: '40001' }, { status: 409 });
+      ownReview = {
+        ...ownReview,
+        state: 'withdrawn',
+        withdrawnAt: new Date().toISOString(),
+        reason: '',
+        reviewedAt: null,
+        updatedAt: new Date().toISOString(),
+        revision: ownReview.revision + 1,
+      };
+      return Response.json(ownReview.id);
+    }
     const agent = (id, record) => ({
       id,
       slug: record.specification.identity.slug,
@@ -315,6 +423,10 @@ export async function syntheticCommunityPreview() {
     if (url.pathname.endsWith('/agentgrid_saved_agents')) return Response.json([]);
     throw new Error('Unexpected synthetic fixture operation.');
   };
+  const community = publicCommunityHandler(
+    configuration.origin,
+    publicReviewData(configuration, publicTransport),
+  );
   const workspace = workspaceHandler(runtime, (session) =>
     workspaceData(configuration, session, transport),
   );
@@ -330,7 +442,7 @@ export async function syntheticCommunityPreview() {
                 if(document.querySelector('[data-qa-tools]'))return;
                 const tools=document.createElement('aside');tools.dataset.qaTools='synthetic';
                 tools.style.cssText='padding:1rem;border-top:1px solid';
-                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><p data-qa-status role="status"></p>';
+                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><button data-qa-action="publish-review">Approve synthetic review</button><button data-qa-action="hide-review">Hide synthetic review</button><button data-qa-action="fail-review-ack">Fail synthetic review acknowledgement</button><button data-qa-action="restore-review-ack">Restore synthetic review acknowledgement</button><button data-qa-action="block-review-source">Block synthetic review source</button><button data-qa-action="restore-review-source">Restore synthetic review source</button><button data-qa-action="own-review-source">Make synthetic review source own</button><button data-qa-action="other-review-source">Make synthetic review source another creator</button><button data-qa-action="advance-review-source">Advance synthetic release</button><button data-qa-action="compete-review">Simulate competing review edit</button><button data-qa-action="page-reviews">Add synthetic review pagination fixtures</button><button data-qa-action="clear-page-reviews">Remove synthetic review pagination fixtures</button><p data-qa-status role="status"></p>';
                 document.body.append(tools);
                 tools.querySelectorAll('[data-qa-action]').forEach(button=>button.addEventListener('click',async()=>{try{const response=await fetch('/qa-control/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:button.dataset.qaAction})});tools.querySelector('[data-qa-status]').textContent=response.ok?'Synthetic state changed; reconnect the editor.':'Synthetic action refused.';}catch{tools.querySelector('[data-qa-status]').textContent='Synthetic control unavailable.';}}));
               },200));`,
@@ -351,7 +463,52 @@ export async function syntheticCommunityPreview() {
             chunks.push(chunk);
           }
           const action = JSON.parse(Buffer.concat(chunks).toString('utf8')).action;
-          if (action === 'compete') resources.get(resourceId).revision++;
+          if (action === 'publish-review' || action === 'hide-review') {
+            if (!ownReview || ownReview.state === 'withdrawn')
+              throw new Error('Author withdrawal is protected');
+            ownReview = {
+              ...ownReview,
+              state: action === 'publish-review' ? 'published' : 'hidden',
+              reason:
+                'Synthetic moderation decision for local acceptance only; no real community activity.',
+              reviewedAt: new Date().toISOString(),
+            };
+          } else if (action === 'fail-review-ack') reviewAcknowledgementUnavailable = true;
+          else if (action === 'restore-review-ack') reviewAcknowledgementUnavailable = false;
+          else if (action === 'block-review-source') reviewBlocked = true;
+          else if (action === 'restore-review-source') reviewBlocked = false;
+          else if (action === 'own-review-source') reviewOwnSource = true;
+          else if (action === 'other-review-source') reviewOwnSource = false;
+          else if (action === 'advance-review-source')
+            reviewVersion = { id: '00000000-0000-4000-8000-000000000003', version: '1.0.1' };
+          else if (action === 'compete-review') {
+            if (!ownReview) throw new Error('No synthetic saved review');
+            ownReview = {
+              ...ownReview,
+              revision: ownReview.revision + 1,
+              title: 'Competing synthetic saved revision',
+              updatedAt: new Date().toISOString(),
+              state: 'pending',
+              reason: '',
+              reviewedAt: null,
+              withdrawnAt: null,
+            };
+          } else if (action === 'page-reviews')
+            pagingReviews = Array.from({ length: 23 }, (_, index) => ({
+              id: '40000000-0000-4000-8000-' + String(index + 1).padStart(12, '0'),
+              usedVersionId: reviewVersion.id,
+              version: reviewVersion.version,
+              rating: 4,
+              title: 'Synthetic pagination fixture ' + (index + 1),
+              body: 'Clearly synthetic pagination feedback for local acceptance only. This does not represent any real use, review, creator or public activity.',
+              experience:
+                'Synthetic loopback pagination context only; not real community activity.',
+              createdAt: '2026-10-07T00:00:00Z',
+              updatedAt: '2026-10-07T00:00:00Z',
+              author: { name: 'Community member', username: null },
+            }));
+          else if (action === 'clear-page-reviews') pagingReviews = [];
+          else if (action === 'compete') resources.get(resourceId).revision++;
           else if (action === 'suspend') profile.status = 'suspended';
           else if (action === 'resume') profile.status = 'active';
           else if (action === 'revoke') fixture.sessions.clear();
@@ -379,9 +536,11 @@ export async function syntheticCommunityPreview() {
             ? {}
             : { body: Readable.toWeb(incoming), duplex: 'half' }),
         });
-        const response = incoming.url.startsWith('/api/workspace/')
-          ? await workspace(request)
-          : await identity(request, '192.0.2.9');
+        const response = incoming.url.startsWith('/api/community/')
+          ? await community(request)
+          : incoming.url.startsWith('/api/workspace/')
+            ? await workspace(request)
+            : await identity(request, '192.0.2.9');
         for (const [key, value] of response.headers)
           if (key !== 'set-cookie') outgoing.setHeader(key, value);
         const cookies = response.headers.getSetCookie();

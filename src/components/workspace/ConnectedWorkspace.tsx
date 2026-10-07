@@ -14,6 +14,7 @@ import { ProfileEditor, type ProfileEditBuffer } from './ProfileEditor';
 import { Onboarding } from './Onboarding';
 import { WorkspaceResources } from './WorkspaceResources';
 import { useCreatorMemory } from '../authoring/CreatorMemory';
+import { ConfirmAction } from '../feedback/ConfirmAction';
 
 export function ConnectedWorkspace({
   csrf,
@@ -71,13 +72,6 @@ export function ConnectedWorkspace({
     return () => controller.abort();
   }, [retry, offset]);
   async function logout() {
-    if (
-      memory.hasUnsaved &&
-      !window.confirm(
-        'Sign out and discard the unsaved draft, profile or report edits held in this tab?',
-      )
-    )
-      return;
     setBusy(true);
     setLogoutError(null);
     try {
@@ -114,14 +108,25 @@ export function ConnectedWorkspace({
           <Link prefetch={false} href="/workspace/reports/">
             Your reports
           </Link>
-          <button
-            type="button"
-            className="action-secondary"
-            disabled={busy}
-            onClick={() => void logout()}
-          >
-            {busy ? 'Signing out…' : 'Sign out'}
-          </button>
+          {memory.hasUnsaved ? (
+            <ConfirmAction
+              label={busy ? 'Signing out…' : 'Sign out'}
+              title="Sign out and discard held edits?"
+              description="Your unsaved draft, profile, report and review edits held in this tab will be discarded. Saved content stays in your account."
+              confirmation="Discard held edits and sign out"
+              disabled={busy}
+              confirm={() => void logout()}
+            />
+          ) : (
+            <button
+              type="button"
+              className="action-secondary"
+              disabled={busy}
+              onClick={() => void logout()}
+            >
+              {busy ? 'Signing out…' : 'Sign out'}
+            </button>
+          )}
           {logoutError && <p role="alert">{logoutError}</p>}
         </div>
       </header>

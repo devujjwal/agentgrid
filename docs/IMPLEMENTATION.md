@@ -448,7 +448,30 @@ than treating existing code as completed functionality.
   the lab does not establish field INP or real provider latency.
 - Formatting/lint/strict typecheck, 75 Node/11 Python tests, production static
   export and the 770,548-byte compiled worker pass. Twelve disposable migrations
-  pass actor denial, protected fixtures and extraction/reassociation. Private
-  CI/remote rollout remain pending. Full community
+  pass actor denial, protected fixtures and extraction/reassociation. Private CI passed on reporting PR10 head `87fb404` (run `37642748073`)
+  and merge/main `00e5f9a` (run `37643652417`). Migration 012 was applied
+  from that clean exact main commit. Protected fingerprints remained unchanged
+  around its transaction; read-only anonymous/nonmember owner-history denial
+  and shared-project checks passed afterward. Twelve migrations are remote.
+  Full community
   acceptance still requires reviews/ratings, public forks, staff moderation,
   real membership/consent and production journeys. Registration remains closed.
+
+## Phase 5 reviews and ratings — validation in progress
+
+- Live anonymous review reads and verified member writes are implemented with
+  strict data projections, current eligibility, private owner recovery, explicit
+  used-version selection and database-backed revision/withdrawal authority.
+  Migration 013 is local only; twelve migrations remain applied remotely.
+- Public review code loads near the viewport and identity/editor code on intent.
+  The editorial layout preserves actual moderation states and counts, keeps held
+  edits in tab memory, and uses accessible in-page confirmations. Unsure write
+  acknowledgements require a live recovery check before retry.
+- Local actor/isolation/extraction, 82 Node/11 Python tests, typecheck/lint/format,
+  static export and compiled worker acceptance pass. Mobile reader/editor lab
+  scores reach 99 performance and 100 accessibility with CLS 0; the empty-reader
+  LCP sample of 2.568s remains recorded alongside populated/editor samples near
+  2.26s. Actual editor widths 320/768/1024/1440px show no overflow.
+- See `IDENTITY_ACCEPTANCE.md` for tested browser scenarios and evidence limits.
+  Final sign-out/dialog recovery, private CI and exact-main migration rollout
+  remain open. Full community and production launch are not yet accepted.

@@ -6,7 +6,7 @@ import { lstat, readFile, realpath, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const root = resolve('out');
-for (const path of ['agents/__agentgrid_unpublished__', 'qa/distribution']) {
+for (const path of ['agents/__agentgrid_unpublished__', 'qa/distribution', 'qa/reviews']) {
   const reserved = resolve(root, path);
   try {
     const info = await lstat(reserved);

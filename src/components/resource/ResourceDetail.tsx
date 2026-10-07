@@ -1,6 +1,7 @@
 import { platformLabel } from '../../domain/platforms';
 import { ResourceReuse } from './ResourceReuse';
 import { SaveAgent } from './SaveAgent';
+import { ReviewResource } from '../reviews/ReviewResource';
 import { ReportResource } from '../reporting/ReportResource';
 import '../../app/reporting.css';
 import { ResourceBoundaries } from './ResourceBoundaries';
@@ -112,6 +113,7 @@ export function ResourceDetail({
             <a href="#boundaries">Limits & privacy</a>
             <a href="#reuse">Reuse terms</a>
             {editorial && <a href="#questions">Questions & sources</a>}
+            {publication && <a href="#reviews">Reviews</a>}
           </nav>
           <div className="resource-sections">
             <section className="resource-section" id="overview">
@@ -151,6 +153,13 @@ export function ResourceDetail({
             <ResourceExamples specification={spec} />
             <ResourceBoundaries specification={spec} />
             <ResourceReuse specification={spec} publication={publication} />
+            {publication && (
+              <ReviewResource
+                resourceId={publication.resource_id}
+                label={spec.identity.name}
+                path={'/agents/' + spec.identity.slug + '/'}
+              />
+            )}
             {publication && (
               <ReportResource
                 targetKind="agent"
