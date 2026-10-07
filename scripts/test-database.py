@@ -94,6 +94,10 @@ def main():
         deadline = time.monotonic() + 60
         while True:
             try:
+                # The image briefly starts a temporary server during initdb.
+                # Readiness on that process would race its scheduled shutdown.
+                if "PostgreSQL init process complete; ready for start up." not in run(["docker", "logs", container], timeout=10):
+                    raise RuntimeError("Disposable database is still initializing")
                 run(["docker", "exec", container, "pg_isready", "-U", "postgres"], timeout=10)
                 break
             except RuntimeError:
@@ -126,7 +130,9 @@ def main():
             )
         for path in sorted((directory / "tests").glob("*.sql")):
             if path.name != "bootstrap.sql":
-                sql(path.read_text())
+                draft = json.loads((ROOT / "content/agents/inbox-priority-triage/1.0.0.agent.json").read_text())
+                fixture = json.dumps(draft).replace("'", "''")
+                sql("select pg_catalog.set_config('agentgrid.fixture_specification','" + fixture + "',false);\n" + path.read_text())
         after = json.loads(sql(PROTECTED_SNAPSHOT))
         if before != after:
             changed = sorted(key for key in before if before[key] != after[key])

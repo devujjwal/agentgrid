@@ -103,6 +103,10 @@ export const AgentSpecificationSchema = z
         .regex(/^artifacts\/[a-z0-9-]+\.(json|zip)$/)
         .max(160)
         .optional(),
+      artifact_sha256: z
+        .string()
+        .regex(/^[a-f0-9]{64}$/)
+        .optional(),
     }),
     inputs: z.array(IOFieldSchema).min(1).max(12),
     outputs: z
@@ -220,6 +224,12 @@ export const AgentSpecificationSchema = z
         path: ['execution', 'artifact_path'],
         message: 'Automation requires an actual workflow/package artifact.',
       });
+    if (Boolean(agent.execution.artifact_path) !== Boolean(agent.execution.artifact_sha256))
+      context.addIssue({
+        code: 'custom',
+        path: ['execution', 'artifact_sha256'],
+        message: 'Artifact paths and immutable file checksums must be supplied together.',
+      });
     if (
       agent.platforms.some((platform) => platform.distribution !== 'instructions') &&
       !agent.execution.artifact_path
@@ -239,7 +249,7 @@ export const AgentSpecificationSchema = z
 export type AgentSpecification = z.infer<typeof AgentSpecificationSchema>;
 
 /** Host-specific identity, ownership, moderation and analytics never belong in the portable spec. */
-export function parseAgentSpecification(input: unknown): AgentSpecification {
+export function assertJsonDocumentBounds(input: unknown): void {
   const pending: { value: unknown; depth: number }[] = [{ value: input, depth: 0 }];
   const seen = new WeakSet<object>();
   let count = 0;
@@ -249,6 +259,13 @@ export function parseAgentSpecification(input: unknown): AgentSpecification {
     if (!item) break;
     if (++count > 5000 || item.depth > 16)
       throw new Error('Specification exceeds structural limits.');
+    if (
+      ['undefined', 'function', 'symbol', 'bigint'].includes(typeof item.value) ||
+      (typeof item.value === 'number' &&
+        (!Number.isFinite(item.value) ||
+          (Number.isInteger(item.value) && !Number.isSafeInteger(item.value))))
+    )
+      throw new Error('JSON documents accept finite JSON values only.');
     if (typeof item.value === 'string') characters += item.value.length;
     if (item.value !== null && typeof item.value === 'object') {
       const prototype = Object.getPrototypeOf(item.value);
@@ -265,5 +282,11 @@ export function parseAgentSpecification(input: unknown): AgentSpecification {
     }
     if (characters > 100_000) throw new Error('Specification exceeds document limits.');
   }
+  if (new TextEncoder().encode(JSON.stringify(input)).byteLength > 100_000)
+    throw new Error('JSON document exceeds byte limits.');
+}
+
+export function parseAgentSpecification(input: unknown): AgentSpecification {
+  assertJsonDocumentBounds(input);
   return AgentSpecificationSchema.parse(input);
 }
