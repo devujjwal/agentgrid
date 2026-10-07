@@ -202,8 +202,8 @@ adding server code must never silently broaden the old infrastructure release.
   update confirm clean acknowledged fields do not mask fresh server values.
 - Formatting/lint/strict typecheck, all 65 Node/11 Python tests, production
   export and compiled workerd checks pass after the recovery changes. Previous
-  PR 8 head `1c0f583` passed CI run `37627452229`; the updated commit still needs
-  exact-head CI. Layout checks at 320/393/768/1024/1440px find no document overflow
+  PR 8 final head `20ae261` passed CI run `37632581023` and merged as `dc0b68c`.
+  Layout checks at 320/393/768/1024/1440px find no document overflow
   and a 48px save target. Desktop/mobile screenshots show the refined header,
   connected section navigation and bounded editing layout. The authoring flow
   introduces no decorative motion; global reduced-motion protections remain.
@@ -229,3 +229,53 @@ adding server code must never silently broaden the old infrastructure release.
   Private-route SEO 63 is intentional. The CSP issue remains the same documented
   launch gate. Neither lab establishes field INP, real provider latency or actual
   member acceptance. Reports and screenshots are ignored local evidence files.
+
+## Immutable submission increment — local acceptance
+
+- Additive migration 010 introduces an authenticated, self-only live history
+  projection with 21-row lookahead. It exposes review status/reasons and frozen
+  identifiers, never instruction/editorial bodies or another creator's ledger.
+  Pending-review and highest-version gates are independent of the history page.
+  No existing table, shared Auth setting or protected resource is altered.
+- The saved definition must pass the complete portable schema and explicit use
+  terms before submission. Verified user-bearer RPCs recheck membership, ownership,
+  enabling, revision, a single pending request and strictly increasing versions.
+  Creator APIs retain explicit owner filters even for staff. Submission/withdrawal
+  acknowledgements require a matching owned immutable record and live state.
+- `/workspace/versions/` separates draft saving, immutable submission and public
+  publication. Unsaved working edits block submission; incomplete saved drafts
+  receive readiness guidance. Freeze and withdrawal require deliberate UI
+  confirmation. Withdrawal retains the version and its reason; its number cannot
+  be reused. History never asserts that a pending submission is published.
+- Disposable Chrome acceptance passes incomplete/unsaved gates, cancelled freeze,
+  confirmed version 1.0.0 submission, withdrawal, unchanged frozen fingerprint,
+  draft advancement and a separate pending 1.0.1 review. Native-only tabs prove
+  suspension/revocation concealment and fresh identity restoration to the exact
+  history return path. No synthetic record reaches real infrastructure.
+- Additive migration 011 provides on-demand self-only frozen definitions. The
+  download retains the immutable specification, original reuse terms and source
+  reference alongside live review metadata; editorial/test evidence is excluded.
+  Strict, bounded projections reject mismatched resources/versions and private
+  extra fields. Anonymous, other-user, staff, non-member and suspended access are
+  refused. No privileged creator API or client-selected authority is introduced.
+- Chrome confirms earlier-version inspection/download while the saved draft has
+  advanced. The downloaded JSON remains version 1.0.0, records its withdrawal,
+  preserves its original fixture license and contains no editorial notes.
+  A 22-version private synthetic history shows 20 rows then two, bounded paging,
+  an off-page pending gate and keyboard focus on the history heading after either
+  navigation direction. Closure retains history and disables submission;
+  suspension conceals fields after revalidation; explicit recovery fetches fresh
+  history with snapshots closed. No fixture is public or stored remotely.
+- 320/393/768/1024/1440px checks find no horizontal overflow and a single H1;
+  expanded JSON is height-bounded and download targets exceed 48px. The signed-in
+  mobile lab reports performance 98, accessibility 100 and best practices 96;
+  LCP 2.348s, TBT 30ms, CLS 0.005, with no console errors. A measured loading shift
+  was corrected with server-rendered explanation and reserved live-workspace
+  space. Private-route SEO 63 is intentional. The documented inline-script CSP
+  work remains a launch gate. Lab evidence is not field INP/provider latency.
+- Formatting/lint/typecheck, 71 Node/11 Python tests, production export and the
+  768,236-byte compiled worker pass. Eleven disposable migrations pass actor
+  denial, pagination, live withdrawal, protected fixtures and extraction/identity
+  reassociation. Exact-head private CI and guarded exact-main remote migration
+  rollout remain pending. Full real member/community acceptance remains separate;
+  registration stays closed pending legal information and deliberate consent.

@@ -390,3 +390,22 @@ than treating existing code as completed functionality.
   profile editing, full responsive/a11y checks and private CI remain required.
   Registration remains closed pending the legal operator information and reviewed
   consent documents. No genuine creator profile or invented activity was seeded.
+
+## Phase 4 immutable submission/history — local acceptance
+
+- Private saved drafts now submit immutable versions through verified user-bearer
+  RPCs with explicit creator ownership, complete portable definitions, selected
+  use terms, revision checks, a single pending request and increasing versions.
+- Live private history distinguishes saving, review and publication; cancellation,
+  withdrawal, version advancement and unchanged frozen content pass disposable
+  browser acceptance. On-demand definition inspection/download excludes editorial
+  evidence and preserves rights/lineage. Long-history paging retains keyboard
+  focus and enforces pending/version gates independently of the displayed page.
+- Responsive snapshot checks and signed-in mobile lab pass: performance 98,
+  accessibility 100, LCP 2.35s, CLS 0.005. Full formatting/lint/typecheck, 71 Node
+  and 11 Python tests, production export and compiled worker acceptance pass.
+  Eleven-migration actor/isolation/extraction acceptance passes locally.
+- See `IDENTITY_ACCEPTANCE.md` for evidence boundaries. Private CI and exact-main
+  migration 010/011 rollout remain pending; real member/community journeys,
+  inherited fork rights and legal/consent acceptance remain open. Phase 4 stays
+  in progress and no new production deployment or public content is claimed.

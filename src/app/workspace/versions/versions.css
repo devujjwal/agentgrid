@@ -1,0 +1,152 @@
+.version-submission {
+  max-width: 56rem;
+  padding-block: 2rem;
+  border-block: 1px solid var(--line);
+}
+.version-submission h2,
+.version-history h2 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.12;
+}
+.version-submission p {
+  max-width: 48rem;
+  line-height: 1.7;
+}
+.version-submission .action-primary {
+  margin: 1rem 0 0 1rem;
+}
+.version-feedback {
+  padding: 1rem;
+  border-left: 3px solid var(--signal);
+}
+.version-history {
+  margin-block: 3rem;
+  max-width: 64rem;
+}
+.version-timeline {
+  list-style: none;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--line);
+}
+.version-timeline li {
+  position: relative;
+  padding: 1.5rem 0 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.version-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -1.85rem;
+  top: 2rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  background: var(--signal);
+  border-radius: 50%;
+}
+.version-timeline header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.version-timeline h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+.version-state {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+.version-timeline p {
+  line-height: 1.6;
+}
+.version-timeline summary {
+  cursor: pointer;
+  min-height: 2.75rem;
+  padding-block: 0.75rem;
+}
+.version-timeline code {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+  padding: 1rem;
+  background: var(--surface-bright);
+}
+.version-withdrawal label {
+  display: block;
+  margin-block: 1rem 0.5rem;
+}
+.version-withdrawal textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-bright);
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+.version-withdrawal button {
+  margin-top: 1rem;
+}
+.version-history nav {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 44rem) {
+  .version-submission .action-primary {
+    margin-left: 0;
+    display: flex;
+  }
+  .version-timeline {
+    padding-left: 1.25rem;
+  }
+  .version-timeline li::before {
+    left: -1.6rem;
+  }
+}
+.version-snapshot {
+  margin-block: 1rem;
+}
+.version-snapshot section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--surface-bright);
+  border-left: 2px solid var(--signal);
+}
+.version-snapshot h4 {
+  font-size: 1rem;
+}
+.version-snapshot pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 32rem;
+  overflow: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: 1rem;
+  border: 1px solid var(--line);
+}
+.version-connection {
+  min-height: 48rem;
+}
+.version-introduction {
+  max-width: 56rem;
+  padding-block: 1.5rem;
+}
+.version-introduction h2 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.12;
+}
+.version-introduction p {
+  max-width: 46rem;
+  line-height: 1.7;
+}
