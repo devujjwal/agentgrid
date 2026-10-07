@@ -1,0 +1,18 @@
+:root {
+  --surface: #f7f6f0;
+  --surface-bright: #fdfcf8;
+  --surface-raised: #eeeee5;
+  --network-surface: #f0f1e9;
+  --ink: #182a27;
+  --muted: #59665f;
+  --signal: #226557;
+  --signal-soft: #d9e9df;
+  --accent: #a85635;
+  --focus: #a14727;
+  --line: #d4d8cc;
+  --line-strong: #a9b6a9;
+  --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --font-editorial: Georgia, 'Times New Roman', serif;
+  --page-gutter: clamp(1rem, 5vw, 5rem);
+}

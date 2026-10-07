@@ -1,0 +1,41 @@
+/** Curated literal task aliases. They do not claim platform integrations. */
+export const discoveryKeywords: Record<string, string[]> = {
+  'campaign-message-planner': [
+    'campaign',
+    'marketing',
+    'advertising',
+    'message',
+    'copy',
+    'audience',
+  ],
+  'inbox-priority-triage': ['email', 'emails', 'inbox', 'gmail', 'priority', 'summarize'],
+  'source-evidence-mapper': [
+    'research',
+    'sources',
+    'evidence',
+    'citations',
+    'compare',
+    'documents',
+  ],
+  'retrieval-study-coach': ['study', 'learn', 'quiz', 'lesson', 'homework', 'practice'],
+  'article-structure-editor': ['article', 'writing', 'edit', 'draft', 'content', 'outline'],
+  'product-listing-auditor': ['shop', 'listing', 'product', 'ecommerce', 'store', 'selling'],
+  'meeting-decision-ledger': [
+    'meeting',
+    'minutes',
+    'transcript',
+    'decisions',
+    'action',
+    'follow-up',
+  ],
+  'household-meal-planner': ['meal', 'meals', 'dinner', 'shopping', 'food', 'recipe'],
+  'search-opportunity-auditor': [
+    'seo',
+    'traffic',
+    'search console',
+    'clicks',
+    'ranking',
+    'website',
+  ],
+  'pull-request-reviewer': ['code', 'github', 'pull request', 'pr', 'review', 'diff'],
+};

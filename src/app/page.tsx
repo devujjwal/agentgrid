@@ -1,4 +1,9 @@
-export default function InfrastructurePage() {
+import { DesignHome } from '../components/design/DesignHome';
+import { localDesignCatalogue } from '../data/design-preview';
+
+export default function HomePage() {
+  const resources = localDesignCatalogue();
+  if (resources.length) return <DesignHome resources={resources} />;
   return (
     <main>
       <h1>AgentGrid infrastructure verification</h1>
