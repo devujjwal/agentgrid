@@ -34,4 +34,5 @@ jobs:
       - run: node scripts/audit-dependencies.mjs
       - run: pnpm check
       - run: pnpm build:backend
+      - run: pnpm test:backend
       - run: pnpm test:database

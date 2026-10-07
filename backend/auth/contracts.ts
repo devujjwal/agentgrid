@@ -8,7 +8,9 @@ export const IdentitySchema = z.strictObject({
 export const ProviderSessionSchema = z.strictObject({
   subject: z.uuid(),
   accessToken: z.string().min(20).max(12_000),
-  refreshToken: z.string().min(20).max(2048),
+  // Managed refresh tokens are opaque; the real provider currently issues
+  // 12-character values. Their length is not local proof of identity.
+  refreshToken: z.string().min(1).max(2048),
   expiresAt: z.int().positive(),
 });
 export type VerifiedIdentity = z.infer<typeof IdentitySchema>;

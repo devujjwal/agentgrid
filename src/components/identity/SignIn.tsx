@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { signInReturnPath } from '../../domain/session';
 import { communityRequest } from '../../services/community';
 import { useIdentity } from './useIdentity';
+import { CallbackNotice } from './CallbackNotice';
 
 const ChallengeSchema = z.strictObject({
   challenge: z.literal('sent'),
@@ -103,6 +104,7 @@ export function SignIn() {
         Save useful agents, develop your own, and join the network. Exploring agents never requires
         an account.
       </p>
+      <CallbackNotice />
       {connectionError && (
         <div role="alert">
           <p>{connectionError}</p>
