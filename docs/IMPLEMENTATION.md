@@ -9,8 +9,8 @@ than treating existing code as completed functionality.
 | -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0 — Ownership and infrastructure | Validated   | Personal ownership/CI, free Cloudflare exact-commit delivery, protected Supabase baseline, real email OTP and Google PKCE sign-in; unpublished previews restricted to local loopback. |
 | 1 — Contracts and content        | Validated   | Portable/editorial gates, six isolated migrations, protected remote rollout, owned-data extraction and ten broad representative drafts; full host-tested inventory remains Phase 6    |
-| 2 — Visual system                | In progress | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
-| 3 — Public discovery             | Not started | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
+| 2 — Visual system                | Validated   | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
+| 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
 | 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
 | 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
@@ -297,6 +297,29 @@ than treating existing code as completed functionality.
   accessibility and 100 best practices, with zero layout shift. The intentionally
   nonindexable preview is not a production SEO or field-INP acceptance claim.
 - The preview is loopback-only in a separate ignored export directory. Normal
-  builds and CI cannot publish its drafts. Exact-head CI remains the final gate
-  before accepting and merging this phase. Full launch content, distribution,
+  builds and CI cannot publish its drafts. Exact-head CI passed at `09322de368fb8274ef735e822410c3bb1a658ba4`:
+  https://github.com/devujjwal/agentgrid/actions/runs/37597306397.
+  PR 3 merged preserving both milestones (`10900d6`); Phase 2 is accepted. Full launch content, distribution,
   community, cross-browser and production quality checks remain outstanding.
+
+## Phase 3 discovery/distribution foundation — local acceptance
+
+- Static detail pages, strict released-only projections, crawlable result links,
+  factual structured information and a released-only sitemap are implemented.
+  The asynchronous search adapter is bounded, paginated and ready for a future
+  remote provider; launch ranking remains deterministic and free.
+- Clipboard and downloaded definitions retain source, creator and license terms.
+  Real browser checks use a clearly labelled local synthetic fixture; no test
+  release, creator, review or host activity enters the shared project or catalogue.
+- Draft/QA export isolation removes generated not-found artifacts and refuses
+  unexpected content/symlinks. Production inventory remains empty. Workflow
+  delivery fails closed until the owned artifact transport is validated.
+- See `DISCOVERY_ACCEPTANCE.md` for browser iterations, query cases, measurements
+  and limitations. Local discovery is a validated foundation; its real published
+  E2E and editorial-route/indexing gates remain open for Phase 6 dependencies.
+  Phase 3 is not claimed as fully complete, and the production domain stays parked.
+- Final local checks pass: formatting, lint, typecheck, all 50 automated tests,
+  production build and secret-loaded export inspection. Updated mobile lab runs
+  retain 99 performance / 100 accessibility / 100 best practices, with zero CLS:
+  discovery LCP 2.05s/TBT 35ms and detail LCP 2.04s/TBT 26ms. SEO remains
+  intentionally noindex; field INP and production cross-browser acceptance are open.

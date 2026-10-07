@@ -7,8 +7,12 @@ export interface DiscoveryResource {
   category: string;
   capabilities: readonly string[];
   keywords: readonly string[];
+  connectionTags: readonly string[];
   platforms: readonly string[];
   href: string;
+  state: 'draft' | 'published';
+  creatorName: string;
+  format: 'instructions' | 'workflow';
 }
 
 export interface DiscoveryQuery {
@@ -16,6 +20,7 @@ export interface DiscoveryQuery {
   category?: string;
   kinds?: readonly DiscoveryResource['kind'][];
   limit?: number;
+  offset?: number;
 }
 
 export interface DiscoveryMatch {
@@ -25,7 +30,8 @@ export interface DiscoveryMatch {
 }
 
 export interface SearchProvider {
-  search(query: DiscoveryQuery): Promise<readonly DiscoveryMatch[]>;
+  readonly initialPage: DiscoveryPage;
+  search(query: DiscoveryQuery, signal?: AbortSignal): Promise<DiscoveryPage>;
 }
 
 const IGNORE = new Set([
@@ -46,23 +52,54 @@ const IGNORE = new Set([
   'i',
   'want',
   'help',
+  'of',
+  'from',
+  'in',
+  'into',
+  'on',
+  'at',
+  'is',
+  'are',
+  'do',
+  'does',
+  'this',
+  'it',
+  'what',
+  'which',
+  'please',
+  'have',
+  'has',
+  'already',
+  'actually',
 ]);
 const normalize = (text: string) => text.normalize('NFKC').toLowerCase();
+const stem = (term: string) => {
+  if (term === 'prs') return 'pr';
+  if (term === 'summarise') return 'summarize';
+  if (term.length > 4 && term.endsWith('s') && !term.endsWith('ss')) return term.slice(0, -1);
+  return term;
+};
+const tokens = (text: string) =>
+  new Set((normalize(text).match(/[\p{L}\p{N}]+/gu) ?? []).map(stem));
 
-/** Literal zero-cost ranking. Curated keywords describe capabilities, never new tools. */
-export function searchCatalogue(
+export interface DiscoveryPage {
+  matches: readonly DiscoveryMatch[];
+  total: number;
+  offset: number;
+  limit: number;
+}
+
+/** Literal zero-cost ranking. Token matching avoids “PR” matching “priority”.
+ * Curated aliases describe real capabilities, never invented integrations.
+ */
+export function searchCataloguePage(
   resources: readonly DiscoveryResource[],
   query: DiscoveryQuery,
-): DiscoveryMatch[] {
-  const terms = [
-    ...new Set(
-      (normalize(query.text.slice(0, 200)).match(/[\p{L}\p{N}]+/gu) ?? []).map((term) =>
-        term.length > 4 && term.endsWith('s') && !term.endsWith('ss') ? term.slice(0, -1) : term,
-      ),
-    ),
-  ].filter((term) => !IGNORE.has(term));
+): DiscoveryPage {
+  const terms = [...tokens(query.text.slice(0, 200))].filter((term) => !IGNORE.has(term));
   const limit = Math.max(1, Math.min(60, Math.trunc(query.limit ?? 30) || 30));
-  return resources
+  const offset = Math.max(0, Math.min(9999, Math.trunc(query.offset ?? 0) || 0));
+  const ranked = resources
     .slice(0, 10_000)
     .flatMap((resource) => {
       if (
@@ -70,28 +107,46 @@ export function searchCatalogue(
         (query.kinds && !query.kinds.includes(resource.kind))
       )
         return [];
-      const title = normalize(resource.title);
-      const keywords = normalize(resource.keywords.join(' '));
-      const body = normalize(
+      const title = tokens(resource.title);
+      const keywords = tokens(resource.keywords.join(' '));
+      const body = tokens(
         [resource.summary, resource.category, ...resource.capabilities, ...resource.platforms].join(
           ' ',
         ),
       );
-      const matchedTerms = terms.filter((term) => `${title} ${keywords} ${body}`.includes(term));
-      // A broad verb alone must not surface an unrelated task when the query
-      // also names a specific discipline. Keep ranking explanatory and bounded.
+      const matchedTerms = terms.filter(
+        (term) => title.has(term) || keywords.has(term) || body.has(term),
+      );
+      // Specific discipline words must accompany a broad verb in multi-term tasks.
       if (terms.length && matchedTerms.length < Math.ceil(terms.length * 0.6)) return [];
       const score =
         matchedTerms.reduce(
-          (total, term) => total + (title.includes(term) ? 5 : keywords.includes(term) ? 3 : 1),
+          (total, term) => total + (title.has(term) ? 5 : keywords.has(term) ? 3 : 1),
           0,
         ) + (matchedTerms.length === terms.length && terms.length ? 8 : 0);
       return [{ resource, matchedTerms, score }];
     })
-    .sort((a, b) => b.score - a.score || a.resource.title.localeCompare(b.resource.title, 'en'))
-    .slice(0, limit);
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.resource.title.localeCompare(b.resource.title, 'en') ||
+        a.resource.slug.localeCompare(b.resource.slug, 'en'),
+    );
+  return { matches: ranked.slice(offset, offset + limit), total: ranked.length, offset, limit };
 }
 
+export function searchCatalogue(
+  resources: readonly DiscoveryResource[],
+  query: DiscoveryQuery,
+): DiscoveryMatch[] {
+  return [...searchCataloguePage(resources, query).matches];
+}
 export function createCatalogueSearch(resources: readonly DiscoveryResource[]): SearchProvider {
-  return { search: async (query) => searchCatalogue(resources, query) };
+  return {
+    initialPage: searchCataloguePage(resources, { text: '' }),
+    search: async (query, signal) => {
+      signal?.throwIfAborted();
+      return searchCataloguePage(resources, query);
+    },
+  };
 }

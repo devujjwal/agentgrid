@@ -1,13 +1,20 @@
+import Link from 'next/link';
 import type { DiscoveryResource } from '../../domain/discovery';
-import { draftRelations } from '../universe/model';
+import type { UniverseRelation } from '../universe/model';
 
 export const categoryLabel = (value: string) =>
   value === 'seo' ? 'SEO' : value.replaceAll('-', ' ');
 
-export function ResourceInspector({ selected }: { selected: DiscoveryResource | undefined }) {
+export function ResourceInspector({
+  selected,
+  relations,
+}: {
+  selected: DiscoveryResource | undefined;
+  relations: readonly UniverseRelation[];
+}) {
   const connections = [
     ...new Set(
-      draftRelations
+      relations
         .filter((edge) => edge.source === selected?.slug || edge.target === selected?.slug)
         .map((edge) => edge.capability),
     ),
@@ -21,7 +28,9 @@ export function ResourceInspector({ selected }: { selected: DiscoveryResource | 
     >
       <div className="inspector-meta">
         <span className="eyebrow">Resource signal</span>
-        <span className="draft-status">Draft</span>
+        <span className="draft-status">
+          {selected?.state === 'published' ? 'Published' : 'Draft'}
+        </span>
       </div>
       {selected ? (
         <>
@@ -41,15 +50,21 @@ export function ResourceInspector({ selected }: { selected: DiscoveryResource | 
           <dl className="resource-facts">
             <div>
               <dt>Format</dt>
-              <dd>Interactive instructions</dd>
+              <dd>
+                {selected.format === 'instructions'
+                  ? 'Interactive instructions'
+                  : 'Workflow resource'}
+              </dd>
             </div>
             <div>
               <dt>Creator</dt>
-              <dd>AgentGrid Editorial draft</dd>
+              <dd>{selected.creatorName}</dd>
             </div>
             <div>
-              <dt>Verification</dt>
-              <dd>Host testing pending</dd>
+              <dt>Status</dt>
+              <dd>
+                {selected.state === 'published' ? 'Published resource' : 'Host testing pending'}
+              </dd>
             </div>
           </dl>
           {connections.length > 0 && (
@@ -59,9 +74,13 @@ export function ResourceInspector({ selected }: { selected: DiscoveryResource | 
             </div>
           )}
           <p className="inspector-note">
-            An unpublished first-party draft. Reuse terms and platform verification are required
-            before distribution.
+            {selected.state === 'draft'
+              ? 'An unpublished first-party draft. Reuse terms and platform verification are required before distribution.'
+              : 'Read the setup, examples and permissions before using this resource.'}
           </p>
+          <Link prefetch={false} className="inspector-open" href={selected.href}>
+            Read the full resource <span aria-hidden="true">↗</span>
+          </Link>
         </>
       ) : (
         <>

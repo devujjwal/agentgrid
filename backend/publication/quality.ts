@@ -6,50 +6,12 @@ import {
   type AgentSpecification,
 } from '../../src/domain/agent-specification.ts';
 import { hasCredentialSignature } from '../security/public-content.ts';
+import { EditorialSchema, type EditorialContent } from '../../src/domain/editorial.ts';
+export type { EditorialContent } from '../../src/domain/editorial.ts';
 
 const detail = (minimum: number, maximum: number) => z.string().trim().min(minimum).max(maximum);
 const date = z.iso.date();
 const digest = z.string().regex(/^[a-f0-9]{64}$/);
-const httpsUrl = z.url().refine((value) => {
-  const url = new URL(value);
-  return url.protocol === 'https:' && !url.username && !url.password;
-});
-
-const EditorialSchema = z.strictObject({
-  search_intent: detail(40, 300),
-  overview: detail(240, 4000),
-  audience: z.array(detail(24, 240)).min(2).max(8),
-  workflow: z.array(detail(60, 1000)).min(3).max(10),
-  faq: z
-    .array(z.strictObject({ question: detail(12, 180), answer: detail(80, 1600) }))
-    .min(3)
-    .max(10),
-  sources: z
-    .array(
-      z.strictObject({
-        title: detail(8, 160),
-        url: httpsUrl,
-        supports: detail(40, 600),
-        checked_on: date,
-      }),
-    )
-    .min(1)
-    .max(12),
-  related_agent_slugs: z
-    .array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/))
-    .min(2)
-    .max(8),
-  reviewed_on: date,
-  review: z.strictObject({
-    standalone_value: z.literal(true),
-    task_specific_instructions: z.literal(true),
-    cost_disclosure: z.literal(true),
-    security_and_privacy: z.literal(true),
-    distribution_steps: z.literal(true),
-    reuse_rights: z.literal(true),
-  }),
-});
-
 /** The private redacted artifact must contain observed output, not an illustrative sample. */
 const HostRunSchema = z.strictObject({
   origin: z.literal('real-host'),
@@ -66,7 +28,6 @@ const HostRunSchema = z.strictObject({
     .max(12),
   reviewer_notes: detail(80, 1600),
 });
-export type EditorialContent = z.infer<typeof EditorialSchema>;
 export type HostVerificationRun = z.infer<typeof HostRunSchema>;
 
 /** AgentGrid canonical-json-v1: sorted UTF-16 keys, JSON.stringify primitives, no whitespace. */
@@ -145,6 +106,8 @@ export async function preparePublication(input: PublicationInput, now = new Date
   });
   const specificationDigest = await contentChecksum(spec);
   const issues: string[] = [];
+  if (!editorial.discovery)
+    issues.push('Reviewed task aliases and capability tags are required for discovery.');
   let artifactDigest: string | null = null;
   if (spec.execution.artifact_path) {
     if (!input.artifactResolver || !spec.execution.artifact_path.endsWith('.json')) {
@@ -259,6 +222,7 @@ export function inspectLaunchInventory(
   resources: { specification: AgentSpecification; editorial: EditorialContent }[],
 ): string[] {
   const issues: string[] = [];
+
   if (resources.length < 36)
     issues.push('The launch foundation requires at least 36 prepared resources.');
   for (const category of LAUNCH_CATEGORIES)

@@ -1,6 +1,7 @@
 /** Curated literal task aliases. They do not claim platform integrations. */
 export const discoveryKeywords: Record<string, string[]> = {
   'campaign-message-planner': [
+    'plan',
     'campaign',
     'marketing',
     'advertising',
@@ -16,10 +17,20 @@ export const discoveryKeywords: Record<string, string[]> = {
     'citations',
     'compare',
     'documents',
+    'support',
+    'claims',
   ],
   'retrieval-study-coach': ['study', 'learn', 'quiz', 'lesson', 'homework', 'practice'],
   'article-structure-editor': ['article', 'writing', 'edit', 'draft', 'content', 'outline'],
-  'product-listing-auditor': ['shop', 'listing', 'product', 'ecommerce', 'store', 'selling'],
+  'product-listing-auditor': [
+    'audit',
+    'shop',
+    'listing',
+    'product',
+    'ecommerce',
+    'store',
+    'selling',
+  ],
   'meeting-decision-ledger': [
     'meeting',
     'minutes',
@@ -36,6 +47,9 @@ export const discoveryKeywords: Record<string, string[]> = {
     'clicks',
     'ranking',
     'website',
+    'organic',
+    'losing',
+    'declining',
   ],
   'pull-request-reviewer': ['code', 'github', 'pull request', 'pr', 'review', 'diff'],
 };

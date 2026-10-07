@@ -6,7 +6,7 @@ Private application source. Production canonical: https://agentgrid.me.
 
 ## Implementation status
 
-Phases 0–1 are validated. Phase 2 visual-system acceptance is in progress.
+Phases 0–2 are validated. Phase 3 public discovery is in progress.
 See [the implementation ledger](docs/IMPLEMENTATION.md)
 for phase acceptance evidence. This repository is not yet a launched product.
 

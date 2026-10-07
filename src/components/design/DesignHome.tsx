@@ -1,34 +1,17 @@
-import { NetworkMark } from '../brand/NetworkMark';
+import { SiteFrame } from '../layout/SiteFrame';
 import { IntentNetwork } from '../brand/IntentNetwork';
 import { DiscoveryConsole } from '../discovery/DiscoveryConsole';
 import type { DiscoveryResource } from '../../domain/discovery';
 
-export function DesignHome({ resources }: { resources: DiscoveryResource[] }) {
+export function DesignHome({
+  resources,
+  localPreview = true,
+}: {
+  resources: DiscoveryResource[];
+  localPreview?: boolean;
+}) {
   return (
-    <div className="agentgrid-site" data-agentgrid-preview="local-only">
-      <a className="skip-link" href="#main-content">
-        Skip to main content
-      </a>
-      <div className="preview-notice">
-        Local design preview <span aria-hidden="true">/</span> Unpublished drafts · no verified
-        platform claims
-      </div>
-      <header className="site-header">
-        <a className="brand" href="#main-content" aria-label="AgentGrid.me home">
-          <NetworkMark />
-          <span>
-            agentgrid<span className="brand-domain">.me</span>
-          </span>
-        </a>
-        <nav aria-label="Primary">
-          <a href="#catalogue-heading">Discover</a>
-          <a href="#universe">
-            Agent Universe<span aria-hidden="true">↗</span>
-          </a>
-          <a href="#resource-model">How it works</a>
-        </nav>
-        <span className="header-note">Ideas → useful work</span>
-      </header>
+    <SiteFrame localPreview={localPreview}>
       <main id="main-content">
         <section className="hero" aria-labelledby="hero-heading">
           <div className="hero-topline">
@@ -101,14 +84,6 @@ export function DesignHome({ resources }: { resources: DiscoveryResource[] }) {
           </div>
         </section>
       </main>
-      <footer className="site-footer">
-        <a className="brand" href="#main-content">
-          <NetworkMark />
-          <span>agentgrid.me</span>
-        </a>
-        <p>Useful intelligence. Connected.</p>
-        <span>First-party draft foundation</span>
-      </footer>
-    </div>
+    </SiteFrame>
   );
 }

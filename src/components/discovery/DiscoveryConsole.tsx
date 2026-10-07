@@ -1,24 +1,39 @@
 'use client';
 
+import { CatalogueResults } from './CatalogueResults';
+
 import { useMemo, useState } from 'react';
 import type { DiscoveryResource } from '../../domain/discovery';
-import { searchCatalogue } from '../../domain/discovery';
+import { createCatalogueSearch } from '../../domain/discovery';
+import { useDiscoverySearch } from './useDiscoverySearch';
+import { universeRelations } from '../universe/model';
 import { UniverseViewport } from '../universe/UniverseViewport';
-import { ResourceInspector, categoryLabel } from './ResourceInspector';
+import { ResourceInspector } from './ResourceInspector';
 import { TaskCommand } from './TaskCommand';
 
 export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[] }) {
+  const relations = useMemo(() => universeRelations(resources), [resources]);
+  const drafts = resources.every((resource) => resource.state === 'draft');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [page, setPage] = useState(0);
   const [selectedSlug, setSelectedSlug] = useState('source-evidence-mapper');
   const categories = useMemo(
     () => [...new Set(resources.map((item) => item.category))].sort(),
     [resources],
   );
-  const matches = useMemo(
-    () => searchCatalogue(resources, { text: query, ...(category ? { category } : {}) }),
-    [resources, query, category],
+  const provider = useMemo(() => createCatalogueSearch(resources), [resources]);
+  const searchQuery = useMemo(
+    () => ({
+      text: query,
+      ...(category ? { category } : {}),
+      offset: page * 30,
+    }),
+    [query, category, page],
   );
+  const search = useDiscoverySearch(provider, searchQuery);
+  const searchPage = search.page;
+  const matches = searchPage.matches;
   const activeSlug = matches.some((match) => match.resource.slug === selectedSlug)
     ? selectedSlug
     : (matches[0]?.resource.slug ?? '');
@@ -39,10 +54,15 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
     <>
       <TaskCommand
         query={query}
-        onQuery={setQuery}
+        draftCatalogue={drafts}
+        onQuery={(value) => {
+          setQuery(value);
+          setPage(0);
+        }}
         onPrompt={(prompt) => {
           setQuery(prompt);
           setCategory('');
+          setPage(0);
         }}
         onExplore={() => document.getElementById('discovery-results')?.focus()}
       />
@@ -70,105 +90,48 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
             </div>
             <UniverseViewport
               resources={resources}
+              relations={relations}
               matchedSlugs={matches.map((match) => match.resource.slug)}
               selectedSlug={activeSlug}
               onSelect={inspect}
             />
             <div className="universe-caption">
               <span>Connections describe shared capabilities.</span>
-              <span>Interactive instructions / Drafts</span>
+              <span>{drafts ? 'Interactive instructions / Drafts' : 'Reusable resources'}</span>
             </div>
           </div>
-          <ResourceInspector selected={selected} />
+          <ResourceInspector relations={relations} selected={selected} />
         </div>
       </section>
 
-      <section className="catalogue-section" aria-labelledby="catalogue-heading">
-        <div className="section-intro">
-          <div>
-            <p className="eyebrow">02 / Find your starting point</p>
-            <h2 id="catalogue-heading">Useful work, across your world.</h2>
-          </div>
-          <p>
-            Writing, learning, business, everyday life.
-            <br />A broad library starts with specific problems.
-          </p>
-        </div>
-        <div className="catalogue-tools">
-          <label htmlFor="category-filter" className="eyebrow">
-            Explore a discipline
-          </label>
-          <select
-            id="category-filter"
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-          >
-            <option value="">All disciplines</option>
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {categoryLabel(item)}
-              </option>
-            ))}
-          </select>
-          <span className="result-count" role="status" aria-live="polite">
-            {matches.length} {matches.length === 1 ? 'draft resource' : 'draft resources'}
-            {query ? ` for “${query}”` : ''}
-          </span>
-        </div>
-        <div
-          id="discovery-results"
-          tabIndex={-1}
-          role="region"
-          aria-label="Matching draft resources"
-        >
-          {matches.length ? (
-            <ul className="resource-list">
-              {matches.map(({ resource }, index) => (
-                <li key={resource.slug}>
-                  <button
-                    type="button"
-                    className="resource-row"
-                    onClick={() => inspect(resource.slug)}
-                  >
-                    <span className="row-index" aria-hidden="true">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="row-category">{categoryLabel(resource.category)}</span>
-                    <span className="row-main">
-                      <strong>{resource.title}</strong>
-                      <span>{resource.summary}</span>
-                    </span>
-                    <span className="row-format">
-                      Instructions<span>Draft · unverified</span>
-                    </span>
-                    <span className="row-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                    <span className="sr-only">Inspect draft</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="empty-results">
-              <h3>No matching draft yet.</h3>
-              <p>
-                Try a more specific task or explore another discipline. The draft foundation is
-                intentionally small; it is not the launch library.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery('');
-                  setCategory('');
-                }}
-              >
-                Show all drafts <span aria-hidden="true">↗</span>
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+      <CatalogueResults
+        searchPage={searchPage}
+        pending={search.pending}
+        failed={search.failed}
+        onRetry={search.retry}
+        query={query}
+        category={category}
+        categories={categories}
+        drafts={drafts}
+        onCategory={(value) => {
+          setCategory(value);
+          setPage(0);
+        }}
+        onInspect={inspect}
+        onReset={() => {
+          setQuery('');
+          setCategory('');
+          setPage(0);
+        }}
+        onPage={(value) => {
+          setPage(value);
+          requestAnimationFrame(() => {
+            const results = document.getElementById('discovery-results');
+            results?.focus({ preventScroll: true });
+            results?.scrollIntoView({ block: 'start', behavior: 'instant' });
+          });
+        }}
+      />
     </>
   );
 }

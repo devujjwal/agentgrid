@@ -54,6 +54,34 @@ export const draftRelations: readonly UniverseRelation[] = [
   },
 ];
 
+/** Public links come only from reviewed shared tags. No activity or similarity
+ * score is manufactured. A sparse bounded graph keeps large inputs economical.
+ * Local curated draft links are never carried into a changed public version.
+ */
+export function universeRelations(resources: readonly DiscoveryResource[]): UniverseRelation[] {
+  if (resources.every((resource) => resource.state === 'draft')) {
+    const slugs = new Set(resources.map((resource) => resource.slug));
+    return draftRelations.filter((edge) => slugs.has(edge.source) && slugs.has(edge.target));
+  }
+  const seen = new Map<string, string[]>();
+  const pairs = new Set<string>();
+  const edges: UniverseRelation[] = [];
+  for (const resource of resources.slice(0, 1000)) {
+    for (const tag of resource.connectionTags.slice(0, 8)) {
+      const peers = seen.get(tag) ?? [];
+      for (const peer of peers.slice(-3)) {
+        const pair = [peer, resource.slug].sort().join(':');
+        if (pairs.has(pair)) continue;
+        pairs.add(pair);
+        edges.push({ source: peer, target: resource.slug, capability: tag.replaceAll('-', ' ') });
+        if (edges.length === 1200) return edges;
+      }
+      seen.set(tag, [...peers.slice(-2), resource.slug]);
+    }
+  }
+  return edges;
+}
+
 const curated: Record<string, [number, number, string]> = {
   'campaign-message-planner': [165, 100, 'Message planner'],
   'inbox-priority-triage': [100, 270, 'Inbox triage'],
