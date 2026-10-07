@@ -45,7 +45,14 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
     for (const name of ['index.html', '404.html', 'robots.txt', '_headers'])
       await writeFile(join(root, name), 'safe');
     assert.deepEqual(await inspectExport(root), []);
-    await writeFile(join(root, 'bundle.js'), 'sb_secret_' + 'x'.repeat(24));
+    for (const value of [
+      'sb_secret_' + 'x'.repeat(24),
+      'sbp_oauth_' + '0'.repeat(40),
+      'GOCSPX-' + 'x'.repeat(24),
+    ]) {
+      await writeFile(join(root, 'bundle.js'), value);
+      assert.ok((await inspectExport(root)).some((error) => error.includes('credential')));
+    }
     await writeFile(join(root, 'bundle.js.map'), '{}');
     const errors = await inspectExport(root);
     assert.ok(errors.some((error) => error.includes('credential')));
