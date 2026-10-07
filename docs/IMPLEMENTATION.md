@@ -236,3 +236,23 @@ than treating existing code as completed functionality.
   operator recovery and production community journeys remain unimplemented gates.
   No schema, test release, fake review/profile or application data has been written
   to the remote shared project. Phase 1 remains in progress.
+
+## Phase 1 extraction rehearsal
+
+- A sixth owned-only migration makes application FKs deferrable, initially
+  immediate; normal runtime behavior is preserved. CI verifies that references
+  stay within AgentGrid or managed Auth, RLS remains enabled, function search
+  paths are confined and direct mutation grants stay restricted.
+- Independent synthetic source/target databases exercise actual `pg_dump`/COPY
+  of the owned application allowlist. Target managed Auth UUIDs differ; only the
+  private identity links are reassociated. Business IDs, drafts, roles, saves,
+  review/report state, immutable digests, release pointers and fork lineage match
+  exactly after import. Protected application fixtures/default grants are unchanged.
+- The reassociated identity retains its original profile and database authority.
+  Six migrations, all actor matrices and extraction acceptance pass locally.
+  Database readiness waits for final startup, and owned temporary containers are
+  removed only after exact identity/label/network checks. Other application
+  containers and data were not targets.
+- This validates owned-data portability. Managed provider/password migration,
+  real reauthentication, asset copying and production cutover remain explicit
+  future extraction tasks; the shared remote project still has no AgentGrid DDL.

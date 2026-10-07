@@ -80,12 +80,12 @@ def main():
     # protected containers, shared volumes or private data enter this test.
     run(["docker", "pull", IMAGE], timeout=300)
     suffix = uuid.uuid4().hex
-    name = f"agentgrid_schema_qa_{suffix}"
+    container_name = f"agentgrid_schema_qa_{suffix}"
     database = f"agentgrid_qa_{suffix}"
     container = None
     try:
         container = run([
-            "docker", "run", "--detach", "--network", "none", "--name", name,
+            "docker", "run", "--detach", "--network", "none", "--name", container_name,
             "--label", f"com.agentgrid.purpose={PURPOSE}",
             "--env", "POSTGRES_PASSWORD=agentgrid_local_fixture_only", IMAGE,
         ])
@@ -106,10 +106,10 @@ def main():
                 time.sleep(1)
         run(["docker", "exec", container, "createdb", "-U", "postgres", "--template", "template0", database])
 
-        def sql(statement):
+        def sql(statement, database_name=database):
             return run([
                 "docker", "exec", "--interactive", container, "psql", "-U", "postgres",
-                "--dbname", database, "-X", "-q", "-A", "-t", "-v", "ON_ERROR_STOP=1",
+                "--dbname", database_name, "-X", "-q", "-A", "-t", "-v", "ON_ERROR_STOP=1",
             ], input_text=statement)
 
         directory = ROOT / "supabase/agentgrid"
@@ -118,21 +118,25 @@ def main():
         migrations = sorted((directory / "migrations").glob("*.sql"))
         if not migrations:
             raise RuntimeError("No AgentGrid migrations found")
-        for position, path in enumerate(migrations, 1):
-            if not re.fullmatch(rf"{position:03d}_[a-z0-9_]+", path.stem):
-                raise RuntimeError("Migration history must be ordered without gaps")
-            contents = path.read_text()
-            checksum = hashlib.sha256(contents.encode()).hexdigest()
-            sql(
-                "begin;\n" + contents
-                + f"\ninsert into public.agentgrid_schema_migrations (version, checksum) "
-                + f"values ('{path.stem}','{checksum}');\ncommit;"
-            )
+        def migrate(database_name):
+            for position, path in enumerate(migrations, 1):
+                if not re.fullmatch(rf"{position:03d}_[a-z0-9_]+", path.stem):
+                    raise RuntimeError("Migration history must be ordered without gaps")
+                contents = path.read_text()
+                checksum = hashlib.sha256(contents.encode()).hexdigest()
+                sql(
+                    "begin;\n" + contents
+                    + f"\ninsert into public.agentgrid_schema_migrations (version, checksum) "
+                    + f"values ('{path.stem}','{checksum}');\ncommit;", database_name
+                )
+
+        migrate(database)
+        draft = json.loads((ROOT / "content/agents/inbox-priority-triage/1.0.0.agent.json").read_text())
+        fixture = json.dumps(draft).replace("'", "''")
+        fixture_setting = "select pg_catalog.set_config('agentgrid.fixture_specification','" + fixture + "',false);\n"
         for path in sorted((directory / "tests").glob("*.sql")):
             if path.name != "bootstrap.sql":
-                draft = json.loads((ROOT / "content/agents/inbox-priority-triage/1.0.0.agent.json").read_text())
-                fixture = json.dumps(draft).replace("'", "''")
-                sql("select pg_catalog.set_config('agentgrid.fixture_specification','" + fixture + "',false);\n" + path.read_text())
+                sql(fixture_setting + path.read_text())
         after = json.loads(sql(PROTECTED_SNAPSHOT))
         if before != after:
             changed = sorted(key for key in before if before[key] != after[key])
@@ -143,13 +147,82 @@ def main():
         expected = {path.stem: hashlib.sha256(path.read_bytes()).hexdigest() for path in migrations}
         if history != expected:
             raise RuntimeError("Migration history/checksums do not match the repository")
-        print(f"Database acceptance passed: {len(migrations)} migrations; protected fixtures unchanged.")
+
+        # Rehearse actual owned-data COPY/import with different managed Auth IDs.
+        # Both databases are fresh and live only inside this one isolated container.
+        source_database = "agentgrid_qa_" + uuid.uuid4().hex
+        target_database = "agentgrid_qa_" + uuid.uuid4().hex
+        boundaries = {}
+        for name in (source_database, target_database):
+            run(["docker", "exec", container, "createdb", "-U", "postgres", "--template", "template0", name])
+            sql((directory / "tests/bootstrap.sql").read_text(), name)
+            migrate(name)
+            boundaries[name] = json.loads(sql(PROTECTED_SNAPSHOT, name))
+        sql(fixture_setting + (directory / "fixtures/extraction.sql").read_text(), source_database)
+        tables = json.loads(sql("""
+            select jsonb_agg(tablename order by tablename) from pg_catalog.pg_tables
+            where schemaname='public' and tablename like 'agentgrid\\_%' escape '\\'
+            and tablename<>'agentgrid_schema_migrations';
+        """, source_database))
+        if not tables or any(not re.fullmatch(r"agentgrid_[a-z0-9_]+", table) for table in tables):
+            raise RuntimeError("Invalid owned extraction allowlist")
+        dump = run([
+            "docker", "exec", container, "pg_dump", "-U", "postgres", "--dbname", source_database,
+            "--data-only", "--no-owner", "--no-privileges",
+            *[f"--table=public.{table}" for table in tables],
+        ])
+        replacements = {
+            "00000000-0000-4000-8000-000000000001": "90000000-0000-4000-8000-000000000001",
+            "00000000-0000-4000-8000-000000000002": "90000000-0000-4000-8000-000000000002",
+        }
+        sql("insert into auth.users(id) values " + ",".join(f"('{identity}')" for identity in replacements.values()) + ";", target_database)
+        remapping = "\n".join(
+            f"update public.agentgrid_identities set user_id='{new}' where user_id='{old}';"
+            for old, new in replacements.items()
+        )
+        sql(
+            "begin; set constraints all deferred;\n"
+            "delete from public.agentgrid_configuration; delete from public.agentgrid_categories; delete from public.agentgrid_platforms;\n"
+            + dump + "\n" + remapping + "\ncommit;", target_database
+        )
+
+        def application_snapshot(database_name):
+            expressions = [
+                f"'{table}',(select coalesce(jsonb_agg(to_jsonb(r) order by to_jsonb(r)::text),'[]'::jsonb) from public.{table} r)"
+                for table in tables
+            ]
+            return json.loads(sql("select jsonb_build_object(" + ",".join(expressions) + ");", database_name))
+
+        original_data = application_snapshot(source_database)
+        for link in original_data["agentgrid_identities"]:
+            link["user_id"] = replacements[link["user_id"]]
+        imported_data = application_snapshot(target_database)
+        if original_data != imported_data:
+            changed = sorted(table for table in tables if original_data[table] != imported_data[table])
+            raise RuntimeError("Extraction data/checksum/lineage mismatch: " + ", ".join(changed))
+        for name in (source_database, target_database):
+            boundary_after = json.loads(sql(PROTECTED_SNAPSHOT, name))
+            # Only synthetic managed identities deliberately differ in this
+            # identity-reassociation rehearsal. Every other fixture is protected.
+            expected_boundary = {key: value for key, value in boundaries[name].items() if key != "auth_rows"}
+            actual_boundary = {key: value for key, value in boundary_after.items() if key != "auth_rows"}
+            if expected_boundary != actual_boundary:
+                raise RuntimeError("Extraction changed a protected fixture boundary")
+        reassociated = sql("""
+            set request.jwt.claims='{"sub":"90000000-0000-4000-8000-000000000001","role":"authenticated"}';
+            set role authenticated;
+            select public.agentgrid_profile_id()='10000000-0000-4000-8000-000000000001'::uuid
+              and public.agentgrid_has_role(array['administrator']);
+        """, target_database)
+        if reassociated != "t":
+            raise RuntimeError("Extracted identity reassociation does not preserve application authority")
+        print(f"Database acceptance passed: {len(migrations)} migrations; protected fixtures unchanged; owned-data extraction/reassociation preserved checksums and lineage.")
     finally:
         if container:
             details = json.loads(run(["docker", "inspect", container]))[0]
             if (
                 details["Id"] != container
-                or details["Name"] != f"/{name}"
+                or details["Name"] != f"/{container_name}"
                 or details["Config"]["Labels"].get("com.agentgrid.purpose") != PURPOSE
                 or details["HostConfig"]["NetworkMode"] != "none"
             ):

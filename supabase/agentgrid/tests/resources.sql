@@ -125,6 +125,12 @@ set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000001","rol
 set local role authenticated;
 select public.agentgrid_decide_submission((select version_id from agentgrid_fixture_state where key='successor'),'withdrawn','Withdraw this synthetic draft to make a revised version.');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_submission((select version_id from agentgrid_fixture_state where key='successor'),'withdrawn','Repeated withdrawal is invalid')$s$,'42501');
+select public.agentgrid_save_draft((select resource_id from agentgrid_fixture_state where key='original'),3,pg_temp.agentgrid_spec('fixture-original','1.0.10'));
+insert into agentgrid_fixture_state(key,resource_id,version_id)
+select 'numeric-successor',resource_id,public.agentgrid_submit_version(resource_id,4) from agentgrid_fixture_state where key='original';
+select public.agentgrid_decide_submission((select version_id from agentgrid_fixture_state where key='numeric-successor'),'withdrawn','Withdraw the synthetic numeric successor.');
+select public.agentgrid_save_draft((select resource_id from agentgrid_fixture_state where key='original'),4,pg_temp.agentgrid_spec('fixture-original','1.0.2'));
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_submit_version((select resource_id from agentgrid_fixture_state where key='original'),5)$s$,'23514');
 reset role;
 
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';

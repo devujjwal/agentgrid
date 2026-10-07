@@ -108,3 +108,11 @@ reviews, reports and governance in rolled-back transactions. It compares protect
 schema/data/grant fingerprints and runs the same migrations in CI. It does not
 create real users, publish agents, manufacture community activity or establish
 that unimplemented HTTP/storage/UI flows are production-ready.
+
+Extraction is also rehearsed against independent fresh local databases. The
+owned-table allowlist excludes shared Auth/PicMagic tables and migration history.
+All normal FKs are initially immediate; a deliberate import transaction can defer
+owned FK checks to restore configuration/fork references and update only Auth-link
+UUIDs before commit. Every application row and immutable bundle digest is compared
+after import, along with protected fixture fingerprints. Future owned FKs must
+retain this deferrability/boundary convention; the structural CI gate detects drift.
