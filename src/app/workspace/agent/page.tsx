@@ -17,9 +17,7 @@ export default function CreatorPage() {
           <div>
             <p className="eyebrow">Your network / creator workspace</p>
             <h1>
-              Build a signal
-              <br />
-              <em>worth sharing.</em>
+              Build a signal <em>worth sharing.</em>
             </h1>
           </div>
           <Link prefetch={false} href="/workspace/" className="action-secondary">

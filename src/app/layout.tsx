@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { CreatorMemoryProvider } from '../components/authoring/CreatorMemory';
 import './globals.css';
 import './resource.css';
 
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CreatorMemoryProvider>{children}</CreatorMemoryProvider>
+      </body>
     </html>
   );
 }

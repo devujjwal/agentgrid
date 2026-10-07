@@ -9,6 +9,7 @@ import { useCreatorDraft } from './useCreatorDraft';
 import { DraftComposer } from './DraftComposer';
 import { blankAgentFields, NewAgentForm, type NewAgentFields } from './NewAgentForm';
 import { platformChoices } from './PlatformFields';
+import { HeldDraft } from './HeldDraft';
 export function CreatorWorkspace() {
   const identity = useIdentity(),
     params = useSearchParams(),
@@ -57,17 +58,28 @@ export function CreatorWorkspace() {
       ) : !identity.identity?.signedIn ? (
         <section className="identity-panel">
           <h2>Bring your own signal.</h2>
-          <p>Sign in to author a private agent definition.</p>
+          <p>
+            {editor.retainedEdits
+              ? 'Your unsaved draft is held in this tab. Sign in in another tab, then return here. Identity and ownership are checked again before your edits reappear.'
+              : 'Sign in to author a private agent definition.'}
+          </p>
           <Link
             prefetch={false}
             className="action-primary"
+            target={editor.retainedEdits ? '_blank' : undefined}
+            rel={editor.retainedEdits ? 'noopener noreferrer' : undefined}
             href={
               '/sign-in/?returnTo=' +
               encodeURIComponent('/workspace/agent/' + (id ? '?resourceId=' + id : ''))
             }
           >
-            Connect to AgentGrid
+            {editor.retainedEdits ? 'Sign in in another tab' : 'Connect to AgentGrid'}
           </Link>
+          {editor.retainedEdits && (
+            <button className="draft-text-action" onClick={identity.reload}>
+              Check connection again
+            </button>
+          )}
         </section>
       ) : editor.pending ? (
         <p role="status">Connecting your draft…</p>
@@ -108,7 +120,10 @@ export function CreatorWorkspace() {
               {editor.message}
             </p>
           )}
-          {!id && (
+          {editor.heldResourceId && (
+            <HeldDraft resourceId={editor.heldResourceId} discard={editor.discard} />
+          )}
+          {!id && !editor.heldResourceId && (
             <NewAgentForm
               fields={fields}
               change={(fields) => {

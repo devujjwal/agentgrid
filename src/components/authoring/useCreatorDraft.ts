@@ -4,13 +4,13 @@ import { z } from 'zod';
 import {
   DraftRecordSchema,
   parseDraftSpecification,
-  type DraftRecord,
   type DraftSpecification,
 } from '../../domain/draft';
 import { WorkspaceIdentitySchema, type WorkspaceIdentity } from '../../domain/workspace';
 import type { IdentityResponse } from '../../domain/session';
 import { formatAuthoringIssue } from '../../domain/authoring-issues';
 import { communityRequest, CommunityError } from '../../services/community';
+import { useCreatorMemory } from './CreatorMemory';
 
 export function useCreatorDraft(identity: IdentityResponse | null, resourceId: string | null) {
   const email = identity?.signedIn ? identity.email : null;
@@ -38,18 +38,24 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     email: string | null;
     id: string | null;
     retry: number;
+    holding: boolean;
     workspace: WorkspaceIdentity | null;
     error: string | null;
-  }>({ connection: null, email: null, id: null, retry: -1, workspace: null, error: null });
+  }>({
+    connection: null,
+    email: null,
+    id: null,
+    retry: -1,
+    holding: false,
+    workspace: null,
+    error: null,
+  });
   // In-memory edits survive tab concealment. They never render until the same
   // identity is freshly verified, and never enter persistent browser storage.
-  const [buffer, setBuffer] = useState<{
-    email: string;
-    record: DraftRecord;
-    value: DraftSpecification;
-    dirty: boolean;
-    conflict: boolean;
-  } | null>(null);
+  const { buffer, setBuffer } = useCreatorMemory();
+  const holding = Boolean(
+    buffer?.dirty && buffer.email === email && buffer.record.resourceId !== resourceId,
+  );
   const [section, setSection] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
@@ -61,7 +67,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
         controller.signal,
       )
         .then(async (workspace) => {
-          if (workspace.profile?.status === 'active' && resourceId) {
+          if (workspace.profile?.status === 'active' && resourceId && !holding) {
             const record = await communityRequest(
               '/api/workspace/draft/?resourceId=' + resourceId,
               DraftRecordSchema,
@@ -85,6 +91,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
               email,
               id: resourceId,
               retry,
+              holding,
               workspace,
               error: null,
             });
@@ -96,6 +103,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
               email,
               id: resourceId,
               retry,
+              holding,
               workspace: null,
               error: error instanceof Error ? error.message : 'Your draft could not be loaded.',
             });
@@ -104,60 +112,12 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
       controller.abort();
       active.current?.abort();
     };
-  }, [identity, email, resourceId, retry]);
-  useEffect(() => {
-    const warn = (event: BeforeUnloadEvent) => {
-      if (buffer?.dirty && buffer.email === email) {
-        event.preventDefault();
-        event.returnValue = '';
-      }
-    };
-    const navigate = (event: MouseEvent) => {
-      if (
-        !buffer?.dirty ||
-        buffer.email !== email ||
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      )
-        return;
-      const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
-      if (
-        !(anchor instanceof HTMLAnchorElement) ||
-        anchor.target === '_blank' ||
-        anchor.hasAttribute('download')
-      )
-        return;
-      const target = new URL(anchor.href);
-      if (
-        target.origin === window.location.origin &&
-        target.pathname === window.location.pathname &&
-        target.search === window.location.search
-      )
-        return;
-      if (
-        !window.confirm(
-          'Leave this draft and discard unsaved edits? Save or download the private definition first if you need to keep them.',
-        )
-      ) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    };
-    window.addEventListener('beforeunload', warn);
-    document.addEventListener('click', navigate, true);
-    return () => {
-      window.removeEventListener('beforeunload', warn);
-      document.removeEventListener('click', navigate, true);
-    };
-  }, [buffer, email]);
+  }, [identity, email, resourceId, retry, setBuffer, holding]);
   const ready =
     snapshot.connection === identity &&
     snapshot.email === email &&
     snapshot.id === resourceId &&
+    snapshot.holding === holding &&
     snapshot.retry === retry;
   const owned =
     ready &&
@@ -217,6 +177,11 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     workspace: ready ? snapshot.workspace : null,
     loadError: ready ? snapshot.error : null,
     buffer: owned,
+    retainedEdits: Boolean(buffer?.dirty && buffer.record.resourceId === resourceId),
+    heldResourceId:
+      ready && holding && snapshot.workspace?.profile?.status === 'active'
+        ? buffer!.record.resourceId
+        : null,
     busy,
     message:
       ready && feedback?.connection === identity && feedback.id === resourceId
@@ -269,7 +234,11 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
         setNotice('error', 'The saved revision could not be confirmed. Reload before continuing.');
         return;
       }
-      setBuffer({ ...owned, record: { ...owned.record, revision: result.revision }, dirty: false });
+      setBuffer((current) =>
+        current === owned
+          ? { ...owned, record: { ...owned.record, revision: result.revision }, dirty: false }
+          : current,
+      );
       setNotice('message', 'Private draft saved.');
       setRetry((value) => value + 1);
     },

@@ -1,5 +1,12 @@
 .creator-layout {
+  padding-top: 2.5rem;
   padding-bottom: 3rem;
+}
+.creator-layout .workspace-heading {
+  margin-bottom: 2rem;
+}
+.creator-layout .workspace-heading h1 {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
 }
 .creator-connection {
   min-height: 24rem;
@@ -84,7 +91,7 @@
 }
 .draft-workbench h2 {
   font-family: var(--font-editorial);
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: clamp(2rem, 3vw, 2.5rem);
   letter-spacing: -0.03em;
   font-weight: 400;
   line-height: 1.15;
@@ -279,6 +286,13 @@
   }
 }
 @media (max-width: 767px) {
+  .creator-layout {
+    padding-top: 1.5rem;
+  }
+  .creator-layout .workspace-heading {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
   .draft-studio {
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
@@ -311,7 +325,7 @@
     display: none;
   }
   .draft-workbench > header {
-    margin-block: 1rem 2rem;
+    margin-block: 1rem;
   }
   .draft-fields .draft-entry {
     padding: 1rem;
