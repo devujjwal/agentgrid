@@ -25,7 +25,7 @@ export async function inspectExport(root) {
     if (!/\.(html|js|json|txt|css)$/.test(name)) continue;
     const content = await readFile(path, 'utf8');
     if (
-      /sb_secret_[A-Za-z0-9_-]{12,}|sbp_(?:oauth_)?[a-f0-9]{40}|GOCSPX-[A-Za-z0-9_-]{20,}|-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|re_[A-Za-z0-9]{20,}/.test(
+      /sb_secret_[A-Za-z0-9_-]{12,}|sbp_(?:oauth_)?[a-f0-9]{40}|cfat_[A-Za-z0-9_-]{20,}|GOCSPX-[A-Za-z0-9_-]{20,}|-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|re_[A-Za-z0-9]{20,}/.test(
         content,
       )
     ) {

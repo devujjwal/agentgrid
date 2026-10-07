@@ -49,6 +49,7 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
       'sb_secret_' + 'x'.repeat(24),
       'sbp_oauth_' + '0'.repeat(40),
       'GOCSPX-' + 'x'.repeat(24),
+      'cfat_' + 'x'.repeat(24),
     ]) {
       await writeFile(join(root, 'bundle.js'), value);
       assert.ok((await inspectExport(root)).some((error) => error.includes('credential')));

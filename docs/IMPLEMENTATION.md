@@ -137,3 +137,19 @@ than treating existing code as completed functionality.
   application expiry/abuse protection and cross-account journeys remain Phase 4 gates.
 - CI-gated release credentials/workflow and private preview access remain Phase 0
   gates. Product, community, visual and launch gates are not claimed as complete.
+
+## Phase 0 release control — validation in progress
+
+- Exact OAuth milestone `346be06747354cd370726cf04b1b78607c587a7c` passed GitHub CI:
+  https://github.com/devujjwal/agentgrid/actions/runs/37582038758.
+- Owner approved the separately reviewed expiring account-owned Cloudflare token.
+  Pages Write is its only permission; no DNS/billing access or paid activation.
+  Provider verifies it as active, and the existing infrastructure project has
+  main as production branch and only its pages.dev domain. Credentials are stored
+  privately and in encrypted secrets in the verified private personal repository.
+- A guarded manual release workflow and pinned deployment CLI are implemented.
+  Local formatting, lint, strict typecheck, 18 tests, build and secret-loaded export
+  inspection pass. Actual remote release/HTTP/browser evidence is still pending.
+- Unpublished previews remain local; no private draft resource is uploaded.
+  Authenticated live workspace preview access must be tested in Phase 4 before
+  enabling remote private previews. Product publishing remains a separate gate.

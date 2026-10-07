@@ -152,10 +152,33 @@ are served by Pages via `_headers`, not by Next.js runtime configuration.
 
 ## Deployment policy
 
-No automatic production deploy is configured in Phase 0. A release must come from
-tested `main`, with a separate production environment and owner-approved secrets.
-Do not enable direct Git auto-deployment that bypasses CI. Release artifacts must
-be checked and publication must remain recoverable before launch.
+No automatic production-domain deployment is configured. The owner approved an
+account-owned `agentgrid_ci_deploy` token with Pages Write only, expiring January
+6, 2027. Cloudflare scopes this token to the personal account's Pages resources,
+not a single project. A compromised credential could affect other Pages projects;
+destination guards are additional safeguards, not a provider permission boundary.
+No DNS, billing or broader Worker permission is included. The token is stored in
+ignored mode-0600 local configuration and encrypted secrets in private
+`devujjwal/agentgrid` only. No Supabase, Google or Resend secret was sent to GitHub.
+
+The manually dispatched `Deploy infrastructure proof` workflow validates the
+exact main commit, audits production dependencies, and runs all checks before
+supplying the deployment credential to its final step. The operator supplies the
+full commit SHA; branch/repository/event/checkout/dirty-state checks must all pass.
+The wrapper accepts only the existing `agentgrid-infrastructure` Pages project,
+its main production branch and its sole pages.dev domain. Product-domain changes,
+backend bundles and credential-bearing exports are rejected. It validates the
+provider receipt and HTTP content/security/robots/404 behavior after deployment.
+The pinned Wrangler CLI is development tooling, excluded from client bundles.
+Metrics/error-report transmission is disabled; raw CLI/provider errors and
+temporary debug records are not uploaded to Actions artifacts.
+
+Remote infrastructure builds contain only the public proof. Keep unpublished
+content previews local until live authenticated workspace previews are tested;
+private data must never enter a public static artifact. Noindex alone is not
+access control. Product releases require publication allowlists, recovery and
+launch gates before this workflow can be extended to the production destination.
+Do not enable direct Git auto-deployment that bypasses CI.
 
 ## Dependency compatibility and security assessment
 
