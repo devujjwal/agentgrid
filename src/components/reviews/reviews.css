@@ -1,0 +1,200 @@
+.review-resource {
+  padding-block: 3rem;
+  border-block: 1px solid var(--line-strong);
+  min-height: 34rem;
+}
+.review-resource h2,
+.review-editor > h3 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1.15;
+}
+.review-resource p {
+  line-height: 1.7;
+}
+.review-feed-heading,
+.review-ledger article > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.review-aggregate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--line);
+  margin-block: 1.5rem;
+}
+.review-aggregate strong {
+  font: 3rem var(--font-editorial);
+}
+.review-signal {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.review-signal i {
+  display: block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--signal);
+}
+.review-signal i + i {
+  background: var(--line-strong);
+}
+.review-ledger {
+  list-style: none;
+  padding: 0;
+}
+.review-ledger > li {
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.review-ledger h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.35rem;
+  overflow-wrap: anywhere;
+}
+.review-byline,
+.review-rating-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.review-byline a {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.review-use-context {
+  border-left: 2px solid var(--signal);
+  padding-left: 1rem;
+  margin-block: 1.5rem;
+}
+.review-use-context h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.review-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.review-ledger .report-resource {
+  border: 0;
+  padding: 0;
+  margin-block: 1rem 0;
+}
+.review-resource nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1.5rem;
+}
+.review-editor {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  max-width: 48rem;
+}
+.review-live-feed {
+  max-width: 56rem;
+  min-height: 24rem;
+  margin-top: 1.5rem;
+}
+.review-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.review-form {
+  display: grid;
+  gap: 1rem;
+  margin-block: 2rem;
+}
+.review-form :is(select, textarea, input:not([type='radio'], [type='checkbox'])) {
+  min-height: 3rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--control-border);
+  background: var(--surface-bright);
+  color: var(--ink);
+  font: inherit;
+}
+.review-form textarea {
+  resize: vertical;
+}
+.review-form p {
+  margin: 0;
+}
+.review-form button {
+  justify-self: start;
+}
+.review-rating {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.review-rating legend {
+  padding: 0;
+  margin-block: 0.5rem;
+}
+.review-rating label,
+.review-permission {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  line-height: 1.5;
+}
+.review-rating label {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.review-rating label:has(input:checked) {
+  background: var(--signal-soft);
+}
+.review-rating strong {
+  font-family: var(--font-mono);
+  margin-right: 0.75rem;
+}
+.review-form input:is([type='checkbox'], [type='radio']) {
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  accent-color: var(--signal);
+}
+.review-status {
+  margin-block: 1.5rem;
+  padding: 1.25rem;
+  background: var(--surface-bright);
+  border-left: 2px solid var(--signal);
+}
+.review-status h4 {
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-block: 1rem;
+}
+.review-status summary {
+  cursor: pointer;
+  padding-block: 0.75rem;
+  min-height: 3rem;
+}
+.review-status h5 {
+  font: 1.25rem var(--font-editorial);
+}
+@media (max-width: 480px) {
+  .review-feed-heading {
+    display: block;
+  }
+  .review-editor > button {
+    margin-block: 0.5rem;
+  }
+}

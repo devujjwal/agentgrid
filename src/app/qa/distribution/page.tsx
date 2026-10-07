@@ -4,6 +4,7 @@ import { parseAgentSpecification } from '../../../domain/agent-specification';
 import { ResourceSetup } from '../../../components/resource/ResourceSetup';
 import { SaveAgent } from '../../../components/resource/SaveAgent';
 import { AuthoringQa } from '../../../components/authoring/AuthoringQa';
+import { ReviewResource } from '../../../components/reviews/ReviewResource';
 import { ReportResource } from '../../../components/reporting/ReportResource';
 import '../../reporting.css';
 import '../../identity.css';
@@ -57,6 +58,11 @@ export default function DistributionQaPage() {
         </div>
         <ResourceSetup specification={specification} publication={fixture} />
         <AuthoringQa />
+        <ReviewResource
+          resourceId={fixture.resource_id}
+          label="Synthetic review acceptance fixture"
+          path="/qa/distribution/"
+        />
         <ReportResource
           targetKind="agent"
           targetId={fixture.resource_id}

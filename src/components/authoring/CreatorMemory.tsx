@@ -12,6 +12,14 @@ import { flushSync } from 'react-dom';
 import type { DraftRecord, DraftSpecification } from '../../domain/draft';
 import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
+import type { ReviewInput } from '../../domain/reviews';
+
+export interface ReviewBuffer {
+  email: string;
+  input: ReviewInput;
+  path: string;
+  label: string;
+}
 
 export interface ReportBuffer {
   email: string;
@@ -35,6 +43,8 @@ const Memory = createContext<{
   setProfileEdits: Dispatch<SetStateAction<ProfileEditBuffer | null>>;
   reportEdits: ReportBuffer | null;
   setReportEdits: Dispatch<SetStateAction<ReportBuffer | null>>;
+  reviewEdits: ReviewBuffer | null;
+  setReviewEdits: Dispatch<SetStateAction<ReviewBuffer | null>>;
 } | null>(null);
 
 /** Bounded tab-local draft/profile/report edits survive App Router history, never reloads
@@ -44,8 +54,10 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
   const [buffer, setBuffer] = useState<DraftBuffer | null>(null);
   const [profileEdits, setProfileEdits] = useState<ProfileEditBuffer | null>(null);
   const [reportEdits, setReportEdits] = useState<ReportBuffer | null>(null);
+  const [reviewEdits, setReviewEdits] = useState<ReviewBuffer | null>(null);
   useEffect(() => {
-    if (!buffer?.dirty && !profileEdits?.dirty && !reportEdits?.input.explanation) return;
+    if (!buffer?.dirty && !profileEdits?.dirty && !reportEdits?.input.explanation && !reviewEdits)
+      return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
       event.returnValue = '';
@@ -92,17 +104,21 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('beforeunload', warn);
       document.removeEventListener('click', navigate, true);
     };
-  }, [buffer, profileEdits, reportEdits]);
+  }, [buffer, profileEdits, reportEdits, reviewEdits]);
   return (
     <Memory.Provider
       value={{
-        hasUnsaved: Boolean(buffer?.dirty || profileEdits?.dirty || reportEdits?.input.explanation),
+        hasUnsaved: Boolean(
+          buffer?.dirty || profileEdits?.dirty || reportEdits?.input.explanation || reviewEdits,
+        ),
         buffer,
         setBuffer,
         profileEdits,
         setProfileEdits,
         reportEdits,
         setReportEdits,
+        reviewEdits,
+        setReviewEdits,
       }}
     >
       {children}

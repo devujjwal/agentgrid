@@ -1,4 +1,5 @@
-:is(.identity-layout, .workspace-layout, .report-resource) :is(.action-primary, .action-secondary) {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource)
+  :is(.action-primary, .action-secondary) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -17,22 +18,24 @@
     background-color 140ms ease,
     border-color 140ms ease;
 }
-:is(.identity-layout, .workspace-layout, .report-resource) .action-primary {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource) .action-primary {
   background: var(--ink);
   color: var(--surface-bright);
 }
-:is(.identity-layout, .workspace-layout, .report-resource) .action-secondary {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource) .action-secondary {
   background: transparent;
   color: var(--ink);
 }
-:is(.identity-layout, .workspace-layout, .report-resource) .action-primary:hover:not(:disabled) {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource)
+  .action-primary:hover:not(:disabled) {
   background: var(--signal);
   border-color: var(--signal);
 }
-:is(.identity-layout, .workspace-layout, .report-resource) .action-secondary:hover:not(:disabled) {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource)
+  .action-secondary:hover:not(:disabled) {
   background: var(--signal-soft);
 }
-:is(.identity-layout, .workspace-layout, .report-resource) button:disabled {
+:is(.identity-layout, .workspace-layout, .report-resource, .review-resource) button:disabled {
   opacity: 0.6;
   cursor: default;
 }

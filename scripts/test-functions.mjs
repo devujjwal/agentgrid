@@ -21,7 +21,13 @@ const routes = JSON.parse(await readFile('.agentgrid-functions/_routes.json', 'u
 const invokesWorker = (path) =>
   !routes.exclude.some((rule) => isRoutingRuleMatch(path, rule)) &&
   routes.include.some((rule) => isRoutingRuleMatch(path, rule));
-for (const path of ['/api/identity/', '/api/workspace/', '/auth/callback/', '/auth/callback'])
+for (const path of [
+  '/api/identity/',
+  '/api/workspace/',
+  '/api/community/reviews/',
+  '/auth/callback/',
+  '/auth/callback',
+])
   assert.equal(invokesWorker(path), true, path);
 for (const path of ['/', '/agents/', '/workspace/', '/sign-in/', '/auth/callback/extra'])
   assert.equal(invokesWorker(path), false, path);
@@ -53,7 +59,12 @@ export default { fetch(request, env, context) {
     headers.set('origin', headers.get('x-agentgrid-synthetic-origin'));
     headers.delete('x-agentgrid-synthetic-origin');
   }
-  return worker.fetch(new Request(request, { headers }), env, context);
+  const publicEnvironment = Object.fromEntries([
+    'AGENTGRID_STAGE', 'AGENTGRID_ORIGIN',
+    'NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY'
+  ].map(key => [key, env[key]]));
+  const effective = new URL(request.url).pathname.startsWith('/api/community/') ? publicEnvironment : env;
+  return worker.fetch(new Request(request, { headers }), effective, context);
 }};`;
 const mf = new Miniflare(
   convertV4MiniflareOptions({
@@ -102,6 +113,16 @@ try {
   const workspace = await send('/api/workspace/');
   assert.equal(workspace.status, 401);
   assert.deepEqual(await workspace.json(), { error: 'not-signed-in' });
+  const publicReview = await send('/api/community/reviews/?resourceId=invalid');
+  assert.equal(publicReview.status, 400);
+  assert.deepEqual(await publicReview.json(), { error: 'invalid-request' });
+  assert.equal(publicReview.headers.get('set-cookie'), null);
+  const publicWrongOrigin = await send(
+    '/api/community/reviews/?resourceId=invalid',
+    {},
+    'https://untrusted.example.test',
+  );
+  assert.equal(publicWrongOrigin.status, 403);
   const callback = await send('/auth/callback/');
   assert.equal(callback.status, 303);
   assert.equal(callback.headers.get('location'), '/sign-in/?notice=verification-unavailable');

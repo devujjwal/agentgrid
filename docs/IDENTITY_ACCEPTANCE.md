@@ -312,6 +312,71 @@ adding server code must never silently broaden the old infrastructure release.
   community activity. Evidence captures are ignored local files.
 - Final formatting/lint/strict typecheck, 75 Node/11 Python tests, production
   static export and compiled worker acceptance pass. Twelve disposable migrations
-  pass actor/isolation/extraction tests. Private CI and migration 012 remote
-  rollout remain pending. No managed authentication or protected application setting
-  was changed. Full reporting/moderation production acceptance remains open.
+  pass actor/isolation/extraction tests. Private CI passed on reporting PR10 head `87fb404` (run `37642748073`)
+  and merge/main `00e5f9a` (run `37643652417`). Migration 012 is applied
+  from clean exact main; pre/post protected fingerprints and subsequent read-only
+  anonymous/nonmember denial checks pass. Twelve migrations are remote.
+  No managed authentication or protected application setting was changed. Full reporting/moderation production acceptance remains open.
+
+## Reviews and ratings increment — local validation in progress
+
+- Anonymous review reads use a separate publishable-key boundary and strict,
+  bounded projections. No session cookie, private author ID, editorial metadata,
+  privileged key, cached moderation state or invented aggregate reaches readers.
+  Only approved, visible reviews contribute to the actual count and average.
+- Migration 013 (local only) adds self-owned review/context projections and an
+  immutable withdrawal audit. Active membership, current public release,
+  self-review denial, exact revision and owner authority are rechecked in SQL.
+  An author withdrawal cannot be undone by staff moderation. Explicit resubmission
+  creates a fresh pending revision. Protected PicMagic resources stay independent.
+- The thirteen-migration disposable actor/isolation/extraction suite passed before
+  UI work. Backend coverage includes anonymous/member/other-member/staff denial,
+  safe bylines, 21-row lookahead, aggregate exclusion, suspended authors,
+  concurrent revisions, blocked targets and withdrawal/reassociation constraints.
+- Chrome acceptance before the interrupted session covered writing, pending/public
+  transitions, author withdrawal/resubmission, used-version selection, held edits
+  across history, plain-text XSS handling and lost-acknowledgement recovery. An
+  unconfirmed write retains text, disables retry until live recovery and refreshes
+  public visibility; it never fabricates success or silently retries.
+- Continued in-app browser acceptance confirms new pending review creation,
+  unchanged-review submit disabled, creator self-review denial, blocked-source
+  withdrawal, suspension concealment/reconnect, and 23 public fixtures paged 20+3
+  with heading focus restored. All fixtures are disposable local memory only.
+- Actual 320/768/1024/1440px editor widths were measured with zero overflow.
+  Radio/permission targets are at least 48px; desktop text fields are bounded to
+  48rem. The 320px withdrawal dialog fits and wraps Tab/Shift+Tab correctly.
+  Saved local screenshots were visually inspected; evidence files remain ignored.
+- Initial mobile reader CLS was 0.233. Identical server/loading/loaded headings,
+  stable controls above the feed and reserved feed space reduce CLS to 0.
+  The empty-reader run scored 97 performance / 100 accessibility, LCP 2.568s
+  (slightly outside the target). The populated 23-review run scored 99 / 100,
+  LCP 2.257s, TBT 12.5ms, CLS 0, with no console errors. A separate signed-in
+  editor run scored 99 / 100, LCP 2.260s, TBT 16ms and CLS 0; its full-page
+  mobile screenshot confirms the actual form was audited. These are local lab
+  results, not field INP or provider latency. Private noindex SEO 63 is expected;
+  best practices 96 retains the known inline-script CSP production gate.
+- Formatting/lint/strict typecheck, 82 Node and 11 Python tests, production export
+  and the 777,464-byte compiled worker acceptance pass. QA routes are removed
+  from deployment artifacts. The three local HTTP tests require loopback access;
+  their sandbox-only EPERM failures passed when rerun with that access.
+- The prior native sign-out confirmation blocked in-app browser control. Shared
+  accessible in-page confirmation now replaces it, but cancellation/confirmed
+  logout and review-buffer clearing still require browser verification after the
+  old prompt is dismissed. This is an open gate, not completed functionality.
+  Private CI, migration 013 rollout, actual consent/member journeys, staff UI and
+  production acceptance remain pending. No real community data was created.
+
+### Final review sign-out acceptance
+
+- The resumed in-app browser confirms the replacement HTML dialog opens with
+  cancellation focused. Escape restores the Sign out control; internal history
+  retains the exact held review text after cancellation.
+- Confirmed sign-out returns to the anonymous sign-in page. History exposes only
+  the anonymous review gate. Signing in in a separate tab and reconnecting the
+  original editor restores the saved review, not the discarded held title. This
+  closes the outstanding local sign-out/review-buffer gate.
+- PR11 head `43d92215c56eaa736c3ac5d890f5a62d79d5695d` passed CI run
+  `37668163054`, including dependency audits and thirteen-migration database
+  acceptance. Exact final-head/main CI and guarded migration rollout remain
+  release requirements. Real membership, moderation UI and production launch
+  are separate outstanding product gates.
