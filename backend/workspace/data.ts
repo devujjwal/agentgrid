@@ -37,6 +37,8 @@ export interface WorkspaceData {
   createReport: ReturnType<typeof reportResources>['createReport'];
   review: ReturnType<typeof reviewResources>['review'];
   writeReview: ReturnType<typeof reviewResources>['writeReview'];
+  reviewContext: ReturnType<typeof reviewResources>['reviewContext'];
+  withdrawReview: ReturnType<typeof reviewResources>['withdrawReview'];
 }
 export function workspaceData(
   configuration: AuthConfiguration,

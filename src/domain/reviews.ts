@@ -23,16 +23,34 @@ export const OwnedReviewSchema = z
     revision: z.int().min(1).max(2147483647),
     createdAt: date,
     updatedAt: date,
-    state: z.enum(['pending', 'published', 'hidden']),
+    state: z.enum(['pending', 'published', 'hidden', 'withdrawn']),
+    withdrawnAt: date.nullable(),
     reason: z.string().max(2400),
     reviewedAt: date.nullable(),
   })
   .refine((value) =>
-    value.state === 'pending'
+    value.state === 'pending' || value.state === 'withdrawn'
       ? value.reviewedAt === null && value.reason === ''
       : value.reviewedAt !== null && value.reason.trim().length >= 20,
-  );
+  )
+  .refine((value) => (value.state === 'withdrawn') === (value.withdrawnAt !== null));
 export type OwnedReview = z.infer<typeof OwnedReviewSchema>;
+export const WithdrawReviewSchema = z.strictObject({
+  resourceId: Fields.resourceId,
+  expectedRevision: z.int().min(1).max(2147483646),
+});
+export const ReviewContextSchema = z
+  .strictObject({
+    resourceId: Fields.resourceId,
+    review: OwnedReviewSchema.nullable(),
+    available: z.boolean(),
+    canReview: z.boolean(),
+    currentVersion: z.strictObject({ id: z.uuid(), version: VersionNumberSchema }).nullable(),
+  })
+  .refine((value) => value.available === (value.currentVersion !== null))
+  .refine((value) => !value.canReview || value.available)
+  .refine((value) => !value.review || value.review.resourceId === value.resourceId);
+export type ReviewContext = z.infer<typeof ReviewContextSchema>;
 export const PublicReviewSchema = z.strictObject({
   id: z.uuid(),
   usedVersionId: z.uuid(),
@@ -61,7 +79,8 @@ export const PublicReviewsSchema = z
     hasMore: z.boolean(),
   })
   .refine((value) => (value.reviewCount === 0) === (value.averageRating === null))
-  .refine((value) => value.reviews.length <= value.reviewCount)
+  .refine((value) => value.reviews.length <= Math.max(0, value.reviewCount - value.offset))
+  .refine((value) => !value.hasMore || value.offset + value.reviews.length < value.reviewCount)
   .refine(
     (value) => new Set(value.reviews.map((review) => review.id)).size === value.reviews.length,
   );

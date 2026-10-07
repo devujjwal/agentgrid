@@ -36,6 +36,7 @@ const owned = {
   state: 'pending',
   reason: '',
   reviewedAt: null,
+  withdrawnAt: null,
 };
 const publicRow = {
   id: reviewId,
@@ -66,7 +67,9 @@ function fixture() {
         calls.push({ name, body });
         if (state.error) return Response.json(state.error, { status: 400 });
         if (name === 'agentgrid_owned_review') return Response.json(state.owned);
-        if (name === 'agentgrid_write_review') return Response.json(state.write);
+        if (name === 'agentgrid_write_review' || name === 'agentgrid_withdraw_review')
+          return Response.json(state.write);
+        if (name === 'agentgrid_review_context') return Response.json(state.context);
         throw new Error('Unexpected synthetic transport');
       },
     },
@@ -174,7 +177,7 @@ test('public review batches use only anonymous publishable authority and reject 
       id: '40000000-0000-4000-8000-' + String(i + 1).padStart(12, '0'),
     })),
   };
-  const page = await data(resourceId, 20);
+  const page = await data(resourceId, 0);
   assert.equal(page.reviews.length, 20);
   assert.equal(page.hasMore, true);
   for (const malformed of [
@@ -263,6 +266,20 @@ test('private review HTTP requires identity and CSRF, permits bounded Unicode an
       calls.push(['read', id]);
       return owned;
     },
+    reviewContext: async (id) => {
+      calls.push(['context', id]);
+      return {
+        resourceId: id,
+        review: owned,
+        available: true,
+        canReview: true,
+        currentVersion: { id: versionId, version: '1.0.0' },
+      };
+    },
+    withdrawReview: async (value) => {
+      calls.push(['withdraw', value]);
+      return { ...owned, state: 'withdrawn', withdrawnAt: date, revision: 2 };
+    },
     writeReview: async (value) => {
       calls.push(['write', value]);
       return owned;
@@ -321,8 +338,103 @@ test('private review HTTP requires identity and CSRF, permits bounded Unicode an
     (await handle(request('/api/workspace/review/?resourceId=' + resourceId))).status,
     200,
   );
+  assert.equal(
+    (await handle(request('/api/workspace/reviewcontext/?resourceId=' + resourceId))).status,
+    200,
+  );
+  assert.equal(
+    (
+      await handle(
+        request('/api/workspace/reviewcontext/?resourceId=' + resourceId + '&role=administrator'),
+      )
+    ).status,
+    400,
+  );
+  const withdrawal = { resourceId, expectedRevision: 1 };
+  assert.equal((await handle(request('/api/workspace/reviewwithdraw/', withdrawal))).status, 403);
+  assert.equal(
+    (
+      await handle(
+        request('/api/workspace/reviewwithdraw/', { ...withdrawal, expectedRevision: 0 }, csrf),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await handle(
+        request('/api/workspace/reviewwithdraw/', { ...withdrawal, authorId: reviewId }, csrf),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (await handle(request('/api/workspace/reviewwithdraw/', withdrawal, csrf))).status,
+    200,
+  );
   assert.deepEqual(calls, [
     ['write', unicode],
     ['read', resourceId],
+    ['context', resourceId],
+    ['withdraw', withdrawal],
   ]);
+});
+
+test('live eligibility conceals unknown/private targets and withdrawal confirms the exact owner revision', async () => {
+  const { state, data, calls } = fixture();
+  const context = {
+    resourceId,
+    review: owned,
+    available: true,
+    canReview: true,
+    currentVersion: { id: versionId, version: '1.0.0' },
+  };
+  state.context = context;
+  assert.deepEqual(await data.reviewContext(resourceId), context);
+  assert.deepEqual(calls.at(-1), {
+    name: 'agentgrid_review_context',
+    body: { resource_id: resourceId },
+  });
+  for (const malformed of [
+    { ...context, resourceId: reviewId },
+    { ...context, available: false },
+    { ...context, review: { ...owned, resourceId: reviewId } },
+    { ...context, available: false, currentVersion: null },
+    { ...context, ownerEmail: 'private@example.test' },
+  ]) {
+    state.context = malformed;
+    await assert.rejects(data.reviewContext(resourceId), fails(503));
+  }
+  state.context = {
+    resourceId,
+    review: owned,
+    available: false,
+    canReview: false,
+    currentVersion: null,
+  };
+  assert.equal((await data.reviewContext(resourceId)).review.id, reviewId);
+  const withdrawn = { ...owned, state: 'withdrawn', withdrawnAt: date, revision: 2 };
+  state.owned = withdrawn;
+  assert.deepEqual(await data.withdrawReview({ resourceId, expectedRevision: 1 }), withdrawn);
+  assert.deepEqual(calls.find((c) => c.name === 'agentgrid_withdraw_review').body, {
+    resource_id: resourceId,
+    expected_revision: 1,
+  });
+  for (const wrong of [
+    owned,
+    { ...withdrawn, revision: 3 },
+    { ...withdrawn, withdrawnAt: null },
+    { ...withdrawn, id: versionId },
+  ]) {
+    state.owned = wrong;
+    await assert.rejects(data.withdrawReview({ resourceId, expectedRevision: 1 }), fails(503));
+  }
+  state.owned = withdrawn;
+  await assert.rejects(data.writeReview({ ...input, expectedRevision: 1 }), fails(503));
+  const before = calls.length;
+  await assert.rejects(
+    data.withdrawReview({ resourceId, expectedRevision: 1, authorId: reviewId }),
+    fails(400),
+  );
+  assert.equal(calls.length, before);
 });
