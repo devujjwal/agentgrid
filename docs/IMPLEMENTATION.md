@@ -8,7 +8,7 @@ than treating existing code as completed functionality.
 | Phase                            | Status      | Exit evidence                                                                                                                                                                         |
 | -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0 — Ownership and infrastructure | Validated   | Personal ownership/CI, free Cloudflare exact-commit delivery, protected Supabase baseline, real email OTP and Google PKCE sign-in; unpublished previews restricted to local loopback. |
-| 1 — Contracts and content        | In progress | Portable/editorial gates and five isolated backend migrations pass locally; CI, guarded remote rollout, extraction rehearsal and broad representative drafts still pending            |
+| 1 — Contracts and content        | Validated   | Portable/editorial gates, six isolated migrations, protected remote rollout, owned-data extraction and ten broad representative drafts; full host-tested inventory remains Phase 6    |
 | 2 — Visual system                | Not started | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | Not started | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
@@ -256,3 +256,31 @@ than treating existing code as completed functionality.
 - This validates owned-data portability. Managed provider/password migration,
   real reauthentication, asset copying and production cutover remain explicit
   future extraction tasks; the shared remote project still has no AgentGrid DDL.
+
+## Phase 1 foundation acceptance — 7 October 2026
+
+- Exact branch CI passed at `ed5d0ce546af181f04104add8bf50146e811f367`:
+  https://github.com/devujjwal/agentgrid/actions/runs/37591912908.
+  Private foundation PR 1 was merged preserving its logical milestone commits.
+  Merge commit `509a69f0c65ee805827fbaf6bce781b42962d264` passed its own Validate run:
+  https://github.com/devujjwal/agentgrid/actions/runs/37592289012.
+- The guarded operator applied all six exact-checksum migrations to the authorized
+  shared project. Protected schema, policies, storage, grants and auth configuration
+  fingerprints passed before/after every additive transaction. Original baselines
+  remain intact, and private operator records bind owned schema to migration history.
+- Live read-only checks under anonymous and a synthetic non-member authenticated
+  role deny private identity and privileged publication access. The shared identity
+  acquires no profile, staff role or saved list. No public profile, rating, review,
+  activity or application fixture was seeded. Real-account E2E remains later work.
+- Ten substantial task-specific drafts now cover every approved launch category,
+  with normal, ambiguous and adversarial examples. They remain unpublished,
+  unlicensed and explicitly unverified on real hosts. They are authoring examples,
+  not the 36-resource launch gate. See `CONTENT_STRATEGY.md` for editorial work.
+- Formatting, lint, strict typecheck, 36 Node/Python tests and production static
+  export pass. Database matrices/extraction passed on the unchanged migration
+  sources and exact merge commit in CI. The content milestone changes no schema.
+- Phase 1 is accepted for contracts, schema isolation, reproducibility and broad
+  representative authoring. It does not claim complete HTTP/community functionality,
+  distribution UX, production Auth, actual host-tested inventory or launch readiness.
+  Phase 2 will develop and iterate the visual system through desktop/mobile browser
+  review; the production domain remains parked and the public proof unchanged.

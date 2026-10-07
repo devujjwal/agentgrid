@@ -15,6 +15,7 @@ IMAGE = (
     "public.ecr.aws/supabase/postgres:17.6.1.167"
     "@sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb"
 )
+IMAGE_MIRROR = "supabase/postgres@" + IMAGE.split("@", 1)[1]
 PURPOSE = "agentgrid-disposable-schema-test"
 
 # Compare protected fixtures and global grants as well as application data. The
@@ -74,11 +75,30 @@ def run(arguments, *, input_text=None, timeout=120):
     return result.stdout.strip()
 
 
+def ensure_image():
+    # Both official registries serve the identical verified OCI digest. Reuse a
+    # pinned local image without another manifest request; shared CI runner IPs
+    # can exceed anonymous registry limits. Never fall back to an unpinned tag.
+    for image in (IMAGE, IMAGE_MIRROR):
+        try:
+            run(["docker", "image", "inspect", image, "--format", "{{.Id}}"])
+            return image
+        except RuntimeError:
+            pass
+    for image in (IMAGE, IMAGE_MIRROR):
+        try:
+            run(["docker", "pull", image], timeout=300)
+            return image
+        except (RuntimeError, subprocess.TimeoutExpired):
+            pass
+    raise RuntimeError("Both official registries could not supply the exact pinned database image")
+
+
 def main():
     run(["docker", "info", "--format", "{{.OSType}}"])
     # Pull only the pinned public vendor image. No app infrastructure, ports,
     # protected containers, shared volumes or private data enter this test.
-    run(["docker", "pull", IMAGE], timeout=300)
+    image = ensure_image()
     suffix = uuid.uuid4().hex
     container_name = f"agentgrid_schema_qa_{suffix}"
     database = f"agentgrid_qa_{suffix}"
@@ -87,7 +107,7 @@ def main():
         container = run([
             "docker", "run", "--detach", "--network", "none", "--name", container_name,
             "--label", f"com.agentgrid.purpose={PURPOSE}",
-            "--env", "POSTGRES_PASSWORD=agentgrid_local_fixture_only", IMAGE,
+            "--env", "POSTGRES_PASSWORD=agentgrid_local_fixture_only", image,
         ])
         if not re.fullmatch(r"[a-f0-9]{64}", container):
             raise RuntimeError("Unexpected disposable container identity")
@@ -223,6 +243,7 @@ def main():
             if (
                 details["Id"] != container
                 or details["Name"] != f"/{container_name}"
+                or details["Config"]["Image"] != image
                 or details["Config"]["Labels"].get("com.agentgrid.purpose") != PURPOSE
                 or details["HostConfig"]["NetworkMode"] != "none"
             ):

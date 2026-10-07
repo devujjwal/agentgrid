@@ -171,3 +171,23 @@ deidentifies its profile without deleting immutable creator records or blocking
 the managed deletion. Reserved pseudonymous handles encode the complete profile
 UUID to avoid deletion-blocking collisions. Product account deletion, retention,
 reports and published attribution need their own tested policy before launch.
+
+### Applied foundation and read-boundary verification
+
+The six foundation migrations were applied from clean exact main commit
+`509a69f0c65ee805827fbaf6bce781b42962d264` after successful exact-commit CI.
+Protected fingerprints passed between every transaction. The original baseline
+was not replaced. No application users, drafts or public activity were seeded.
+
+`python3 scripts/verify-shared-agentgrid-boundaries.py` rechecks installed history
+and protected state, then uses transaction-local synthetic anonymous/non-member
+claims under PostgreSQL read-only enforcement. It verifies that no membership,
+private identity read or privileged publication grant is acquired. It is operator
+acceptance evidence, not a replacement for actual JWT/account E2E in Phase 4.
+
+The local database runner reuses an exact-digest cached image. A cold CI pull may
+use the official Supabase Docker Hub mirror when public ECR is unavailable or
+rate-limited; both references resolve to the same verified OCI manifest digest,
+never a floating tag. If both fail, database acceptance fails rather than skipping
+checks. Disposable cleanup verifies the actual selected pinned image as well as
+container identity, purpose label and network isolation.
