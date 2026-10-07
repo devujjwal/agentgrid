@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env*
+!.env.example
+.DS_Store
+.supabase/
+supabase/.temp/
+supabase/.branches/
+.wrangler/
+*.log
+*.tsbuildinfo
+backups/

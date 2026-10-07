@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+node "$(git rev-parse --show-toplevel)/scripts/verify-push.mjs" "$1" "$2"
+
