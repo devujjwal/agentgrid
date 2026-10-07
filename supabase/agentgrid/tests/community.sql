@@ -95,7 +95,7 @@ set local role authenticated;
 insert into agentgrid_fixture_state values('report',public.agentgrid_create_report('review',
  (select id from agentgrid_fixture_state where key='review'),'privacy',repeat('Synthetic confidential reporting details. ',3)));
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_create_report('review',(select id from agentgrid_fixture_state where key='review'),'privacy',repeat('Duplicate open report must not spam staff. ',3))$s$,'23505');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_resolve_report((select id from agentgrid_fixture_state where key='report'),'resolved','Unauthorized resolution attempt')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_report((select id from agentgrid_fixture_state where key='report'),'resolved','Unauthorized resolution attempt')$s$,'42501');
 select public.agentgrid_write_review('20000000-0000-4000-8000-000000000001','30000000-0000-4000-8000-000000000001',4::smallint,
  'Synthetic updated review',repeat('Edited text needs moderation again before public display. ',3),repeat('Synthetic usage context only. ',3),1);
 reset role;
@@ -112,8 +112,8 @@ set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","rol
 set local role authenticated;
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),1,0,'published','Moderation of a stale revision')$s$,'40001');
 select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),2,1,'published','Synthetic updated revision reviewed.');
-select public.agentgrid_resolve_report((select id from agentgrid_fixture_state where key='report'),'resolved','Synthetic reporting acceptance resolution.');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_resolve_report((select id from agentgrid_fixture_state where key='report'),'resolved','Duplicate resolution cannot overwrite history')$s$,'40001');
+select public.agentgrid_decide_report((select id from agentgrid_fixture_state where key='report'),'resolved','Synthetic reporting acceptance resolution.');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_report((select id from agentgrid_fixture_state where key='report'),'resolved','Duplicate resolution cannot overwrite history')$s$,'40001');
 select public.agentgrid_moderate_agent('20000000-0000-4000-8000-000000000001',true,'Synthetic takedown acceptance only.');
 reset role;
 set local role anon;
