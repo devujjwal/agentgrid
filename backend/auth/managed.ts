@@ -51,14 +51,31 @@ export function managedIdentity(
         global: { fetch: safeFetch },
       },
     );
-  function session(value: Session | null): ProviderSession {
+  async function session(value: Session | null, requiresGoogle = false): Promise<ProviderSession> {
     const parsed = ProviderSessionSchema.safeParse({
       subject: value?.user.id,
       accessToken: value?.access_token,
       refreshToken: value?.refresh_token,
       expiresAt: value?.expires_at,
     });
-    if (!parsed.success) throw new HttpFailure(401, 'verification-unavailable');
+    if (
+      !parsed.success ||
+      (requiresGoogle &&
+        !value?.user.identities?.some((identity) => identity.provider === 'google'))
+    ) {
+      // A provider may mint a session that this application must refuse. Best
+      // effort revoke only that new managed session, never shared/global logout.
+      if (
+        value &&
+        typeof value.access_token === 'string' &&
+        value.access_token.length >= 20 &&
+        value.access_token.length <= 12_000
+      )
+        await client()
+          .auth.admin.signOut(value.access_token, 'local')
+          .catch(() => {});
+      throw new HttpFailure(401, 'verification-unavailable');
+    }
     return parsed.data;
   }
   return {
@@ -67,7 +84,7 @@ export function managedIdentity(
       if (
         result.error ||
         !/^\d{6,10}$/.test(result.data.properties.email_otp) ||
-        !/^[a-f0-9]{64}$/.test(result.data.properties.hashed_token)
+        !/^(?:[a-f0-9]{56}|[a-f0-9]{64})$/.test(result.data.properties.hashed_token)
       )
         throw new HttpFailure(503, 'verification-unavailable');
       return {
@@ -107,9 +124,7 @@ export function managedIdentity(
       const storage = new Map([[storageKey + '-code-verifier', verifier]]);
       const result = await client(false, storage).auth.exchangeCodeForSession(code);
       if (result.error) throw providerFailure(result.error, 'verification-unavailable');
-      if (!result.data.session?.user.identities?.some((identity) => identity.provider === 'google'))
-        throw new HttpFailure(401, 'verification-unavailable');
-      return session(result.data.session);
+      return session(result.data.session, true);
     },
     async refresh(refreshToken) {
       const result = await client().auth.refreshSession({ refresh_token: refreshToken });

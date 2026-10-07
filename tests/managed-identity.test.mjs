@@ -17,12 +17,45 @@ const user = {
 };
 const session = {
   access_token: 'synthetic-access-token-for-adapter-only',
-  refresh_token: 'synthetic-refresh-token-for-adapter-only',
+  // Actual provider interoperability found this opaque 12-character shape.
+  refresh_token: 'testRefresh1',
   expires_in: 3600,
   expires_at: Math.floor(Date.now() / 1000) + 3600,
   token_type: 'bearer',
   user,
 };
+test('refused newly minted managed sessions receive local-only cleanup', async () => {
+  for (const invalid of [
+    { ...session, expires_at: -1 },
+    { ...session, user: { ...user, identities: [{ provider: 'email' }] } },
+  ]) {
+    const logouts = [];
+    const adapter = managedIdentity(configuration, async (input, init) => {
+      const url = new URL(String(input));
+      if (url.pathname === '/auth/v1/token') return Response.json(invalid);
+      if (url.pathname === '/auth/v1/logout') {
+        logouts.push({
+          scope: url.searchParams.get('scope'),
+          authorization: new Headers(init.headers).get('authorization'),
+          apiKey: new Headers(init.headers).get('apikey'),
+        });
+        return new Response(null, { status: 204 });
+      }
+      throw new Error('Unexpected synthetic provider traffic');
+    });
+    await assert.rejects(
+      adapter.finishGoogle('synthetic-code', JSON.stringify('synthetic-verifier')),
+      (error) => error.status === 401,
+    );
+    assert.deepEqual(logouts, [
+      {
+        scope: 'local',
+        authorization: 'Bearer ' + session.access_token,
+        apiKey: configuration.publishableKey,
+      },
+    ]);
+  }
+});
 test('pinned managed SDK uses PKCE, server verification, custom email generation and local-only logout', async () => {
   const requests = [];
   const transport = async (input, init) => {
@@ -37,7 +70,7 @@ test('pinned managed SDK uses PKCE, server verification, custom email generation
       return Response.json({
         action_link: 'https://synthetic.supabase.co/auth/v1/verify',
         email_otp: '12345678',
-        hashed_token: 'a'.repeat(64),
+        hashed_token: 'a'.repeat(56),
         redirect_to: configuration.origin,
         verification_type: 'magiclink',
         ...user,
@@ -50,7 +83,7 @@ test('pinned managed SDK uses PKCE, server verification, custom email generation
   };
   const managed = managedIdentity(configuration, transport);
   const challenge = await managed.emailChallenge('owner@example.test');
-  assert.deepEqual(challenge, { code: '12345678', tokenHash: 'a'.repeat(64) });
+  assert.deepEqual(challenge, { code: '12345678', tokenHash: 'a'.repeat(56) });
   const issued = await managed.verifyEmail(challenge.tokenHash);
   assert.deepEqual(await managed.verify(issued), {
     id: syntheticSubject,

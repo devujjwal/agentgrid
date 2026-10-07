@@ -17,7 +17,7 @@ const FlowSchema = z.strictObject({
 });
 const EmailState = z.strictObject({
   email: z.email().max(254),
-  tokenHash: z.string().regex(/^[a-f0-9]{64}$/),
+  tokenHash: z.string().regex(/^(?:[a-f0-9]{56}|[a-f0-9]{64})$/),
 });
 const GoogleState = z.strictObject({ verifier: z.string().min(20).max(256) });
 export type EmailSender = (email: {
