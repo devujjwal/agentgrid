@@ -82,15 +82,11 @@ export function CreatorVersions() {
         <Link
           prefetch={false}
           className="action-primary"
-          target={memory.buffer?.dirty || memory.profileEdits?.dirty ? '_blank' : undefined}
-          rel={
-            memory.buffer?.dirty || memory.profileEdits?.dirty ? 'noopener noreferrer' : undefined
-          }
+          target={memory.hasUnsaved ? '_blank' : undefined}
+          rel={memory.hasUnsaved ? 'noopener noreferrer' : undefined}
           href={'/sign-in/?returnTo=' + encodeURIComponent('/workspace/versions/?resourceId=' + id)}
         >
-          {memory.buffer?.dirty || memory.profileEdits?.dirty
-            ? 'Sign in in another tab'
-            : 'Connect to AgentGrid'}
+          {memory.hasUnsaved ? 'Sign in in another tab' : 'Connect to AgentGrid'}
         </Link>
       </section>
     );

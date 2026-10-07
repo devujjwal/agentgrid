@@ -12,7 +12,7 @@ than treating existing code as completed functionality.
 | 2 — Visual system                | Validated   | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | In progress | Real owner sign-in/logout; saved-list boundary; synthetic creator CRUD/history/reauthentication, responsive and signed-in lab checks; real member/submission gates remain open        |
-| 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
+| 5 — Community                    | In progress | Private reporting boundary and responsive recovery; full moderation/fork/review journeys remain open                                                                                  |
 | 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
 | 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
 | 8 — Production launch            | Not started | Domain, webmaster setup, production journeys and monitoring                                                                                                                           |
@@ -409,3 +409,46 @@ than treating existing code as completed functionality.
   migration 010/011 rollout remain pending; real member/community journeys,
   inherited fork rights and legal/consent acceptance remain open. Phase 4 stays
   in progress and no new production deployment or public content is claimed.
+
+## Phase 4 submission rollout — continued
+
+- PR 9 exact-head CI `37639656153` passed at `e372645` and merged as
+  `f2ba23a3134d90925a79d1ea293688f9032e7052`. Exact-main CI `37639981912`
+  passed, including the eleven-migration actor/isolation/extraction suite.
+- The guarded operator applied additive migrations 010/011 from that clean
+  exact main commit. Protected fingerprints remained unchanged around every
+  transaction; eleven known migrations are now recorded. Anonymous/shared
+  non-member read-only boundaries pass. No actual member, draft or public
+  community activity was seeded, and no production app deployment occurred.
+- Real consent/member journeys remain a Phase 4 gate. Independent community
+  boundary work continues while registration stays closed.
+
+## Phase 5 private reporting — local acceptance
+
+- Agent/review/profile concerns use verified user-bearer authority, exact-origin
+  CSRF, bounded plain-text fields, database target checks, duplicate-open
+  protection and per-member quotas. Acknowledgements require the exact self-owned
+  report target/content; missing confirmation never claims a failed write.
+- Additive migration 012 provides reporter-only live status/history with bounded
+  lookahead. Staff cannot use this creator endpoint to broaden its ownership
+  filter. It joins no protected PicMagic resources or private identity details.
+- Reporting loads on deliberate interaction. Tab-held explanations survive
+  internal history, require fresh identity/membership before rendering, and
+  never enter persistent browser storage. Successful sign-out explicitly clears
+  held state; unsaved edits require a discard confirmation before logout.
+- Disposable Chrome acceptance passes anonymous gating, actual send/receipt,
+  live history/resolution, uncertain acknowledgement recovery, duplicate-open
+  refusal, retained text/fresh permission after history, suspension concealment,
+  refresh focus, and native sign-out cancellation/confirmation. No fixture is
+  written to Supabase, indexed or deployed.
+- 320/393/768/1024/1440px history checks show no overflow; refresh exceeds 48px.
+  Signed-in mobile lab: performance 98, accessibility 100, best practices 96;
+  LCP 2.342s, TBT 26ms, CLS 0.00293, no console errors. Private-route SEO 63
+  is intentional. Known inline-script CSP hardening remains a launch gate;
+  the lab does not establish field INP or real provider latency.
+- Formatting/lint/strict typecheck, 75 Node/11 Python tests, production static
+  export and the 770,548-byte compiled worker pass. Twelve disposable migrations
+  pass actor denial, protected fixtures and extraction/reassociation. Private
+  CI/remote rollout remain pending. Full community
+  acceptance still requires reviews/ratings, public forks, staff moderation,
+  real membership/consent and production journeys. Registration remains closed.

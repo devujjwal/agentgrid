@@ -65,6 +65,8 @@ export async function syntheticCommunityPreview() {
     ],
   ]);
   const frozenVersions = new Map();
+  const privateReports = new Map();
+  let reportAcknowledgementUnavailable = false;
   let submissionsOpen = true;
   const transport = async (input, init) => {
     const url = new URL(String(input));
@@ -194,6 +196,46 @@ export async function syntheticCommunityPreview() {
         specification: row.specification,
       });
     }
+    if (url.pathname.endsWith('/agentgrid_owned_reports')) {
+      if (body.report_resource_id !== null)
+        return Response.json(
+          reportAcknowledgementUnavailable
+            ? []
+            : [...privateReports.values()].filter((row) => row.id === body.report_resource_id),
+        );
+      return Response.json(
+        [...privateReports.values()]
+          .sort((a, b) => b.createdAt.localeCompare(a.createdAt) || a.id.localeCompare(b.id))
+          .slice(body.requested_offset, body.requested_offset + 21),
+      );
+    }
+    if (url.pathname.endsWith('/agentgrid_create_report')) {
+      if (body.target_kind !== 'agent' || body.target_id !== '00000000-0000-4000-8000-000000000001')
+        return Response.json({ code: '42501' }, { status: 403 });
+      if (
+        [...privateReports.values()].some(
+          (row) =>
+            row.targetId === body.target_id &&
+            row.category === body.report_category &&
+            row.state === 'open',
+        )
+      )
+        return Response.json({ code: '23505' }, { status: 409 });
+      if (privateReports.size >= 10) return Response.json({ code: 'P0001' }, { status: 429 });
+      const id = randomUUID();
+      privateReports.set(id, {
+        id,
+        targetKind: body.target_kind,
+        targetId: body.target_id,
+        category: body.report_category,
+        explanation: body.details,
+        state: 'open',
+        resolution: '',
+        resolvedAt: null,
+        createdAt: new Date().toISOString(),
+      });
+      return Response.json(id);
+    }
     if (url.pathname.endsWith('/agentgrid_submit_version')) {
       if (!submissionsOpen) return Response.json({ code: '42501' }, { status: 403 });
       const record = resources.get(body.resource_id);
@@ -288,7 +330,7 @@ export async function syntheticCommunityPreview() {
                 if(document.querySelector('[data-qa-tools]'))return;
                 const tools=document.createElement('aside');tools.dataset.qaTools='synthetic';
                 tools.style.cssText='padding:1rem;border-top:1px solid';
-                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><p data-qa-status role="status"></p>';
+                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><p data-qa-status role="status"></p>';
                 document.body.append(tools);
                 tools.querySelectorAll('[data-qa-action]').forEach(button=>button.addEventListener('click',async()=>{try{const response=await fetch('/qa-control/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:button.dataset.qaAction})});tools.querySelector('[data-qa-status]').textContent=response.ok?'Synthetic state changed; reconnect the editor.':'Synthetic action refused.';}catch{tools.querySelector('[data-qa-status]').textContent='Synthetic control unavailable.';}}));
               },200));`,
@@ -315,7 +357,16 @@ export async function syntheticCommunityPreview() {
           else if (action === 'revoke') fixture.sessions.clear();
           else if (action === 'close-submissions') submissionsOpen = false;
           else if (action === 'open-submissions') submissionsOpen = true;
-          else throw new Error('Unknown synthetic control');
+          else if (action === 'fail-report-ack') reportAcknowledgementUnavailable = true;
+          else if (action === 'restore-report-ack') reportAcknowledgementUnavailable = false;
+          else if (action === 'resolve-report') {
+            const row = [...privateReports.values()].find((report) => report.state === 'open');
+            if (!row) throw new Error('No open synthetic report');
+            row.state = 'resolved';
+            row.resolvedAt = new Date().toISOString();
+            row.resolution =
+              'Synthetic moderator response for private acceptance only; no real moderation occurred.';
+          } else throw new Error('Unknown synthetic control');
           outgoing
             .writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })
             .end('{"synthetic":true}');

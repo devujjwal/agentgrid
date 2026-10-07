@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { CreatorMemoryProvider } from '../components/authoring/CreatorMemory';
 import './globals.css';
+import './actions.css';
 import './resource.css';
 
 export const metadata: Metadata = {

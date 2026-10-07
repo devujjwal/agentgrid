@@ -276,6 +276,42 @@ adding server code must never silently broaden the old infrastructure release.
 - Formatting/lint/typecheck, 71 Node/11 Python tests, production export and the
   768,236-byte compiled worker pass. Eleven disposable migrations pass actor
   denial, pagination, live withdrawal, protected fixtures and extraction/identity
-  reassociation. Exact-head private CI and guarded exact-main remote migration
-  rollout remain pending. Full real member/community acceptance remains separate;
+  reassociation. PR 9 exact-head CI `37639656153` passed at `e372645` and merged
+  as `f2ba23a`; exact-main CI `37639981912` passed. Guarded remote
+  migrations 010/011 were applied from that clean main commit, with protected
+  resources unchanged before and after each transaction. Read-only anonymous
+  and shared non-member post-rollout checks pass; no real application rows were
+  created. Full real member/community acceptance remains separate;
   registration stays closed pending legal information and deliberate consent.
+
+## Private reporting increment — local acceptance
+
+- Report writes accept target kind/ID, category and a bounded explanation only.
+  Reporter identity, authorization, status and resolution are server-controlled.
+  Existing database RPCs recheck active membership, target visibility, duplicate
+  open reports and quotas. Responses are private/no-store/noindex.
+- Migration 012 exposes only current reporter-owned status, explanation and
+  moderation response, never another reporter's ledger. The administrator role
+  does not override creator ownership. Anonymous/non-member/suspended/service
+  access is denied; private target existence is concealed.
+- Strict acknowledgement checks reject a missing, extra or mismatched record.
+  A resolution that races confirmation returns its actual live state. Browser
+  recovery says an unconfirmed report may have been received and links to the
+  owner's live history. No automatic write retry or false success is used.
+- Chrome confirms anonymous gating, a real local report receipt, live resolution
+  refresh with heading focus, uncertain acknowledgement retention, history
+  recovery and duplicate-open denial. Root-held text survives App Router history;
+  permission resets on remount. Native sign-out cancellation retains the text;
+  confirmed sign-out removes private state. Suspended-member history removes all
+  report details after revalidation and recovers through explicit reconnect.
+- History remains within 320/393/768/1024/1440px viewports. The isolated signed-in
+  mobile Lighthouse lab scores 98 performance / 100 accessibility / 96 best
+  practices, LCP 2.342s, TBT 26ms, CLS 0.00293 and no console errors.
+  Private noindex SEO 63 is expected; static inline-script CSP work remains
+  a production gate. This is not field INP, real provider latency or public
+  community activity. Evidence captures are ignored local files.
+- Final formatting/lint/strict typecheck, 75 Node/11 Python tests, production
+  static export and compiled worker acceptance pass. Twelve disposable migrations
+  pass actor/isolation/extraction tests. Private CI and migration 012 remote
+  rollout remain pending. No managed authentication or protected application setting
+  was changed. Full reporting/moderation production acceptance remains open.
