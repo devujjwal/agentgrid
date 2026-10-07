@@ -97,9 +97,11 @@ Before extraction, rehearse these steps on an isolated target:
 1. Create an independently authorized Supabase project and apply only AgentGrid migrations.
 2. Recreate AgentGrid policies, functions, buckets and environment configuration.
 3. Export only `agentgrid_*` data and assets; retain checksums and a timestamped backup.
-4. Inventory AgentGrid auth users through AgentGrid profiles, not all shared users.
+4. Inventory AgentGrid auth users through the private `agentgrid_identities` link,
+   not all shared users. Creator/business profile IDs are independent of Auth IDs.
    Choose a documented Supabase Auth migration/reassociation strategy; preserve
-   UUIDs where supported or remap every FK deliberately. Validate Google identity
+   Auth UUIDs where supported or remap only those private identity links deliberately;
+   profile IDs and agent ownership stay stable. Validate Google identity
    linking and require reauthentication when signing keys change. Do not assume
    old sessions or refresh tokens remain portable.
 5. Import data in FK order, preserve immutable-version checksums and fork lineage,
@@ -115,3 +117,26 @@ Before extraction, rehearse these steps on an isolated target:
 The application must access storage, auth and database through an AgentGrid service
 layer parameterized by environment configuration. Components must not embed the
 current project reference or rely on undocumented project state.
+
+## Reproducible local database acceptance
+
+`pnpm test:database` creates a fresh database inside a separately labelled,
+network-isolated disposable container using a digest-pinned Supabase PostgreSQL
+17.6 image. It accepts no connection string, creates no public port, mounts no
+existing volume and uses synthetic data only. It applies every migration in
+order and records the source checksum transactionally in AgentGrid's own history.
+The RLS/RPC matrix then runs against owner, other member, moderator, administrator,
+suspended member, anonymous and shared-auth non-member identities. Protected
+fixture schema, grants, policies, functions, triggers and rows must be unchanged.
+Only the exact container created by that invocation can be cleaned up. Existing
+PicMagic containers and databases are never targets. CI runs the same acceptance
+command. This complements the real read-only project guard; synthetic fixtures
+do not prove every detail of a remote project's configuration.
+
+The private identity table is the only AgentGrid FK into managed `auth.users`.
+AgentGrid never deletes a shared Auth user. If another application deletes that
+identity, an AgentGrid-owned trigger detaches the private link and deactivates and
+deidentifies its profile without deleting immutable creator records or blocking
+the managed deletion. Reserved pseudonymous handles encode the complete profile
+UUID to avoid deletion-blocking collisions. Product account deletion, retention,
+reports and published attribution need their own tested policy before launch.
