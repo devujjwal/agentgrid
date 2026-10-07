@@ -21,4 +21,3 @@ case "$credential_path" in
 esac
 credential_token=$(gh auth token --hostname github.com --user devujjwal)
 printf 'username=devujjwal\npassword=%s\n' "$credential_token"
-

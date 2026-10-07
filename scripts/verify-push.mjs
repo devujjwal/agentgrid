@@ -2,15 +2,18 @@ import { execFileSync } from 'node:child_process';
 import { verifyGit } from './verify-git.mjs';
 
 const allowedRemote = 'https://devujjwal@github.com/devujjwal/agentgrid.git';
+let stage = 'local identity';
 
 try {
   verifyGit();
+  stage = 'remote URL';
   const [remoteName = 'origin', suppliedUrl] = process.argv.slice(2);
   const remote =
     suppliedUrl ??
     execFileSync('git', ['remote', 'get-url', '--push', remoteName], { encoding: 'utf8' }).trim();
   if (remote !== allowedRemote)
     throw new Error('Push blocked: remote is not the approved personal repository.');
+  stage = 'personal credential lookup';
   const token = execFileSync(
     'gh',
     ['auth', 'token', '--hostname', 'github.com', '--user', 'devujjwal'],
@@ -25,8 +28,10 @@ try {
         stdio: ['ignore', 'pipe', 'pipe'],
       }),
     );
+  stage = 'authenticated account';
   if (api('user').login !== 'devujjwal')
     throw new Error('Personal authentication did not resolve to devujjwal.');
+  stage = 'repository ownership and visibility';
   const repository = api('repos/devujjwal/agentgrid');
   if (repository.owner.login !== 'devujjwal' || !repository.private) {
     throw new Error(
@@ -41,7 +46,7 @@ try {
   console.error(
     error instanceof Error && !('stderr' in error)
       ? error.message
-      : 'Push verification failed. Check personal GitHub connectivity/authentication.',
+      : `Push verification failed at ${stage}. Check connectivity/authentication (no credentials logged).`,
   );
   process.exitCode = 1;
 }
