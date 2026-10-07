@@ -1,51 +1,89 @@
 'use client';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { z } from 'zod';
 import type { WorkspaceIdentity } from '../../domain/workspace';
 import { communityRequest } from '../../services/community';
+export interface ProfileFields {
+  displayName: string;
+  bio: string;
+  website: string;
+}
+export interface ProfileEditBuffer {
+  owner: string;
+  profileId: string;
+  fields: ProfileFields;
+  dirty: boolean;
+}
 const Updated = z.strictObject({ updated: z.literal(true) });
 export function ProfileEditor({
   profile,
   csrf,
   refresh,
+  fields,
+  change,
+  committed,
 }: {
   profile: NonNullable<WorkspaceIdentity['profile']>;
   csrf: string;
   refresh: () => void;
+  fields: ProfileFields;
+  change: (fields: ProfileFields) => void;
+  committed: (profileId: string) => void;
 }) {
-  const [displayName, setDisplayName] = useState(profile.displayName);
-  const [bio, setBio] = useState(profile.bio),
-    [website, setWebsite] = useState(profile.website ?? '');
+  const { displayName, bio, website } = fields;
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const active = useRef<AbortController | null>(null);
+  useEffect(() => () => active.current?.abort(), []);
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (active.current) return;
+    const controller = new AbortController();
+    active.current = controller;
     setBusy(true);
     setError(null);
     setMessage(null);
     try {
-      await communityRequest('/api/workspace/profile/', Updated, {
-        csrf,
-        body: { displayName, bio, website },
-      });
+      await communityRequest(
+        '/api/workspace/profile/',
+        Updated,
+        {
+          csrf,
+          body: { displayName, bio, website },
+        },
+        controller.signal,
+      );
+      if (controller.signal.aborted) return;
+      committed(profile.id);
       setMessage('Profile saved.');
       refresh();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Profile could not be saved.');
+      if (!controller.signal.aborted)
+        setError(error instanceof Error ? error.message : 'Profile could not be saved.');
     } finally {
-      setBusy(false);
+      if (active.current === controller) active.current = null;
+      if (!controller.signal.aborted) setBusy(false);
     }
   }
   async function visibility() {
+    if (active.current) return;
+    const controller = new AbortController();
+    active.current = controller;
     setBusy(true);
     setError(null);
     setMessage(null);
     try {
-      await communityRequest('/api/workspace/visibility/', Updated, {
-        csrf,
-        body: { public: profile.visibility !== 'public' },
-      });
+      await communityRequest(
+        '/api/workspace/visibility/',
+        Updated,
+        {
+          csrf,
+          body: { public: profile.visibility !== 'public' },
+        },
+        controller.signal,
+      );
+      if (controller.signal.aborted) return;
       setMessage(
         profile.visibility === 'public'
           ? 'Public attribution turned off.'
@@ -53,9 +91,11 @@ export function ProfileEditor({
       );
       refresh();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Visibility could not be updated.');
+      if (!controller.signal.aborted)
+        setError(error instanceof Error ? error.message : 'Visibility could not be updated.');
     } finally {
-      setBusy(false);
+      if (active.current === controller) active.current = null;
+      if (!controller.signal.aborted) setBusy(false);
     }
   }
   return (
@@ -75,7 +115,7 @@ export function ProfileEditor({
           minLength={2}
           maxLength={80}
           value={displayName}
-          onChange={(event) => setDisplayName(event.target.value)}
+          onChange={(event) => change({ ...fields, displayName: event.target.value })}
           disabled={busy}
         />
         <label htmlFor="profile-bio">
@@ -87,7 +127,7 @@ export function ProfileEditor({
           rows={5}
           maxLength={1600}
           value={bio}
-          onChange={(event) => setBio(event.target.value)}
+          onChange={(event) => change({ ...fields, bio: event.target.value })}
           disabled={busy}
         />
         <label htmlFor="profile-website">
@@ -99,7 +139,7 @@ export function ProfileEditor({
           type="url"
           maxLength={2048}
           value={website}
-          onChange={(event) => setWebsite(event.target.value)}
+          onChange={(event) => change({ ...fields, website: event.target.value })}
           disabled={busy}
         />
         <button className="action-primary" type="submit" disabled={busy}>

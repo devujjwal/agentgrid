@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { parseAgentSpecification } from '../../../domain/agent-specification';
 import { ResourceSetup } from '../../../components/resource/ResourceSetup';
 import { SaveAgent } from '../../../components/resource/SaveAgent';
+import { AuthoringQa } from '../../../components/authoring/AuthoringQa';
+import '../../identity.css';
+import '../../workspace/agent/authoring.css';
 import { SiteFrame } from '../../../components/layout/SiteFrame';
 import type { PublicResource } from '../../../domain/public-resource';
 
@@ -51,6 +54,7 @@ export default function DistributionQaPage() {
           <SaveAgent resourceId={fixture.resource_id} slug="article-structure-editor" />
         </div>
         <ResourceSetup specification={specification} publication={fixture} />
+        <AuthoringQa />
       </main>
     </SiteFrame>
   );

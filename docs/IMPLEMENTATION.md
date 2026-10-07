@@ -11,7 +11,7 @@ than treating existing code as completed functionality.
 | 1 — Contracts and content        | Validated   | Portable/editorial gates, six isolated migrations, protected remote rollout, owned-data extraction and ten broad representative drafts; full host-tested inventory remains Phase 6    |
 | 2 — Visual system                | Validated   | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
-| 4 — Identity/workspace           | In progress | Real owner Google/email sign-in and logout; private saved-list boundary and entry checks; complete member/creator authoring journeys remain open                                      |
+| 4 — Identity/workspace           | In progress | Real owner sign-in/logout; saved-list boundary; synthetic creator CRUD/history/reauthentication, responsive and signed-in lab checks; real member/submission gates remain open        |
 | 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
 | 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
 | 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
@@ -368,3 +368,25 @@ than treating existing code as completed functionality.
 - Signed-in workspace measurements at 320/393/768/1024/1440px confirm no overflow
   and a 48px logout control. Full authoring, saved-list and profile journeys are
   still required before Phase 4 acceptance.
+
+## Phase 4 saved-resource rollout and creator authoring — continued
+
+- Private PR 7 passed exact-head CI (run `37612178073`) and merged at
+  `36f5f2b43a61a77cff5c5edc9c02883114448aa8`. Its exact-main CI also passed.
+  The guarded operator applied migration 009 from that commit. Nine owned
+  migrations are now recorded; protected shared resources were unchanged.
+- Creator authoring is implemented behind verified identity, current active
+  membership, explicit ownership and revision checks. Guided private definitions
+  cover purpose, behavior, inputs/outputs, platforms, access, examples, safety
+  and deliberate reuse terms. They do not infer host compatibility or licenses.
+- Portable import/download is bounded and retains resource paths/source terms.
+  Definition readiness is separate from editorial approval and genuine host-test
+  evidence. Saving never publishes a resource.
+- Local automated acceptance passes private draft validation, denied ownership,
+  race/acknowledgement handling, bounded projections and origin/CSRF checks.
+  Production static export and compiled workerd acceptance pass without provider
+  traffic. See `IDENTITY_ACCEPTANCE.md` for browser evidence and remaining gates.
+- Authoring is **not accepted as complete**. Session restoration, creation/save,
+  profile editing, full responsive/a11y checks and private CI remain required.
+  Registration remains closed pending the legal operator information and reviewed
+  consent documents. No genuine creator profile or invented activity was seeded.

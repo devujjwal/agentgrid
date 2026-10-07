@@ -105,6 +105,9 @@ test('redirects and flow cookies cannot cross the application boundary or inject
     signInReturnPath('/agents/inbox-priority-triage/'),
     '/agents/inbox-priority-triage/',
   );
+  const creatorPath = '/workspace/agent/?resourceId=20000000-0000-4000-8000-000000000001';
+  assert.equal(signInReturnPath(creatorPath), creatorPath);
+  assert.equal(signInReturnPath('/workspace/agent/'), '/workspace/agent/');
   for (const value of [
     '//attacker.example/',
     'https://attacker.example/',
@@ -112,6 +115,9 @@ test('redirects and flow cookies cannot cross the application boundary or inject
     '/%2f%2fattacker.example/',
     '/workspace/?code=private',
     '/agents/a/\\evil',
+    '/workspace/agent/?resourceId=',
+    '/workspace/agent/?resourceId=20000000-0000-4000-8000-000000000001&owner=forged',
+    '/workspace/agent/?resourceId=not-a-uuid',
     null,
   ])
     assert.equal(signInReturnPath(value), '/workspace/');

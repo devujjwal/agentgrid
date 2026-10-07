@@ -5,6 +5,8 @@ import { assertCsrf } from '../auth/csrf.ts';
 import { authenticatedSession } from '../auth/sessions.ts';
 import type { WorkspaceData } from '../workspace/data.ts';
 import { ProfileInputSchema, OnboardingInputSchema } from '../../src/domain/workspace.ts';
+import { CreateDraftSchema, UpdateDraftSchema } from '../../src/domain/draft.ts';
+import { assertJsonDocumentBounds } from '../../src/domain/agent-specification.ts';
 import {
   assertRequestTarget,
   HttpFailure,
@@ -13,8 +15,14 @@ import {
   readJsonBody,
 } from './guard.ts';
 
-async function input<T>(request: Request, schema: z.ZodType<T>) {
-  const parsed = schema.safeParse(await readJsonBody(request, 10_000));
+async function input<T>(request: Request, schema: z.ZodType<T>, maximum = 10_000) {
+  const value = await readJsonBody(request, maximum);
+  try {
+    assertJsonDocumentBounds(value);
+  } catch {
+    throw new HttpFailure(400, 'invalid-request');
+  }
+  const parsed = schema.safeParse(value);
   if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
   return parsed.data;
 }
@@ -30,7 +38,8 @@ export function workspaceHandler(
         ['/api/workspace/', '/api/workspace/agents/', '/api/workspace/saved/'].includes(
           url.pathname,
         ) ||
-        (url.pathname === '/api/workspace/favorite/' && request.method === 'GET');
+        (['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
+          request.method === 'GET');
       const mutation =
         !read &&
         [
@@ -38,6 +47,8 @@ export function workspaceHandler(
           '/api/workspace/profile/',
           '/api/workspace/visibility/',
           '/api/workspace/favorite/',
+          '/api/workspace/create/',
+          '/api/workspace/draft/',
         ].includes(url.pathname);
       if (!read && !mutation) throw new HttpFailure(404, 'not-found');
       if (read && request.method !== 'GET') throw new HttpFailure(405, 'method-unavailable');
@@ -57,7 +68,10 @@ export function workspaceHandler(
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.identity());
       }
-      if (url.pathname === '/api/workspace/favorite/' && request.method === 'GET') {
+      if (
+        ['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
+        request.method === 'GET'
+      ) {
         if (
           [...url.searchParams.keys()].some((key) => key !== 'resourceId') ||
           url.searchParams.getAll('resourceId').length !== 1
@@ -65,7 +79,21 @@ export function workspaceHandler(
           throw new HttpFailure(400, 'invalid-request');
         const resource = z.uuid().safeParse(url.searchParams.get('resourceId'));
         if (!resource.success) throw new HttpFailure(400, 'invalid-request');
-        return privateJson(await data.saveState(resource.data));
+        return privateJson(
+          url.pathname.endsWith('/draft/')
+            ? await data.draft(resource.data)
+            : await data.saveState(resource.data),
+        );
+      }
+      if (url.pathname.endsWith('/create/')) {
+        const value = await input(request, CreateDraftSchema, 100_000);
+        return privateJson(await data.createDraft(value.specification), 201);
+      }
+      if (url.pathname.endsWith('/draft/')) {
+        const value = await input(request, UpdateDraftSchema, 100_000);
+        return privateJson(
+          await data.saveDraft(value.resourceId, value.expectedRevision, value.specification),
+        );
       }
       if (url.pathname.endsWith('/agents/') || url.pathname.endsWith('/saved/')) {
         if (

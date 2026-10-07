@@ -11,18 +11,25 @@ import {
 } from '../../domain/workspace';
 import { communityRequest } from '../../services/community';
 import { useIdentity } from '../identity/useIdentity';
-import { ProfileEditor } from './ProfileEditor';
+import { ProfileEditor, type ProfileEditBuffer } from './ProfileEditor';
 import { Onboarding } from './Onboarding';
 import { WorkspaceResources } from './WorkspaceResources';
+import { useCreatorMemory } from '../authoring/CreatorMemory';
 
 function ConnectedWorkspace({
   csrf,
   email,
   signedOut,
+  edits,
+  changeEdits,
+  committed,
 }: {
   csrf: string;
   email: string;
   signedOut: (csrf: string) => void;
+  edits: ProfileEditBuffer | null;
+  changeEdits: (value: ProfileEditBuffer) => void;
+  committed: (profileId: string) => void;
 }) {
   const router = useRouter();
   const [retry, setRetry] = useState(0),
@@ -135,6 +142,27 @@ function ConnectedWorkspace({
               profile={snapshot.identity.profile}
               csrf={csrf}
               refresh={refresh}
+              fields={
+                edits?.owner === email &&
+                edits.profileId === snapshot.identity.profile.id &&
+                (edits.dirty || pending)
+                  ? edits.fields
+                  : {
+                      displayName: snapshot.identity.profile.displayName,
+                      bio: snapshot.identity.profile.bio,
+                      website: snapshot.identity.profile.website ?? '',
+                    }
+              }
+              change={(fields) => {
+                if (snapshot.identity?.profile)
+                  changeEdits({
+                    owner: email,
+                    profileId: snapshot.identity.profile.id,
+                    fields,
+                    dirty: true,
+                  });
+              }}
+              committed={committed}
             />
           </>
         )}
@@ -156,8 +184,29 @@ function ConnectedWorkspace({
 }
 export function Workspace() {
   const { identity, pending, error, reload, signedOut } = useIdentity();
+  const memory = useCreatorMemory();
+  const { profileEdits: edits, setProfileEdits: changeEdits } = memory;
   if (identity?.signedIn)
-    return <ConnectedWorkspace csrf={identity.csrf} email={identity.email} signedOut={signedOut} />;
+    return (
+      <ConnectedWorkspace
+        csrf={identity.csrf}
+        email={identity.email}
+        edits={edits}
+        changeEdits={changeEdits}
+        committed={(profileId) =>
+          changeEdits((current) =>
+            current?.owner === identity.email && current.profileId === profileId
+              ? { ...current, dirty: false }
+              : current,
+          )
+        }
+        signedOut={(csrf) => {
+          changeEdits(null);
+          memory.setBuffer(null);
+          signedOut(csrf);
+        }}
+      />
+    );
   return (
     <section className="workspace-connect identity-panel">
       <p className="eyebrow">Your network / private workspace</p>

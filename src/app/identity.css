@@ -101,7 +101,7 @@
   font: inherit;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--control-border);
   border-radius: 0.25rem;
 }
 .identity-panel input:disabled {

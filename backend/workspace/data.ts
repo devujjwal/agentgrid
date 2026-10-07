@@ -12,6 +12,7 @@ import { HttpFailure } from '../http/guard.ts';
 import { SavedListSchema, SaveStateSchema } from '../../src/domain/saves.ts';
 import { savedResources } from './saves.ts';
 import { databaseFailure } from './failure.ts';
+import { draftResources } from './drafts.ts';
 
 export interface WorkspaceData {
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
@@ -22,6 +23,9 @@ export interface WorkspaceData {
   favorite: (resourceId: string, saved: boolean) => Promise<boolean>;
   saved: (offset: number) => Promise<z.infer<typeof SavedListSchema>>;
   saveState: (resourceId: string) => Promise<z.infer<typeof SaveStateSchema>>;
+  draft: ReturnType<typeof draftResources>['draft'];
+  createDraft: ReturnType<typeof draftResources>['createDraft'];
+  saveDraft: ReturnType<typeof draftResources>['saveDraft'];
 }
 export function workspaceData(
   configuration: AuthConfiguration,
@@ -53,6 +57,7 @@ export function workspaceData(
   return {
     identity,
     ...savedResources(client, member),
+    ...draftResources(client, member),
     async agents(offset) {
       const profile = await member();
       const result = await client

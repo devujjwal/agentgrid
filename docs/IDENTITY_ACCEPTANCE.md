@@ -158,3 +158,74 @@ adding server code must never silently broaden the old infrastructure release.
   export and compiled workerd checks pass locally. Full real member save/remove,
   cross-device and withdrawal UI journeys remain acceptance gates after deliberate
   consent and genuine public-resource publication. Registration remains closed.
+
+## Creator authoring increment — implementation and partial acceptance
+
+- `/workspace/agent/` creates and edits owned private drafts. Query/return paths
+  accept only one valid resource UUID; caller ownership/editorial authority is
+  never accepted. Server reads use the verified user bearer plus an explicit
+  owner predicate even for staff. Writes preserve editorial context, enforce the
+  current revision and acknowledge only the expected next revision.
+- Guided sections cover all portable definition fields except externally owned
+  workflow artifacts/extension data, which use the advanced bounded import.
+  Unfinished prose can be saved privately; security envelopes and explicit rights
+  remain validated. Standard licenses are chosen deliberately, source terms
+  cannot be replaced, and writes always require approval. Public structural
+  readiness, editorial approval and real host tests remain distinct gates.
+- A bounded root provider retains one draft and one profile edit buffer in tab
+  memory across App Router navigation/history. It makes no identity request on
+  public pages and uses no persistent storage. Concealment removes private
+  subtrees; fresh identity, membership and ownership checks precede restoration.
+  Other authoring links confirm replacement, while history navigation presents
+  a held-draft recovery gate. Document unload warns about unsaved work. Explicit
+  successful sign-out clears both buffers; aborted mutation acknowledgements
+  cannot restore them. Clean acknowledged profile fields yield to live data.
+- Local component QA covers section switching/retained edits, adding inputs,
+  mandatory write approval, unfinished readiness and private acknowledgement.
+  Mobile review found and corrected an intrinsic grid overflow. Adding/removing
+  rows now moves keyboard focus; generated identifiers avoid surviving-row
+  collisions. Browser reinspection verifies add-field focus, removal focus back
+  to Add, section-heading focus, mandatory write approval, unselected reuse
+  permissions and malformed-import refusal without changing existing fields.
+- Disposable synthetic community acceptance uses the actual HTTP/identity and
+  creator application code with explicitly labelled memory-only adapters. It
+  cannot contact a real provider or reuse real credentials, and no synthetic
+  profile/resource is written to shared infrastructure. Synthetic sign-in,
+  owned create/read/save with actual revision acknowledgements, stale-save
+  rejection and confirmation recovery pass in Chrome. Native-only tabs (without
+  browser focus emulation) verify suspension/revocation concealment and fresh
+  same-owner restoration. Reauthentication in a separate tab preserves the
+  original unsaved definition. Back/Forward restores draft and profile edits;
+  history to another resource presents the held-draft gate. Cancelled replacement
+  retains both buffers. Successful sign-out followed by sign-in restores server
+  data rather than discarded edits. Profile saving and a second-tab server
+  update confirm clean acknowledged fields do not mask fresh server values.
+- Formatting/lint/strict typecheck, all 65 Node/11 Python tests, production
+  export and compiled workerd checks pass after the recovery changes. Previous
+  PR 8 head `1c0f583` passed CI run `37627452229`; the updated commit still needs
+  exact-head CI. Layout checks at 320/393/768/1024/1440px find no document overflow
+  and a 48px save target. Desktop/mobile screenshots show the refined header,
+  connected section navigation and bounded editing layout. The authoring flow
+  introduces no decorative motion; global reduced-motion protections remain.
+  Real member/fork-inherited-license and full submission/version journeys remain
+  required; synthetic acceptance is not a claim of production completion.
+- Remote migration 009 passed exact-main CI and was applied with protected
+  resources unchanged. The creator authoring increment adds no migration or
+  managed authentication setting. Actual member acceptance waits for deliberate
+  consent rather than seeding the owner's consent/profile.
+- Extended disposable HTTP acceptance also passes new resource creation,
+  confirmed read/save, stale revision rejection, profile update, suspension,
+  resumption and session revocation. This is application-boundary acceptance with
+  memory adapters; it does not substitute for browser interaction or real member
+  journeys. Fresh Lighthouse logs contain no console errors.
+- Optimized signed-out authoring-entry mobile lab: performance 99, accessibility
+  100, best practices 96; LCP 2.27s, TBT 11ms, CLS 0. Private-route SEO 63 is
+  intentional. The known static inline-script CSP work in `OPERATIONS.md` remains
+  a public-launch gate. These measurements do not establish signed-in editor
+  performance, field INP or visual acceptance across breakpoints.
+- A separate isolated Lighthouse browser with disposable synthetic authentication
+  confirms the signed-in editor rendered, with no console errors: performance
+  98, accessibility 100, best practices 96; LCP 2.354s, TBT 14ms, CLS 0.0458.
+  Private-route SEO 63 is intentional. The CSP issue remains the same documented
+  launch gate. Neither lab establishes field INP, real provider latency or actual
+  member acceptance. Reports and screenshots are ignored local evidence files.

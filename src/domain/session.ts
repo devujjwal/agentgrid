@@ -11,6 +11,14 @@ export type IdentityResponse = z.infer<typeof IdentityResponseSchema>;
 export function signInReturnPath(value: unknown): string {
   if (typeof value !== 'string') return '/workspace/';
   if (value === '/workspace/' || value === '/saves/') return value;
+  if (
+    value === '/workspace/agent/' ||
+    /^\/workspace\/agent\/\?resourceId=[a-fA-F0-9-]{36}$/.test(value)
+  ) {
+    if (value === '/workspace/agent/') return value;
+    const id = z.uuid().safeParse(value.split('=')[1]);
+    if (id.success) return value;
+  }
   if (/^\/agents\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(value) && value.length <= 89) return value;
   return '/workspace/';
 }
