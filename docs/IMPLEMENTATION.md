@@ -5,17 +5,17 @@ than treating existing code as completed functionality.
 
 ## Phase gates
 
-| Phase                            | Status                                                      | Exit evidence                                                                                                                                                                               |
-| -------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0 — Ownership and infrastructure | In progress; Google client credential authorization pending | Private personal repository and CI verified; free Cloudflare delivery and protected Supabase baseline verified. Real email OTP/provider delivery verified; Google OAuth remains unverified. |
-| 1 — Contracts and content        | Not started                                                 | Schema/RLS tests; specification; representative reproducible packages                                                                                                                       |
-| 2 — Visual system                | Not started                                                 | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                                     |
-| 3 — Public discovery             | Not started                                                 | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                                  |
-| 4 — Identity/workspace           | Not started                                                 | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                       |
-| 5 — Community                    | Not started                                                 | Full moderation/version/fork/review/report journeys                                                                                                                                         |
-| 6 — Publishing/inventory         | Not started                                                 | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                           |
-| 7 — Hardening                    | Not started                                                 | Restore/rollback; browser/a11y/performance/security audits                                                                                                                                  |
-| 8 — Production launch            | Not started                                                 | Domain, webmaster setup, production journeys and monitoring                                                                                                                                 |
+| Phase                            | Status                               | Exit evidence                                                                                                                                    |
+| -------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0 — Ownership and infrastructure | In progress; deployment gates remain | Private personal repository/CI, free Cloudflare delivery, protected Supabase baseline, real email OTP delivery and Google PKCE sign-in verified. |
+| 1 — Contracts and content        | Not started                          | Schema/RLS tests; specification; representative reproducible packages                                                                            |
+| 2 — Visual system                | Not started                          | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                          |
+| 3 — Public discovery             | Not started                          | Search evaluation; distribution E2E; crawlable public HTML                                                                                       |
+| 4 — Identity/workspace           | Not started                          | Google and real email OTP; cross-account isolation; live saves/drafts                                                                            |
+| 5 — Community                    | Not started                          | Full moderation/version/fork/review/report journeys                                                                                              |
+| 6 — Publishing/inventory         | Not started                          | Failure recovery; broad tested inventory; no private-data leakage                                                                                |
+| 7 — Hardening                    | Not started                          | Restore/rollback; browser/a11y/performance/security audits                                                                                       |
+| 8 — Production launch            | Not started                          | Domain, webmaster setup, production journeys and monitoring                                                                                      |
 
 ## Product invariants
 
@@ -101,5 +101,39 @@ than treating existing code as completed functionality.
   OTP expiry remains 3,600 seconds; do not claim a shorter application expiry yet.
 - Remote CI passes at `b6fd4d5`:
   https://github.com/devujjwal/agentgrid/actions/runs/37577025508.
-- Real Google login still gates completion of Phase 0. Product/community
-  and visual acceptance gates are not claimed as complete.
+- At this point Google login remained pending; the subsequent evidence below
+  records its authorized setup and completed provider proof.
+
+## Phase 0 Google interoperability — verified
+
+- Owner approved Google OAuth setup. Created the `AgentGrid web sign-in` client
+  in the separate, unbilled AgentGrid Google project. Provider redirect is exactly
+  `https://lxecbrvzpmgjmsqiachc.supabase.co/auth/v1/callback`; no unrelated Google
+  project or credential was modified. Private local credentials use mode 0600.
+- Enabled Google in Supabase and added only the exact local AgentGrid callback
+  `http://localhost:3027/auth/callback/`. Existing PicMagic Site URL, callbacks,
+  email/SMTP/templates and every other auth field are unchanged.
+- Original protected baseline remains intact. An independent private transition
+  record binds the exact approved four-field delta to before/after fingerprints.
+  Supabase's management response represents the secret opaquely; recording that
+  observation is distinct from the real credential interoperability test.
+- Google testing audience contains only the owner. Real Chrome sign-in passed:
+  PKCE exchange, server-verified Google identity and local-only sign-out. Scopes
+  are identity/email/basic profile; no Gmail/Drive or offline access was requested.
+  No public profile, review, activity or popularity was seeded.
+- Post-change schema/permission inventory and anonymous/authenticated PicMagic
+  private-data denial checks pass. Offline tests reject unrecorded auth changes,
+  unrelated settings, broader callbacks and mismatched projects.
+- Local proof regressions cover host/Origin/CSRF validation, single-use callbacks,
+  verified identity, local sign-out, safe redirects and redacted failure behavior.
+  Browser testing corrected same-origin referrer/form redirect policies in the
+  localhost-only harness. This harness is not a production authentication route.
+- Formatting, lint, strict typecheck, 16 automated tests and production build pass.
+  Export inspection with privileged configuration loaded detects no leaked values;
+  production dependency audit reports no known advisories. Personal Git identity
+  and the unchanged global work configuration are independently verified.
+- Google remains External/Testing. Public branding, policy URLs, domain readiness
+  and production callbacks are required before launch. Public auth, account linking,
+  application expiry/abuse protection and cross-account journeys remain Phase 4 gates.
+- CI-gated release credentials/workflow and private preview access remain Phase 0
+  gates. Product, community, visual and launch gates are not claimed as complete.

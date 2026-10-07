@@ -33,7 +33,7 @@ export async function inspectExport(root) {
     }
     for (const [key, value] of Object.entries(process.env)) {
       if (
-        /^(SUPABASE_SECRET_KEY|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD|CLOUDFLARE_API_TOKEN|RESEND_API_KEY)$/.test(
+        /^(SUPABASE_SECRET_KEY|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD|CLOUDFLARE_API_TOKEN|RESEND_API_KEY|GOOGLE_CLIENT_SECRET)$/.test(
           key,
         ) &&
         value &&

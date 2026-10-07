@@ -10,6 +10,8 @@ from pathlib import Path
 import subprocess
 
 PROJECT_REF = "lxecbrvzpmgjmsqiachc"
+GOOGLE_AUTH_FIELDS = frozenset(("external_google_enabled", "external_google_client_id", "external_google_secret", "uri_allow_list"))
+LOCAL_OAUTH_CALLBACK = "http://localhost:3027/auth/callback/"
 
 
 def decode_keyring_value(value):
@@ -97,6 +99,31 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
+def approved_google_transition(original_digest, before, current, evidence):
+    """Accept only the explicitly recorded initial Google setup, never broad drift."""
+    changed = sorted(key for key in before.keys() | current.keys() if before.get(key) != current.get(key))
+    redirects = (before.get("uri_allow_list") or "").split(",")
+    expected_redirects = ",".join([item for item in redirects if item] + [LOCAL_OAUTH_CALLBACK])
+    return (
+        evidence.get("project_ref") == PROJECT_REF
+        and evidence.get("authorization") == "owner-approved-initial-google-setup"
+        and original_digest == evidence.get("before_digest") == digest(before)
+        and evidence.get("after_digest") == digest(current)
+        and changed == evidence.get("changed_fields")
+        and set(changed) == GOOGLE_AUTH_FIELDS
+        and before.get("external_google_enabled") is False
+        and not before.get("external_google_client_id")
+        and not before.get("external_google_secret")
+        and current.get("external_google_enabled") is True
+        and current.get("uri_allow_list") == expected_redirects
+        and bool(re.fullmatch(r"937196090354-[a-z0-9]+\.apps\.googleusercontent\.com", current.get("external_google_client_id") or ""))
+        # The management response can expose an opaque 64-hex representation
+        # rather than plaintext. Bind that exact observation in the delta digest;
+        # only a real code exchange proves the credential works.
+        and bool(re.fullmatch(r"(?:GOCSPX-[A-Za-z0-9_-]{20,}|[a-f0-9]{64})", current.get("external_google_secret") or ""))
+    )
+
+
 def isolation_query(role):
     if role not in ("anon", "authenticated"):
         raise ValueError("Unsupported audit role")
@@ -137,9 +164,19 @@ def main():
     if args.verify:
         original = json.loads(path.read_text())
         changed = [key for key in original["inventory"] if original["inventory"][key] != baseline["inventory"][key]]
-        if changed or original["auth_config_digest"] != baseline["auth_config_digest"]:
+        auth_unchanged = original["auth_config_digest"] == baseline["auth_config_digest"]
+        approved_transition = False
+        if not auth_unchanged:
+            before_path = path.parent / "agentgrid-google-auth-before.json"
+            evidence_path = path.parent / "agentgrid-google-auth-transition.json"
+            if before_path.exists() and evidence_path.exists():
+                approved_transition = approved_google_transition(
+                    original["auth_config_digest"], json.loads(before_path.read_text()), auth,
+                    json.loads(evidence_path.read_text()),
+                )
+        if changed or not (auth_unchanged or approved_transition):
             raise RuntimeError("Protected shared-project baseline changed: " + ", ".join(changed or ["auth configuration"]))
-        print("Protected schema and shared auth configuration unchanged.")
+        print("Protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only the recorded owner-approved Google configuration differs."))
     elif not path.exists():
         path.write_text(json.dumps(baseline, indent=2) + "\n")
         path.chmod(0o600)

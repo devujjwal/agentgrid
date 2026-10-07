@@ -12,6 +12,57 @@ spec.loader.exec_module(audit)
 
 
 class SharedSupabaseAuditTests(unittest.TestCase):
+    def google_transition_fixture(self):
+        before = {
+            "site_url": "https://picmagic.in",
+            "smtp_host": None,
+            "uri_allow_list": "https://picmagic.in/admin/login,https://picmagic-in.netlify.app/admin/login",
+            "external_google_enabled": False,
+            "external_google_client_id": None,
+            "external_google_secret": None,
+        }
+        after = {**before,
+            "external_google_enabled": True,
+            "external_google_client_id": "937196090354-fixture.apps.googleusercontent.com",
+            "external_google_secret": "GOCSPX-" + "0" * 28,
+            "uri_allow_list": before["uri_allow_list"] + "," + audit.LOCAL_OAUTH_CALLBACK,
+        }
+        evidence = {
+            "project_ref": audit.PROJECT_REF,
+            "authorization": "owner-approved-initial-google-setup",
+            "before_digest": audit.digest(before),
+            "after_digest": audit.digest(after),
+            "changed_fields": sorted(audit.GOOGLE_AUTH_FIELDS),
+        }
+        return before, after, evidence
+
+    def test_recorded_google_transition_preserves_original_auth_baseline(self):
+        before, after, evidence = self.google_transition_fixture()
+        self.assertTrue(audit.approved_google_transition(audit.digest(before), before, after, evidence))
+        after["external_google_secret"] = "GOCSPX-" + "1" * 28
+        self.assertFalse(audit.approved_google_transition(audit.digest(before), before, after, evidence))
+
+    def test_opaque_provider_secret_observation_is_bound_to_recorded_digest(self):
+        before, after, evidence = self.google_transition_fixture()
+        after["external_google_secret"] = "0" * 64
+        evidence["after_digest"] = audit.digest(after)
+        self.assertTrue(audit.approved_google_transition(audit.digest(before), before, after, evidence))
+        after["external_google_secret"] = "1" * 64
+        self.assertFalse(audit.approved_google_transition(audit.digest(before), before, after, evidence))
+
+    def test_google_transition_cannot_hide_protected_changes_or_broader_redirects(self):
+        for change in (
+            {"site_url": "https://agentgrid.me"},
+            {"smtp_host": "smtp.agentgrid.me"},
+            {"uri_allow_list": "https://picmagic.in/admin/login,http://localhost:3027/**"},
+            {"external_google_client_id": "123456-otherproject.apps.googleusercontent.com"},
+        ):
+            before, after, evidence = self.google_transition_fixture()
+            after.update(change)
+            evidence["after_digest"] = audit.digest(after)
+            evidence["changed_fields"] = sorted(key for key in before.keys() | after.keys() if before.get(key) != after.get(key))
+            self.assertFalse(audit.approved_google_transition(audit.digest(before), before, after, evidence))
+
     def test_keyring_decoding_and_header_injection_rejection(self):
         token = "sbp_" + "0" * 40
         for value in (

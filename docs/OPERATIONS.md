@@ -35,7 +35,7 @@ Cloudflare and Resend personal browser login is complete. Cloudflare email is
 verified. Google Cloud personal sign-in is complete; AgentGrid's separate OAuth
 project has no linked billing account. Required OAuth policy acceptance and scoped
 email credential creation were authorized and completed. Google web-client
-credential/configuration approval is pending separately.
+credential/configuration approval was subsequently granted and setup is verified.
 Do not paste credentials into
 chat, tracked files, or workflow logs. New account terms must be completed by the
 account owner or explicitly authorized at the acceptance step. No paid plan or
@@ -59,10 +59,9 @@ the issue; do not silently modify protected policies.
 
 ## Phase 0 remaining evidence
 
-- Complete application OTP challenge/session/abuse validation; the isolated
-  sending domain/key and real provider OTP delivery are verified. Preserve
-  PicMagic SMTP/templates.
-- Google OAuth ownership and callback configuration.
+- Email delivery and Google PKCE interoperability are verified. Complete public
+  authentication challenge/session/abuse and cross-account journeys remain Phase 4
+  requirements. Preserve PicMagic SMTP/templates.
 - Secure access for future previews containing unpublished resources. Noindex is
   crawler guidance, not access control. The current Pages proof contains no private data.
 - CI-gated release deployment credential and workflow, with main-only production
@@ -111,6 +110,32 @@ no key was issued, rotated, disabled, or transmitted to another hosting provider
 Before backend deployment, use an independently revocable AgentGrid-owned secret
 and explicitly authorize its privileged storage/transmission. That key still has
 project-wide privileges; a separate name does not restrict its database access.
+
+## Verified Google setup
+
+The owner-approved Google client is stored only in ignored mode-0600 local setup
+configuration and Supabase's provider configuration. It is never a static build
+input. `.env.example` documents the setup-only names without values.
+
+`scripts/configure-google-auth.py` is a one-time guarded operator tool: it refuses
+CI, existing Google credentials, protected auth drift, or replacement of its private
+transition evidence. It changes only Google enablement/client ID/secret and one
+exact localhost callback. No original fingerprint is reset to accept the change.
+`--record-approved-result` makes no remote mutation; it records only the matching
+authorized result after inspecting an opaque provider response.
+
+`scripts/oauth-proof-server.mjs --owner-google-test` runs only at localhost:3027.
+It binds PKCE to a short-lived in-memory flow with HttpOnly/SameSite cookie, verifies
+POST Origin/CSRF and the returned identity, consumes callbacks once, and signs out
+locally. Codes/tokens/sessions never appear in HTML or logs. A real Chrome proof
+passed. The server is intentionally separate from Next.js and must never be
+deployed or treated as the production auth implementation.
+
+Google remains External/Testing with the owner as its sole test user. Production
+branding, policy URLs and exact production callback registration are launch work.
+Keep the shared PicMagic Site URL and existing callbacks unchanged. Adding future
+callbacks requires a separately recorded exact delta; the initial guard does not
+silently allow new origins or wildcard redirects.
 
 ## Public export boundary
 
