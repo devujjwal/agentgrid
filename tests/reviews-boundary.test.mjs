@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { createClient } from '@supabase/supabase-js';
 import { reviewResources } from '../backend/workspace/reviews.ts';
 import { publicReviewData } from '../backend/community/reviews.ts';
-import { syntheticConfiguration } from './fixtures/identity.mjs';
+import { identityFixture, identityOrigin, syntheticConfiguration } from './fixtures/identity.mjs';
+import { workspaceHandler } from '../backend/http/workspace.ts';
+import { publicCommunityHandler } from '../backend/http/community.ts';
+import { publicCommunityConfiguration } from '../backend/community/configuration.ts';
 
 const resourceId = '20000000-0000-4000-8000-000000000001';
 const versionId = '30000000-0000-4000-8000-000000000001';
@@ -194,4 +197,132 @@ test('public review batches use only anonymous publishable authority and reject 
   projection = null;
   await assert.rejects(data(resourceId, 0), fails(404));
   assert.ok(calls > 1);
+});
+
+test('public review HTTP needs only public configuration, bounds reads and carries no identity cookies or cache', async () => {
+  const environment = {
+    AGENTGRID_STAGE: 'production',
+    AGENTGRID_ORIGIN: 'https://agentgrid.me',
+    NEXT_PUBLIC_SUPABASE_URL: 'https://syntheticfixture.supabase.co',
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_' + 'x'.repeat(30),
+    SUPABASE_SECRET_KEY: 'must-not-be-used',
+  };
+  const configuration = publicCommunityConfiguration(environment);
+  assert.equal('secretKey' in configuration, false);
+  for (const change of [
+    { AGENTGRID_ORIGIN: 'https://attacker.test' },
+    { NEXT_PUBLIC_SUPABASE_URL: 'https://syntheticfixture.supabase.co@attacker.test' },
+    { AGENTGRID_STAGE: 'development' },
+  ])
+    assert.throws(
+      () => publicCommunityConfiguration({ ...environment, ...change }),
+      (e) => !e.message.includes('must-not-be-used'),
+    );
+  const calls = [],
+    handle = publicCommunityHandler(configuration.origin, async (id, offset) => {
+      calls.push({ id, offset });
+      return {
+        resourceId: id,
+        reviewCount: 0,
+        averageRating: null,
+        reviews: [],
+        hasMore: false,
+        offset,
+      };
+    });
+  const request = (query, method = 'GET', headers = {}) =>
+    new Request(configuration.origin + '/api/community/reviews/?' + query, { method, headers });
+  for (const query of [
+    'resourceId=bad',
+    'resourceId=' + resourceId + '&resourceId=' + resourceId,
+    'resourceId=' + resourceId + '&offset=10000',
+    'resourceId=' + resourceId + '&offset=-1',
+    'resourceId=' + resourceId + '&authorId=' + reviewId,
+  ])
+    assert.equal((await handle(request(query))).status, 400);
+  assert.equal((await handle(request('resourceId=' + resourceId, 'POST'))).status, 405);
+  assert.equal(
+    (await handle(request('resourceId=' + resourceId, 'GET', { 'sec-fetch-site': 'cross-site' })))
+      .status,
+    403,
+  );
+  const response = await handle(
+    request('resourceId=' + resourceId + '&offset=20', 'GET', { cookie: 'unexpected=ignored' }),
+  );
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('set-cookie'), null);
+  assert.match(response.headers.get('cache-control'), /no-store/);
+  assert.match(response.headers.get('x-robots-tag'), /noindex/);
+  assert.deepEqual(calls, [{ id: resourceId, offset: 20 }]);
+});
+test('private review HTTP requires identity and CSRF, permits bounded Unicode and rejects caller-selected authority', async () => {
+  const identity = await identityFixture(),
+    calls = [];
+  const handle = workspaceHandler(identity.runtime, () => ({
+    review: async (id) => {
+      calls.push(['read', id]);
+      return owned;
+    },
+    writeReview: async (value) => {
+      calls.push(['write', value]);
+      return owned;
+    },
+  }));
+  const request = (path, body, csrf, extra = {}) =>
+    new Request(identityOrigin + path, {
+      method: body === undefined ? 'GET' : 'POST',
+      headers: {
+        cookie: [...identity.jar].map(([k, v]) => k + '=' + v).join('; '),
+        origin: identityOrigin,
+        'Content-Type': 'application/json',
+        ...(csrf ? { 'X-AgentGrid-CSRF': csrf } : {}),
+        ...extra,
+      },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    });
+  assert.equal(
+    (await handle(request('/api/workspace/review/?resourceId=' + resourceId))).status,
+    401,
+  );
+  await identity.request('/api/identity/');
+  await identity.request('/api/identity/email/', { email: 'owner@example.test' });
+  const verified = await identity.request('/api/identity/verify/', { code: '12345678' }),
+    csrf = verified.data.csrf;
+  assert.equal((await handle(request('/api/workspace/review/', input))).status, 403);
+  for (const invalid of [
+    { ...input, authorId: reviewId },
+    { ...input, state: 'published' },
+    { ...input, rating: 6 },
+    { ...input, expectedRevision: -1 },
+    { ...input, body: 'thin' },
+  ])
+    assert.equal((await handle(request('/api/workspace/review/', invalid, csrf))).status, 400);
+  assert.equal(
+    (
+      await handle(
+        request('/api/workspace/review/?resourceId=' + resourceId + '&resourceId=' + resourceId),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await handle(
+        request('/api/workspace/review/?resourceId=' + resourceId, undefined, undefined, {
+          'sec-fetch-site': 'cross-site',
+        }),
+      )
+    ).status,
+    403,
+  );
+  const unicode = { ...input, body: 'अ'.repeat(4000), experience: 'अ'.repeat(1000) };
+  assert.equal((await handle(request('/api/workspace/review/', unicode, csrf))).status, 201);
+  assert.equal(
+    (await handle(request('/api/workspace/review/?resourceId=' + resourceId))).status,
+    200,
+  );
+  assert.deepEqual(calls, [
+    ['write', unicode],
+    ['read', resourceId],
+  ]);
 });

@@ -8,6 +8,7 @@ import { ProfileInputSchema, OnboardingInputSchema } from '../../src/domain/work
 import { CreateDraftSchema, UpdateDraftSchema } from '../../src/domain/draft.ts';
 import { SubmitVersionSchema, WithdrawVersionSchema } from '../../src/domain/versions.ts';
 import { ReportInputSchema } from '../../src/domain/reports.ts';
+import { ReviewInputSchema } from '../../src/domain/reviews.ts';
 import { assertJsonDocumentBounds } from '../../src/domain/agent-specification.ts';
 import {
   assertRequestTarget,
@@ -45,7 +46,9 @@ export function workspaceHandler(
           '/api/workspace/version/',
           '/api/workspace/reports/',
         ].includes(url.pathname) ||
-        (['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
+        (['/api/workspace/favorite/', '/api/workspace/draft/', '/api/workspace/review/'].includes(
+          url.pathname,
+        ) &&
           request.method === 'GET');
       const mutation =
         !read &&
@@ -59,6 +62,7 @@ export function workspaceHandler(
           '/api/workspace/submit/',
           '/api/workspace/withdraw/',
           '/api/workspace/report/',
+          '/api/workspace/review/',
         ].includes(url.pathname);
       if (!read && !mutation) throw new HttpFailure(404, 'not-found');
       if (read && request.method !== 'GET') throw new HttpFailure(405, 'method-unavailable');
@@ -90,6 +94,11 @@ export function workspaceHandler(
       }
       if (url.pathname === '/api/workspace/report/')
         return privateJson(await data.createReport(await input(request, ReportInputSchema)), 201);
+      if (url.pathname === '/api/workspace/review/' && request.method === 'POST')
+        return privateJson(
+          await data.writeReview(await input(request, ReviewInputSchema, 24_000)),
+          201,
+        );
       if (url.pathname.endsWith('/versions/')) {
         if (
           [...url.searchParams.keys()].some((key) => !['resourceId', 'offset'].includes(key)) ||
@@ -126,7 +135,9 @@ export function workspaceHandler(
         );
       }
       if (
-        ['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
+        ['/api/workspace/favorite/', '/api/workspace/draft/', '/api/workspace/review/'].includes(
+          url.pathname,
+        ) &&
         request.method === 'GET'
       ) {
         if (
@@ -137,9 +148,11 @@ export function workspaceHandler(
         const resource = z.uuid().safeParse(url.searchParams.get('resourceId'));
         if (!resource.success) throw new HttpFailure(400, 'invalid-request');
         return privateJson(
-          url.pathname.endsWith('/draft/')
-            ? await data.draft(resource.data)
-            : await data.saveState(resource.data),
+          url.pathname.endsWith('/review/')
+            ? await data.review(resource.data)
+            : url.pathname.endsWith('/draft/')
+              ? await data.draft(resource.data)
+              : await data.saveState(resource.data),
         );
       }
       if (url.pathname.endsWith('/create/')) {

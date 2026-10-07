@@ -7,6 +7,9 @@ import { identityHandler } from './identity.ts';
 import { privateFailure } from './guard.ts';
 import { workspaceHandler } from './workspace.ts';
 import { workspaceData } from '../workspace/data.ts';
+import { publicCommunityConfiguration } from '../community/configuration.ts';
+import { publicReviewData } from '../community/reviews.ts';
+import { publicCommunityHandler } from './community.ts';
 
 export interface PagesIdentityContext {
   request: Request;
@@ -14,6 +17,13 @@ export interface PagesIdentityContext {
 }
 export async function pagesIdentityRequest(context: PagesIdentityContext): Promise<Response> {
   try {
+    if (new URL(context.request.url).pathname.startsWith('/api/community/')) {
+      const configuration = publicCommunityConfiguration(context.env);
+      return await publicCommunityHandler(
+        configuration.origin,
+        publicReviewData(configuration),
+      )(context.request);
+    }
     const configuration = authConfiguration(context.env);
     const runtime = await identityRuntime(
       configuration,
