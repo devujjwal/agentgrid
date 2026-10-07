@@ -1,8 +1,14 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { resolve, relative } from 'node:path';
+import { resolve, relative, basename } from 'node:path';
 
-export async function inspectExport(root) {
+export async function inspectExport(root, { localDesignPreview = false } = {}) {
   const errors = [];
+  if (
+    localDesignPreview &&
+    (basename(root) !== '.agentgrid-local-preview' || process.env.CI || process.env.GITHUB_ACTIONS)
+  ) {
+    errors.push('Local design exception requires its exact private directory outside CI.');
+  }
   const files = [];
   async function visit(directory) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -22,8 +28,16 @@ export async function inspectExport(root) {
     if (/(^|\/)\.env(?:\.|$)|\.map$|(^|\/)(backups|\.git)\//.test(name)) {
       errors.push(`Private/debug artifact in public export: ${name}`);
     }
-    if (!/\.(html|js|json|txt|css)$/.test(name)) continue;
+    if (!/\.(html|js|json|txt|css|svg)$/.test(name)) continue;
     const content = await readFile(path, 'utf8');
+    if (
+      !localDesignPreview &&
+      name.endsWith('.html') &&
+      (content.includes('Local design preview') ||
+        content.includes('data-agentgrid-preview="local-only"'))
+    ) {
+      errors.push(`Unpublished local design preview in public export: ${name}`);
+    }
     if (
       /sb_secret_[A-Za-z0-9_-]{12,}|sbp_(?:oauth_)?[a-f0-9]{40}|cfat_[A-Za-z0-9_-]{20,}|GOCSPX-[A-Za-z0-9_-]{20,}|-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|re_[A-Za-z0-9]{20,}/.test(
         content,
