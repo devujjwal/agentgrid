@@ -57,17 +57,20 @@ If existing PicMagic policies would grant an AgentGrid login access to private
 PicMagic data, stop before enabling public AgentGrid authentication and explain
 the issue; do not silently modify protected policies.
 
-## Phase 0 remaining evidence
+## Foundation acceptance and later auth gates
 
 - Email delivery and Google PKCE interoperability are verified. Complete public
   authentication challenge/session/abuse and cross-account journeys remain Phase 4
   requirements. Preserve PicMagic SMTP/templates.
-- Secure access for future previews containing unpublished resources. Noindex is
-  crawler guidance, not access control. The current Pages proof contains no private data.
-- CI-gated release deployment credential and workflow, with main-only production
-  deploy and deliberate environment configuration.
+- Foundation previews are local loopback only. The Pages proof has no private data;
+  branch/PR remote deploys are disabled by workflow policy. Noindex is crawler
+  guidance, not access control. Authenticated live workspace previews require
+  functional authorization testing before being enabled in Phase 4.
+- CI-gated exact-main-commit infrastructure deployment is verified. Product-domain
+  releases remain locked out of the foundation workflow until publishing/launch gates.
 
-Do not mark Phase 0 complete while these are pending.
+Phase 0 infrastructure is validated; these later application gates are not
+claimed as complete. See the implementation ledger for exact release evidence.
 
 Cloudflare static delivery and private-repository GitHub CI are already verified.
 Supabase connectivity, schema inventory, and initial cross-application RLS denial

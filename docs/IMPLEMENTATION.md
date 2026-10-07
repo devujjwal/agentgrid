@@ -5,17 +5,17 @@ than treating existing code as completed functionality.
 
 ## Phase gates
 
-| Phase                            | Status                               | Exit evidence                                                                                                                                    |
-| -------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0 — Ownership and infrastructure | In progress; deployment gates remain | Private personal repository/CI, free Cloudflare delivery, protected Supabase baseline, real email OTP delivery and Google PKCE sign-in verified. |
-| 1 — Contracts and content        | Not started                          | Schema/RLS tests; specification; representative reproducible packages                                                                            |
-| 2 — Visual system                | Not started                          | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                          |
-| 3 — Public discovery             | Not started                          | Search evaluation; distribution E2E; crawlable public HTML                                                                                       |
-| 4 — Identity/workspace           | Not started                          | Google and real email OTP; cross-account isolation; live saves/drafts                                                                            |
-| 5 — Community                    | Not started                          | Full moderation/version/fork/review/report journeys                                                                                              |
-| 6 — Publishing/inventory         | Not started                          | Failure recovery; broad tested inventory; no private-data leakage                                                                                |
-| 7 — Hardening                    | Not started                          | Restore/rollback; browser/a11y/performance/security audits                                                                                       |
-| 8 — Production launch            | Not started                          | Domain, webmaster setup, production journeys and monitoring                                                                                      |
+| Phase                            | Status      | Exit evidence                                                                                                                                                                         |
+| -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0 — Ownership and infrastructure | Validated   | Personal ownership/CI, free Cloudflare exact-commit delivery, protected Supabase baseline, real email OTP and Google PKCE sign-in; unpublished previews restricted to local loopback. |
+| 1 — Contracts and content        | Not started | Schema/RLS tests; specification; representative reproducible packages                                                                                                                 |
+| 2 — Visual system                | Not started | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
+| 3 — Public discovery             | Not started | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
+| 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
+| 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
+| 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
+| 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
+| 8 — Production launch            | Not started | Domain, webmaster setup, production journeys and monitoring                                                                                                                           |
 
 ## Product invariants
 
@@ -138,7 +138,7 @@ than treating existing code as completed functionality.
 - CI-gated release credentials/workflow and private preview access remain Phase 0
   gates. Product, community, visual and launch gates are not claimed as complete.
 
-## Phase 0 release control — validation in progress
+## Phase 0 release control — verified
 
 - Exact OAuth milestone `346be06747354cd370726cf04b1b78607c587a7c` passed GitHub CI:
   https://github.com/devujjwal/agentgrid/actions/runs/37582038758.
@@ -149,7 +149,7 @@ than treating existing code as completed functionality.
   privately and in encrypted secrets in the verified private personal repository.
 - A guarded manual release workflow and pinned deployment CLI are implemented.
   Local formatting, lint, strict typecheck, 18 tests, build and secret-loaded export
-  inspection pass. Actual remote release/HTTP/browser evidence is still pending.
+  inspection passed before the additional dependency gate described below.
 - Unpublished previews remain local; no private draft resource is uploaded.
   Authenticated live workspace preview access must be tested in Phase 4 before
   enabling remote private previews. Product publishing remains a separate gate.
@@ -157,3 +157,18 @@ than treating existing code as completed functionality.
   the narrow Miniflare override before deploying; full-tree CI now permits only
   the documented exact unpatched lint exception and rejects unassessed findings.
   Updated formatting/lint/typecheck, 20 tests, build and secret-loaded export pass.
+- Exact commit `4109c15f65cfdce0e38024c1be0f8692d0bfea1c` passed both Validate CI
+  https://github.com/devujjwal/agentgrid/actions/runs/37582837597
+  and the real manually dispatched infrastructure release
+  https://github.com/devujjwal/agentgrid/actions/runs/37582862775.
+  Provider receipt/readback confirm production/main and the same commit.
+  HTTPS content, CSP/nosniff/noindex, robots exclusion and true 404 checks pass.
+  Chrome visibly renders the expected public proof; no product or private draft
+  content was deployed, and the production domain remains parked.
+- Foundation preview policy is enforced conservatively: local loopback development,
+  no branch/PR remote deployments, and the remote workflow accepts only the noindex
+  infrastructure destination. Authenticated workspace previews and product public
+  publishing still require their later functional/security gates.
+- Phase 0 is validated for its infrastructure scope. Public sign-in UX, Google
+  production branding, application authorization and launch readiness remain later
+  acceptance work. No paid plan, recharge, billing permission or add-on was enabled.
