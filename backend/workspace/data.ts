@@ -13,6 +13,7 @@ import { SavedListSchema, SaveStateSchema } from '../../src/domain/saves.ts';
 import { savedResources } from './saves.ts';
 import { databaseFailure } from './failure.ts';
 import { draftResources } from './drafts.ts';
+import { versionResources } from './versions.ts';
 
 export interface WorkspaceData {
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
@@ -26,6 +27,9 @@ export interface WorkspaceData {
   draft: ReturnType<typeof draftResources>['draft'];
   createDraft: ReturnType<typeof draftResources>['createDraft'];
   saveDraft: ReturnType<typeof draftResources>['saveDraft'];
+  versions: ReturnType<typeof versionResources>['versions'];
+  submitVersion: ReturnType<typeof versionResources>['submitVersion'];
+  withdrawVersion: ReturnType<typeof versionResources>['withdrawVersion'];
 }
 export function workspaceData(
   configuration: AuthConfiguration,
@@ -54,10 +58,12 @@ export function workspaceData(
       throw new HttpFailure(403, 'request-refused');
     return current.profile;
   };
+  const drafts = draftResources(client, member);
   return {
     identity,
     ...savedResources(client, member),
-    ...draftResources(client, member),
+    ...drafts,
+    ...versionResources(client, member, drafts),
     async agents(offset) {
       const profile = await member();
       const result = await client

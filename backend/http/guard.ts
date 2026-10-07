@@ -4,6 +4,7 @@ export type FailureCode =
   | 'method-unavailable'
   | 'request-too-large'
   | 'invalid-request'
+  | 'definition-incomplete'
   | 'service-unavailable'
   | 'not-signed-in'
   | 'verification-unavailable'

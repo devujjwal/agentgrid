@@ -13,7 +13,7 @@ export function signInReturnPath(value: unknown): string {
   if (value === '/workspace/' || value === '/saves/') return value;
   if (
     value === '/workspace/agent/' ||
-    /^\/workspace\/agent\/\?resourceId=[a-fA-F0-9-]{36}$/.test(value)
+    /^\/workspace\/(?:agent|versions)\/\?resourceId=[a-fA-F0-9-]{36}$/.test(value)
   ) {
     if (value === '/workspace/agent/') return value;
     const id = z.uuid().safeParse(value.split('=')[1]);
