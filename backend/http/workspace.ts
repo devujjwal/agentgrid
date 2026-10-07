@@ -7,6 +7,7 @@ import type { WorkspaceData } from '../workspace/data.ts';
 import { ProfileInputSchema, OnboardingInputSchema } from '../../src/domain/workspace.ts';
 import { CreateDraftSchema, UpdateDraftSchema } from '../../src/domain/draft.ts';
 import { SubmitVersionSchema, WithdrawVersionSchema } from '../../src/domain/versions.ts';
+import { ReportInputSchema } from '../../src/domain/reports.ts';
 import { assertJsonDocumentBounds } from '../../src/domain/agent-specification.ts';
 import {
   assertRequestTarget,
@@ -42,6 +43,7 @@ export function workspaceHandler(
           '/api/workspace/saved/',
           '/api/workspace/versions/',
           '/api/workspace/version/',
+          '/api/workspace/reports/',
         ].includes(url.pathname) ||
         (['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
           request.method === 'GET');
@@ -56,6 +58,7 @@ export function workspaceHandler(
           '/api/workspace/draft/',
           '/api/workspace/submit/',
           '/api/workspace/withdraw/',
+          '/api/workspace/report/',
         ].includes(url.pathname);
       if (!read && !mutation) throw new HttpFailure(404, 'not-found');
       if (read && request.method !== 'GET') throw new HttpFailure(405, 'method-unavailable');
@@ -75,6 +78,18 @@ export function workspaceHandler(
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.identity());
       }
+      if (url.pathname === '/api/workspace/reports/') {
+        if (
+          [...url.searchParams.keys()].some((key) => key !== 'offset') ||
+          url.searchParams.getAll('offset').length > 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const offset = url.searchParams.get('offset') ?? '0';
+        if (!/^\d{1,4}$/.test(offset)) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.reports(Number(offset)));
+      }
+      if (url.pathname === '/api/workspace/report/')
+        return privateJson(await data.createReport(await input(request, ReportInputSchema)), 201);
       if (url.pathname.endsWith('/versions/')) {
         if (
           [...url.searchParams.keys()].some((key) => !['resourceId', 'offset'].includes(key)) ||
