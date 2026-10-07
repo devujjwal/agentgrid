@@ -1,6 +1,7 @@
 node_modules/
 .next/
 .agentgrid-local-preview/
+.agentgrid-functions/
 out/
 coverage/
 playwright-report/

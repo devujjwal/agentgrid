@@ -45,6 +45,7 @@ export default defineConfig([
   globalIgnores([
     '.next/**',
     '.agentgrid-local-preview/**',
+    '.agentgrid-functions/**',
     'out/**',
     'coverage/**',
     'next-env.d.ts',
