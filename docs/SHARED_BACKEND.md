@@ -184,3 +184,10 @@ and protected state, then uses transaction-local synthetic anonymous/non-member
 claims under PostgreSQL read-only enforcement. It verifies that no membership,
 private identity read or privileged publication grant is acquired. It is operator
 acceptance evidence, not a replacement for actual JWT/account E2E in Phase 4.
+
+The local database runner reuses an exact-digest cached image. A cold CI pull may
+use the official Supabase Docker Hub mirror when public ECR is unavailable or
+rate-limited; both references resolve to the same verified OCI manifest digest,
+never a floating tag. If both fail, database acceptance fails rather than skipping
+checks. Disposable cleanup verifies the actual selected pinned image as well as
+container identity, purpose label and network isolation.
