@@ -7,8 +7,13 @@
   "engines": {
     "node": ">=24.2.0 <25"
   },
+  "pnpm": {
+    "overrides": {
+      "miniflare>sharp": "0.35.5"
+    }
+  },
   "scripts": {
-    "dev": "next dev --port 3027",
+    "dev": "next dev --hostname 127.0.0.1 --port 3027",
     "build": "next build && node scripts/verify-export.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
@@ -19,7 +24,8 @@
     "verify:git": "node scripts/verify-git.mjs",
     "verify:push": "node scripts/verify-push.mjs",
     "verify:environment": "node scripts/verify-environment.mjs",
-    "verify:export": "node scripts/verify-export.mjs"
+    "verify:export": "node scripts/verify-export.mjs",
+    "audit:dependencies": "node scripts/audit-dependencies.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",

@@ -153,3 +153,7 @@ than treating existing code as completed functionality.
 - Unpublished previews remain local; no private draft resource is uploaded.
   Authenticated live workspace preview access must be tested in Phase 4 before
   enabling remote private previews. Product publishing remains a separate gate.
+- Expanded deployment-tool audit found a patched `sharp` vulnerability. Applied
+  the narrow Miniflare override before deploying; full-tree CI now permits only
+  the documented exact unpatched lint exception and rejects unassessed findings.
+  Updated formatting/lint/typecheck, 20 tests, build and secret-loaded export pass.

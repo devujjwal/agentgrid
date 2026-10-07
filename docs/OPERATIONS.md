@@ -173,7 +173,8 @@ The pinned Wrangler CLI is development tooling, excluded from client bundles.
 Metrics/error-report transmission is disabled; raw CLI/provider errors and
 temporary debug records are not uploaded to Actions artifacts.
 
-Remote infrastructure builds contain only the public proof. Keep unpublished
+Remote infrastructure builds contain only the public proof. Local development
+binds to `127.0.0.1`, rather than exposing draft work to the network. Keep unpublished
 content previews local until live authenticated workspace previews are tested;
 private data must never enter a public static artifact. Noindex alone is not
 access control. Product releases require publication allowlists, recovery and
@@ -200,3 +201,14 @@ not a claim that the full dependency tree has no advisories. Reassess on plugin
 updates or lint-configuration changes; never use untrusted glob patterns.
 
 Advisory: https://github.com/advisories/GHSA-vfj7-8cjw-p6xm.
+
+The pinned Wrangler 4.148.0 CLI introduced local Miniflare `sharp` 0.35.4.
+The expanded audit detected GHSA-wq5f-xc86-pv6w before any CI deployment. A narrow
+`miniflare>sharp` override pins the patched 0.35.5 (already used by Next.js).
+This fixes the deployment-tool chain without adding image processing to the
+public application. Reassess/remove the override when Miniflare updates its pin.
+CI now audits both production and the full tree. Its only exception is the exact
+previously assessed unpatched `braces` 3.0.3 lint path. New paths, available fixes,
+unknown advisories and incomplete audit responses block the build.
+
+Patched advisory: https://github.com/advisories/GHSA-wq5f-xc86-pv6w.
