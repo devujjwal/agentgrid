@@ -6,7 +6,7 @@ Private application source. Production canonical: https://agentgrid.me.
 
 ## Implementation status
 
-Phase 0 infrastructure is validated. Phase 1 contracts/content work is next.
+Phases 0–1 are validated. Phase 2 visual-system acceptance is in progress.
 See [the implementation ledger](docs/IMPLEMENTATION.md)
 for phase acceptance evidence. This repository is not yet a launched product.
 
@@ -26,3 +26,14 @@ a failing guard with `--no-verify`.
 
 Application rights are reserved. Agent packages have separate explicit licenses.
 Community publication does not automatically impose an open license.
+
+## Local development
+
+Use Node 24.2+ within the pinned major and pnpm 10.30.3. Run `pnpm install
+--frozen-lockfile` and `pnpm check`. `pnpm test:database` uses isolated disposable
+PostgreSQL fixtures; it does not connect to the shared project.
+
+For the unpublished visual workspace, run `pnpm design:build` then
+`pnpm design:preview` and open http://127.0.0.1:3027/. It cannot run in CI or
+be exported through the public delivery gate. See
+[visual acceptance evidence](docs/VISUAL_SYSTEM.md).

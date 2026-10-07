@@ -9,7 +9,7 @@ than treating existing code as completed functionality.
 | -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0 — Ownership and infrastructure | Validated   | Personal ownership/CI, free Cloudflare exact-commit delivery, protected Supabase baseline, real email OTP and Google PKCE sign-in; unpublished previews restricted to local loopback. |
 | 1 — Contracts and content        | Validated   | Portable/editorial gates, six isolated migrations, protected remote rollout, owned-data extraction and ten broad representative drafts; full host-tested inventory remains Phase 6    |
-| 2 — Visual system                | Not started | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
+| 2 — Visual system                | In progress | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                                               |
 | 3 — Public discovery             | Not started | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | Not started | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                                                 |
 | 5 — Community                    | Not started | Full moderation/version/fork/review/report journeys                                                                                                                                   |
@@ -284,3 +284,19 @@ than treating existing code as completed functionality.
   distribution UX, production Auth, actual host-tested inventory or launch readiness.
   Phase 2 will develop and iterate the visual system through desktop/mobile browser
   review; the production domain remains parked and the public proof unchanged.
+
+## Phase 2 visual acceptance — local evidence
+
+- Implemented a bounded, lazy SVG network, semantic task command, native filters,
+  factual resource inspector and list with a warm paper/ink identity. No runtime
+  animation/font library, WebGL or fabricated community activity is introduced.
+- Chrome review and iterations cover 320/393/768/1024/1440px, keyboard search,
+  empty/reset/filter/selection flows and real reduced-motion emulation. See
+  `VISUAL_SYSTEM.md` for corrections, measurements and their limits.
+- Optimized local lab runs measure 99 mobile / 100 desktop performance, 100
+  accessibility and 100 best practices, with zero layout shift. The intentionally
+  nonindexable preview is not a production SEO or field-INP acceptance claim.
+- The preview is loopback-only in a separate ignored export directory. Normal
+  builds and CI cannot publish its drafts. Exact-head CI remains the final gate
+  before accepting and merging this phase. Full launch content, distribution,
+  community, cross-browser and production quality checks remain outstanding.

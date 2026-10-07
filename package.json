@@ -26,7 +26,10 @@
     "verify:push": "node scripts/verify-push.mjs",
     "verify:environment": "node scripts/verify-environment.mjs",
     "verify:export": "node scripts/verify-export.mjs",
-    "audit:dependencies": "node scripts/audit-dependencies.mjs"
+    "audit:dependencies": "node scripts/audit-dependencies.mjs",
+    "design:dev": "AGENTGRID_LOCAL_DESIGN_PREVIEW=1 next dev --hostname 127.0.0.1 --port 3027",
+    "design:build": "node scripts/build-design-preview.mjs",
+    "design:preview": "node scripts/serve-design-preview.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
@@ -44,6 +47,7 @@
     "eslint": "10.12.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.13.0",
+    "lighthouse": "13.5.0",
     "prettier": "3.9.9",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.1",

@@ -42,5 +42,11 @@ export default defineConfig([
       ...hooks.configs.recommended.rules,
     },
   },
-  globalIgnores(['.next/**', 'out/**', 'coverage/**', 'next-env.d.ts']),
+  globalIgnores([
+    '.next/**',
+    '.agentgrid-local-preview/**',
+    'out/**',
+    'coverage/**',
+    'next-env.d.ts',
+  ]),
 ]);

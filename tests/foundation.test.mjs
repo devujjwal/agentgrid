@@ -45,6 +45,17 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
     for (const name of ['index.html', '404.html', 'robots.txt', '_headers'])
       await writeFile(join(root, name), 'safe');
     assert.deepEqual(await inspectExport(root), []);
+    await writeFile(
+      join(root, 'index.html'),
+      '<div data-agentgrid-preview="local-only">Local design preview</div>',
+    );
+    assert.ok((await inspectExport(root)).some((error) => error.includes('Unpublished')));
+    assert.ok(
+      (await inspectExport(root, { localDesignPreview: true })).some((error) =>
+        error.includes('exact private directory'),
+      ),
+    );
+    await writeFile(join(root, 'index.html'), 'safe');
     for (const value of [
       'sb_secret_' + 'x'.repeat(24),
       'sbp_oauth_' + '0'.repeat(40),
