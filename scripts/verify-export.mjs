@@ -13,7 +13,9 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
   async function visit(directory) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
       const path = resolve(directory, entry.name);
-      if (entry.isDirectory()) await visit(path);
+      if (entry.isSymbolicLink())
+        errors.push(`Symbolic link in public export: ${relative(root, path)}`);
+      else if (entry.isDirectory()) await visit(path);
       else files.push(path);
     }
   }
@@ -52,7 +54,7 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
     }
     for (const [key, value] of Object.entries(process.env)) {
       if (
-        /^(SUPABASE_SECRET_KEY|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD|CLOUDFLARE_API_TOKEN|RESEND_API_KEY|GOOGLE_CLIENT_SECRET)$/.test(
+        /^(SUPABASE_SECRET_KEY|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD|CLOUDFLARE_API_TOKEN|RESEND_API_KEY|GOOGLE_CLIENT_SECRET|AGENTGRID_ENVELOPE_KEYS|AGENTGRID_RATE_KEY)$/.test(
           key,
         ) &&
         value &&
@@ -60,6 +62,23 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
         content.includes(value)
       ) {
         errors.push(`Privileged environment value in public artifact: ${name}`);
+      }
+      if (key === 'AGENTGRID_ENVELOPE_KEYS' && value) {
+        try {
+          const keys = JSON.parse(value);
+          if (
+            Array.isArray(keys) &&
+            keys.some(
+              (entry) =>
+                typeof entry?.material === 'string' &&
+                entry.material.length >= 12 &&
+                content.includes(entry.material),
+            )
+          )
+            errors.push(`Privileged encryption material in public artifact: ${name}`);
+        } catch {
+          /* Malformed configuration is separately rejected by the runtime. */
+        }
       }
     }
   }

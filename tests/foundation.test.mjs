@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -105,6 +105,26 @@ test('Git helper refuses credentials for any other repository or protocol', asyn
     }
     assert.equal(run('', 'store').stdout, '');
   } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('public export refuses encrypted-session key material and follows no symbolic links', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'agentgrid-auth-export-'));
+  const previous = process.env.AGENTGRID_ENVELOPE_KEYS;
+  try {
+    for (const name of ['index.html', '404.html', 'robots.txt', '_headers'])
+      await writeFile(join(root, name), 'safe');
+    const material = 'synthetic-local-key-material-for-export-only';
+    process.env.AGENTGRID_ENVELOPE_KEYS = JSON.stringify([{ id: 'synthetic', material }]);
+    await writeFile(join(root, 'bundle.js'), material);
+    assert.ok((await inspectExport(root)).some((error) => error.includes('encryption material')));
+    await writeFile(join(root, 'bundle.js'), 'safe');
+    await symlink(join(root, 'index.html'), join(root, 'linked.js'));
+    assert.ok((await inspectExport(root)).some((error) => error.includes('Symbolic link')));
+  } finally {
+    if (previous === undefined) delete process.env.AGENTGRID_ENVELOPE_KEYS;
+    else process.env.AGENTGRID_ENVELOPE_KEYS = previous;
     await rm(root, { recursive: true, force: true });
   }
 });
