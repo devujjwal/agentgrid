@@ -66,9 +66,11 @@ resources must be inventoried before any scheduled jobs are introduced.
 AgentGrid-specific email should use Supabase's server-only OTP generation and an
 AgentGrid-only Resend sending credential. Supabase supports custom delivery via
 [`generateLink`](https://supabase.com/docs/reference/javascript/auth-admin-generatelink).
-This avoids changing the shared project's SMTP and email templates. The complete
-flow must validate actual delivery, expiry, reuse rejection, abuse limits and
-account-linking behavior before acceptance. It is not implemented yet.
+This avoids changing the shared project's SMTP and email templates. The server
+transport and an explicit owner-only provider proof are implemented. The live
+proof validates delivery to the recipient server, code verification, replay
+rejection and local-only sign-out. The complete application flow still requires
+expiry, abuse, session/CSRF and account-linking validation before acceptance.
 
 Google requires an AgentGrid OAuth client and additive provider/callback setup;
 see [Supabase Google configuration](https://supabase.com/docs/guides/auth/social-login/auth-google).

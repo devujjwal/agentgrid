@@ -33,11 +33,13 @@ visual system. Do not point the production domain at this build.
 
 Cloudflare and Resend personal browser login is complete. Cloudflare email is
 verified. Google Cloud personal sign-in is complete; AgentGrid's separate OAuth
-project has no linked billing account. Required OAuth user-data policy acceptance
-and email-sending credential authorization are pending.
+project has no linked billing account. Required OAuth policy acceptance and scoped
+email credential creation were authorized and completed. Google web-client
+credential/configuration approval is pending separately.
 Do not paste credentials into
 chat, tracked files, or workflow logs. New account terms must be completed by the
-account owner. No paid plan or automatic recharge is authorized.
+account owner or explicitly authorized at the acceptance step. No paid plan or
+automatic recharge is authorized.
 
 Supabase's authenticated account reports that `devujjwal` has reached the two
 active free project limit. Its existing organization is managed through Vercel
@@ -57,8 +59,9 @@ the issue; do not silently modify protected policies.
 
 ## Phase 0 remaining evidence
 
-- AgentGrid-only sending domain/credential and real OTP delivery through its
-  server-side adapter; preserve PicMagic SMTP/templates.
+- Complete application OTP challenge/session/abuse validation; the isolated
+  sending domain/key and real provider OTP delivery are verified. Preserve
+  PicMagic SMTP/templates.
 - Google OAuth ownership and callback configuration.
 - Secure access for future previews containing unpublished resources. Noindex is
   crawler guidance, not access control. The current Pages proof contains no private data.
@@ -71,10 +74,10 @@ Cloudflare static delivery and private-repository GitHub CI are already verified
 Supabase connectivity, schema inventory, and initial cross-application RLS denial
 checks are verified. See the implementation ledger and shared-backend guide.
 
-## Prepared email setup
+## Verified email setup
 
-Resend domain `mail.agentgrid.me` is registered in Tokyo (`ap-northeast-1`) but
-unverified. Current provider instructions use a DKIM TXT plus two CNAMEs:
+Resend domain `mail.agentgrid.me` is verified in Tokyo (`ap-northeast-1`). Current
+provider instructions use a DKIM TXT plus two CNAMEs:
 
 | Type  | Host relative to agentgrid.me | Destination                                          |
 | ----- | ----------------------------- | ---------------------------------------------------- |
@@ -82,15 +85,32 @@ unverified. Current provider instructions use a DKIM TXT plus two CNAMEs:
 | CNAME | `rsend.mail`                  | `rsend-apne1.forge.rmta.net`                         |
 | CNAME | `send.mail`                   | `send.forge.rmta.net`                                |
 
-The three additions are filled in GoDaddy but not saved. No existing DNS record is
-being replaced, and the website's parked apex remains untouched. Receiving is off.
+The three additions are saved in GoDaddy and resolve at the authoritative server.
+No existing DNS record was replaced; the website's parked apex remains untouched.
+Receiving is off; TLS is enforced for this domain only.
 Do not infer old provider MX/SPF instructions; use the records shown for this domain.
-After explicit email-authority authorization, save and verify DNS, then issue
-`agentgrid_transactional` with Sending access restricted to `mail.agentgrid.me`.
-The pending domain does not yet appear in Resend's credential domain selector.
-Do not create an All domains key as a workaround. Keep other keys/domains unchanged.
-Store any approved credential in ignored private configuration with mode 0600,
-then in the AgentGrid server's secret configuration; never expose it in logs or Git.
+Owner authorized email authority and key creation. `agentgrid_transactional` is
+issued with Sending access restricted to `mail.agentgrid.me`, verified on its
+detail page. Other keys/domains remain unchanged. The key is in ignored
+`.env.agentgrid.local` with mode 0600; it has not yet been supplied to Cloudflare.
+
+`backend/email/resend.ts` is a server transport, never a public route. Provider
+acceptance does not mean inbox delivery; inspect delivery events separately.
+The explicit live proof command sends only to the owner's test alias, keeps codes
+and sessions in memory, checks consumption/replay, and signs out locally:
+
+```sh
+NODE_USE_SYSTEM_CA=1 node --env-file=.env.agentgrid.local scripts/verify-auth-delivery.mjs --send-owner-test
+```
+
+Never run this in CI or against arbitrary recipients. The fixture is a private
+managed-auth identity, not a creator/profile/activity seed. The verified SDK is
+pinned to 2.117.2. System CA trust is used normally; TLS validation is never disabled.
+Existing managed Supabase public/secret keys are stored locally for this test;
+no key was issued, rotated, disabled, or transmitted to another hosting provider.
+Before backend deployment, use an independently revocable AgentGrid-owned secret
+and explicitly authorize its privileged storage/transmission. That key still has
+project-wide privileges; a separate name does not restrict its database access.
 
 ## Public export boundary
 
