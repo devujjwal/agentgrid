@@ -56,6 +56,10 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
       ),
     );
     await writeFile(join(root, 'index.html'), 'safe');
+    await mkdir(join(root, 'qa/distribution'), { recursive: true });
+    await writeFile(join(root, 'qa/distribution/index.html'), 'Synthetic fixture');
+    assert.ok((await inspectExport(root)).some((error) => error.includes('Reserved')));
+    await rm(join(root, 'qa'), { recursive: true });
     for (const value of [
       'sb_secret_' + 'x'.repeat(24),
       'sbp_oauth_' + '0'.repeat(40),

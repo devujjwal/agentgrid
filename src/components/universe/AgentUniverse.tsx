@@ -2,11 +2,12 @@
 
 import { useState, useSyncExternalStore } from 'react';
 import type { DiscoveryResource } from '../../domain/discovery';
-import { draftRelations, layoutUniverse } from './model';
+import { type UniverseRelation, layoutUniverse } from './model';
 import { AgentGlyph } from './AgentGlyph';
 
 export interface AgentUniverseProps {
   resources: readonly DiscoveryResource[];
+  relations: readonly UniverseRelation[];
   matchedSlugs: readonly string[];
   selectedSlug: string;
   onSelect: (slug: string, focusDetails?: boolean) => void;
@@ -22,6 +23,7 @@ const serverSnapshot = () => false;
 
 export function AgentUniverse({
   resources,
+  relations,
   matchedSlugs,
   selectedSlug,
   onSelect,
@@ -29,7 +31,7 @@ export function AgentUniverse({
   const compact = useSyncExternalStore(subscribeCompact, compactSnapshot, serverSnapshot);
   const [hovered, setHovered] = useState<string | null>(null);
   const focus = hovered ?? selectedSlug;
-  const model = layoutUniverse(resources, draftRelations, matchedSlugs, selectedSlug, compact);
+  const model = layoutUniverse(resources, relations, matchedSlugs, selectedSlug, compact);
   const nodeBySlug = new Map(model.nodes.map((node) => [node.resource.slug, node]));
   const currentIndex = matchedSlugs.indexOf(selectedSlug);
   function advance(direction: number) {
@@ -115,7 +117,7 @@ export function AgentUniverse({
               <a
                 href="#resource-inspector"
                 tabIndex={matched ? 0 : -1}
-                aria-label={`${label} ${resource.category.replaceAll('-', ' ')} — Inspect ${resource.title}, unpublished draft`}
+                aria-label={`${label} ${resource.category.replaceAll('-', ' ')} — Inspect ${resource.title}, ${resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
                 aria-current={selected ? 'true' : undefined}
                 onClick={(event) => {
                   event.preventDefault();

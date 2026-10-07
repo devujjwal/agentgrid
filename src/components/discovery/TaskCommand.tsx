@@ -4,11 +4,13 @@ const prompts = ['Triage my emails', 'Plan a campaign', 'Review a code diff', 'H
 
 export function TaskCommand({
   query,
+  draftCatalogue,
   onQuery,
   onPrompt,
   onExplore,
 }: {
   query: string;
+  draftCatalogue: boolean;
   onQuery: (value: string) => void;
   onPrompt: (value: string) => void;
   onExplore: () => void;
@@ -43,8 +45,9 @@ export function TaskCommand({
         </button>
       </div>
       <p id="task-search-help" className="sr-only">
-        Search the local draft catalogue by task. These resources use interactive instructions; no
-        connector or background execution is implied.
+        {draftCatalogue
+          ? 'Search the local draft catalogue by task. These resources use interactive instructions; no connector or background execution is implied.'
+          : 'Search reviewed resources by task. Check each resource’s setup and requirements before granting access or taking action.'}
       </p>
       <div className="prompt-row">
         <span className="prompt-label">Try a task</span>

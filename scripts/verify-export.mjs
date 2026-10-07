@@ -25,6 +25,11 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
   }
   for (const path of files) {
     const name = relative(root, path);
+    if (
+      name.includes('__agentgrid_unpublished__') ||
+      (!localDesignPreview && name.startsWith('qa/'))
+    )
+      errors.push(`Reserved not-found path in public export: ${name}`);
     if (/(^|\/)\.env(?:\.|$)|\.map$|(^|\/)(backups|\.git)\//.test(name)) {
       errors.push(`Private/debug artifact in public export: ${name}`);
     }
