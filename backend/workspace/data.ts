@@ -9,6 +9,9 @@ import {
   OnboardingInputSchema,
 } from '../../src/domain/workspace.ts';
 import { HttpFailure } from '../http/guard.ts';
+import { SavedListSchema, SaveStateSchema } from '../../src/domain/saves.ts';
+import { savedResources } from './saves.ts';
+import { databaseFailure } from './failure.ts';
 
 export interface WorkspaceData {
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
@@ -17,15 +20,8 @@ export interface WorkspaceData {
   updateProfile: (input: z.infer<typeof ProfileInputSchema>) => Promise<void>;
   visibility: (makePublic: boolean) => Promise<void>;
   favorite: (resourceId: string, saved: boolean) => Promise<boolean>;
-}
-function databaseFailure(error: { code: string }): never {
-  if (error.code === '23505') throw new HttpFailure(409, 'conflict');
-  if (error.code === '40001') throw new HttpFailure(409, 'conflict');
-  if (error.code === 'P0001') throw new HttpFailure(429, 'rate-limited');
-  if (error.code === '42501') throw new HttpFailure(403, 'request-refused');
-  if (error.code === '23514' || error.code === '22P02')
-    throw new HttpFailure(400, 'invalid-request');
-  throw new HttpFailure(503, 'service-unavailable');
+  saved: (offset: number) => Promise<z.infer<typeof SavedListSchema>>;
+  saveState: (resourceId: string) => Promise<z.infer<typeof SaveStateSchema>>;
 }
 export function workspaceData(
   configuration: AuthConfiguration,
@@ -56,6 +52,7 @@ export function workspaceData(
   };
   return {
     identity,
+    ...savedResources(client, member),
     async agents(offset) {
       const profile = await member();
       const result = await client

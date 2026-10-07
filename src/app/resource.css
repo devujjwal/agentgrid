@@ -64,6 +64,46 @@
   opacity: 0.6;
   cursor: default;
 }
+.resource-action-row .save-agent {
+  background: transparent;
+  color: var(--ink);
+  gap: 0.75rem;
+}
+.save-agent[aria-pressed='true'] {
+  border-color: var(--signal);
+}
+.save-signal {
+  color: var(--signal);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.save-agent[aria-pressed='true'] .save-signal {
+  animation: saved-connection 400ms ease-out;
+}
+.resource-save {
+  max-width: 28rem;
+}
+.resource-save p {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-block: 0.75rem 0;
+}
+@keyframes saved-connection {
+  from {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .save-agent[aria-pressed='true'] .save-signal {
+    animation: none;
+  }
+}
 .resource-version,
 .resource-hero .draft-status {
   font-family: var(--font-mono);

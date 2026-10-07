@@ -17,6 +17,14 @@ test('workspace HTTP requires a verified session and exact CSRF; caller roles/ow
     return {
       identity: async () => snapshot,
       agents: async (offset) => ({ agents: [], hasMore: false, offset }),
+      saved: async (offset) => {
+        calls.push(['saved', offset]);
+        return { agents: [], hasMore: false, offset };
+      },
+      saveState: async (id) => {
+        calls.push(['save-state', id]);
+        return { saved: true, available: false };
+      },
       onboard: async (input) => {
         calls.push(['onboard', input]);
       },
@@ -106,6 +114,39 @@ test('workspace HTTP requires a verified session and exact CSRF; caller roles/ow
     '/api/workspace/agents/?offset=0&offset=20',
   ])
     assert.equal((await handle(make(path))).status, 400);
+  const savedResponse = await handle(make('/api/workspace/saved/?offset=20'));
+  assert.equal(savedResponse.status, 200);
+  assert.equal(savedResponse.headers.get('cache-control'), 'private, no-store');
+  assert.deepEqual(await savedResponse.json(), { agents: [], hasMore: false, offset: 20 });
+  const resourceId = '20000000-0000-4000-8000-000000000001';
+  assert.deepEqual(
+    await (await handle(make('/api/workspace/favorite/?resourceId=' + resourceId))).json(),
+    { saved: true, available: false },
+  );
+  const prior = calls.length;
+  for (const path of [
+    '/api/workspace/saved/?offset=10000',
+    '/api/workspace/saved/?offset=-1',
+    '/api/workspace/saved/?offset=0&offset=20',
+    '/api/workspace/saved/?owner=forged',
+    '/api/workspace/favorite/',
+    '/api/workspace/favorite/?resourceId=forged',
+    '/api/workspace/favorite/?resourceId=' + resourceId + '&owner=forged',
+    '/api/workspace/favorite/?resourceId=' + resourceId + '&resourceId=' + resourceId,
+  ])
+    assert.equal((await handle(make(path))).status, 400);
+  assert.ok(calls.slice(prior).every(([action]) => action === 'session'));
+  assert.equal((await handle(make('/api/workspace/saved/', {}, headers))).status, 405);
+  assert.equal(
+    (await handle(make('/api/workspace/saved/', undefined, { 'sec-fetch-site': 'cross-site' })))
+      .status,
+    403,
+  );
+  assert.equal(
+    (await handle(make('/api/workspace/favorite/', { resourceId, saved: false }, headers))).status,
+    200,
+  );
+  assert.deepEqual(calls.at(-1), ['save', resourceId, false]);
 });
 test('workspace uses publishable key plus the verified bearer, explicit owner filters and live membership', async () => {
   const configuration = syntheticConfiguration(),

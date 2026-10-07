@@ -1,5 +1,6 @@
 import { platformLabel } from '../../domain/platforms';
 import { ResourceReuse } from './ResourceReuse';
+import { SaveAgent } from './SaveAgent';
 import { ResourceBoundaries } from './ResourceBoundaries';
 import { ResourceExamples } from './ResourceExamples';
 import { ResourceInputs } from './ResourceInputs';
@@ -61,6 +62,9 @@ export function ResourceDetail({
                 <span className="draft-status">Unpublished draft · distribution unavailable</span>
               )}
               <span className="resource-version">Version {spec.version}</span>
+              {publication && (
+                <SaveAgent resourceId={publication.resource_id} slug={spec.identity.slug} />
+              )}
             </div>
           </div>
           <svg className="resource-emblem" viewBox="-48 -48 96 96" aria-hidden="true">
