@@ -134,7 +134,7 @@ export function managedIdentity(
     },
     async signOut(value) {
       // Scope local revokes only this managed session, preserving other apps.
-      const result = await client(true).auth.admin.signOut(value.accessToken, 'local');
+      const result = await client().auth.admin.signOut(value.accessToken, 'local');
       if (result.error) throw new HttpFailure(503, 'service-unavailable');
     },
   };

@@ -140,7 +140,14 @@ test('workspace uses publishable key plus the verified bearer, explicit owner fi
     if (url.pathname === '/rest/v1/rpc/agentgrid_workspace_identity')
       return Response.json(snapshot);
     if (url.pathname === '/rest/v1/agentgrid_agents') return Response.json([]);
-    if (url.pathname === '/rest/v1/agentgrid_profiles') return Response.json({ id: profile.id });
+    if (url.pathname === '/rest/v1/rpc/agentgrid_update_profile') {
+      assert.deepEqual(JSON.parse(init.body), {
+        requested_display_name: 'Owner',
+        requested_bio: '',
+        requested_website: null,
+      });
+      return Response.json(profile.id);
+    }
     if (url.pathname === '/rest/v1/rpc/agentgrid_set_favorite')
       return Response.json(JSON.parse(init.body).saved);
     throw new Error('Unexpected application resource');
@@ -152,10 +159,7 @@ test('workspace uses publishable key plus the verified bearer, explicit owner fi
     'eq.' + profile.id,
   );
   await data.updateProfile({ displayName: 'Owner', bio: '', website: '' });
-  assert.equal(
-    requests.find((url) => url.pathname.endsWith('/agentgrid_profiles')).searchParams.get('id'),
-    'eq.' + profile.id,
-  );
+  assert.ok(requests.some((url) => url.pathname.endsWith('/agentgrid_update_profile')));
   assert.equal(await data.favorite('20000000-0000-4000-8000-000000000001', true), true);
   await assert.rejects(
     data.onboard({

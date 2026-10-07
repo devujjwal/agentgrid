@@ -81,6 +81,7 @@ test('pinned managed SDK uses PKCE, server verification, custom email generation
   const logout = requests.find(({ url }) => url.pathname === '/auth/v1/logout');
   assert.equal(logout.url.searchParams.get('scope'), 'local');
   assert.equal(logout.headers.get('authorization'), 'Bearer ' + issued.accessToken);
+  assert.equal(logout.headers.get('apikey'), configuration.publishableKey);
   assert.equal(
     requests.filter(({ url }) => url.pathname === '/auth/v1/admin/generate_link').length,
     1,

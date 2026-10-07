@@ -15,6 +15,25 @@ begin
  if value::text like '%00000000-0000-4000-8000-000000000001%' then raise exception 'Managed identity leaked'; end if;
 end $test$;
 reset role;
+do $test$
+begin
+ if has_column_privilege('authenticated','public.agentgrid_profiles','bio','update') then
+  raise exception 'Unbounded direct profile edit still granted'; end if;
+end $test$;
+set local role authenticated;
+select public.agentgrid_update_profile('Fixture owner','Bounded self-only edit',null);
+do $test$
+declare i integer;
+begin
+ for i in 1..59 loop perform public.agentgrid_set_profile_visibility(false); end loop;
+ begin
+  perform public.agentgrid_update_profile('Fixture owner','Quota bypass',null);
+  raise exception 'Profile mutation budget bypassed';
+ exception when sqlstate 'P0001' then
+  if sqlerrm='Profile mutation budget bypassed' then raise; end if;
+ end;
+end $test$;
+reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated","user_metadata":{"role":"administrator"}}';
 set local role authenticated;
 do $test$

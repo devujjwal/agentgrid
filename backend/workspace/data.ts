@@ -99,18 +99,13 @@ export function workspaceData(
     },
     async updateProfile(input) {
       const profile = await member();
-      const result = await client
-        .from('agentgrid_profiles')
-        .update({
-          display_name: input.displayName,
-          bio: input.bio,
-          website_url: input.website || null,
-        })
-        .eq('id', profile.id)
-        .select('id')
-        .single();
+      const result = await client.rpc('agentgrid_update_profile', {
+        requested_display_name: input.displayName,
+        requested_bio: input.bio,
+        requested_website: input.website || null,
+      });
       if (result.error) databaseFailure(result.error);
-      if (result.data.id !== profile.id) throw new HttpFailure(503, 'service-unavailable');
+      if (result.data !== profile.id) throw new HttpFailure(503, 'service-unavailable');
     },
     async visibility(makePublic) {
       await member();
