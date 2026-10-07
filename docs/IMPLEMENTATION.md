@@ -475,3 +475,12 @@ than treating existing code as completed functionality.
 - See `IDENTITY_ACCEPTANCE.md` for tested browser scenarios and evidence limits.
   Final sign-out/dialog recovery, private CI and exact-main migration rollout
   remain open. Full community and production launch are not yet accepted.
+
+### Review browser gate resolved
+
+The replacement sign-out dialog now passes cancellation, focus restoration,
+confirmed logout, anonymous history concealment and discarded-review recovery.
+Reconnection returns the saved title only. PR11's implementation head passed
+CI run `37668163054`, including all thirteen disposable migrations. Continue
+through final-head/main CI and guarded additive rollout before the next
+community increment; no production app deployment is implied.

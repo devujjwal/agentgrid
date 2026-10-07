@@ -365,3 +365,18 @@ adding server code must never silently broaden the old infrastructure release.
   old prompt is dismissed. This is an open gate, not completed functionality.
   Private CI, migration 013 rollout, actual consent/member journeys, staff UI and
   production acceptance remain pending. No real community data was created.
+
+### Final review sign-out acceptance
+
+- The resumed in-app browser confirms the replacement HTML dialog opens with
+  cancellation focused. Escape restores the Sign out control; internal history
+  retains the exact held review text after cancellation.
+- Confirmed sign-out returns to the anonymous sign-in page. History exposes only
+  the anonymous review gate. Signing in in a separate tab and reconnecting the
+  original editor restores the saved review, not the discarded held title. This
+  closes the outstanding local sign-out/review-buffer gate.
+- PR11 head `43d92215c56eaa736c3ac5d890f5a62d79d5695d` passed CI run
+  `37668163054`, including dependency audits and thirteen-migration database
+  acceptance. Exact final-head/main CI and guarded migration rollout remain
+  release requirements. Real membership, moderation UI and production launch
+  are separate outstanding product gates.
