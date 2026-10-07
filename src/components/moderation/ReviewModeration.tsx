@@ -85,6 +85,9 @@ export function ReviewModeration() {
           Your workspace ↗
         </Link>
       </div>
+      <Link className="action-secondary" prefetch={false} href="/workspace/moderation/reports/">
+        Investigate reports ↗
+      </Link>
       <ReviewQueue select={setSelected} />
     </>
   );

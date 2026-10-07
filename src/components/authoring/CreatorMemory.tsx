@@ -14,6 +14,12 @@ import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
 import type { ReviewInput } from '../../domain/reviews';
 
+export interface ReportModerationBuffer {
+  email: string;
+  reportId: string;
+  explanation: string;
+}
+
 export interface ModerationBuffer {
   email: string;
   reviewId: string;
@@ -45,6 +51,8 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  reportModerationNotes: ReportModerationBuffer | null;
+  setReportModerationNotes: Dispatch<SetStateAction<ReportModerationBuffer | null>>;
   moderationNotes: ModerationBuffer | null;
   setModerationNotes: Dispatch<SetStateAction<ModerationBuffer | null>>;
   buffer: DraftBuffer | null;
@@ -61,6 +69,9 @@ const Memory = createContext<{
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
+  const [reportModerationNotes, setReportModerationNotes] = useState<ReportModerationBuffer | null>(
+    null,
+  );
   const [moderationNotes, setModerationNotes] = useState<ModerationBuffer | null>(null);
   const [buffer, setBuffer] = useState<DraftBuffer | null>(null);
   const [profileEdits, setProfileEdits] = useState<ProfileEditBuffer | null>(null);
@@ -72,7 +83,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       !profileEdits?.dirty &&
       !reportEdits?.input.explanation &&
       !reviewEdits &&
-      !moderationNotes?.explanation
+      !moderationNotes?.explanation &&
+      !reportModerationNotes?.explanation
     )
       return;
     const warn = (event: BeforeUnloadEvent) => {
@@ -121,7 +133,7 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('beforeunload', warn);
       document.removeEventListener('click', navigate, true);
     };
-  }, [buffer, profileEdits, reportEdits, reviewEdits, moderationNotes]);
+  }, [buffer, profileEdits, reportEdits, reviewEdits, moderationNotes, reportModerationNotes]);
   return (
     <Memory.Provider
       value={{
@@ -130,7 +142,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
           profileEdits?.dirty ||
           reportEdits?.input.explanation ||
           reviewEdits ||
-          moderationNotes?.explanation,
+          moderationNotes?.explanation ||
+          reportModerationNotes?.explanation,
         ),
         buffer,
         setBuffer,
@@ -142,6 +155,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         setReviewEdits,
         moderationNotes,
         setModerationNotes,
+        reportModerationNotes,
+        setReportModerationNotes,
       }}
     >
       {children}

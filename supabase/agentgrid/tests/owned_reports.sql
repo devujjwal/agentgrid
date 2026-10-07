@@ -63,7 +63,7 @@ set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","rol
 set local role authenticated;
 select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_owned_reports())=1,'staff reporter API remains self-only');
 select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_owned_reports(0,'40000000-0000-4000-8000-000000000001'))=0,'staff cannot use reporter read as moderation');
-select public.agentgrid_resolve_report('40000000-0000-4000-8000-000000000001','resolved','Synthetic live report resolution recorded by the moderator.');
+select public.agentgrid_decide_report('40000000-0000-4000-8000-000000000001','resolved','Synthetic live report resolution recorded by the moderator.');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated"}';
 set local role authenticated;

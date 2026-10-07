@@ -12,6 +12,7 @@ import {
 } from '../../src/domain/moderation.ts';
 import { HttpFailure } from '../http/guard.ts';
 import { databaseFailure } from './failure.ts';
+import { reportModerationResources } from './report-moderation.ts';
 
 export function moderationResources(
   client: SupabaseClient,
@@ -26,6 +27,7 @@ export function moderationResources(
       throw new HttpFailure(403, 'request-refused');
   }
   return {
+    ...reportModerationResources(client, staff),
     async reviewQueue(state: ReviewQueueState, offset: number) {
       await staff();
       if (
