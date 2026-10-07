@@ -518,3 +518,38 @@ CSP hardening remains open. Responsive widths 320/768/1024/1440 have no overflow
 and choice controls are 48px. These are synthetic loopback results, not production
 latency or field INP. Staff moderation of reports/submissions and public forks
 remain separate implementation gates. Migration 014 is not yet applied remotely.
+
+### Staff review CI gate
+
+PR12 final head `7a95e8761d5856048c7b03e7c67a2d004ac243fc` passed CI
+`37673399890`; merge/main `689f0d78bbef4d059d06b4a94b00bc49a40ee9d8`
+passed `37674118430`. Migration 014 remains pending guarded rollout alongside
+015 after the next exact-main gate.
+
+### Staff report investigation — local acceptance
+
+Migration 015 captures immutable, staff-only evidence when an agent, review or
+profile concern is submitted. Existing reports are not retroactively assigned
+invented snapshots. Queue summaries omit confidential prose and identity; detail
+and decision endpoints require active AgentGrid staff and verified bearer
+permissions. Reporter/target-owner conflicts cannot resolve their own reports.
+Closing an open concern records an immutable audit entry and the reporter-facing
+response; it does not silently perform a resource takedown.
+
+The private UI supports bounded live queues, captured evidence, explicit outcome
+confirmation, stale-closure refusal, uncertain-write recovery, and tab-held
+response notes. Browser acceptance passes cancellation/focus, actual receipt,
+competing closure, lost acknowledgement, involved-moderator denial, absent legacy
+capture, plaintext review markup, profile evidence, revoked-role concealment,
+internal history recovery, and sign-out clearing after reconnection.
+
+At 320/768/1024/1440px there is no horizontal overflow; choice targets are 48px.
+Signed-in mobile queue lab: performance 98, accessibility 100, best practices 96,
+LCP 2.260s, TBT 14ms, CLS 0.07024. Private-route SEO 63 is intentional. Known
+inline CSP hardening remains open. Results use disposable loopback fixtures,
+not public activity, production latency or field INP.
+
+Formatting, lint, strict typecheck, 90 Node/11 Python tests, production export,
+and the 785,699-byte compiled worker pass. Fifteen-migration actor/isolation and
+extraction tests passed with the backend increment. Remote migrations remain
+001–013 until exact-main CI and the guarded additive operator complete.

@@ -35,7 +35,7 @@ export async function communityRequest<T>(
       path,
     );
   const staffPath =
-    /^\/api\/moderation\/(?:reviews\/\?state=(?:pending|published|hidden)&offset=\d{1,4}|review\/\?reviewId=[a-fA-F0-9-]{36}|decision\/)$/.test(
+    /^\/api\/moderation\/(?:reviews\/\?state=(?:pending|published|hidden)&offset=\d{1,4}|review\/\?reviewId=[a-fA-F0-9-]{36}|reports\/\?state=(?:open|resolved|dismissed)&offset=\d{1,4}|report\/\?reportId=[a-fA-F0-9-]{36}|decision\/|resolution\/)$/.test(
       path,
     );
   if (!creatorPath && !staffPath) throw new CommunityError('request-refused');

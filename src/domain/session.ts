@@ -14,7 +14,8 @@ export function signInReturnPath(value: unknown): string {
     value === '/workspace/' ||
     value === '/saves/' ||
     value === '/workspace/reports/' ||
-    value === '/workspace/moderation/'
+    value === '/workspace/moderation/' ||
+    value === '/workspace/moderation/reports/'
   )
     return value;
   if (

@@ -181,3 +181,29 @@
     gap: 1rem;
   }
 }
+.moderation-context {
+  padding-block: 2rem;
+  border-block-end: 1px solid var(--line-strong);
+}
+.moderation-context h3 {
+  font: 400 2rem/1.2 var(--font-editorial);
+}
+.moderation-context p {
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.moderation-detail summary {
+  cursor: pointer;
+  min-height: 3rem;
+  padding-block: 0.75rem;
+  line-height: 1.5;
+}
+.moderation-code {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 1rem;
+  background: var(--surface-bright);
+  border: 1px solid var(--line-strong);
+}

@@ -1,6 +1,7 @@
 /** Disposable loopback UI acceptance. All provider/database responses are
  * synthetic memory fixtures; no env credentials, email or external fetch. */
 import { Readable } from 'node:stream';
+import { readFile } from 'node:fs/promises';
 import { randomUUID, createHash } from 'node:crypto';
 import { identityFixture, syntheticConfiguration } from '../tests/fixtures/identity.mjs';
 import { identityRuntime } from '../backend/auth/runtime.ts';
@@ -120,6 +121,14 @@ export async function syntheticCommunityPreview() {
   let syntheticStaff = false,
     failStaffAck = false;
   const staffReviews = new Map();
+  const staffReports = new Map();
+  let failStaffReportAck = false;
+  const capturedAgent = JSON.parse(
+    await readFile(
+      new URL('../content/agents/inbox-priority-triage/1.0.0.agent.json', import.meta.url),
+      'utf8',
+    ),
+  );
   const transport = async (input, init) => {
     const url = new URL(String(input));
     if (url.origin !== configuration.supabaseOrigin) throw new Error('Outbound traffic refused.');
@@ -141,6 +150,34 @@ export async function syntheticCommunityPreview() {
         { code: '42501', message: 'Synthetic membership denied' },
         { status: 403 },
       );
+    if (
+      ['agentgrid_staff_reports', 'agentgrid_staff_report', 'agentgrid_decide_report'].some(
+        (name) => url.pathname.endsWith('/' + name),
+      )
+    ) {
+      if (!syntheticStaff) return Response.json({ code: '42501' }, { status: 403 });
+      if (url.pathname.endsWith('/agentgrid_staff_reports'))
+        return Response.json(
+          [...staffReports.values()]
+            .filter((row) => row.state === body.requested_state)
+            .slice(body.requested_offset, body.requested_offset + 21)
+            .map(({ id, targetKind, category, state, createdAt }) => ({
+              id,
+              targetKind,
+              category,
+              state,
+              createdAt,
+            })),
+        );
+      const row = staffReports.get(body.report_resource_id);
+      if (url.pathname.endsWith('/agentgrid_staff_report')) return Response.json(row ?? null);
+      if (!row || row.conflictOfInterest) return Response.json({ code: '42501' }, { status: 403 });
+      if (row.state !== 'open') return Response.json({ code: '40001' }, { status: 409 });
+      row.state = body.decision;
+      row.resolution = body.explanation;
+      row.resolvedAt = new Date().toISOString();
+      return Response.json(failStaffReportAck ? null : row);
+    }
     if (
       ['agentgrid_staff_reviews', 'agentgrid_staff_review', 'agentgrid_decide_review'].some(
         (name) => url.pathname.endsWith('/' + name),
@@ -503,7 +540,7 @@ export async function syntheticCommunityPreview() {
                 if(document.querySelector('[data-qa-tools]'))return;
                 const tools=document.createElement('aside');tools.dataset.qaTools='synthetic';
                 tools.style.cssText='padding:1rem;border-top:1px solid';
-                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><button data-qa-action="publish-review">Approve synthetic review</button><button data-qa-action="hide-review">Hide synthetic review</button><button data-qa-action="fail-review-ack">Fail synthetic review acknowledgement</button><button data-qa-action="restore-review-ack">Restore synthetic review acknowledgement</button><button data-qa-action="block-review-source">Block synthetic review source</button><button data-qa-action="restore-review-source">Restore synthetic review source</button><button data-qa-action="own-review-source">Make synthetic review source own</button><button data-qa-action="other-review-source">Make synthetic review source another creator</button><button data-qa-action="advance-review-source">Advance synthetic release</button><button data-qa-action="compete-review">Simulate competing review edit</button><button data-qa-action="page-reviews">Add synthetic review pagination fixtures</button><button data-qa-action="clear-page-reviews">Remove synthetic review pagination fixtures</button><button data-qa-action="staff-on">Appoint synthetic moderator</button><button data-qa-action="staff-off">Revoke synthetic moderator</button><button data-qa-action="staff-fixtures">Create synthetic staff review queue</button><button data-qa-action="staff-compete">Simulate competing staff decision</button><button data-qa-action="staff-fail-ack">Fail synthetic staff acknowledgement</button><button data-qa-action="staff-restore-ack">Restore synthetic staff acknowledgement</button><button data-qa-action="staff-own">Make first staff review self-authored</button><button data-qa-action="staff-withdraw">Withdraw first staff review</button><p data-qa-status role="status"></p>';
+                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><button data-qa-action="publish-review">Approve synthetic review</button><button data-qa-action="hide-review">Hide synthetic review</button><button data-qa-action="fail-review-ack">Fail synthetic review acknowledgement</button><button data-qa-action="restore-review-ack">Restore synthetic review acknowledgement</button><button data-qa-action="block-review-source">Block synthetic review source</button><button data-qa-action="restore-review-source">Restore synthetic review source</button><button data-qa-action="own-review-source">Make synthetic review source own</button><button data-qa-action="other-review-source">Make synthetic review source another creator</button><button data-qa-action="advance-review-source">Advance synthetic release</button><button data-qa-action="compete-review">Simulate competing review edit</button><button data-qa-action="page-reviews">Add synthetic review pagination fixtures</button><button data-qa-action="clear-page-reviews">Remove synthetic review pagination fixtures</button><button data-qa-action="staff-on">Appoint synthetic moderator</button><button data-qa-action="staff-off">Revoke synthetic moderator</button><button data-qa-action="staff-fixtures">Create synthetic staff review queue</button><button data-qa-action="staff-compete">Simulate competing staff decision</button><button data-qa-action="staff-fail-ack">Fail synthetic staff acknowledgement</button><button data-qa-action="staff-restore-ack">Restore synthetic staff acknowledgement</button><button data-qa-action="staff-own">Make first staff review self-authored</button><button data-qa-action="staff-withdraw">Withdraw first staff review</button><button data-qa-action="staff-report-fixtures">Create synthetic staff report queue</button><button data-qa-action="staff-report-compete">Simulate competing report closure</button><button data-qa-action="staff-report-fail-ack">Fail synthetic resolution acknowledgement</button><button data-qa-action="staff-report-restore-ack">Restore synthetic resolution acknowledgement</button><button data-qa-action="staff-report-own">Mark first report as involved</button><button data-qa-action="staff-report-legacy">Remove first report captured context</button><p data-qa-status role="status"></p>';
                 document.body.append(tools);
                 tools.querySelectorAll('[data-qa-action]').forEach(button=>button.addEventListener('click',async()=>{try{const response=await fetch('/qa-control/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:button.dataset.qaAction})});tools.querySelector('[data-qa-status]').textContent=response.ok?'Synthetic state changed; reconnect the editor.':'Synthetic action refused.';}catch{tools.querySelector('[data-qa-status]').textContent='Synthetic control unavailable.';}}));
               },200));`,
@@ -524,7 +561,71 @@ export async function syntheticCommunityPreview() {
             chunks.push(chunk);
           }
           const action = JSON.parse(Buffer.concat(chunks).toString('utf8')).action;
-          if (action === 'staff-on') syntheticStaff = true;
+          if (action === 'staff-report-fixtures') {
+            staffReports.clear();
+            for (let i = 1; i <= 23; i++) {
+              const id = '60000000-0000-4000-8000-' + String(i).padStart(12, '0');
+              const targetKind = ['agent', 'review', 'profile'][(i - 1) % 3];
+              const snapshot =
+                targetKind === 'agent'
+                  ? {
+                      kind: 'agent',
+                      slug: capturedAgent.identity.slug,
+                      versionId: reviewVersion.id,
+                      version: capturedAgent.version,
+                      specification: capturedAgent,
+                    }
+                  : targetKind === 'review'
+                    ? {
+                        kind: 'review',
+                        resourceId: reviewTarget,
+                        resourceSlug: 'synthetic-meal-planning',
+                        usedVersionId: reviewVersion.id,
+                        version: reviewVersion.version,
+                        revision: 1,
+                        title: 'Synthetic reported review <script>plain text</script>',
+                        body: 'Synthetic captured review used for private moderation acceptance only. This untrusted text is not executed and claims no actual community activity.',
+                        experience: 'Synthetic local captured use context for a reported review.',
+                        rating: 4,
+                      }
+                    : {
+                        kind: 'profile',
+                        username: 'synthetic_reported_creator',
+                        displayName: 'Synthetic reported creator',
+                        bio: 'Synthetic captured creator biography only.',
+                        website: 'https://example.test/creator',
+                      };
+              staffReports.set(id, {
+                id,
+                targetKind,
+                targetId: reviewTarget,
+                category: 'privacy',
+                explanation:
+                  'Synthetic confidential concern for staff acceptance only. Please investigate the captured content and provide a clear response.',
+                state: 'open',
+                resolution: '',
+                resolvedAt: null,
+                createdAt: '2026-10-07T00:00:00Z',
+                conflictOfInterest: false,
+                context: { capturedAt: '2026-10-07T00:00:00Z', snapshot },
+              });
+            }
+          } else if (action === 'staff-report-fail-ack') failStaffReportAck = true;
+          else if (action === 'staff-report-restore-ack') failStaffReportAck = false;
+          else if (
+            ['staff-report-compete', 'staff-report-own', 'staff-report-legacy'].includes(action)
+          ) {
+            const row = staffReports.values().next().value;
+            if (!row) throw new Error('No staff report fixture');
+            if (action === 'staff-report-own') row.conflictOfInterest = true;
+            else if (action === 'staff-report-legacy') row.context = null;
+            else {
+              row.state = 'dismissed';
+              row.resolution =
+                'Another synthetic moderator closed this report during local acceptance.';
+              row.resolvedAt = new Date().toISOString();
+            }
+          } else if (action === 'staff-on') syntheticStaff = true;
           else if (action === 'staff-off') syntheticStaff = false;
           else if (action === 'staff-fail-ack') failStaffAck = true;
           else if (action === 'staff-restore-ack') failStaffAck = false;
