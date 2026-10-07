@@ -61,13 +61,14 @@ export function ReviewModeration() {
       reviewId={reviewId}
       csrf={identity.identity.csrf}
       notes={notes?.email === identity.identity.email ? notes : null}
-      changeNotes={(value) =>
+      changeNotes={(value) => {
+        setSelected(reviewId);
         memory.setModerationNotes(
           value && identity.identity?.signedIn
             ? { ...value, reviewId, email: identity.identity.email }
             : null,
-        )
-      }
+        );
+      }}
       back={() => {
         memory.setModerationNotes(null);
         setSelected(null);
