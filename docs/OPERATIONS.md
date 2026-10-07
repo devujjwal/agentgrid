@@ -75,3 +75,24 @@ No automatic production deploy is configured in Phase 0. A release must come fro
 tested `main`, with a separate production environment and owner-approved secrets.
 Do not enable direct Git auto-deployment that bypasses CI. Release artifacts must
 be checked and publication must remain recoverable before launch.
+
+## Dependency compatibility and security assessment
+
+Pinned framework: Next.js 16.4.0 and React 19.3.0. TypeScript 6.0.3 is chosen because
+the current TypeScript ESLint parser does not support TypeScript 7. ESLint 10 uses
+its compatible TypeScript, React Hooks, and Next.js plugins directly; the current
+Next.js preset pulls older plugins whose peer ranges do not support ESLint 10.
+Exact versions and the lockfile are committed; peer dependency mismatches are errors.
+
+Production audit on 7 October 2026: no known vulnerabilities. Full audit identifies
+GHSA-vfj7-8cjw-p6xm in the development-only chain
+`@next/eslint-plugin-next -> fast-glob -> micromatch -> braces`. No patched version
+is available. The vulnerability requires adversarial deeply nested glob patterns.
+Source inspection shows the plugin only invokes this glob processing when
+`settings.next.rootDir` is supplied; AgentGrid does not supply this setting.
+The dependency is not part of the public static application, and community input
+never enters lint configuration. This is a documented development-tool exception,
+not a claim that the full dependency tree has no advisories. Reassess on plugin
+updates or lint-configuration changes; never use untrusted glob patterns.
+
+Advisory: https://github.com/advisories/GHSA-vfj7-8cjw-p6xm.
