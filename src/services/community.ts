@@ -10,6 +10,8 @@ const messages: Record<string, string> = {
     'Verification did not complete. Request a new code or try Google again.',
   'rate-limited': 'Too many attempts. Please wait before trying again.',
   conflict: 'This information changed, or the username is taken. Reload before continuing.',
+  'definition-incomplete':
+    'Check definition readiness and select explicit use terms before submitting.',
   'terms-required': 'Current community terms are required. Refresh before joining.',
 };
 export class CommunityError extends Error {
@@ -29,7 +31,7 @@ export async function communityRequest<T>(
   signal?: AbortSignal,
 ): Promise<T> {
   if (
-    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36})?$/.test(
+    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36}(?:&offset=\d{1,4}|&versionId=[a-fA-F0-9-]{36})?)?$/.test(
       path,
     )
   )

@@ -107,6 +107,8 @@ test('redirects and flow cookies cannot cross the application boundary or inject
   );
   const creatorPath = '/workspace/agent/?resourceId=20000000-0000-4000-8000-000000000001';
   assert.equal(signInReturnPath(creatorPath), creatorPath);
+  const versionsPath = creatorPath.replace('/agent/', '/versions/');
+  assert.equal(signInReturnPath(versionsPath), versionsPath);
   assert.equal(signInReturnPath('/workspace/agent/'), '/workspace/agent/');
   for (const value of [
     '//attacker.example/',

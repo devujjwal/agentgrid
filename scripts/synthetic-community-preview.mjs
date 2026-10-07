@@ -1,7 +1,7 @@
 /** Disposable loopback UI acceptance. All provider/database responses are
  * synthetic memory fixtures; no env credentials, email or external fetch. */
 import { Readable } from 'node:stream';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
 import { identityFixture, syntheticConfiguration } from '../tests/fixtures/identity.mjs';
 import { identityRuntime } from '../backend/auth/runtime.ts';
 import { identityHandler } from '../backend/http/identity.ts';
@@ -9,6 +9,7 @@ import { workspaceHandler } from '../backend/http/workspace.ts';
 import { workspaceData } from '../backend/workspace/data.ts';
 import { privateFailure } from '../backend/http/guard.ts';
 import { newDraft } from '../src/domain/draft.ts';
+import { isLaterVersion } from '../src/domain/versions.ts';
 
 export async function syntheticCommunityPreview() {
   if (
@@ -63,6 +64,8 @@ export async function syntheticCommunityPreview() {
       },
     ],
   ]);
+  const frozenVersions = new Map();
+  let submissionsOpen = true;
   const transport = async (input, init) => {
     const url = new URL(String(input));
     if (url.origin !== configuration.supabaseOrigin) throw new Error('Outbound traffic refused.');
@@ -146,6 +149,117 @@ export async function syntheticCommunityPreview() {
       record.updatedAt = new Date().toISOString();
       return Response.json(++record.revision);
     }
+    if (url.pathname.endsWith('/agentgrid_owned_versions')) {
+      if (!resources.has(body.resource_id))
+        return Response.json({ code: '42501' }, { status: 403 });
+      const rows = [...frozenVersions.values()]
+        .filter((version) => version.agent_id === body.resource_id)
+        .sort((a, b) => b.created_at.localeCompare(a.created_at) || a.id.localeCompare(b.id));
+      const latest = rows.reduce(
+        (version, row) =>
+          version === null || isLaterVersion(row.version, version) ? row.version : version,
+        null,
+      );
+      return Response.json({
+        submissionEnabled: submissionsOpen,
+        pendingVersionId: rows.find((row) => row.state === 'pending')?.id ?? null,
+        latestVersion: latest,
+        versions: rows.slice(body.requested_offset, body.requested_offset + 21).map((row) => ({
+          id: row.id,
+          version: row.version,
+          contentDigest: row.content_digest,
+          submittedAt: row.created_at,
+          state: row.state,
+          reason: row.reason,
+          reviewedAt: row.reviewed_at,
+        })),
+      });
+    }
+    if (url.pathname.endsWith('/agentgrid_owned_version_document')) {
+      const row = frozenVersions.get(body.resource_version_id);
+      if (!resources.has(body.resource_id) || row?.agent_id !== body.resource_id)
+        return Response.json({ code: '42501' }, { status: 403 });
+      return Response.json({
+        resourceId: body.resource_id,
+        sourceVersionId: null,
+        record: {
+          id: row.id,
+          version: row.version,
+          contentDigest: row.content_digest,
+          submittedAt: row.created_at,
+          state: row.state,
+          reason: row.reason,
+          reviewedAt: row.reviewed_at,
+        },
+        specification: row.specification,
+      });
+    }
+    if (url.pathname.endsWith('/agentgrid_submit_version')) {
+      if (!submissionsOpen) return Response.json({ code: '42501' }, { status: 403 });
+      const record = resources.get(body.resource_id);
+      if (!record) return Response.json({ code: '42501' }, { status: 403 });
+      if (record.revision !== body.expected_revision)
+        return Response.json({ code: '40001' }, { status: 409 });
+      const existing = [...frozenVersions.values()].filter(
+        (version) => version.agent_id === body.resource_id,
+      );
+      if (
+        existing.some(
+          (version) =>
+            version.state === 'pending' ||
+            !isLaterVersion(record.specification.version, version.version),
+        )
+      )
+        return Response.json({ code: '23505' }, { status: 409 });
+      const id = randomUUID();
+      frozenVersions.set(id, {
+        id,
+        agent_id: body.resource_id,
+        submitted_by: profile.id,
+        version: record.specification.version,
+        specification: structuredClone(record.specification),
+        content_digest: createHash('sha256')
+          .update(JSON.stringify(record.specification))
+          .digest('hex'),
+        created_at: new Date().toISOString(),
+        state: 'pending',
+        reason: '',
+        reviewed_at: null,
+      });
+      return Response.json(id);
+    }
+    if (url.pathname.endsWith('/agentgrid_agent_versions')) {
+      if (url.searchParams.get('submitted_by') !== 'eq.' + profile.id)
+        throw new Error('Owned version filter required.');
+      const row = frozenVersions.get(url.searchParams.get('id')?.slice(3));
+      return Response.json(
+        row && url.searchParams.get('agent_id') === 'eq.' + row.agent_id
+          ? {
+              id: row.id,
+              agent_id: row.agent_id,
+              submitted_by: row.submitted_by,
+              version: row.version,
+              content_digest: row.content_digest,
+              created_at: row.created_at,
+            }
+          : null,
+      );
+    }
+    if (url.pathname.endsWith('/agentgrid_submissions')) {
+      const row = frozenVersions.get(url.searchParams.get('version_id')?.slice(3));
+      return Response.json(
+        row ? { state: row.state, reason: row.reason, reviewed_at: row.reviewed_at } : null,
+      );
+    }
+    if (url.pathname.endsWith('/agentgrid_decide_submission')) {
+      const row = frozenVersions.get(body.submitted_version_id);
+      if (!row || row.state !== 'pending' || body.decision !== 'withdrawn')
+        return Response.json({ code: '42501' }, { status: 403 });
+      row.state = 'withdrawn';
+      row.reason = body.explanation;
+      row.reviewed_at = new Date().toISOString();
+      return Response.json(null);
+    }
     if (url.pathname.endsWith('/agentgrid_update_profile')) {
       profile.displayName = body.requested_display_name;
       profile.bio = body.requested_bio;
@@ -174,7 +288,7 @@ export async function syntheticCommunityPreview() {
                 if(document.querySelector('[data-qa-tools]'))return;
                 const tools=document.createElement('aside');tools.dataset.qaTools='synthetic';
                 tools.style.cssText='padding:1rem;border-top:1px solid';
-                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><p data-qa-status role="status"></p>';
+                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><p data-qa-status role="status"></p>';
                 document.body.append(tools);
                 tools.querySelectorAll('[data-qa-action]').forEach(button=>button.addEventListener('click',async()=>{try{const response=await fetch('/qa-control/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:button.dataset.qaAction})});tools.querySelector('[data-qa-status]').textContent=response.ok?'Synthetic state changed; reconnect the editor.':'Synthetic action refused.';}catch{tools.querySelector('[data-qa-status]').textContent='Synthetic control unavailable.';}}));
               },200));`,
@@ -199,6 +313,8 @@ export async function syntheticCommunityPreview() {
           else if (action === 'suspend') profile.status = 'suspended';
           else if (action === 'resume') profile.status = 'active';
           else if (action === 'revoke') fixture.sessions.clear();
+          else if (action === 'close-submissions') submissionsOpen = false;
+          else if (action === 'open-submissions') submissionsOpen = true;
           else throw new Error('Unknown synthetic control');
           outgoing
             .writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })

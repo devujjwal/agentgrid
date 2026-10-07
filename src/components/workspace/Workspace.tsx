@@ -225,6 +225,8 @@ export function Workspace() {
           <Link
             prefetch={false}
             className="action-primary"
+            target={memory.buffer?.dirty || edits?.dirty ? '_blank' : undefined}
+            rel={memory.buffer?.dirty || edits?.dirty ? 'noopener noreferrer' : undefined}
             href="/sign-in/?returnTo=%2Fworkspace%2F"
           >
             Connect to AgentGrid <span aria-hidden="true">→</span>

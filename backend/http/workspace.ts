@@ -6,6 +6,7 @@ import { authenticatedSession } from '../auth/sessions.ts';
 import type { WorkspaceData } from '../workspace/data.ts';
 import { ProfileInputSchema, OnboardingInputSchema } from '../../src/domain/workspace.ts';
 import { CreateDraftSchema, UpdateDraftSchema } from '../../src/domain/draft.ts';
+import { SubmitVersionSchema, WithdrawVersionSchema } from '../../src/domain/versions.ts';
 import { assertJsonDocumentBounds } from '../../src/domain/agent-specification.ts';
 import {
   assertRequestTarget,
@@ -35,9 +36,13 @@ export function workspaceHandler(
       assertRequestTarget(request, runtime.configuration.origin);
       const url = new URL(request.url);
       const read =
-        ['/api/workspace/', '/api/workspace/agents/', '/api/workspace/saved/'].includes(
-          url.pathname,
-        ) ||
+        [
+          '/api/workspace/',
+          '/api/workspace/agents/',
+          '/api/workspace/saved/',
+          '/api/workspace/versions/',
+          '/api/workspace/version/',
+        ].includes(url.pathname) ||
         (['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&
           request.method === 'GET');
       const mutation =
@@ -49,6 +54,8 @@ export function workspaceHandler(
           '/api/workspace/favorite/',
           '/api/workspace/create/',
           '/api/workspace/draft/',
+          '/api/workspace/submit/',
+          '/api/workspace/withdraw/',
         ].includes(url.pathname);
       if (!read && !mutation) throw new HttpFailure(404, 'not-found');
       if (read && request.method !== 'GET') throw new HttpFailure(405, 'method-unavailable');
@@ -67,6 +74,41 @@ export function workspaceHandler(
       if (url.pathname === '/api/workspace/') {
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.identity());
+      }
+      if (url.pathname.endsWith('/versions/')) {
+        if (
+          [...url.searchParams.keys()].some((key) => !['resourceId', 'offset'].includes(key)) ||
+          url.searchParams.getAll('resourceId').length !== 1 ||
+          url.searchParams.getAll('offset').length > 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const resource = z.uuid().safeParse(url.searchParams.get('resourceId'));
+        const offset = url.searchParams.get('offset') ?? '0';
+        if (!resource.success || !/^\d{1,4}$/.test(offset))
+          throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.versions(resource.data, Number(offset)));
+      }
+      if (url.pathname.endsWith('/version/')) {
+        if (
+          [...url.searchParams.keys()].some((key) => !['resourceId', 'versionId'].includes(key)) ||
+          url.searchParams.getAll('resourceId').length !== 1 ||
+          url.searchParams.getAll('versionId').length !== 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const resource = z.uuid().safeParse(url.searchParams.get('resourceId')),
+          version = z.uuid().safeParse(url.searchParams.get('versionId'));
+        if (!resource.success || !version.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.versionDocument(resource.data, version.data));
+      }
+      if (url.pathname.endsWith('/submit/')) {
+        const value = await input(request, SubmitVersionSchema);
+        return privateJson(await data.submitVersion(value.resourceId, value.expectedRevision), 201);
+      }
+      if (url.pathname.endsWith('/withdraw/')) {
+        const value = await input(request, WithdrawVersionSchema);
+        return privateJson(
+          await data.withdrawVersion(value.resourceId, value.versionId, value.reason),
+        );
       }
       if (
         ['/api/workspace/favorite/', '/api/workspace/draft/'].includes(url.pathname) &&

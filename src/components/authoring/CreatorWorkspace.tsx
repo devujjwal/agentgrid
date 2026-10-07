@@ -135,6 +135,13 @@ export function CreatorWorkspace() {
           )}
           {editor.buffer && (
             <>
+              <Link
+                prefetch={false}
+                className="draft-history-link"
+                href={'/workspace/versions/?resourceId=' + editor.buffer.record.resourceId}
+              >
+                Versions and review history <span aria-hidden="true">↗</span>
+              </Link>
               {editor.buffer.conflict && (
                 <section className="draft-conflict">
                   <h2>This draft changed elsewhere.</h2>
