@@ -67,7 +67,7 @@ insert into agentgrid_fixture_state values('review',public.agentgrid_write_revie
  'Synthetic review title',repeat('Synthetic review text for database acceptance only. ',4),repeat('Synthetic usage context, not an actual user review. ',2)));
 select pg_temp.agentgrid_assert((select count(*)=1 from public.agentgrid_review_moderation where state='pending'),'reviews start pending');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_write_review('20000000-0000-4000-8000-000000000001','30000000-0000-4000-8000-000000000001',5::smallint,'Duplicate review title',repeat('Duplicate initial write must conflict. ',4),repeat('Synthetic usage context only. ',3))$s$,'40001');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_review((select id from agentgrid_fixture_state where key='review'),1,'published','Unauthorized publication attempt')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),1,0,'published','Unauthorized publication attempt')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_create_report('agent','20000000-0000-4000-8000-000000000003','privacy',repeat('Private target must not be exposed by reporting. ',2))$s$,'42501');
 reset role;
 set local role anon;
@@ -83,7 +83,7 @@ reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_assert((select count(*)=0 from public.agentgrid_favorites),'staff status does not expose other saved lists');
-select public.agentgrid_moderate_review((select id from agentgrid_fixture_state where key='review'),1,'published','Synthetic moderation acceptance only.');
+select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),1,0,'published','Synthetic moderation acceptance only.');
 reset role;
 set local role anon;
 select pg_temp.agentgrid_assert((select count(*)=1 from public.agentgrid_reviews),'approved review is readable');
@@ -110,8 +110,8 @@ select pg_temp.agentgrid_expect_error('update public.agentgrid_review_moderation
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_review((select id from agentgrid_fixture_state where key='review'),1,'published','Moderation of a stale revision')$s$,'40001');
-select public.agentgrid_moderate_review((select id from agentgrid_fixture_state where key='review'),2,'published','Synthetic updated revision reviewed.');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),1,0,'published','Moderation of a stale revision')$s$,'40001');
+select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),2,1,'published','Synthetic updated revision reviewed.');
 select public.agentgrid_resolve_report((select id from agentgrid_fixture_state where key='report'),'resolved','Synthetic reporting acceptance resolution.');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_resolve_report((select id from agentgrid_fixture_state where key='report'),'resolved','Duplicate resolution cannot overwrite history')$s$,'40001');
 select public.agentgrid_moderate_agent('20000000-0000-4000-8000-000000000001',true,'Synthetic takedown acceptance only.');

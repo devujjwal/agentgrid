@@ -16,8 +16,10 @@ import { draftResources } from './drafts.ts';
 import { versionResources } from './versions.ts';
 import { reportResources } from './reports.ts';
 import { reviewResources } from './reviews.ts';
+import { moderationResources } from './moderation.ts';
 
 export interface WorkspaceData {
+  moderation: ReturnType<typeof moderationResources>;
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
   agents: (offset: number) => Promise<z.infer<typeof WorkspaceListSchema>>;
   onboard: (input: z.infer<typeof OnboardingInputSchema>) => Promise<void>;
@@ -69,6 +71,7 @@ export function workspaceData(
   };
   const drafts = draftResources(client, member);
   return {
+    moderation: moderationResources(client, identity),
     identity,
     ...savedResources(client, member),
     ...drafts,

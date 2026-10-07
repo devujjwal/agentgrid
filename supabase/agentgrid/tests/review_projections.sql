@@ -73,7 +73,7 @@ select pg_temp.agentgrid_assert(public.agentgrid_public_reviews('20000000-0000-4
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_moderate_review('40000000-0000-4000-8000-000000000001',2,'published','Synthetic moderation response after the actual local edit.');
+select public.agentgrid_decide_review('40000000-0000-4000-8000-000000000001',2,0,'published','Synthetic moderation response after the actual local edit.');
 reset role;
 update public.agentgrid_profiles set visibility='public' where id='10000000-0000-4000-8000-000000000002';
 set local role anon;
@@ -100,7 +100,7 @@ select pg_temp.agentgrid_expect_error('select * from public.agentgrid_review_wit
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_review('40000000-0000-4000-8000-000000000001',3,'published','Staff cannot override author withdrawal.')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_review('40000000-0000-4000-8000-000000000001',3,1,'published','Staff cannot override author withdrawal.')$s$,'42501');
 select pg_temp.agentgrid_expect_error('select public.agentgrid_withdraw_review(''20000000-0000-4000-8000-000000000001'',3)','42501');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated"}';
@@ -118,7 +118,7 @@ select pg_temp.agentgrid_assert((select count(*)=1 from public.agentgrid_review_
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_moderate_review('40000000-0000-4000-8000-000000000001',4,'published','Fresh synthetic moderation after author resubmission.');
+select public.agentgrid_decide_review('40000000-0000-4000-8000-000000000001',4,1,'published','Fresh synthetic moderation after author resubmission.');
 reset role;
 update public.agentgrid_profiles set status='suspended' where id='10000000-0000-4000-8000-000000000002';
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
