@@ -484,3 +484,37 @@ Reconnection returns the saved title only. PR11's implementation head passed
 CI run `37668163054`, including all thirteen disposable migrations. Continue
 through final-head/main CI and guarded additive rollout before the next
 community increment; no production app deployment is implied.
+
+### Reviews rollout verified
+
+PR11 final head `5c2003e6232f01e608b03847963d45f09b11bfb9` passed CI
+`37670449600` and merged as `73383f2db8159a88969c2c0d44075ce8af4812f2`.
+Exact-main CI `37670758731` passed. The guarded operator applied migration
+013 from clean exact main; protected fingerprints remained unchanged. The
+post-rollout anonymous/nonmember checks passed without creating application rows.
+Thirteen migrations are applied remotely; no production application deployment
+or public review activity is implied.
+
+### Staff review moderation — local acceptance
+
+The private staff queue and inspection/decision interface now use active
+AgentGrid roles and verified user-bearer RPCs. Migration 014 adds a separate
+moderation revision and quota; both content and decision revisions must match.
+The legacy direct decision RPC loses client execution privileges, preserving
+its internal audit and self-review/withdrawal/publication guards. No actual role
+is granted. Protected resources and existing profile quota actions are retained.
+
+Local fourteen-migration actor/isolation/extraction tests, 86 Node/11 Python
+tests, lint/typecheck/format and production export pass. The 782,073-byte worker
+passes compiled routing/session/CSRF/denial checks, including the staff endpoint.
+Browser acceptance covers anonymous/member denial, 20+3 pagination with focus,
+confirmation cancellation, actual decision receipt, stale staff conflict,
+uncertain acknowledgement recovery, self-review refusal, role revocation,
+withdrawal, navigation retention and sign-out clearing after reconnection.
+
+Mobile staff queue lab: performance 97, accessibility 100, best practices 96;
+LCP 2.356s, TBT 45.5ms, CLS 0.0613. Private noindex SEO 63 is intentional;
+CSP hardening remains open. Responsive widths 320/768/1024/1440 have no overflow,
+and choice controls are 48px. These are synthetic loopback results, not production
+latency or field INP. Staff moderation of reports/submissions and public forks
+remain separate implementation gates. Migration 014 is not yet applied remotely.

@@ -24,6 +24,7 @@ const invokesWorker = (path) =>
 for (const path of [
   '/api/identity/',
   '/api/workspace/',
+  '/api/moderation/reviews/',
   '/api/community/reviews/',
   '/auth/callback/',
   '/auth/callback',
@@ -113,6 +114,9 @@ try {
   const workspace = await send('/api/workspace/');
   assert.equal(workspace.status, 401);
   assert.deepEqual(await workspace.json(), { error: 'not-signed-in' });
+  const moderation = await send('/api/moderation/reviews/?state=pending&offset=0');
+  assert.equal(moderation.status, 401);
+  assert.deepEqual(await moderation.json(), { error: 'not-signed-in' });
   const publicReview = await send('/api/community/reviews/?resourceId=invalid');
   assert.equal(publicReview.status, 400);
   assert.deepEqual(await publicReview.json(), { error: 'invalid-request' });

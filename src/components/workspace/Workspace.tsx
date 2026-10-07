@@ -27,6 +27,7 @@ export function Workspace() {
           memory.setBuffer(null);
           memory.setReportEdits(null);
           memory.setReviewEdits(null);
+          memory.setModerationNotes(null);
           signedOut(csrf);
         }}
       />

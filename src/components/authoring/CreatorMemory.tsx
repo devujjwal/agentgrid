@@ -14,6 +14,14 @@ import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
 import type { ReviewInput } from '../../domain/reviews';
 
+export interface ModerationBuffer {
+  email: string;
+  reviewId: string;
+  explanation: string;
+  revision: number;
+  decisionRevision: number;
+}
+
 export interface ReviewBuffer {
   email: string;
   input: ReviewInput;
@@ -37,6 +45,8 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  moderationNotes: ModerationBuffer | null;
+  setModerationNotes: Dispatch<SetStateAction<ModerationBuffer | null>>;
   buffer: DraftBuffer | null;
   setBuffer: Dispatch<SetStateAction<DraftBuffer | null>>;
   profileEdits: ProfileEditBuffer | null;
@@ -51,12 +61,19 @@ const Memory = createContext<{
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
+  const [moderationNotes, setModerationNotes] = useState<ModerationBuffer | null>(null);
   const [buffer, setBuffer] = useState<DraftBuffer | null>(null);
   const [profileEdits, setProfileEdits] = useState<ProfileEditBuffer | null>(null);
   const [reportEdits, setReportEdits] = useState<ReportBuffer | null>(null);
   const [reviewEdits, setReviewEdits] = useState<ReviewBuffer | null>(null);
   useEffect(() => {
-    if (!buffer?.dirty && !profileEdits?.dirty && !reportEdits?.input.explanation && !reviewEdits)
+    if (
+      !buffer?.dirty &&
+      !profileEdits?.dirty &&
+      !reportEdits?.input.explanation &&
+      !reviewEdits &&
+      !moderationNotes?.explanation
+    )
       return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -104,12 +121,16 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('beforeunload', warn);
       document.removeEventListener('click', navigate, true);
     };
-  }, [buffer, profileEdits, reportEdits, reviewEdits]);
+  }, [buffer, profileEdits, reportEdits, reviewEdits, moderationNotes]);
   return (
     <Memory.Provider
       value={{
         hasUnsaved: Boolean(
-          buffer?.dirty || profileEdits?.dirty || reportEdits?.input.explanation || reviewEdits,
+          buffer?.dirty ||
+          profileEdits?.dirty ||
+          reportEdits?.input.explanation ||
+          reviewEdits ||
+          moderationNotes?.explanation,
         ),
         buffer,
         setBuffer,
@@ -119,6 +140,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         setReportEdits,
         reviewEdits,
         setReviewEdits,
+        moderationNotes,
+        setModerationNotes,
       }}
     >
       {children}

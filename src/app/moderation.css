@@ -1,0 +1,183 @@
+.moderation-layout {
+  max-width: 80rem;
+}
+.moderation-intro {
+  max-width: 38rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.moderation-toolbar {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-block: 1.5rem;
+}
+.moderation-toolbar label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+.moderation-toolbar select,
+.moderation-fields textarea {
+  color: var(--ink);
+  background: var(--surface-bright);
+  border: 1px solid var(--control-border);
+  padding: 0.75rem;
+  font: inherit;
+  min-height: 3rem;
+  max-width: 100%;
+}
+.moderation-live {
+  display: inline-block;
+  margin-inline-start: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  color: var(--signal);
+  border-inline-start: 2px solid var(--signal);
+  font-size: 0.875rem;
+}
+.moderation-queue,
+.moderation-detail {
+  border-top: 2px solid var(--signal);
+}
+.moderation-queue > h2,
+.moderation-detail > h2,
+.moderation-decision h2 {
+  font: 400 clamp(1.75rem, 3vw, 2.5rem)/1.15 var(--font-editorial);
+}
+.moderation-queue > p {
+  line-height: 1.7;
+  max-width: 40rem;
+}
+.moderation-rows {
+  padding: 0;
+  list-style: none;
+}
+.moderation-rows > li {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 1.5rem;
+  border-block-start: 1px solid var(--line-strong);
+}
+.moderation-rows h3 {
+  margin-block: 0.75rem;
+  font-weight: 500;
+  font-size: 1.375rem;
+}
+.moderation-rows > li > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.moderation-rows button {
+  flex-shrink: 0;
+}
+.moderation-notice {
+  padding: 1.5rem;
+  background: var(--surface-bright);
+  border-inline-start: 2px solid var(--signal);
+  margin-block: 1.5rem;
+  line-height: 1.7;
+}
+.moderation-notice > a {
+  display: inline-block;
+  margin: 1rem;
+}
+.moderation-detail {
+  max-width: 56rem;
+}
+.moderation-review {
+  border-block: 1px solid var(--line-strong);
+  padding-block: 2rem;
+}
+.moderation-review h3 {
+  font: 400 clamp(1.75rem, 3vw, 2.25rem)/1.2 var(--font-editorial);
+  overflow-wrap: anywhere;
+}
+.moderation-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-block: 2rem;
+}
+.moderation-facts dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+.moderation-facts dd {
+  margin: 0;
+  font-weight: 600;
+}
+.moderation-prose {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  max-width: 70ch;
+}
+.moderation-existing {
+  border-inline-start: 2px solid var(--line-strong);
+  padding-inline-start: 1.5rem;
+  margin-top: 2rem;
+}
+.moderation-decision {
+  margin-block: 2rem;
+  max-width: 48rem;
+}
+.moderation-decision > p {
+  line-height: 1.7;
+}
+.moderation-fields {
+  border: 0;
+  padding: 0;
+  margin-block: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.moderation-fields legend {
+  padding: 0;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.moderation-fields textarea {
+  width: 100%;
+  resize: vertical;
+}
+.moderation-fields > p {
+  line-height: 1.6;
+  font-size: 0.875rem;
+  margin: 0;
+}
+.moderation-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  line-height: 1.5;
+}
+.moderation-choice input {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  accent-color: var(--signal);
+}
+.moderation-receipt {
+  border-inline-start: 2px solid var(--signal);
+  padding: 1rem;
+  line-height: 1.7;
+}
+@media (max-width: 47.99rem) {
+  .moderation-rows > li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .moderation-facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .moderation-toolbar {
+    gap: 1rem;
+  }
+}
