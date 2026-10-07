@@ -11,7 +11,7 @@ import {
 } from '../../domain/workspace';
 import { communityRequest } from '../../services/community';
 import { useIdentity } from '../identity/useIdentity';
-import { ProfileEditor } from './ProfileEditor';
+import { ProfileEditor, type ProfileEditBuffer } from './ProfileEditor';
 import { Onboarding } from './Onboarding';
 import { WorkspaceResources } from './WorkspaceResources';
 
@@ -19,10 +19,14 @@ function ConnectedWorkspace({
   csrf,
   email,
   signedOut,
+  edits,
+  changeEdits,
 }: {
   csrf: string;
   email: string;
   signedOut: (csrf: string) => void;
+  edits: ProfileEditBuffer | null;
+  changeEdits: (value: ProfileEditBuffer) => void;
 }) {
   const router = useRouter();
   const [retry, setRetry] = useState(0),
@@ -135,6 +139,19 @@ function ConnectedWorkspace({
               profile={snapshot.identity.profile}
               csrf={csrf}
               refresh={refresh}
+              fields={
+                edits?.owner === email && edits.profileId === snapshot.identity.profile.id
+                  ? edits.fields
+                  : {
+                      displayName: snapshot.identity.profile.displayName,
+                      bio: snapshot.identity.profile.bio,
+                      website: snapshot.identity.profile.website ?? '',
+                    }
+              }
+              change={(fields) => {
+                if (snapshot.identity?.profile)
+                  changeEdits({ owner: email, profileId: snapshot.identity.profile.id, fields });
+              }}
             />
           </>
         )}
@@ -156,8 +173,20 @@ function ConnectedWorkspace({
 }
 export function Workspace() {
   const { identity, pending, error, reload, signedOut } = useIdentity();
+  const [edits, changeEdits] = useState<ProfileEditBuffer | null>(null);
   if (identity?.signedIn)
-    return <ConnectedWorkspace csrf={identity.csrf} email={identity.email} signedOut={signedOut} />;
+    return (
+      <ConnectedWorkspace
+        csrf={identity.csrf}
+        email={identity.email}
+        edits={edits}
+        changeEdits={changeEdits}
+        signedOut={(csrf) => {
+          changeEdits(null);
+          signedOut(csrf);
+        }}
+      />
+    );
   return (
     <section className="workspace-connect identity-panel">
       <p className="eyebrow">Your network / private workspace</p>

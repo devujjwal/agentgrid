@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 const messages: Record<string, string> = {
+  'not-found': 'This resource is unavailable for your account. Open it from your workspace.',
+  'request-too-large': 'This request is too large. Reduce the content and try again.',
   'request-refused': 'This request could not be verified. Refresh the page and try again.',
   'invalid-request': 'Check the fields and try again.',
   'not-signed-in': 'Your session has ended. Sign in again to continue.',

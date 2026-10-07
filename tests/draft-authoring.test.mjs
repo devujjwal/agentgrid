@@ -68,6 +68,7 @@ function dataFixture() {
     ownerMatch: true,
     status: 'active',
     failure: null,
+    acknowledgement: null,
   };
   const calls = [];
   const data = workspaceData(configuration, session, async (input, init) => {
@@ -113,7 +114,7 @@ function dataFixture() {
       assert.equal(body.expected_revision, state.revision);
       state.revision++;
       state.specification = body.updated_specification;
-      return Response.json(state.revision);
+      return Response.json(state.acknowledgement ?? state.revision);
     }
     throw new Error('Unexpected authoring resource');
   });
@@ -149,6 +150,28 @@ test('authoring uses explicit ownership and optimistic revisions; saves preserve
   await assert.rejects(data.saveDraft(resourceId, 2, edited), (error) => error.status === 403);
   profile.status = 'suspended';
   await assert.rejects(data.createDraft(draft()), (error) => error.status === 403);
+});
+test('authoring fails closed on write races, rejected database authority and unconfirmed acknowledgements', async () => {
+  const { data, state } = dataFixture();
+  state.failure = { code: '40001', message: 'Synthetic private conflict detail' };
+  await assert.rejects(
+    data.saveDraft(resourceId, 1, draft()),
+    (error) => error.status === 409 && error.code === 'conflict',
+  );
+  assert.equal(state.revision, 1);
+  state.failure = { code: '42501', message: 'Synthetic suspension after ownership preflight' };
+  await assert.rejects(
+    data.saveDraft(resourceId, 1, draft()),
+    (error) => error.status === 403 && !error.message.includes('Synthetic'),
+  );
+  state.failure = null;
+  state.acknowledgement = 9;
+  await assert.rejects(data.saveDraft(resourceId, 1, draft()), (error) => error.status === 503);
+  state.specification = { ...draft(), owner_id: 'forged' };
+  await assert.rejects(data.draft(resourceId), (error) => error.status === 503);
+  state.specification = draft();
+  state.editorial = { notes: 'a'.repeat(32_001) };
+  await assert.rejects(data.draft(resourceId), (error) => error.status === 503);
 });
 test('draft HTTP validates bounded portable input, ignores no forged authorities and requires exact CSRF', async () => {
   const fixture = await identityFixture();

@@ -1,0 +1,337 @@
+.creator-layout {
+  padding-bottom: 3rem;
+}
+.creator-connection {
+  min-height: 24rem;
+}
+.draft-studio {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 3rem;
+  border-top: 1px solid var(--line-strong);
+  padding-top: 2rem;
+}
+.draft-map {
+  min-width: 0;
+  align-self: start;
+  position: sticky;
+  top: 1rem;
+}
+.draft-map ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.draft-map ol::before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  background: var(--line-strong);
+  inset: 1.5rem auto 1.5rem 1.25rem;
+}
+.draft-map button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  width: 100%;
+  min-height: 3.5rem;
+  border: 0;
+  padding: 0.5rem 0;
+  text-align: left;
+  background: transparent;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+}
+.draft-node {
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  transition: background-color 160ms ease;
+}
+.draft-map [aria-current='step'] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.draft-map [aria-current='step'] .draft-node {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--surface-bright);
+}
+.draft-map > p {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.draft-workbench {
+  min-width: 0;
+  max-width: 55rem;
+}
+.draft-workbench > header {
+  margin-bottom: 2rem;
+}
+.draft-workbench h2 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 3vw, 3rem);
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  line-height: 1.15;
+  margin-block: 1rem;
+}
+.draft-workbench h3 {
+  font-size: 1.25rem;
+  margin-block: 2rem 1rem;
+  font-weight: 500;
+}
+.draft-workbench p {
+  line-height: 1.65;
+  color: var(--muted);
+}
+.draft-fields,
+.draft-fields fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.draft-field {
+  margin-block: 1.5rem;
+}
+.draft-field label,
+.draft-portable > label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+.draft-field p {
+  font-size: 0.875rem;
+  margin-block: -0.25rem 0.75rem;
+  max-width: 45rem;
+}
+.draft-field :is(input, textarea, select),
+.draft-portable textarea,
+.draft-new select {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--control-border);
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  background: var(--surface-bright);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.draft-field textarea,
+.draft-portable textarea {
+  resize: vertical;
+}
+.draft-field :is(input, textarea, select):disabled,
+.draft-check input:disabled {
+  opacity: 0.7;
+}
+.draft-repeat {
+  margin-block: 1.5rem 2rem;
+}
+.draft-fields .draft-entry {
+  border: 1px solid var(--line);
+  padding: 1rem 1.5rem;
+  margin-block: 1.5rem;
+}
+.draft-entry legend {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding-inline: 0.5rem;
+  color: var(--signal);
+}
+.draft-check {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  margin-block: 1rem;
+  min-height: 2.75rem;
+  line-height: 1.65;
+  cursor: pointer;
+}
+.draft-check input {
+  accent-color: var(--signal);
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+.draft-text-action {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  padding: 0.75rem 0;
+  min-height: 3rem;
+  cursor: pointer;
+}
+.draft-portable {
+  border-block: 1px solid var(--line);
+  margin-block: 3rem 1rem;
+  padding-block: 1rem;
+}
+.draft-portable summary {
+  min-height: 3rem;
+  padding-block: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.draft-portable textarea {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+.draft-portable-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.draft-readiness {
+  border-top: 1px solid var(--line);
+  padding-block: 1rem 2rem;
+}
+.draft-readiness li {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-bottom: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.draft-save-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line-strong);
+  padding: 1rem 0;
+}
+.draft-save-bar p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+.draft-save-bar span {
+  display: block;
+}
+.draft-save-bar button {
+  flex-shrink: 0;
+}
+.draft-feedback,
+.draft-conflict {
+  border-left: 3px solid var(--signal);
+  padding: 1rem 1.5rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.draft-conflict {
+  border-color: var(--accent);
+  margin-block: 1rem 2rem;
+}
+.draft-new {
+  max-width: 42rem;
+}
+.draft-new fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+.draft-new form p {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.draft-path,
+.draft-lineage {
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+@media (max-width: 1023px) {
+  .draft-studio {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .draft-map button {
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+@media (max-width: 767px) {
+  .draft-studio {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+  .draft-map {
+    position: static;
+  }
+  .draft-map ol {
+    display: flex;
+    overflow-x: auto;
+    padding-block: 0.5rem;
+    gap: 1rem;
+    scroll-padding-inline: 0.5rem;
+  }
+  .draft-map ol::before {
+    display: none;
+  }
+  .draft-map button {
+    width: max-content;
+    min-height: 3rem;
+    padding: 0.25rem;
+    gap: 0.5rem;
+  }
+  .draft-node {
+    width: 2rem;
+    height: 2rem;
+  }
+  .draft-map > p {
+    display: none;
+  }
+  .draft-workbench > header {
+    margin-block: 1rem 2rem;
+  }
+  .draft-fields .draft-entry {
+    padding: 1rem;
+  }
+  .draft-save-bar {
+    align-items: start;
+    padding-block: 1rem;
+  }
+  .draft-save-bar p {
+    max-width: 8rem;
+    font-size: 0.75rem;
+  }
+  .draft-save-bar button {
+    padding-inline: 0.75rem;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draft-node {
+    transition: none;
+  }
+}

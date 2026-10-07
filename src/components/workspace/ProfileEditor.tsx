@@ -3,19 +3,31 @@ import { useState, type FormEvent } from 'react';
 import { z } from 'zod';
 import type { WorkspaceIdentity } from '../../domain/workspace';
 import { communityRequest } from '../../services/community';
+export interface ProfileFields {
+  displayName: string;
+  bio: string;
+  website: string;
+}
+export interface ProfileEditBuffer {
+  owner: string;
+  profileId: string;
+  fields: ProfileFields;
+}
 const Updated = z.strictObject({ updated: z.literal(true) });
 export function ProfileEditor({
   profile,
   csrf,
   refresh,
+  fields,
+  change,
 }: {
   profile: NonNullable<WorkspaceIdentity['profile']>;
   csrf: string;
   refresh: () => void;
+  fields: ProfileFields;
+  change: (fields: ProfileFields) => void;
 }) {
-  const [displayName, setDisplayName] = useState(profile.displayName);
-  const [bio, setBio] = useState(profile.bio),
-    [website, setWebsite] = useState(profile.website ?? '');
+  const { displayName, bio, website } = fields;
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +87,7 @@ export function ProfileEditor({
           minLength={2}
           maxLength={80}
           value={displayName}
-          onChange={(event) => setDisplayName(event.target.value)}
+          onChange={(event) => change({ ...fields, displayName: event.target.value })}
           disabled={busy}
         />
         <label htmlFor="profile-bio">
@@ -87,7 +99,7 @@ export function ProfileEditor({
           rows={5}
           maxLength={1600}
           value={bio}
-          onChange={(event) => setBio(event.target.value)}
+          onChange={(event) => change({ ...fields, bio: event.target.value })}
           disabled={busy}
         />
         <label htmlFor="profile-website">
@@ -99,7 +111,7 @@ export function ProfileEditor({
           type="url"
           maxLength={2048}
           value={website}
-          onChange={(event) => setWebsite(event.target.value)}
+          onChange={(event) => change({ ...fields, website: event.target.value })}
           disabled={busy}
         />
         <button className="action-primary" type="submit" disabled={busy}>
