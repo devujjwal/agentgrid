@@ -31,7 +31,9 @@ visual system. Do not point the production domain at this build.
 
 ## Provider prerequisites
 
-Cloudflare and Resend need personal browser login. Do not paste credentials into
+Cloudflare and Resend personal browser login is complete. Cloudflare email is
+verified. Google Cloud personal-account passkey verification is pending.
+Do not paste credentials into
 chat, tracked files, or workflow logs. New account terms must be completed by the
 account owner. No paid plan or automatic recharge is authorized.
 
@@ -41,20 +43,31 @@ Marketplace Billing. Do not pause, delete, repurpose, or upgrade existing projec
 without the owner's explicit choice. Creating another free organization does not
 bypass the per-owner project limit.
 
-After an authorized slot is available, provision AgentGrid separately from other
-applications. Use a dedicated project and tightly controlled roles. Never share
-another application's database or expose its credentials to AgentGrid.
+The owner subsequently authorized sharing the existing PicMagic project as
+physical infrastructure to avoid a paid project. AgentGrid remains logically
+independent: prefix every owned database/storage resource with `agentgrid_`,
+inspect the existing schema/auth before changes, preserve all existing PicMagic
+resources and policies, and do not couple AgentGrid authorization to PicMagic
+roles or profiles. Shared authentication needs a cross-application access audit.
+If existing PicMagic policies would grant an AgentGrid login access to private
+PicMagic data, stop before enabling public AgentGrid authentication and explain
+the issue; do not silently modify protected policies.
 
-## Phase 0 must still prove
+## Phase 0 remaining evidence
 
-- Cloudflare account's free Pages allowance and private-repository deployment.
-- Supabase dedicated project capacity and authenticated connectivity.
-- Production SMTP sending domain and real OTP delivery.
+- AgentGrid-only sending domain/credential and real OTP delivery through its
+  server-side adapter; preserve PicMagic SMTP/templates.
 - Google OAuth ownership and callback configuration.
-- Static export deployment and secure preview access.
-- CI passes remotely without paid runners/add-ons.
+- Secure access for future previews containing unpublished resources. Noindex is
+  crawler guidance, not access control. The current Pages proof contains no private data.
+- CI-gated release deployment credential and workflow, with main-only production
+  deploy and deliberate environment configuration.
 
 Do not mark Phase 0 complete while these are pending.
+
+Cloudflare static delivery and private-repository GitHub CI are already verified.
+Supabase connectivity, schema inventory, and initial cross-application RLS denial
+checks are verified. See the implementation ledger and shared-backend guide.
 
 ## Public export boundary
 
