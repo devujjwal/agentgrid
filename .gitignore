@@ -20,3 +20,4 @@ __pycache__/
 *.pyc
 docs/evidence/*.jpg
 docs/evidence/*.json
+docs/evidence/*.png

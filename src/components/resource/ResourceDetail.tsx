@@ -1,6 +1,8 @@
 import { platformLabel } from '../../domain/platforms';
 import { ResourceReuse } from './ResourceReuse';
 import { SaveAgent } from './SaveAgent';
+import { ReportResource } from '../reporting/ReportResource';
+import '../../app/reporting.css';
 import { ResourceBoundaries } from './ResourceBoundaries';
 import { ResourceExamples } from './ResourceExamples';
 import { ResourceInputs } from './ResourceInputs';
@@ -149,6 +151,14 @@ export function ResourceDetail({
             <ResourceExamples specification={spec} />
             <ResourceBoundaries specification={spec} />
             <ResourceReuse specification={spec} publication={publication} />
+            {publication && (
+              <ReportResource
+                targetKind="agent"
+                targetId={publication.resource_id}
+                label={spec.identity.name}
+                path={'/agents/' + spec.identity.slug + '/'}
+              />
+            )}
             {editorial && (
               <section className="resource-section" id="questions">
                 <h2>Questions, answered.</h2>

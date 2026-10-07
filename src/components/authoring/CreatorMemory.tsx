@@ -11,6 +11,14 @@ import {
 import { flushSync } from 'react-dom';
 import type { DraftRecord, DraftSpecification } from '../../domain/draft';
 import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
+import type { ReportInput } from '../../domain/reports';
+
+export interface ReportBuffer {
+  email: string;
+  input: ReportInput;
+  path: string;
+  label: string;
+}
 
 export interface DraftBuffer {
   email: string;
@@ -20,20 +28,24 @@ export interface DraftBuffer {
   conflict: boolean;
 }
 const Memory = createContext<{
+  hasUnsaved: boolean;
   buffer: DraftBuffer | null;
   setBuffer: Dispatch<SetStateAction<DraftBuffer | null>>;
   profileEdits: ProfileEditBuffer | null;
   setProfileEdits: Dispatch<SetStateAction<ProfileEditBuffer | null>>;
+  reportEdits: ReportBuffer | null;
+  setReportEdits: Dispatch<SetStateAction<ReportBuffer | null>>;
 } | null>(null);
 
-/** Bounded tab-local draft/profile edits survive App Router history, never reloads
+/** Bounded tab-local draft/profile/report edits survive App Router history, never reloads
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
   const [buffer, setBuffer] = useState<DraftBuffer | null>(null);
   const [profileEdits, setProfileEdits] = useState<ProfileEditBuffer | null>(null);
+  const [reportEdits, setReportEdits] = useState<ReportBuffer | null>(null);
   useEffect(() => {
-    if (!buffer?.dirty && !profileEdits?.dirty) return;
+    if (!buffer?.dirty && !profileEdits?.dirty && !reportEdits?.input.explanation) return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
       event.returnValue = '';
@@ -80,9 +92,19 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('beforeunload', warn);
       document.removeEventListener('click', navigate, true);
     };
-  }, [buffer, profileEdits]);
+  }, [buffer, profileEdits, reportEdits]);
   return (
-    <Memory.Provider value={{ buffer, setBuffer, profileEdits, setProfileEdits }}>
+    <Memory.Provider
+      value={{
+        hasUnsaved: Boolean(buffer?.dirty || profileEdits?.dirty || reportEdits?.input.explanation),
+        buffer,
+        setBuffer,
+        profileEdits,
+        setProfileEdits,
+        reportEdits,
+        setReportEdits,
+      }}
+    >
       {children}
     </Memory.Provider>
   );

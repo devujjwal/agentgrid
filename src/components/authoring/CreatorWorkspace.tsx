@@ -10,10 +10,12 @@ import { DraftComposer } from './DraftComposer';
 import { blankAgentFields, NewAgentForm, type NewAgentFields } from './NewAgentForm';
 import { platformChoices } from './PlatformFields';
 import { HeldDraft } from './HeldDraft';
+import { useCreatorMemory } from './CreatorMemory';
 export function CreatorWorkspace() {
   const identity = useIdentity(),
     params = useSearchParams(),
-    router = useRouter();
+    router = useRouter(),
+    memory = useCreatorMemory();
   const id = params.get('resourceId');
   const valid =
     (id === null || z.uuid().safeParse(id).success) &&
@@ -66,8 +68,8 @@ export function CreatorWorkspace() {
           <Link
             prefetch={false}
             className="action-primary"
-            target={editor.retainedEdits ? '_blank' : undefined}
-            rel={editor.retainedEdits ? 'noopener noreferrer' : undefined}
+            target={memory.hasUnsaved ? '_blank' : undefined}
+            rel={memory.hasUnsaved ? 'noopener noreferrer' : undefined}
             href={
               '/sign-in/?returnTo=' +
               encodeURIComponent('/workspace/agent/' + (id ? '?resourceId=' + id : ''))

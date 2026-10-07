@@ -14,6 +14,7 @@ import { savedResources } from './saves.ts';
 import { databaseFailure } from './failure.ts';
 import { draftResources } from './drafts.ts';
 import { versionResources } from './versions.ts';
+import { reportResources } from './reports.ts';
 
 export interface WorkspaceData {
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
@@ -31,6 +32,8 @@ export interface WorkspaceData {
   submitVersion: ReturnType<typeof versionResources>['submitVersion'];
   withdrawVersion: ReturnType<typeof versionResources>['withdrawVersion'];
   versionDocument: ReturnType<typeof versionResources>['versionDocument'];
+  reports: ReturnType<typeof reportResources>['reports'];
+  createReport: ReturnType<typeof reportResources>['createReport'];
 }
 export function workspaceData(
   configuration: AuthConfiguration,
@@ -65,6 +68,7 @@ export function workspaceData(
     ...savedResources(client, member),
     ...drafts,
     ...versionResources(client, member, drafts),
+    ...reportResources(client, member),
     async agents(offset) {
       const profile = await member();
       const result = await client

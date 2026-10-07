@@ -10,7 +10,8 @@ export const IdentityResponseSchema = z.discriminatedUnion('signedIn', [
 export type IdentityResponse = z.infer<typeof IdentityResponseSchema>;
 export function signInReturnPath(value: unknown): string {
   if (typeof value !== 'string') return '/workspace/';
-  if (value === '/workspace/' || value === '/saves/') return value;
+  if (value === '/workspace/' || value === '/saves/' || value === '/workspace/reports/')
+    return value;
   if (
     value === '/workspace/agent/' ||
     /^\/workspace\/(?:agent|versions)\/\?resourceId=[a-fA-F0-9-]{36}$/.test(value)

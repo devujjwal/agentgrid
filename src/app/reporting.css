@@ -1,0 +1,147 @@
+.report-resource {
+  margin-block: 2rem;
+  padding-block: 2rem;
+  border-block: 1px solid var(--line);
+}
+.report-resource > div {
+  max-width: 48rem;
+  margin-top: 1.5rem;
+}
+.report-form {
+  display: grid;
+  gap: 1rem;
+}
+.report-form h3 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+.report-form p {
+  line-height: 1.7;
+  margin: 0;
+}
+.report-form select,
+.report-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-bright);
+  color: var(--ink);
+  font: inherit;
+  min-height: 3rem;
+}
+.report-form textarea {
+  resize: vertical;
+}
+.report-permission {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  line-height: 1.5;
+}
+.report-permission input {
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  accent-color: var(--signal);
+}
+.report-form button {
+  justify-self: start;
+}
+.report-resource code {
+  overflow-wrap: anywhere;
+}
+.reports-layout {
+  max-width: 76rem;
+}
+.report-introduction,
+.report-history {
+  max-width: 56rem;
+}
+.report-introduction {
+  padding-block: 1.5rem;
+}
+.report-introduction h2,
+.report-history h2 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.report-introduction p,
+.report-history p {
+  line-height: 1.7;
+}
+.report-connection {
+  min-height: 40rem;
+}
+.report-timeline {
+  list-style: none;
+  border-left: 1px solid var(--line);
+  padding-left: 1.5rem;
+}
+.report-timeline li {
+  position: relative;
+  padding-block: 1.5rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.report-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -1.85rem;
+  top: 2rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1px solid var(--signal);
+  border-radius: 50%;
+  background: var(--surface);
+}
+.report-timeline header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.report-timeline h3 {
+  font-size: 1.2rem;
+  line-height: 1.35;
+  margin: 0;
+}
+.report-state {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+.report-explanation,
+.report-resolution p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.report-resolution {
+  padding: 1rem;
+  border-left: 2px solid var(--signal);
+  background: var(--surface-bright);
+}
+.report-resolution h4 {
+  margin-top: 0;
+}
+.report-timeline summary {
+  cursor: pointer;
+  min-height: 2.75rem;
+  padding-block: 0.75rem;
+}
+.report-timeline dd {
+  margin: 0.5rem 0 1rem;
+}
+.report-timeline code {
+  overflow-wrap: anywhere;
+}
+.report-history nav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}

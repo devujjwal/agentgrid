@@ -6,44 +6,6 @@
   max-width: 90rem;
   margin-inline: auto;
 }
-:is(.identity-layout, .workspace-layout) :is(.action-primary, .action-secondary) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  min-height: 3rem;
-  padding: 0.75rem 1.25rem;
-  font: inherit;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: left;
-  text-decoration: none;
-  border: 1px solid var(--ink);
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition:
-    background-color 140ms ease,
-    border-color 140ms ease;
-}
-:is(.identity-layout, .workspace-layout) .action-primary {
-  background: var(--ink);
-  color: var(--surface-bright);
-}
-:is(.identity-layout, .workspace-layout) .action-secondary {
-  background: transparent;
-  color: var(--ink);
-}
-:is(.identity-layout, .workspace-layout) .action-primary:hover:not(:disabled) {
-  background: var(--signal);
-  border-color: var(--signal);
-}
-:is(.identity-layout, .workspace-layout) .action-secondary:hover:not(:disabled) {
-  background: var(--signal-soft);
-}
-:is(.identity-layout, .workspace-layout) button:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
 .identity-intro h1 {
   font-family: var(--font-editorial);
   font-weight: 400;

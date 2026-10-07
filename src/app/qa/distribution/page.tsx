@@ -4,6 +4,8 @@ import { parseAgentSpecification } from '../../../domain/agent-specification';
 import { ResourceSetup } from '../../../components/resource/ResourceSetup';
 import { SaveAgent } from '../../../components/resource/SaveAgent';
 import { AuthoringQa } from '../../../components/authoring/AuthoringQa';
+import { ReportResource } from '../../../components/reporting/ReportResource';
+import '../../reporting.css';
 import '../../identity.css';
 import '../../workspace/agent/authoring.css';
 import { SiteFrame } from '../../../components/layout/SiteFrame';
@@ -55,6 +57,12 @@ export default function DistributionQaPage() {
         </div>
         <ResourceSetup specification={specification} publication={fixture} />
         <AuthoringQa />
+        <ReportResource
+          targetKind="agent"
+          targetId={fixture.resource_id}
+          label="Synthetic report acceptance fixture"
+          path="/qa/distribution/"
+        />
       </main>
     </SiteFrame>
   );
