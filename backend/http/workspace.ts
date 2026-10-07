@@ -26,13 +26,19 @@ export function workspaceHandler(
     try {
       assertRequestTarget(request, runtime.configuration.origin);
       const url = new URL(request.url);
-      const read = ['/api/workspace/', '/api/workspace/agents/'].includes(url.pathname);
-      const mutation = [
-        '/api/workspace/onboard/',
-        '/api/workspace/profile/',
-        '/api/workspace/visibility/',
-        '/api/workspace/favorite/',
-      ].includes(url.pathname);
+      const read =
+        ['/api/workspace/', '/api/workspace/agents/', '/api/workspace/saved/'].includes(
+          url.pathname,
+        ) ||
+        (url.pathname === '/api/workspace/favorite/' && request.method === 'GET');
+      const mutation =
+        !read &&
+        [
+          '/api/workspace/onboard/',
+          '/api/workspace/profile/',
+          '/api/workspace/visibility/',
+          '/api/workspace/favorite/',
+        ].includes(url.pathname);
       if (!read && !mutation) throw new HttpFailure(404, 'not-found');
       if (read && request.method !== 'GET') throw new HttpFailure(405, 'method-unavailable');
       if (
@@ -51,7 +57,17 @@ export function workspaceHandler(
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.identity());
       }
-      if (url.pathname.endsWith('/agents/')) {
+      if (url.pathname === '/api/workspace/favorite/' && request.method === 'GET') {
+        if (
+          [...url.searchParams.keys()].some((key) => key !== 'resourceId') ||
+          url.searchParams.getAll('resourceId').length !== 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const resource = z.uuid().safeParse(url.searchParams.get('resourceId'));
+        if (!resource.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.saveState(resource.data));
+      }
+      if (url.pathname.endsWith('/agents/') || url.pathname.endsWith('/saved/')) {
         if (
           [...url.searchParams.keys()].some((key) => key !== 'offset') ||
           url.searchParams.getAll('offset').length > 1
@@ -59,7 +75,11 @@ export function workspaceHandler(
           throw new HttpFailure(400, 'invalid-request');
         const offset = url.searchParams.get('offset') ?? '0';
         if (!/^\d{1,4}$/.test(offset)) throw new HttpFailure(400, 'invalid-request');
-        return privateJson(await data.agents(Number(offset)));
+        return privateJson(
+          url.pathname.endsWith('/saved/')
+            ? await data.saved(Number(offset))
+            : await data.agents(Number(offset)),
+        );
       }
       if (url.pathname.endsWith('/onboard/'))
         await data.onboard(await input(request, OnboardingInputSchema));

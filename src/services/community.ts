@@ -26,7 +26,11 @@ export async function communityRequest<T>(
   mutation?: { csrf: string; body: unknown },
   signal?: AbortSignal,
 ): Promise<T> {
-  if (!/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4})?$/.test(path))
+  if (
+    !/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4}|\?resourceId=[a-fA-F0-9-]{36})?$/.test(
+      path,
+    )
+  )
     throw new CommunityError('request-refused');
   let response: Response;
   try {
