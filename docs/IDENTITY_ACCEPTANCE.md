@@ -74,21 +74,43 @@ IDs through the separate managed-identity reassociation strategy.
 - Eight migrations pass disposable PostgreSQL actor/isolation/extraction checks.
   Self-only projection tests include another shared identity, forged metadata,
   current moderator authority and immediate suspension. Protected fixtures and
-  default grants remain unchanged. No new migration has yet been applied remotely.
+  default grants remain unchanged. Exact-main CI passed at `e141345`; the guarded
+  operator applied migrations 007/008 and verified protected shared resources
+  unchanged before/after each transaction. Eight migrations are now recorded.
 - Production static export excludes unpublished resources/QA paths and privileged
   backend code. The separate server bundle compiles without reading credentials.
 - Browser inspection of the sign-in entry found and corrected native-looking
   buttons. Subsequent 320/393/768/1024/1440px checks find no horizontal overflow;
   controls exceed 44px and keyboard focus is visible. Mobile introductory copy is
   reduced to keep the form closer. These are unavailable-state checks, not live
-  sign-in proof. Live application sign-in,
-  profile editing and save journeys remain acceptance gates.
+  sign-in proof. The real owner Google application flow now reaches the verified
+  private workspace. It exposed an unsupported minimum refresh-token length;
+  the managed provider issues 12-character opaque tokens. The correction retains
+  remote verification and adds pinned-SDK regression/local cleanup checks.
+  Real email-code delivery and verification also reach that workspace after
+  correcting the managed hash shape (56 hexadecimal characters in this project,
+  with the existing 64-character contract still supported and tested).
+  Both real application Google and email sign-in are proven on localhost, not
+  deployment. Logout clears private state, and direct workspace access then
+  requires sign-in. Registration remains closed and creates no public profile.
+  Profile editing, saves and complete authoring journeys remain open.
+- Real signed-in workspace inspection at 320/393/768/1024/1440px finds no
+  horizontal overflow. The logout control is 48px high. The mobile screenshot is
+  stored in ignored local evidence; no email/code/session value is committed.
+- Compiled workerd acceptance exercises actual AES-GCM cookie round-trips,
+  secure flags, exact-origin/CSRF denial, private workspace denial, callback
+  routing and static fallback using synthetic keys with outbound traffic denied.
+  It uses the pinned vendor invocation matcher, including the trailing callback
+  slash. Miniflare's loopback Host/Origin transport handling is restored only in
+  the synthetic wrapper; production guard behavior is unchanged. This is a local
+  runtime gate, not Cloudflare deployment or CPU-limit evidence.
 
 ## Remaining gates
 
-1. Exact-head private CI and guarded additive migration rollout.
-2. Real application Google/email journeys, session refresh/logout and cross-account
-   checks; provider interoperability proof alone does not satisfy this.
+1. Exact-head private CI for the provider-shape correction and compiled runtime gate.
+2. Real session-refresh/concurrency and cross-account HTTP journeys beyond the
+   passing synthetic/database checks. Provider interoperability and the proven
+   owner sign-in/logout flows alone do not establish all community behavior.
 3. Reviewed community terms/privacy documents and deliberate consent configuration.
    Joining remains closed meanwhile. No acceptance or public creator identity is
    fabricated on the owner's behalf.

@@ -338,7 +338,7 @@ than treating existing code as completed functionality.
 - Implemented encrypted flows and provider-session state, single-use browser-bound
   email/Google verification, exact-origin CSRF, opaque HttpOnly sessions, safe
   redirects, redacted private responses and user-bearer workspace operations.
-- Two additive migrations remain local: bounded owned ephemeral state and a
+- Two additive migrations provide bounded owned ephemeral state and a
   self-only live identity/consent projection. Eight-migration database tests pass,
   preserving protected fixtures/default grants and owned-data extraction checks.
 - Tests caught a microsecond expiry-constraint race; creation and expiry now share
@@ -348,3 +348,23 @@ than treating existing code as completed functionality.
   onboarding is still closed; no actual consent, profile, role or activity is seeded.
 - See `IDENTITY_ACCEPTANCE.md` for bounds, evidence and remaining gates. Phase 4
   is not complete, and live server credentials have not been deployed.
+
+## Phase 4 real identity acceptance — continued
+
+- Private PR 5's exact head `c03fa2c` passed CI; merge `e141345` also passed
+  https://github.com/devujjwal/agentgrid/actions/runs/37608333640.
+  The guarded operator applied migrations 007/008 with protected fingerprints
+  unchanged before/after each transaction. Eight migrations are now recorded.
+- The actual application Google and email-code flows reach the remote-verified
+  private workspace on localhost. Live testing caught opaque provider-shape
+  assumptions (12-character refresh tokens and 56-character email hashes);
+  corrections have regression tests and preserve remote verification.
+- Logout removes private React/session state; direct access subsequently shows
+  the sign-in gate. No creator profile, legal consent or social activity is seeded.
+- Compiled workerd acceptance now exercises secure cookie encryption round-trips,
+  origin/CSRF denial, callback routing and private workspace denial with synthetic
+  keys and forbidden outbound traffic. This is independent of provider proof and
+  is not a deployment/CPU-limit claim.
+- Signed-in workspace measurements at 320/393/768/1024/1440px confirm no overflow
+  and a 48px logout control. Full authoring, saved-list and profile journeys are
+  still required before Phase 4 acceptance.
