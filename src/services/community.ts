@@ -1,0 +1,64 @@
+import { z } from 'zod';
+
+const messages: Record<string, string> = {
+  'request-refused': 'This request could not be verified. Refresh the page and try again.',
+  'invalid-request': 'Check the fields and try again.',
+  'not-signed-in': 'Your session has ended. Sign in again to continue.',
+  'verification-unavailable':
+    'Verification did not complete. Request a new code or try Google again.',
+  'rate-limited': 'Too many attempts. Please wait before trying again.',
+  conflict: 'This information changed, or the username is taken. Reload before continuing.',
+  'terms-required': 'Current community terms are required. Refresh before joining.',
+};
+export class CommunityError extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(messages[code] ?? 'AgentGrid is temporarily unavailable. Please try again.');
+    this.code = code;
+  }
+}
+/** Private data is never stored in localStorage or a global cache. No provider
+ * token, raw error, redirects, credentials or cross-origin request is accepted.
+ */
+export async function communityRequest<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  mutation?: { csrf: string; body: unknown },
+  signal?: AbortSignal,
+): Promise<T> {
+  if (!/^\/api\/(?:identity|workspace)\/(?:[a-z]+\/)?(?:\?offset=\d{1,4})?$/.test(path))
+    throw new CommunityError('request-refused');
+  let response: Response;
+  try {
+    response = await fetch(path, {
+      method: mutation ? 'POST' : 'GET',
+      credentials: 'same-origin',
+      cache: 'no-store',
+      redirect: 'error',
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(35_000)])
+        : AbortSignal.timeout(35_000),
+      ...(mutation
+        ? {
+            headers: { 'Content-Type': 'application/json', 'X-AgentGrid-CSRF': mutation.csrf },
+            body: JSON.stringify(mutation.body),
+          }
+        : {}),
+    });
+  } catch {
+    throw new CommunityError('service-unavailable');
+  }
+  let value: unknown;
+  try {
+    value = await response.json();
+  } catch {
+    throw new CommunityError('service-unavailable');
+  }
+  if (!response.ok) {
+    const failure = z.strictObject({ error: z.string().max(60) }).safeParse(value);
+    throw new CommunityError(failure.success ? failure.data.error : 'service-unavailable');
+  }
+  const parsed = schema.safeParse(value);
+  if (!parsed.success) throw new CommunityError('service-unavailable');
+  return parsed.data;
+}

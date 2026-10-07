@@ -1,0 +1,292 @@
+.identity-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 5rem var(--page-gutter) 7rem;
+  max-width: 90rem;
+  margin-inline: auto;
+}
+:is(.identity-layout, .workspace-layout) :is(.action-primary, .action-secondary) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+:is(.identity-layout, .workspace-layout) .action-primary {
+  background: var(--ink);
+  color: var(--surface-bright);
+}
+:is(.identity-layout, .workspace-layout) .action-secondary {
+  background: transparent;
+  color: var(--ink);
+}
+:is(.identity-layout, .workspace-layout) .action-primary:hover:not(:disabled) {
+  background: var(--signal);
+  border-color: var(--signal);
+}
+:is(.identity-layout, .workspace-layout) .action-secondary:hover:not(:disabled) {
+  background: var(--signal-soft);
+}
+:is(.identity-layout, .workspace-layout) button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.identity-intro h1 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin: 1.5rem 0 2rem;
+}
+.identity-intro h1 em {
+  color: var(--signal);
+}
+.identity-intro > svg {
+  width: 8rem;
+  height: 8rem;
+  color: var(--signal);
+  margin-bottom: 1rem;
+}
+.identity-intro > p:not(.eyebrow) {
+  max-width: 25rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.identity-intro a {
+  display: inline-block;
+  padding-block: 0.75rem;
+  color: var(--ink);
+}
+.identity-panel {
+  padding: 2.5rem;
+  border-top: 2px solid var(--signal);
+  background: var(--surface-bright);
+  align-self: start;
+}
+.identity-panel h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin: 1.25rem 0 1rem;
+}
+.identity-panel > p {
+  line-height: 1.65;
+}
+.identity-panel form {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.identity-panel label {
+  font-weight: 600;
+}
+.identity-panel input,
+.identity-panel textarea {
+  min-height: 3rem;
+  width: 100%;
+  padding: 0.75rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 0.25rem;
+}
+.identity-panel input:disabled {
+  opacity: 0.7;
+}
+.identity-panel #code-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.identity-google {
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: space-between;
+}
+.identity-panel .action-primary {
+  justify-content: space-between;
+}
+.identity-reset {
+  text-align: left;
+  padding-block: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  font: inherit;
+  cursor: pointer;
+}
+.identity-footnote {
+  color: var(--muted);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.identity-error {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+.identity-panel [role='alert'] {
+  line-height: 1.65;
+}
+.identity-message {
+  border-left: 3px solid var(--signal);
+  padding-left: 1rem;
+}
+@media (max-width: 767px) {
+  .identity-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-block: 2.5rem 4rem;
+  }
+  .identity-panel {
+    padding: 1.5rem;
+  }
+  .identity-intro > svg {
+    display: none;
+  }
+  .identity-intro h1 {
+    margin-block: 1rem;
+    font-size: 2.5rem;
+  }
+  .identity-intro > p:not(.eyebrow),
+  .identity-intro > a {
+    display: none;
+  }
+}
+.workspace-layout {
+  max-width: 90rem;
+  padding: 4rem var(--page-gutter) 6rem;
+  margin-inline: auto;
+}
+.workspace-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.workspace-heading h1 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-block: 1.5rem 0;
+}
+.workspace-heading em {
+  color: var(--signal);
+}
+.workspace-session {
+  max-width: 22rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.workspace-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.workspace-body > [role='status'] {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.workspace-resources h2 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: 2.5rem;
+}
+.workspace-resources ul {
+  list-style: none;
+  padding: 0;
+}
+.workspace-resources li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.workspace-resources li span {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.workspace-resources nav {
+  display: flex;
+  gap: 1rem;
+}
+.workspace-empty {
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 30rem;
+}
+.workspace-empty p:first-child {
+  color: var(--ink);
+  font-size: 1.5rem;
+}
+.workspace-connect {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+.workspace-connect h1 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1.15;
+}
+.field-optional {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.identity-panel .identity-checkbox {
+  display: flex;
+  gap: 0.75rem;
+  align-items: start;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.identity-checkbox input {
+  width: 1.25rem;
+  min-height: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 1.25rem;
+  accent-color: var(--signal);
+  margin-top: 0.2rem;
+}
+@media (max-width: 767px) {
+  .workspace-layout {
+    padding-block: 2.5rem 4rem;
+  }
+  .workspace-heading {
+    flex-direction: column;
+  }
+  .workspace-session {
+    text-align: left;
+  }
+  .workspace-body {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

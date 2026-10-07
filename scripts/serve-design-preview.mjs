@@ -18,7 +18,17 @@ if (process.env.CI || process.env.GITHUB_ACTIONS)
   throw new Error('Local preview is forbidden in CI.');
 if (!(await readFile(resolve(root, 'index.html'), 'utf8')).includes('Local design preview'))
   throw new Error('Build the local preview first.');
-createServer(async (request, response) => {
+const privateBoundary = process.argv.includes('--owner-live-auth')
+  ? await (await import('./owner-identity-preview.mjs')).ownerIdentityPreview()
+  : null;
+const server = createServer(async (request, response) => {
+  if (
+    privateBoundary &&
+    (request.url?.startsWith('/api/') || request.url?.startsWith('/auth/callback/'))
+  ) {
+    await privateBoundary.request(request, response);
+    return;
+  }
   response.setHeader('X-Robots-Tag', 'noindex, nofollow');
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('Referrer-Policy', 'same-origin');
@@ -70,6 +80,22 @@ createServer(async (request, response) => {
       .writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' })
       .end(request.method === 'HEAD' ? undefined : await readFile(resolve(root, '404.html')));
   }
-}).listen(3027, '127.0.0.1', () =>
-  console.log('Local optimized design preview: http://127.0.0.1:3027/'),
+});
+server.listen(3027, '127.0.0.1', () =>
+  console.log(
+    privateBoundary
+      ? 'Local owner-only live identity acceptance: http://localhost:3027/sign-in/ (no profile seeding)'
+      : 'Local optimized design preview: http://127.0.0.1:3027/',
+  ),
 );
+if (privateBoundary) {
+  let closing = false;
+  const close = () => {
+    if (closing) return;
+    closing = true;
+    server.close(() => {});
+    void privateBoundary.close().finally(() => process.exit());
+  };
+  process.once('SIGINT', close);
+  process.once('SIGTERM', close);
+}
