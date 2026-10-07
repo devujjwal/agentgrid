@@ -5,17 +5,17 @@ than treating existing code as completed functionality.
 
 ## Phase gates
 
-| Phase                            | Status                                           | Exit evidence                                                                                                                                                |
-| -------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0 — Ownership and infrastructure | In progress; Google account verification pending | Private personal repository and CI verified; free Cloudflare delivery and protected Supabase baseline verified. Real OTP and Google OAuth remain unverified. |
-| 1 — Contracts and content        | Not started                                      | Schema/RLS tests; specification; representative reproducible packages                                                                                        |
-| 2 — Visual system                | Not started                                      | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                      |
-| 3 — Public discovery             | Not started                                      | Search evaluation; distribution E2E; crawlable public HTML                                                                                                   |
-| 4 — Identity/workspace           | Not started                                      | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                        |
-| 5 — Community                    | Not started                                      | Full moderation/version/fork/review/report journeys                                                                                                          |
-| 6 — Publishing/inventory         | Not started                                      | Failure recovery; broad tested inventory; no private-data leakage                                                                                            |
-| 7 — Hardening                    | Not started                                      | Restore/rollback; browser/a11y/performance/security audits                                                                                                   |
-| 8 — Production launch            | Not started                                      | Domain, webmaster setup, production journeys and monitoring                                                                                                  |
+| Phase                            | Status                                                        | Exit evidence                                                                                                                                                |
+| -------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0 — Ownership and infrastructure | In progress; provider policy/credential authorization pending | Private personal repository and CI verified; free Cloudflare delivery and protected Supabase baseline verified. Real OTP and Google OAuth remain unverified. |
+| 1 — Contracts and content        | Not started                                                   | Schema/RLS tests; specification; representative reproducible packages                                                                                        |
+| 2 — Visual system                | Not started                                                   | Desktop/mobile browser inspection and iteration; accessibility and performance evidence                                                                      |
+| 3 — Public discovery             | Not started                                                   | Search evaluation; distribution E2E; crawlable public HTML                                                                                                   |
+| 4 — Identity/workspace           | Not started                                                   | Google and real email OTP; cross-account isolation; live saves/drafts                                                                                        |
+| 5 — Community                    | Not started                                                   | Full moderation/version/fork/review/report journeys                                                                                                          |
+| 6 — Publishing/inventory         | Not started                                                   | Failure recovery; broad tested inventory; no private-data leakage                                                                                            |
+| 7 — Hardening                    | Not started                                                   | Restore/rollback; browser/a11y/performance/security audits                                                                                                   |
+| 8 — Production launch            | Not started                                                   | Domain, webmaster setup, production journeys and monitoring                                                                                                  |
 
 ## Product invariants
 
@@ -70,5 +70,14 @@ than treating existing code as completed functionality.
   own server-side adapter so PicMagic SMTP/templates do not need modification.
 - Resend dashboard confirms Free, 3,000 emails/month, 100/day, 1/3 domain slots
   used, and pay-as-you-go disabled. Existing keys/domain remain untouched.
-- Google Cloud opened under the personal account; passkey verification awaits
-  the owner. Real Google/OTP delivery still gates completion of Phase 0.
+- Personal Google Cloud sign-in completed. Separate `AgentGrid` project
+  `agentgrid-510905` created; billing page explicitly confirms no billing account.
+  OAuth branding form prepared in External testing mode. Required Google API
+  user-data policy acceptance is pending with the owner; no client credential issued.
+- Resend-only `mail.agentgrid.me` sending domain registered, unverified. Three
+  additive GoDaddy DNS records are prepared but unsaved. Email authority and a
+  sending-only credential restricted to that domain await explicit authorization.
+- Remote CI passes at `b6fd4d5`:
+  https://github.com/devujjwal/agentgrid/actions/runs/37577025508.
+- Real Google/OTP delivery still gates completion of Phase 0. Product/community
+  and visual acceptance gates are not claimed as complete.

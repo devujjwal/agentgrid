@@ -32,7 +32,9 @@ visual system. Do not point the production domain at this build.
 ## Provider prerequisites
 
 Cloudflare and Resend personal browser login is complete. Cloudflare email is
-verified. Google Cloud personal-account passkey verification is pending.
+verified. Google Cloud personal sign-in is complete; AgentGrid's separate OAuth
+project has no linked billing account. Required OAuth user-data policy acceptance
+and email-sending credential authorization are pending.
 Do not paste credentials into
 chat, tracked files, or workflow logs. New account terms must be completed by the
 account owner. No paid plan or automatic recharge is authorized.
@@ -68,6 +70,27 @@ Do not mark Phase 0 complete while these are pending.
 Cloudflare static delivery and private-repository GitHub CI are already verified.
 Supabase connectivity, schema inventory, and initial cross-application RLS denial
 checks are verified. See the implementation ledger and shared-backend guide.
+
+## Prepared email setup
+
+Resend domain `mail.agentgrid.me` is registered in Tokyo (`ap-northeast-1`) but
+unverified. Current provider instructions use a DKIM TXT plus two CNAMEs:
+
+| Type  | Host relative to agentgrid.me | Destination                                          |
+| ----- | ----------------------------- | ---------------------------------------------------- |
+| TXT   | `resend._domainkey.mail`      | Public DKIM value supplied by this new Resend domain |
+| CNAME | `rsend.mail`                  | `rsend-apne1.forge.rmta.net`                         |
+| CNAME | `send.mail`                   | `send.forge.rmta.net`                                |
+
+The three additions are filled in GoDaddy but not saved. No existing DNS record is
+being replaced, and the website's parked apex remains untouched. Receiving is off.
+Do not infer old provider MX/SPF instructions; use the records shown for this domain.
+After explicit email-authority authorization, save and verify DNS, then issue
+`agentgrid_transactional` with Sending access restricted to `mail.agentgrid.me`.
+The pending domain does not yet appear in Resend's credential domain selector.
+Do not create an All domains key as a workaround. Keep other keys/domains unchanged.
+Store any approved credential in ignored private configuration with mode 0600,
+then in the AgentGrid server's secret configuration; never expose it in logs or Git.
 
 ## Public export boundary
 
