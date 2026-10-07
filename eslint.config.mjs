@@ -17,6 +17,26 @@ export default defineConfig([
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     plugins: { '@next/next': next, 'react-hooks': hooks },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/backend/**'],
+              message: 'The static public application must not import privileged backend code.',
+            },
+          ],
+        },
+      ],
+      'no-restricted-modules': ['error', { patterns: ['**/backend/**'] }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'ImportExpression[source.value=/backend/]',
+          message:
+            'The static public application must not dynamically import privileged backend code.',
+        },
+      ],
       ...next.configs.recommended.rules,
       ...next.configs['core-web-vitals'].rules,
       ...hooks.configs.recommended.rules,

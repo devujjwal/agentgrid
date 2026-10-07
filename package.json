@@ -2,6 +2,7 @@
   "name": "agentgrid",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.30.3",
   "engines": {
     "node": ">=24.2.0 <25"
@@ -21,6 +22,7 @@
     "verify:export": "node scripts/verify-export.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.2",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
