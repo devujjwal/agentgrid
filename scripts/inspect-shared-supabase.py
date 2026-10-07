@@ -148,6 +148,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify", action="store_true", help="Fail if protected resources differ from the recorded baseline")
     parser.add_argument("--rls", action="store_true", help="Run non-mutating PicMagic access-denial checks")
+    parser.add_argument("--summary", action="store_true", help="Print only boundary status and resource counts")
     args = parser.parse_args()
     token = load_token()
     rows = request("/database/query", token, {"query": INVENTORY_SQL, "read_only": True})
@@ -186,6 +187,10 @@ def main():
             if any(result.values()):
                 raise RuntimeError("Protected data visible to audit role " + role)
             print("PicMagic access-denial checks passed for " + role + ".")
+    if args.summary:
+        print("Shared project inventory: " + str(len(inventory["tables"])) + " tables; "
+              + str(sum(t["name"].startswith("agentgrid_") for t in inventory["tables"])) + " AgentGrid-owned tables.")
+        return
     print(json.dumps({
         "project_ref": PROJECT_REF,
         "tables": inventory["tables"],
