@@ -1,4 +1,5 @@
 import { accountResources } from './account.ts';
+import { profileGovernance } from './profile-governance.ts';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { AuthConfiguration } from '../auth/configuration.ts';
@@ -21,6 +22,7 @@ import { forkResources } from './forks.ts';
 import { moderationResources } from './moderation.ts';
 
 export interface WorkspaceData {
+  administration: ReturnType<typeof profileGovernance>;
   deactivateAccount: ReturnType<typeof accountResources>['deactivateAccount'];
   forkSource: ReturnType<typeof forkResources>['forkSource'];
   forkAgent: ReturnType<typeof forkResources>['forkAgent'];
@@ -76,6 +78,7 @@ export function workspaceData(
   };
   const drafts = draftResources(client, member);
   return {
+    administration: profileGovernance(client, identity),
     moderation: moderationResources(client, identity),
     identity,
     ...accountResources(client, member),

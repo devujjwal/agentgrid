@@ -12,6 +12,16 @@ language plpgsql as $$ begin
  end;
  raise exception 'Expected SQLSTATE % was not raised', expected;
 end $$;
+create function pg_temp.agentgrid_test_change_role(target uuid, requested_role text, granting boolean, reason text)
+returns void language plpgsql as $$ begin
+ perform public.agentgrid_decide_profile(target,(select governance_revision from public.agentgrid_profiles where id=target),
+ (case when granting then 'grant-' else 'revoke-' end)||requested_role,reason);
+end $$;
+create function pg_temp.agentgrid_test_moderate_profile(target uuid,suspended boolean,reason text)
+returns void language plpgsql as $$ begin
+ perform public.agentgrid_decide_profile(target,(select governance_revision from public.agentgrid_profiles where id=target),
+ case when suspended then 'suspend' else 'restore' end,reason);
+end $$;
 insert into auth.users(id) select ('00000000-0000-4000-8000-00000000000' || i)::uuid from generate_series(1,4) i;
 insert into public.agentgrid_profiles(id,username,display_name,terms_version,privacy_version)
 select ('10000000-0000-4000-8000-00000000000' || i)::uuid,'fixture_actor_'||i,'Fixture actor '||i,'fixture-v1','fixture-v1' from generate_series(1,4) i;
@@ -31,40 +41,40 @@ insert into public.agentgrid_favorites(profile_id,agent_id) values('10000000-000
 
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000002','administrator',true,'Unauthorized self-promotion attempt')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000002','administrator',true,'Unauthorized self-promotion attempt')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000002','fixture_actor_1')$s$,'23514');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000003','administrator',true,'Moderator self-promotion attempt')$s$,'42501');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000004',true,'A moderator cannot suspend an administrator')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000003','administrator',true,'Moderator self-promotion attempt')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_moderate_profile('10000000-0000-4000-8000-000000000004',true,'A moderator cannot suspend an administrator')$s$,'42501');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000004","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','administrator',false,'Attempt to remove last administrator')$s$,'42501');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000004',true,'Attempt to suspend last administrator')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000004','administrator',false,'Attempt to remove last administrator')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_moderate_profile('10000000-0000-4000-8000-000000000004',true,'Attempt to suspend last administrator')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000004','fixture_actor_4')$s$,'42501');
-select public.agentgrid_change_role('10000000-0000-4000-8000-000000000003','administrator',true,'Synthetic administrator delegation for acceptance.');
-select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000001',true,'Synthetic suspension acceptance only.');
+select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000003','administrator',true,'Synthetic administrator delegation for acceptance.');
+select pg_temp.agentgrid_test_moderate_profile('10000000-0000-4000-8000-000000000001',true,'Synthetic suspension acceptance only.');
 reset role;
 select pg_temp.agentgrid_assert((select status='suspended' from public.agentgrid_profiles where id='10000000-0000-4000-8000-000000000001'),'administrator can suspend an AgentGrid profile');
 set local role authenticated;
-select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000001',false,'Synthetic restoration acceptance only.');
+select pg_temp.agentgrid_test_moderate_profile('10000000-0000-4000-8000-000000000001',false,'Synthetic restoration acceptance only.');
 reset role;
 
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_assert(public.agentgrid_has_role(array['administrator']),'delegated role is active without a replacement JWT');
-select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','administrator',false,'Synthetic role revocation acceptance only.');
+select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000004','administrator',false,'Synthetic role revocation acceptance only.');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000004","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_assert(not public.agentgrid_has_role(array['administrator']),'revocation takes effect on the existing JWT');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','administrator',true,'A stale JWT must not regain its old role')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000004','administrator',true,'A stale JWT must not regain its old role')$s$,'42501');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','administrator',true,'Synthetic restoration of administrator role.');
+select pg_temp.agentgrid_test_change_role('10000000-0000-4000-8000-000000000004','administrator',true,'Synthetic restoration of administrator role.');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000004","role":"authenticated"}';
 set local role authenticated;
@@ -89,7 +99,7 @@ select pg_temp.agentgrid_assert((select state='withdrawn' from public.agentgrid_
 select pg_temp.agentgrid_assert((select status='archived' from public.agentgrid_agents),'owned resources are archived');
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000002',false,'Cannot revive a detached account using moderation')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.agentgrid_test_moderate_profile('10000000-0000-4000-8000-000000000002',false,'Cannot revive a detached account using moderation')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000003','fixture_actor_3')$s$,'42501');
 reset role;
 -- A later signup must not be removed by a stale deactivation request.
