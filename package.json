@@ -32,7 +32,8 @@
     "design:dev": "AGENTGRID_LOCAL_DESIGN_PREVIEW=1 next dev --hostname 127.0.0.1 --port 3027",
     "design:build": "node scripts/build-design-preview.mjs",
     "design:preview": "node scripts/serve-design-preview.mjs",
-    "publication:capture": "node scripts/capture-publication.mjs"
+    "publication:capture": "node scripts/capture-publication.mjs",
+    "publication:promote": "node scripts/promote-publication.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
