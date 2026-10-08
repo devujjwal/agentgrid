@@ -344,14 +344,14 @@ h2 {
   background: var(--signal);
 }
 .universe-viewport {
-  aspect-ratio: 660 / 550;
+  aspect-ratio: 660 / 608;
   contain: layout paint;
   overflow: hidden;
 }
 .agent-universe {
   display: block;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 68px);
 }
 .universe-grid {
   color: var(--line-strong);
@@ -1049,31 +1049,6 @@ h2 {
   .network-node.is-selected .node-outer {
     r: 29;
   }
-  .constellation-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 68px;
-    padding: 0.5rem 1rem;
-    border-top: 1px solid var(--line);
-  }
-  .constellation-controls button {
-    background: transparent;
-    border: 1px solid var(--line-strong);
-    width: 44px;
-    height: 44px;
-  }
-  .constellation-controls span {
-    font-family: var(--font-mono);
-    text-align: center;
-    font-size: 0.65rem;
-  }
-  .constellation-controls small {
-    display: block;
-    font-size: 0.55rem;
-    color: var(--muted);
-    margin-top: 0.5rem;
-  }
   .universe-coordinates {
     font-size: 9px;
   }
@@ -1136,4 +1111,30 @@ h2 {
   h1 {
     font-size: 2rem;
   }
+}
+
+.constellation-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+}
+.constellation-controls button {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  width: 44px;
+  height: 44px;
+}
+.constellation-controls span {
+  font-family: var(--font-mono);
+  text-align: center;
+  font-size: 0.65rem;
+}
+.constellation-controls small {
+  display: block;
+  font-size: 0.55rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
 }

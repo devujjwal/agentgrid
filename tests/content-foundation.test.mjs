@@ -23,6 +23,10 @@ test('broad draft foundation stays portable, task-specific and unpublished', asy
     }
   }
   assert.deepEqual(new Set(agents.map((agent) => agent.category)), new Set(LAUNCH_CATEGORIES));
+  // Coverage is an editorial draft gate, never a claim of publication or host verification.
+  assert.ok(agents.length >= 36);
+  for (const category of LAUNCH_CATEGORIES)
+    assert.ok(agents.filter((agent) => agent.category === category).length >= 2, category);
   assert.equal(new Set(agents.map((agent) => agent.execution.instructions)).size, agents.length);
   assert.equal(new Set(agents.map((agent) => agent.examples[0].input)).size, agents.length);
 });

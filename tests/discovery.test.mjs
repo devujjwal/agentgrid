@@ -10,6 +10,7 @@ import { discoveryKeywords } from '../src/data/discovery-metadata.ts';
 import {
   draftRelations,
   layoutUniverse,
+  universeLabel,
   universeRelations,
 } from '../src/components/universe/model.ts';
 
@@ -35,6 +36,17 @@ for (const slug of await readdir('content/agents')) {
 
 test('literal discovery finds specific consumer tasks without unrelated verb-only results', async () => {
   const cases = [
+    ['summarize survey responses', 'survey-theme-synthesizer'],
+    ['write neutral customer interview questions', 'interview-guide-designer'],
+    ['check calendar overlap', 'calendar-conflict-checker'],
+    ['make flashcards from a lesson', 'flashcard-quality-designer'],
+    ['find the first algebra mistake', 'worked-solution-diagnostician'],
+    ['write image alt text', 'alt-text-editor'],
+    ['normalize product variants', 'product-variant-normalizer'],
+    ['compare vendor quotes', 'vendor-quote-comparator'],
+    ['organize a household chore rota', 'household-chore-coordinator'],
+    ['check redirect loops', 'redirect-map-reviewer'],
+    ['write a bug reproduction brief', 'bug-reproduction-brief'],
     ['audit my seo', 'search-opportunity-auditor'],
     ['Plan a campaign', 'campaign-message-planner'],
     ['triage my emails', 'inbox-priority-triage'],
@@ -74,10 +86,10 @@ test('literal discovery finds specific consumer tasks without unrelated verb-onl
 });
 
 test('discovery contracts bound results and honor category/kind without inventing capabilities', () => {
-  assert.equal(
-    searchCatalogue(resources, { text: '', category: 'everyday' })[0]?.resource.slug,
-    'household-meal-planner',
-  );
+  const everyday = searchCatalogue(resources, { text: '', category: 'everyday' });
+  assert.ok(everyday.length > 1);
+  assert.ok(everyday.every((match) => match.resource.category === 'everyday'));
+  assert.ok(everyday.some((match) => match.resource.slug === 'household-meal-planner'));
   assert.deepEqual(searchCatalogue(resources, { text: '', kinds: ['integration'] }), []);
   assert.equal(searchCatalogue(resources, { text: '', limit: 2 }).length, 2);
   assert.equal(
@@ -114,7 +126,25 @@ test('compact graph shows bounded actual neighbors and desktop includes a select
     'resource-99',
     false,
   );
-  assert.equal(desktop.nodes.length, 24);
+  assert.equal(desktop.nodes.length, 9);
+  assert.equal(new Set(desktop.nodes.map(({ x, y }) => `${x}:${y}`)).size, 9);
+  const isolated = layoutUniverse(
+    resources,
+    draftRelations,
+    [resources[0].slug],
+    resources[0].slug,
+    false,
+  );
+  assert.equal(isolated.nodes.length, 1);
+  for (const compact of [true, false]) {
+    const lines = universeLabel(
+      'Very long resource name with several repeated descriptive words',
+      compact,
+    );
+    assert.ok(lines.length <= 2);
+    assert.ok(lines.every((line) => line.length <= (compact ? 16 : 22)));
+    assert.ok(lines.at(-1).endsWith('…'));
+  }
   assert.ok(desktop.nodes.some((node) => node.resource.slug === 'resource-99'));
   assert.equal(layoutUniverse(resources, draftRelations, [], '', true).nodes.length, 0);
 });

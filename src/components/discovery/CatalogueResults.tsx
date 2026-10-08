@@ -133,7 +133,7 @@ export function CatalogueResults({
             <p>
               Try a more specific task or explore another discipline.{' '}
               {drafts
-                ? 'The draft foundation is intentionally small; it is not the launch library.'
+                ? 'These unpublished drafts are still undergoing editorial and platform review.'
                 : 'The library only lists reviewed resources; this task may not have a suitable match yet.'}
             </p>
             <button

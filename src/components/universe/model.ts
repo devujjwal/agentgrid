@@ -52,6 +52,111 @@ export const draftRelations: readonly UniverseRelation[] = [
     target: 'source-evidence-mapper',
     capability: 'Evidence-linked findings',
   },
+  {
+    source: 'survey-theme-synthesizer',
+    target: 'returns-feedback-analyst',
+    capability: 'Traceable feedback themes',
+  },
+  {
+    source: 'interview-guide-designer',
+    target: 'research-question-scoper',
+    capability: 'Bounded learning questions',
+  },
+  {
+    source: 'launch-message-adapter',
+    target: 'campaign-message-planner',
+    capability: 'Supported campaign messages',
+  },
+  {
+    source: 'weekly-capacity-planner',
+    target: 'calendar-conflict-checker',
+    capability: 'Time and commitment constraints',
+  },
+  {
+    source: 'weekly-capacity-planner',
+    target: 'household-chore-coordinator',
+    capability: 'Capacity allocation',
+  },
+  {
+    source: 'reply-draft-assistant',
+    target: 'inbox-priority-triage',
+    capability: 'Evidence-backed email actions',
+  },
+  {
+    source: 'study-methods-reader',
+    target: 'source-evidence-mapper',
+    capability: 'Limits of source evidence',
+  },
+  {
+    source: 'literature-screening-assistant',
+    target: 'research-question-scoper',
+    capability: 'Explicit research scope',
+  },
+  {
+    source: 'analogy-learning-coach',
+    target: 'retrieval-study-coach',
+    capability: 'Checking concept understanding',
+  },
+  {
+    source: 'worked-solution-diagnostician',
+    target: 'retrieval-study-coach',
+    capability: 'Targeted misconception feedback',
+  },
+  {
+    source: 'flashcard-quality-designer',
+    target: 'retrieval-study-coach',
+    capability: 'Source-grounded retrieval practice',
+  },
+  {
+    source: 'transcript-clip-planner',
+    target: 'article-structure-editor',
+    capability: 'Preserving source context',
+  },
+  {
+    source: 'plain-language-rewriter',
+    target: 'article-structure-editor',
+    capability: 'Meaning-preserving editing',
+  },
+  {
+    source: 'alt-text-editor',
+    target: 'plain-language-rewriter',
+    capability: 'Audience-specific clarity',
+  },
+  {
+    source: 'product-variant-normalizer',
+    target: 'product-listing-auditor',
+    capability: 'Product attribute consistency',
+  },
+  {
+    source: 'product-faq-grounder',
+    target: 'product-listing-auditor',
+    capability: 'Source-supported product claims',
+  },
+  {
+    source: 'sop-gap-reviewer',
+    target: 'project-dependency-planner',
+    capability: 'Missing handoffs and prerequisites',
+  },
+  {
+    source: 'vendor-quote-comparator',
+    target: 'weekly-capacity-planner',
+    capability: 'Explicit quantitative assumptions',
+  },
+  {
+    source: 'packing-checklist-planner',
+    target: 'moving-task-organizer',
+    capability: 'Planning from confirmed arrangements',
+  },
+  {
+    source: 'redirect-map-reviewer',
+    target: 'search-opportunity-auditor',
+    capability: 'Reviewable website audit findings',
+  },
+  {
+    source: 'bug-reproduction-brief',
+    target: 'pull-request-reviewer',
+    capability: 'Confirmed versus untested code evidence',
+  },
 ];
 
 /** Public links come only from reviewed shared tags. No activity or similarity
@@ -82,24 +187,46 @@ export function universeRelations(resources: readonly DiscoveryResource[]): Univ
   return edges;
 }
 
-const curated: Record<string, [number, number, string]> = {
-  'campaign-message-planner': [165, 100, 'Message planner'],
-  'inbox-priority-triage': [100, 270, 'Inbox triage'],
-  'source-evidence-mapper': [340, 215, 'Evidence mapper'],
-  'retrieval-study-coach': [515, 100, 'Study coach'],
-  'article-structure-editor': [335, 65, 'Article editor'],
-  'product-listing-auditor': [555, 285, 'Listing auditor'],
-  'meeting-decision-ledger': [265, 350, 'Decision ledger'],
-  'household-meal-planner': [445, 410, 'Meal planner'],
-  'search-opportunity-auditor': [135, 435, 'Search auditor'],
-  'pull-request-reviewer': [515, 480, 'PR reviewer'],
-};
+const desktopPositions = [
+  [330, 245],
+  [110, 85],
+  [330, 65],
+  [550, 90],
+  [110, 260],
+  [550, 260],
+  [110, 435],
+  [330, 445],
+  [550, 435],
+] as const;
 const compactPositions = [
-  [180, 200],
-  [80, 80],
-  [285, 85],
+  [180, 205],
+  [90, 75],
+  [275, 80],
   [180, 345],
 ] as const;
+
+/** Two bounded lines, with the full name retained in the accessible link. */
+export function universeLabel(title: string, compact: boolean): string[] {
+  const width = compact ? 16 : 22;
+  const words = title.trim().split(/\s+/);
+  const lines: string[] = [];
+  let remaining = words.join(' ');
+  for (let row = 0; row < 2 && remaining; row++) {
+    if (remaining.length <= width) {
+      lines.push(remaining);
+      break;
+    }
+    if (row === 1) {
+      lines.push(remaining.slice(0, width - 1).trimEnd() + '…');
+      break;
+    }
+    const boundary = remaining.lastIndexOf(' ', width);
+    const cut = boundary > 0 ? boundary : width;
+    lines.push(remaining.slice(0, cut));
+    remaining = remaining.slice(cut).trimStart();
+  }
+  return lines;
+}
 
 /** Bounded layout keeps the list authoritative; the map is always a selected subset. */
 export function layoutUniverse(
@@ -116,42 +243,29 @@ export function layoutUniverse(
       .flatMap((edge) => [edge.source, edge.target]),
   );
   const selected = resources.find((item) => item.slug === selectedSlug && matchSet.has(item.slug));
-  const candidates = compact
-    ? [
-        ...(selected ? [selected] : []),
-        ...resources.filter(
+  const candidates = [
+    ...(selected ? [selected] : []),
+    ...resources.filter(
+      (item) => item.slug !== selectedSlug && matchSet.has(item.slug) && neighbors.has(item.slug),
+    ),
+    ...(compact
+      ? []
+      : resources.filter(
           (item) =>
-            item.slug !== selectedSlug && matchSet.has(item.slug) && neighbors.has(item.slug),
-        ),
-      ].slice(0, 4)
-    : [
-        ...(selected ? [selected] : []),
-        ...resources.filter((item) => item.slug !== selectedSlug && matchSet.has(item.slug)),
-        ...resources.filter((item) => !matchSet.has(item.slug)),
-      ].slice(0, 24);
-  const filtered = matches.length < resources.length;
+            item.slug !== selectedSlug && matchSet.has(item.slug) && !neighbors.has(item.slug),
+        )),
+  ].slice(0, compact ? 4 : 9);
+  const positions = compact ? compactPositions : desktopPositions;
   const nodes = candidates.map((resource, index) => {
-    const original = curated[resource.slug] ?? [
-      60 + (index % 6) * 105,
-      70 + Math.floor(index / 6) * 125,
-      resource.title.slice(0, 24),
-    ];
-    const matchedIndex = matches.indexOf(resource.slug);
-    const angle = (matchedIndex / Math.max(matches.length, 1)) * Math.PI * 2 - Math.PI / 2;
-    const position = compact
-      ? (compactPositions[index] ?? compactPositions[0])
-      : filtered && matchedIndex >= 0
-        ? [
-            330 + (matches.length === 1 ? 0 : Math.cos(angle) * 180),
-            245 + (matches.length === 1 ? 0 : Math.sin(angle) * 150),
-          ]
-        : original;
+    const position = positions[index];
+    if (!position) throw new Error('Universe layout capacity exceeded.');
     return {
       resource,
       x: Number(position[0]),
       y: Number(position[1]),
-      label: String(original[2]),
-      matched: matchSet.has(resource.slug),
+      label: resource.title,
+      labelLines: universeLabel(resource.title, compact),
+      matched: true,
       related: neighbors.has(resource.slug),
     };
   });
