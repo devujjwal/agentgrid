@@ -1073,3 +1073,29 @@ CI `37738638365` and merged to main
 main installed migration 026 and verified protected shared resources unchanged.
 No real creator/profile rows were created. Staging credential authorization,
 first-party package licensing and legal operator details remain pending owner input.
+
+### Branded missing-page and rendering recovery
+
+The application now has a custom root not-found page, a segment error boundary,
+and a root-layout fallback. Recovery links use fresh document navigation so they
+do not depend on a failing client router. Exception messages, stack traces and
+request data are never rendered by the fallback. A user-triggered retry uses this
+installed Next version's `retry` API; mutations are not replayed by the fallback.
+The rendering error focuses its heading and restores the prior document title
+when recovery succeeds. Global fallback imports its own required styles.
+
+A local-only fixture triggers an actual rendering failure and is excluded from
+public compilation. Browser acceptance verifies throw/retry twice, focus, title
+restoration, navigation back to Learn and a real unknown-route HTTP 404. Inspection
+caught duplicate not-found title elements; the supported Next metadata export
+replaces inline title markup. The corrected 404 has one title and noindex metadata.
+Responsive checks at 320/768/1024/1440px show no horizontal overflow. The exported
+404 document scores 99 performance, 100 accessibility and 100 best practices in
+mobile Lighthouse (LCP 2.1s, TBT 30ms, CLS 0). This lab serves the exported document
+at /404.html for auditing; a separate request verifies unknown routes return 404.
+Full formatting/lint/typecheck, 145 Node and 11 Python tests and the production
+export pass. Root-layout error rendering has compile coverage; provider-induced
+500 failures and cross-browser recovery still require staging acceptance.
+
+PR27 learning head `3454e4088fd7087fcdb4997d7b4cad0e7affa5ad` passed
+CI `37740433580` and was merged. No production deployment was performed.
