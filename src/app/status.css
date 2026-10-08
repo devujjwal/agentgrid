@@ -1,0 +1,117 @@
+.status-screen {
+  max-width: 1600px;
+  margin: auto;
+  padding: 0 var(--page-gutter);
+}
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  min-height: 104px;
+  border-bottom: 1px solid var(--line);
+}
+.status-header > .eyebrow {
+  color: var(--muted);
+}
+.status-screen main {
+  max-width: 52rem;
+  padding: 4rem 0 5rem;
+}
+.status-signal {
+  width: 15rem;
+  margin-bottom: 3rem;
+  color: var(--signal);
+}
+.status-signal svg {
+  display: block;
+  width: 100%;
+  fill: var(--surface);
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+.status-orbit {
+  stroke-dasharray: 2 5;
+}
+.status-screen h1 {
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  margin: 1.5rem 0;
+  max-width: 19ch;
+}
+.status-screen main > p:not(.eyebrow) {
+  max-width: 48rem;
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.status-actions a,
+.status-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  min-height: 48px;
+  border: 1px solid var(--control-border);
+  background: var(--surface-bright);
+  color: var(--ink);
+}
+.status-actions > :first-child {
+  color: var(--surface-bright);
+  background: var(--signal);
+  border-color: var(--signal);
+}
+.status-help {
+  margin-top: 3rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--line);
+}
+.status-help p {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.status-help a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0.5rem 0;
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+.status-screen footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+@media (max-width: 767px) {
+  .status-header > .eyebrow {
+    display: none;
+  }
+  .status-header {
+    min-height: 88px;
+  }
+  .status-screen main {
+    padding: 2rem 0 3rem;
+  }
+  .status-signal {
+    margin-bottom: 2rem;
+    width: 12rem;
+  }
+  .status-actions {
+    align-items: stretch;
+  }
+  .status-actions > * {
+    flex: 1 1 100%;
+  }
+}
