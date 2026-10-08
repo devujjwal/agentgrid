@@ -1197,3 +1197,7 @@ h2 {
     justify-content: space-between;
   }
 }
+
+.site-footer {
+  flex-wrap: wrap;
+}

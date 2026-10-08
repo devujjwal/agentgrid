@@ -1167,3 +1167,28 @@ PR30 category head `64f6e42` passed CI `37744699340` and merged. Remaining
 owner inputs (staging credential authorization, legal identity and first-party
 reuse decision) are unchanged. No paid service, public release or application
 deployment was activated.
+
+### Platform and connection guidance
+
+Six source-checked editorial guides cover three platforms, two integrations and
+MCP concepts. Their bounded schema validates dates, references and official source
+hosts. Integration guidance participates in task discovery without claiming a
+connector is installed. Exact declarations link resources and platform guidance;
+protocol guidance cannot masquerade as a server listing. Related-resource lists
+are bounded to eight with an honest total. Provider facts and editorial advice
+remain distinct; no host evidence, license or publication claim was fabricated.
+See `CONNECTION_GUIDANCE.md` for review cadence and static freshness limitations.
+
+Browser acceptance verifies 320/768/1024/1440 layout bounds, keyboard main focus,
+checklist anchors, agent/platform round-trip links, integration-filtered search
+and MCP related navigation. Canonicals use agentgrid.me; noindex and sitemap
+exclusions remain. Full checks pass 153 Node/11 Python tests, formatting, lint,
+typecheck and production export (44 documents); local preview has 91 documents.
+
+PR31 community-entry head `11e3b00` passed CI `37745518940` and merged. No provider
+resource, database migration or paid feature was changed in this milestone.
+
+Guide mobile Lighthouse without the disposable QA toolbar: performance 99,
+accessibility 100, best practices 100, LCP 2.2s, TBT 30ms, CLS 0. SEO 66 reflects
+intentional prelaunch noindex. This is local lab evidence, not field INP or
+production delivery evidence.

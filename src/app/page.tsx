@@ -1,3 +1,5 @@
+import { connectionGuides } from '../data/connections';
+import { integrationDiscovery } from '../domain/connection-guide';
 import type { Metadata } from 'next';
 import { categoryGuides } from '../data/categories';
 import { categoryDiscovery } from '../domain/category';
@@ -18,6 +20,7 @@ export default async function HomePage() {
     ...discoveryResources(),
     ...(await recipeDiscovery()),
     ...categoryDiscovery(categoryGuides),
+    ...integrationDiscovery(connectionGuides),
   ];
   return (
     <DesignHome
