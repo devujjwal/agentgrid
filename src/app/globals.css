@@ -1171,3 +1171,29 @@ h2 {
     width: 100%;
   }
 }
+
+.header-workspace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0;
+  font-size: 0.8rem;
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+@media (max-width: 767px) {
+  .site-header .brand {
+    order: 0;
+  }
+  .header-workspace {
+    order: 1;
+    margin-left: auto;
+  }
+  .site-header nav {
+    order: 2;
+    width: 100%;
+    justify-content: space-between;
+  }
+}

@@ -44,7 +44,9 @@ export function SiteFrame({
             Learn
           </Link>
         </nav>
-        <span className="header-note">Ideas → useful work</span>
+        <Link prefetch={false} className="header-workspace" href="/workspace/">
+          Workspace <span aria-hidden="true">↗</span>
+        </Link>
       </header>
       {children}
       <footer className="site-footer">

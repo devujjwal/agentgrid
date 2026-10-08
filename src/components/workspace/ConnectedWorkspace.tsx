@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { flushSync } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import {
@@ -31,7 +31,6 @@ export function ConnectedWorkspace({
   changeEdits: (value: ProfileEditBuffer) => void;
   committed: (profileId: string) => void;
 }) {
-  const router = useRouter();
   const memory = useCreatorMemory();
   const [retry, setRetry] = useState(0),
     [offset, setOffset] = useState(0);
@@ -80,8 +79,9 @@ export function ConnectedWorkspace({
         z.strictObject({ signedIn: z.literal(false), csrf: z.string() }),
         { csrf, body: {} },
       );
-      signedOut(result.csrf); // Unmount private state before navigating away.
-      router.replace('/sign-in/');
+      flushSync(() => signedOut(result.csrf)); // Clear private state and unload warnings before navigation.
+      // A new document discards every private client subtree and tab-local edit buffer.
+      window.location.replace('/sign-in/');
     } catch (error) {
       setLogoutError(error instanceof Error ? error.message : 'Sign-out did not complete.');
       setBusy(false);

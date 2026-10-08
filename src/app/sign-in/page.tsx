@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function SignInPage() {
   return (
     <SiteFrame localPreview={process.env.AGENTGRID_LOCAL_DESIGN_PREVIEW === '1'}>
-      <main id="main-content" className="identity-layout">
+      <main id="main-content" tabIndex={-1} className="identity-layout">
         <div className="identity-intro">
           <p className="eyebrow">AgentGrid / a place in the network</p>
           <h1>
