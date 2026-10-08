@@ -11,6 +11,7 @@ for (const path of [
   'qa/distribution',
   'qa/reviews',
   'qa/host-evidence',
+  'qa/release-review',
 ]) {
   const reserved = resolve(root, path);
   try {

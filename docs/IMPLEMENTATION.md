@@ -770,3 +770,50 @@ intentional. This is presentation lab evidence, not authenticated production
 latency or field INP. The QA route is removed and verified absent from production.
 Trusted release approval, publication batches/takedown/recovery and real launch
 inventory remain open work; this increment does not complete publication.
+
+### Evidence rollout and reviewed publication
+
+PR18 head `f11f89bff3c6256aef3e09ef5ac3ca16e6774bd6` passed CI
+`37725295750`; merge/main `fdd96ebd79ed457aa42f9fc9575ea6d017c10912`
+passed `37725529240`. Guarded migrations 019–020 were applied from that clean
+main commit. Protected PicMagic inventory remained unchanged; live anonymous and
+authenticated nonmember boundaries passed without creating application rows.
+
+Migrations 021–022 add immutable publication review requests and separate immutable
+outcomes. Each request records the authenticated reviewer, explicit review checks,
+selected version-bound observations, content digest, agent moderation revision and
+previous release. Seven-day expiry, quotas, cancellation, active-owner/staff checks
+and transaction locks prevent stale reviews from publishing. Ordinary moderators
+cannot approve their own submissions. Administrators can review their own content,
+but the self-review is explicitly labelled and retained; this does not invent an
+independent reviewer. No actual staff account or release was created by this work.
+
+The legacy direct service-role publisher is revoked. The trusted job reads the
+persisted request and selected immutable observations, reruns the full editorial,
+rights, security and real-host quality gate, then submits a compact manifest to the
+transactional release RPC. The RPC rechecks mutable eligibility and records its
+exact outcome atomically. Matching retries return historical receipts without
+republishing an old version. A separate read-only endpoint supports lost-response
+recovery. No privileged credential is added to browser, Pages or GitHub configuration.
+
+The staff interface loads on demand. It supports evidence selection, initially
+unchecked review confirmations, bounded rationale, explicit confirmation, cancellation,
+private history and held notes. A competing agent revision cannot silently rebind
+old confirmations: a deliberate reset preserves notes/selections and clears all six
+checks. Browser acceptance covers Escape/focus restoration, retained notes across
+hide/show, exact receipts, cancellation, lost-response readback without duplication,
+and concealment after staff revocation. Synthetic fixtures remain memory-only and
+are never real verification or public content.
+
+113 Node tests, 11 Python tests, formatting, lint, strict typecheck, production
+export, compiled workerd and the 22-migration isolation/extraction suite pass.
+Responsive 320/768/1024/1440px checks show no horizontal overflow; selectable rows
+are at least 50px tall on desktop and 73px at 320px. Browser console errors: none.
+Isolated mobile presentation lab: performance 99, accessibility 100, best practices
+96, LCP 1.962s, TBT 10.5ms, CLS 0. Private noindex SEO 63 is intentional. These
+measurements do not establish authenticated production latency or field INP.
+The local acceptance route is removed and verified absent from production.
+
+Static publication batches, deployment confirmation, urgent takedown/recovery,
+real host-tested inventory and the remaining launch gates are still open.
+Migrations 021–022 are local until private PR and exact-main CI acceptance.

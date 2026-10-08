@@ -215,3 +215,26 @@ previously assessed unpatched `braces` 3.0.3 lint path. New paths, available fix
 unknown advisories and incomplete audit responses block the build.
 
 Patched advisory: https://github.com/advisories/GHSA-wq5f-xc86-pv6w.
+
+## Reviewed publication boundary
+
+A signed-in staff member records a review request against the exact immutable
+submission and selects private host observations. Checks start unconfirmed. The
+request itself does not approve the submission. An ordinary moderator cannot
+review their own version; an administrator's own-content review is retained as an
+explicit self-review. Never manufacture another creator or reviewer to imply
+independence. A request expires after seven days. Any current staff member can
+cancel an unprocessed request; already released content uses resource moderation.
+
+`backend/publication/release.ts` is the trusted, offline orchestration boundary.
+It reads only the persisted request and selected observations, validates all
+quality gates, and calls the transactional publisher. Do not accept a manifest,
+reviewer identity or replacement observations from a browser. Do not bypass this
+boundary with SQL or the internal legacy publication helper. No production job
+credential or scheduler is provisioned yet; batch deployment is a separate gate.
+
+After an uncertain job response, use `inspectReviewedRelease` to read its immutable
+outcome before any retry. A `released` outcome is historical evidence of the live
+release transaction, not proof of current visibility or static deployment. A
+cancelled/expired/stale request must not be revived. Re-review current state and
+create a fresh request if appropriate. Preserve the original record for audit.

@@ -216,3 +216,20 @@
   padding-block: 1rem;
   border-block-start: 1px solid var(--line-strong);
 }
+
+.release-review-fields {
+  margin-block: 2.5rem;
+}
+.release-review-fields .moderation-choice {
+  border-block-end: 1px solid var(--line);
+  padding-block: 0.75rem;
+  align-items: flex-start;
+}
+.release-review-fields .moderation-choice input {
+  margin-block-start: 0.125rem;
+}
+.release-review-fields .moderation-choice small {
+  display: block;
+  color: var(--muted);
+  margin-block-start: 0.25rem;
+}

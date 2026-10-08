@@ -32,6 +32,7 @@ export function Workspace() {
           memory.setSubmissionModerationNotes(null);
           memory.setResourceModerationNotes(null);
           memory.setHostEvidence(null);
+          memory.setReleaseReview(null);
           signedOut(csrf);
         }}
       />
