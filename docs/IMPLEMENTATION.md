@@ -864,3 +864,34 @@ or motion is required for these states. Evidence is local and ignored.
 Migration 023 is local pending exact-head/main CI and guarded rollout. Promotion,
 deployment batch receipts, production delivery checks and actual editorial/host
 inventory remain open. See PUBLICATION_DELIVERY.md for operational boundaries.
+
+PR20 head `74f0052857956e018fd33b2bf5db5033f08f0b85` passed CI
+`37729560182`; merged main `733d82b5fd03d64e58330dc9c76bc2029f59d296`
+passed `37729767506`. Guarded migration 023 is applied with protected PicMagic
+fingerprints unchanged. Post-rollout live anonymous/nonmember checks pass. A real
+public-key-only capture succeeded at revision 0 with zero released resources;
+it is retained as an ignored local candidate and is not launch inventory.
+
+### Reviewed capture promotion and isolated staging
+
+The next increment adds reviewed candidate promotion with a fresh public-source
+comparison and a manual exact-main staging deployer with private receipt retention.
+An additive setup tool created and read back the empty `agentgrid-staging` Pages
+project. Both provider deployment configurations explicitly have `fail_open=false`,
+compatibility date 2026-10-07, no service bindings and only application stage/origin
+plaintext settings. No secret, deployment, custom domain, billing or paid feature
+was added. The infrastructure proof and other applications remain unchanged.
+
+Staging server credential authorization is pending: a separately revocable named
+Supabase secret would still have project-wide privileges; it must not be mistaken
+for an AgentGrid-only database credential. Existing Resend sending authority is
+AgentGrid-domain restricted. No staging credential has been created/transmitted.
+Real auth/deployment acceptance cannot be claimed until this configuration and
+provider verification complete.
+
+Promotion/staging local acceptance passes: 128 Node and 11 Python tests, lint,
+formatting, strict typecheck and production build. The assembled static/compiled
+Worker output passes the export scan. Tests deny stale candidates, symlink inputs,
+wrong repository/branch/commit, unsafe existing staging configuration, repeated
+uncertain creation and invalid live deployment receipts. No real staging deploy
+is claimed; provider credential bindings and authenticated QA remain pending.

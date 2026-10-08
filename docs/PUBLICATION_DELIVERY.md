@@ -65,3 +65,42 @@ urgent rebuild recovery and production quota/cache configuration remain required
 No production publishing workflow or privileged release credential is activated by
 this increment. The catalogue is empty; synthetic acceptance fixtures never become
 real inventory, observations, reviews or creators.
+
+## Promotion and staging release
+
+`pnpm publication:promote <candidate-name> <complete-catalogue-sha256>` requires a
+clean local repository, the personal Git identity, a confined candidate and the
+complete reviewed digest. It re-captures the current anonymous source and refuses
+changed revision/content/tags. It promotes only the two tracked publication inputs;
+it never commits, creates a release or deploys. The original candidate remains.
+If interrupted between file replacements, the build fails closed: deliberately
+restore the exact pair from the retained candidate, inspect the diff and rerun the
+gates. Never repair a mismatch by changing only its hash.
+
+The `Deploy staging application` workflow is manual, main-only and requires the
+exact clean commit. It runs the complete quality suite, then supplies the existing
+Cloudflare deployment credential only to the deployment step. Supabase public
+configuration is held in repository variables; privileged application credentials
+are encrypted Cloudflare server bindings and are never GitHub build inputs.
+
+The deployer checks source freshness and the isolated staging project, assembles
+the tested static export and compiled advanced Worker outside the checkout, and
+scans the assembled output. Wrangler cannot discover the repository's local setup
+files or rebuild a different functions directory. Only `agentgrid-staging` in the
+approved personal account is accepted. The production domain cannot be targeted.
+The Pages production branch is `main`, but its application stage is **preview**,
+with an owner-only authentication pilot and noindex crawler policy.
+
+A successful receipt binds the Git commit, catalogue checksum/revision, Cloudflare
+deployment ID, staging origin and verification timestamp. The workflow retains it
+privately for 30 days; export it to the release archive before expiry. Verification
+checks current provider deployment identity, public HTML/security headers, anonymous
+identity cookies, crawler exclusion and denial of unknown/QA/worker/setup paths.
+This is deployment-boundary acceptance, not a substitute for real Google/email and
+full authenticated user journeys.
+
+A failed or interrupted deploy may have completed remotely. Inspect the current
+provider deployment and its `/agentgrid-release.json` identity before retrying.
+Never infer failure from a lost CLI acknowledgement, and do not automatically
+roll back to a catalogue whose live resource tags no longer match. Real provider
+routing and credential-binding acceptance remain pending until staging deployment.
