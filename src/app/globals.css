@@ -769,9 +769,6 @@ h2 {
     font-size: 0.75rem;
     gap: 1rem;
   }
-  .site-header nav a:last-child {
-    display: none;
-  }
   .hero {
     padding-top: 1.5rem;
   }

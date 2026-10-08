@@ -37,8 +37,8 @@ export function SiteFrame({
           <Link prefetch={false} href="/#universe">
             Agent Universe<span aria-hidden="true">↗</span>
           </Link>
-          <Link prefetch={false} href="/#resource-model">
-            How it works
+          <Link prefetch={false} href="/learn/">
+            Learn
           </Link>
         </nav>
         <span className="header-note">Ideas → useful work</span>
@@ -50,6 +50,9 @@ export function SiteFrame({
           <span>agentgrid.me</span>
         </Link>
         <p>Useful intelligence. Connected.</p>
+        <Link prefetch={false} href="/learn/">
+          Learn to use agents
+        </Link>
         <span>{localPreview ? 'First-party draft foundation' : 'The agent network'}</span>
       </footer>
     </div>
