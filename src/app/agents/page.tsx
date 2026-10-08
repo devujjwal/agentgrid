@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { SiteFrame } from '../../components/layout/SiteFrame';
 import { DiscoveryConsole } from '../../components/discovery/DiscoveryConsole';
@@ -25,6 +26,9 @@ export default function AgentsPage() {
             Explore agents by what you want to accomplish. Read the requirements, choose your
             platform and understand the limits before using a resource.
           </p>
+          <Link className="directory-category-link" prefetch={false} href="/categories/">
+            Not sure where to start? Explore category guides ↗
+          </Link>
         </header>
         {resources.length ? (
           <DiscoveryConsole resources={resources} />

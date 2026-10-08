@@ -164,7 +164,11 @@ export const draftRelations: readonly UniverseRelation[] = [
  * Local curated draft links are never carried into a changed public version.
  */
 export function universeRelations(resources: readonly DiscoveryResource[]): UniverseRelation[] {
-  if (resources.every((resource) => resource.state === 'draft')) {
+  if (
+    resources
+      .filter((resource) => resource.kind === 'agent')
+      .every((resource) => resource.state === 'draft')
+  ) {
     const slugs = new Set(resources.map((resource) => resource.slug));
     return draftRelations.filter((edge) => slugs.has(edge.source) && slugs.has(edge.target));
   }

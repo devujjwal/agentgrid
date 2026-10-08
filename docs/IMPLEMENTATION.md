@@ -1124,3 +1124,29 @@ has 71 documents including 36 agent drafts and six recipe drafts.
 
 PR28 recovery head `e001d5bde3af2fc907e9e2eb0b9b6636247fa0cc` passed
 CI `37741877858` and merged. No application deployment was performed.
+
+### Broad category guidance and type-aware discovery
+
+Ten server-rendered category guides now provide task-selection paths, inputs,
+review criteria and stop conditions. A separate `/categories/` route family avoids
+agent/category slug collisions. Category search uses a qualified identity and an
+explicit editorial state; it does not imply agent host testing or package rights.
+The homepage now uses the real discovery shell in public builds, with approved
+editorial guidance even while agent publication remains empty. Prelaunch noindex
+and sitemap exclusions remain enforced. Historical infrastructure-proof deployment
+continues to refuse application builds rather than silently expanding its scope.
+
+The resource-type control supports agents, recipes and category guides through
+the existing search abstraction. Browser testing verifies filtered results,
+unmatched-query recovery/reset, related-category navigation, connected-resource
+anchors, canonical/noindex output and 320/768/1024/1440 layout bounds. The mobile
+review exposed hidden format/status labels; these now remain visible for every
+result. Empty-selection and mixed-catalogue language no longer imply host review.
+Category mobile Lighthouse: 99 performance, 100 accessibility/best practices,
+LCP 2.2s, TBT 30ms, CLS 0; SEO 66 is intentional prelaunch noindex. This is local
+lab evidence, not production field data. Full checks pass 150 Node/11 Python tests,
+formatting, lint, typecheck and production export. Public export has 35 documents;
+local preview has 82. No public agent or recipe release was created.
+
+PR29 recipe head `f487fbe` passed CI `37743505905` and merged. No deployment or
+provider resource change was performed in this milestone.

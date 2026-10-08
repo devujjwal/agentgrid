@@ -117,7 +117,7 @@ export function AgentUniverse({
               <a
                 href="#resource-inspector"
                 tabIndex={matched ? 0 : -1}
-                aria-label={`${label} ${resource.category.replaceAll('-', ' ')} — Inspect ${resource.title}, ${resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
+                aria-label={`${label} ${resource.category.replaceAll('-', ' ')} — Inspect ${resource.title}, ${resource.state === 'editorial' ? 'editorial guide' : resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
                 aria-current={selected ? 'true' : undefined}
                 onClick={(event) => {
                   event.preventDefault();
@@ -166,7 +166,9 @@ export function AgentUniverse({
             Focus {Math.max(0, currentIndex) + 1} / {matchedSlugs.length}
             <small>
               {compact
-                ? 'Connected neighbors shown'
+                ? model.nodes.length > 1
+                  ? 'Connected neighbors shown'
+                  : 'Selected resource shown'
                 : `${model.nodes.length} shown · this results page`}
             </small>
           </span>

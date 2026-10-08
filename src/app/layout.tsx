@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   title:
     process.env.AGENTGRID_LOCAL_DESIGN_PREVIEW === '1'
       ? 'AgentGrid — Local design preview'
-      : 'AgentGrid — Infrastructure verification',
-  description: 'Private infrastructure validation build for AgentGrid.me.',
+      : 'AgentGrid — The useful intelligence network',
+  description:
+    'Discover useful AI agents, understand their requirements and make informed choices about how to use them.',
   robots: { index: false, follow: false },
   icons: { icon: '/icon.svg' },
 };

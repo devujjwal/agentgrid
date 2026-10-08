@@ -47,7 +47,7 @@ export function TaskCommand({
       <p id="task-search-help" className="sr-only">
         {draftCatalogue
           ? 'Search the local draft catalogue by task. Explore interactive instructions and guided recipes; no connector or background execution is implied.'
-          : 'Search reviewed resources by task. Check each resource’s setup and requirements before granting access or taking action.'}
+          : 'Search agents, guided recipes and category guides by task. Check each result’s publication status, setup and requirements before using it.'}
       </p>
       <div className="prompt-row">
         <span className="prompt-label">Try a task</span>

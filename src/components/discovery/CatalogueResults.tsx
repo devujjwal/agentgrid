@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { DiscoveryPage } from '../../domain/discovery';
+import type { DiscoveryPage, DiscoveryResource } from '../../domain/discovery';
 import { categoryLabel } from './ResourceInspector';
 export function CatalogueResults({
   searchPage,
@@ -9,6 +9,9 @@ export function CatalogueResults({
   query,
   category,
   categories,
+  kind,
+  kinds,
+  onKind,
   drafts,
   onCategory,
   onInspect,
@@ -22,6 +25,9 @@ export function CatalogueResults({
   query: string;
   category: string;
   categories: string[];
+  kind: DiscoveryResource['kind'] | '';
+  kinds: DiscoveryResource['kind'][];
+  onKind: (value: DiscoveryResource['kind'] | '') => void;
   drafts: boolean;
   onCategory: (value: string) => void;
   onInspect: (slug: string) => void;
@@ -60,6 +66,35 @@ export function CatalogueResults({
             </option>
           ))}
         </select>
+        {kinds.length > 1 && (
+          <div className="resource-kind-filter">
+            <label htmlFor="kind-filter" className="eyebrow">
+              Resource type
+            </label>
+            <select
+              id="kind-filter"
+              value={kind}
+              onChange={(event) => {
+                const value = event.target.value;
+                if (value === '' || kinds.includes(value as DiscoveryResource['kind']))
+                  onKind(value as DiscoveryResource['kind'] | '');
+              }}
+            >
+              <option value="">All types</option>
+              {kinds.map((value) => (
+                <option key={value} value={value}>
+                  {value === 'agent'
+                    ? 'Agents'
+                    : value === 'recipe'
+                      ? 'Recipes'
+                      : value === 'category'
+                        ? 'Category guides'
+                        : 'Integrations'}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <span className="result-count" role="status" aria-live="polite">
           {pending ? (
             'Finding matching resources…'
@@ -110,12 +145,20 @@ export function CatalogueResults({
                     <span>{resource.summary}</span>
                   </span>
                   <span className="row-format">
-                    {resource.format === 'instructions'
-                      ? 'Instructions'
-                      : resource.format === 'recipe'
-                        ? 'Recipe'
-                        : 'Workflow'}
-                    <span>{resource.state === 'draft' ? 'Draft · unverified' : 'Published'}</span>
+                    {resource.format === 'guide'
+                      ? 'Category guide'
+                      : resource.format === 'instructions'
+                        ? 'Instructions'
+                        : resource.format === 'recipe'
+                          ? 'Recipe'
+                          : 'Workflow'}
+                    <span>
+                      {resource.state === 'editorial'
+                        ? 'Editorial'
+                        : resource.state === 'draft'
+                          ? 'Draft · unverified'
+                          : 'Published'}
+                    </span>
                   </span>
                   <button
                     type="button"
@@ -138,7 +181,7 @@ export function CatalogueResults({
               Try a more specific task or explore another discipline.{' '}
               {drafts
                 ? 'These unpublished drafts are still undergoing editorial and platform review.'
-                : 'The library only lists reviewed resources; this task may not have a suitable match yet.'}
+                : 'This task may not have a suitable match yet. Check each result’s publication and verification status.'}
             </p>
             <button
               type="button"
