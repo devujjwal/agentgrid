@@ -12,6 +12,7 @@ import {
 } from '../../src/domain/moderation.ts';
 import { HttpFailure } from '../http/guard.ts';
 import { databaseFailure } from './failure.ts';
+import { hostVerificationResources } from './host-verification.ts';
 import { resourceModerationResources } from './resource-moderation.ts';
 import { submissionModerationResources } from './submission-moderation.ts';
 import { reportModerationResources } from './report-moderation.ts';
@@ -28,10 +29,12 @@ export function moderationResources(
     )
       throw new HttpFailure(403, 'request-refused');
   }
+  const submissions = submissionModerationResources(client, staff);
   return {
+    ...hostVerificationResources(client, staff, submissions.staffSubmission),
     ...reportModerationResources(client, staff),
     ...resourceModerationResources(client, staff),
-    ...submissionModerationResources(client, staff),
+    ...submissions,
     async reviewQueue(state: ReviewQueueState, offset: number) {
       await staff();
       if (

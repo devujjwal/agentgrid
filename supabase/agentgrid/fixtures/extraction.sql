@@ -41,4 +41,5 @@ insert into public.agentgrid_reports(id,reporter_id,agent_id,category,explanatio
  'privacy','Synthetic confidential report retained only in an isolated QA database.');
 insert into public.agentgrid_moderation_actions(actor_id,action,review_id,explanation) values
  ('10000000-0000-4000-8000-000000000001','published-review','40000000-0000-4000-8000-000000000001','Synthetic extraction action, not a real moderation claim.');
+insert into public.agentgrid_host_verification_runs(id,version_id,recorded_by,content_digest,run) select '60000000-0000-4000-8000-000000000001',id,'10000000-0000-4000-8000-000000000002',content_digest,'{"synthetic_extraction_only":"Not host evidence: verifies owned-data migration fidelity."}' from public.agentgrid_agent_versions where id='30000000-0000-4000-8000-000000000001';
 commit;

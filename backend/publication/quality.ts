@@ -9,52 +9,12 @@ import { hasCredentialSignature } from '../security/public-content.ts';
 import { EditorialSchema, type EditorialContent } from '../../src/domain/editorial.ts';
 export type { EditorialContent } from '../../src/domain/editorial.ts';
 
-const detail = (minimum: number, maximum: number) => z.string().trim().min(minimum).max(maximum);
-const date = z.iso.date();
+import { HostRunSchema } from '../../src/domain/host-verification.ts';
+export type { HostVerificationRun } from '../../src/domain/host-verification.ts';
 const digest = z.string().regex(/^[a-f0-9]{64}$/);
-/** The private redacted artifact must contain observed output, not an illustrative sample. */
-const HostRunSchema = z.strictObject({
-  origin: z.literal('real-host'),
-  platform_slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  host_version: detail(3, 160),
-  scenario: z.enum(['normal', 'ambiguous-input', 'adversarial-input']),
-  specification_sha256: digest,
-  completed_on: date,
-  input: detail(80, 8000),
-  observed_output: detail(80, 16000),
-  assertions: z
-    .array(z.strictObject({ description: detail(24, 600), passed: z.boolean() }))
-    .min(2)
-    .max(12),
-  reviewer_notes: detail(80, 1600),
-});
-export type HostVerificationRun = z.infer<typeof HostRunSchema>;
 
-/** AgentGrid canonical-json-v1: sorted UTF-16 keys, JSON.stringify primitives, no whitespace. */
-export function canonicalJson(value: unknown): string {
-  assertJsonDocumentBounds(value);
-  function encode(item: unknown): string {
-    if (Array.isArray(item)) return `[${Array.from(item, encode).join(',')}]`;
-    if (item !== null && typeof item === 'object')
-      return `{${Object.keys(item)
-        .sort()
-        .map((key) => `${JSON.stringify(key)}:${encode((item as Record<string, unknown>)[key])}`)
-        .join(',')}}`;
-    const encoded = JSON.stringify(item);
-    if (encoded === undefined || (typeof item === 'number' && !Number.isFinite(item)))
-      throw new Error('Canonical document must contain finite JSON values only.');
-    return encoded;
-  }
-  return encode(value);
-}
-
-export async function contentChecksum(value: unknown): Promise<string> {
-  const bytes = new TextEncoder().encode(canonicalJson(value));
-  const hashed = await crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(hashed), (value) => value.toString(16).padStart(2, '0')).join(
-    '',
-  );
-}
+export { canonicalJson, contentChecksum } from '../../src/domain/content-checksum.ts';
+import { contentChecksum } from '../../src/domain/content-checksum.ts';
 
 export interface PublicationInput {
   /** Fetched by the server from the immutable version, never accepted as the browser's version. */
