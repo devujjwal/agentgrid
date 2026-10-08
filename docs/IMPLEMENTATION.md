@@ -1044,3 +1044,32 @@ export and fresh compiled workerd tests pass. The 26-migration disposable databa
 suite passes public/private/suspended/non-contributing projection checks, live
 profile edits, pagination bounds and protected application extraction/isolation.
 No synthetic creator or release has been inserted into a real provider database.
+
+### Consumer learning guides
+
+Three original editorial guides now support choosing a resource, checking an
+interactive first run, and distinguishing source material from permission. Each
+has a practical selectable worksheet, a structured summary, a dated editorial
+byline, anchored sections and related reading. Security claims cite checked OWASP
+and NCSC primary guidance. No named reviewer, observed host run or popularity is
+invented. The guide content is a bounded, schema-checked repository document;
+unknown fields, broken citations/routes, unsafe source URLs and future review
+dates fail the build. Rendering uses escaped text and escaped Article/Breadcrumb
+JSON-LD, with canonical URLs on agentgrid.me. These prelaunch routes stay noindex
+and outside the sitemap until the production indexing gate is approved.
+
+Browser inspection found and corrected missing shared page gutters. The Learn
+navigation now remains available on mobile. Acceptance verifies guide navigation,
+working-template text selection, keyboard skip focus, canonical/schema output,
+source links and no horizontal overflow at 320/768/1024/1440px. The optimized
+mobile article lab scores 99 performance, 100 accessibility and 100 best practices,
+LCP 2.0s, TBT 10ms and CLS 0. SEO 66 reflects intentional prelaunch indexing blocks;
+this does not establish field INP or production crawlability. Evidence is retained
+under `docs/evidence/phase6-learning-*` and `phase6-learn-hub-*`.
+
+PR26 integrated head `1af0893d3e0dd87fffcf3fa00f50fa4e993dccaf` passed
+CI `37738638365` and merged to main
+`bde3bbfe5f6d71eeee1821b9d0ab18998a69bd20`. Guarded rollout from that exact
+main installed migration 026 and verified protected shared resources unchanged.
+No real creator/profile rows were created. Staging credential authorization,
+first-party package licensing and legal operator details remain pending owner input.
