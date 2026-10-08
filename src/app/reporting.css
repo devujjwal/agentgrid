@@ -1,4 +1,5 @@
 .report-resource {
+  overflow-wrap: anywhere;
   margin-block: 2rem;
   padding-block: 2rem;
   border-block: 1px solid var(--line);

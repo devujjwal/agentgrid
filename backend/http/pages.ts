@@ -8,6 +8,8 @@ import { privateFailure } from './guard.ts';
 import { workspaceHandler } from './workspace.ts';
 import { workspaceData } from '../workspace/data.ts';
 import { publicCommunityConfiguration } from '../community/configuration.ts';
+import { publicCreatorData } from '../community/creators.ts';
+import { publicCreatorHandler } from './creator-api.ts';
 import { publicReviewData } from '../community/reviews.ts';
 import { publicCommunityHandler } from './community.ts';
 import { moderationHandler } from './moderation.ts';
@@ -21,6 +23,11 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
   try {
     if (new URL(context.request.url).pathname.startsWith('/api/community/')) {
       const configuration = publicCommunityConfiguration(context.env);
+      if (new URL(context.request.url).pathname === '/api/community/creator/')
+        return publicCreatorHandler(
+          configuration.origin,
+          publicCreatorData(configuration),
+        )(context.request);
       return await publicCommunityHandler(
         configuration.origin,
         publicReviewData(configuration),

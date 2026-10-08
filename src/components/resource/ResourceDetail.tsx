@@ -88,7 +88,15 @@ export function ResourceDetail({
         <dl className="resource-facts">
           <div>
             <dt>Creator</dt>
-            <dd>{publication?.creator.name ?? 'AgentGrid Editorial draft'}</dd>
+            <dd>
+              {publication?.creator.username ? (
+                <a href={'/creators/' + publication.creator.username + '/'}>
+                  {publication.creator.name}
+                </a>
+              ) : (
+                (publication?.creator.name ?? 'AgentGrid Editorial draft')
+              )}
+            </dd>
           </div>
           <div>
             <dt>Platforms</dt>
