@@ -12,6 +12,9 @@ import { ConfirmAction } from '../feedback/ConfirmAction';
 import { SubmissionDocument } from './SubmissionDocument';
 import { SubmissionRejectionForm } from './SubmissionRejectionForm';
 
+const ReleaseApprovalPanel = dynamic(() => import('./ReleaseApprovalPanel'), {
+  loading: () => <p role="status">Loading publication review…</p>,
+});
 const HostEvidencePanel = dynamic(() => import('./HostEvidencePanel'), {
   loading: () => <p role="status">Loading evidence tools…</p>,
 });
@@ -33,6 +36,7 @@ export function StaffSubmissionDetail({
   back: () => void;
   recheck: () => void;
 }) {
+  const [showRelease, setShowRelease] = useState(false);
   const [showEvidence, setShowEvidence] = useState(false);
   const [retry, setRetry] = useState(0),
     [busy, setBusy] = useState(false),
@@ -212,6 +216,16 @@ export function StaffSubmissionDetail({
             {showEvidence ? 'Hide host evidence' : 'Review host evidence'}
           </button>
           {showEvidence && <HostEvidencePanel submission={submission} csrf={csrf} email={email} />}
+          <button
+            className="action-secondary"
+            aria-expanded={showRelease}
+            onClick={() => setShowRelease((value) => !value)}
+          >
+            {showRelease ? 'Hide publication review' : 'Review publication'}
+          </button>
+          {showRelease && (
+            <ReleaseApprovalPanel submission={submission} csrf={csrf} email={email} />
+          )}
           <SubmissionRejectionForm
             submission={submission}
             explanation={notes?.explanation ?? ''}

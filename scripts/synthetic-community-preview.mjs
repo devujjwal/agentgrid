@@ -14,6 +14,7 @@ import { newDraft } from '../src/domain/draft.ts';
 import { publicCommunityHandler } from '../backend/http/community.ts';
 import { publicReviewData } from '../backend/community/reviews.ts';
 import { summarizeHostRun } from '../src/domain/host-verification.ts';
+import { publicationFixture } from '../tests/fixtures/publication.mjs';
 import { isLaterVersion } from '../src/domain/versions.ts';
 
 export async function syntheticCommunityPreview() {
@@ -125,6 +126,8 @@ export async function syntheticCommunityPreview() {
   const staffReports = new Map();
   const staffSubmissions = new Map();
   const hostRuns = new Map();
+  const releaseRequests = new Map();
+  let failReleaseAck = false;
   let failHostAck = false;
   let failResourceAck = false;
   const staffResource = {
@@ -177,6 +180,54 @@ export async function syntheticCommunityPreview() {
         { code: '42501', message: 'Synthetic membership denied' },
         { status: 403 },
       );
+    if (
+      [
+        '/agentgrid_staff_release_requests',
+        '/agentgrid_request_release',
+        '/agentgrid_cancel_release_request',
+      ].some((path) => url.pathname.endsWith(path))
+    ) {
+      if (!syntheticStaff) return Response.json({ code: '42501' }, { status: 403 });
+      if (url.pathname.endsWith('/agentgrid_staff_release_requests'))
+        return Response.json({
+          versionId: body.submitted_version_id,
+          approvals: [...releaseRequests.values()].filter(
+            (row) => row.versionId === body.submitted_version_id,
+          ),
+        });
+      if (url.pathname.endsWith('/agentgrid_cancel_release_request')) {
+        const row = releaseRequests.get(body.request_id);
+        if (!row) return Response.json({ code: '42501' }, { status: 403 });
+        if (row.state === 'released') return Response.json({ code: '40001' }, { status: 409 });
+        row.state = 'cancelled';
+        row.decidedAt = new Date().toISOString();
+        return Response.json(failReleaseAck ? null : row);
+      }
+      const value = body.review_request,
+        previous = releaseRequests.get(value.requestId),
+        source = staffSubmissions.get(value.versionId);
+      if (previous) return Response.json(previous);
+      if (!source || staffResource.status !== 'active')
+        return Response.json({ code: '42501' }, { status: 403 });
+      if (
+        source.state !== 'pending' ||
+        source.contentDigest !== value.expectedDigest ||
+        staffResource.revision !== value.expectedResourceRevision ||
+        staffResource.releasedVersionId !== value.expectedReleaseId
+      )
+        return Response.json({ code: '40001' }, { status: 409 });
+      const receipt = {
+        ...value,
+        resourceId,
+        selfReview: false,
+        requestedAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 7 * 86400000).toISOString(),
+        state: 'requested',
+        decidedAt: null,
+      };
+      releaseRequests.set(receipt.requestId, receipt);
+      return Response.json(failReleaseAck ? null : receipt);
+    }
     if (url.pathname.endsWith('/agentgrid_staff_host_run'))
       return syntheticStaff
         ? Response.json(hostRuns.get(body.record_id) ?? null)
@@ -726,7 +777,7 @@ export async function syntheticCommunityPreview() {
                 if(document.querySelector('[data-qa-tools]'))return;
                 const tools=document.createElement('aside');tools.dataset.qaTools='synthetic';
                 tools.style.cssText='padding:1rem;border-top:1px solid';
-                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><button data-qa-action="publish-review">Approve synthetic review</button><button data-qa-action="hide-review">Hide synthetic review</button><button data-qa-action="fail-review-ack">Fail synthetic review acknowledgement</button><button data-qa-action="restore-review-ack">Restore synthetic review acknowledgement</button><button data-qa-action="block-review-source">Block synthetic review source</button><button data-qa-action="restore-review-source">Restore synthetic review source</button><button data-qa-action="own-review-source">Make synthetic review source own</button><button data-qa-action="other-review-source">Make synthetic review source another creator</button><button data-qa-action="advance-review-source">Advance synthetic release</button><button data-qa-action="compete-review">Simulate competing review edit</button><button data-qa-action="page-reviews">Add synthetic review pagination fixtures</button><button data-qa-action="clear-page-reviews">Remove synthetic review pagination fixtures</button><button data-qa-action="staff-on">Appoint synthetic moderator</button><button data-qa-action="staff-off">Revoke synthetic moderator</button><button data-qa-action="staff-fixtures">Create synthetic staff review queue</button><button data-qa-action="staff-compete">Simulate competing staff decision</button><button data-qa-action="staff-fail-ack">Fail synthetic staff acknowledgement</button><button data-qa-action="staff-restore-ack">Restore synthetic staff acknowledgement</button><button data-qa-action="staff-own">Make first staff review self-authored</button><button data-qa-action="staff-withdraw">Withdraw first staff review</button><button data-qa-action="staff-report-fixtures">Create synthetic staff report queue</button><button data-qa-action="staff-report-compete">Simulate competing report closure</button><button data-qa-action="staff-report-fail-ack">Fail synthetic resolution acknowledgement</button><button data-qa-action="staff-report-restore-ack">Restore synthetic resolution acknowledgement</button><button data-qa-action="staff-report-own">Mark first report as involved</button><button data-qa-action="staff-report-legacy">Remove first report captured context</button><a href="/workspace/fork/?sourceVersionId=70000000-0000-4000-8000-000000000001">Open synthetic fork source</a><button data-qa-action="fork-block">Block synthetic fork source</button><button data-qa-action="fork-restore">Restore synthetic fork source</button><button data-qa-action="fork-fail-ack">Fail synthetic fork acknowledgement</button><button data-qa-action="fork-restore-ack">Restore synthetic fork acknowledgement</button><button data-qa-action="staff-submission-fixtures">Create synthetic submission queue</button><button data-qa-action="staff-submission-compete">Simulate competing submission decision</button><button data-qa-action="staff-submission-fail-ack">Fail synthetic submission acknowledgement</button><button data-qa-action="staff-submission-restore-ack">Restore synthetic submission acknowledgement</button><button data-qa-action="staff-submission-own">Make first submission self-authored</button><a href="/workspace/moderation/agent/?resourceId=20000000-0000-4000-8000-000000000001">Open synthetic agent access</a><button data-qa-action="resource-compete">Compete synthetic resource decision</button><button data-qa-action="resource-fail-ack">Fail synthetic resource acknowledgement</button><button data-qa-action="resource-restore-ack">Restore synthetic resource acknowledgement</button><button data-qa-action="resource-own">Make synthetic resource self-owned</button><button data-qa-action="resource-other">Make synthetic resource other-owned</button><button data-qa-action="resource-archive">Archive synthetic resource</button><button data-qa-action="host-fail-ack">Fail synthetic host evidence acknowledgement</button><button data-qa-action="host-restore-ack">Restore synthetic host evidence acknowledgement</button><p data-qa-status role="status"></p>';
+                tools.innerHTML='<p>Synthetic community acceptance — disposable memory-only state. Sign in with owner@example.test and code 12345678; no real email is sent.</p><button data-qa-action="compete">Simulate competing revision</button><button data-qa-action="suspend">Suspend synthetic member</button><button data-qa-action="resume">Resume synthetic member</button><button data-qa-action="revoke">Revoke synthetic session</button><button data-qa-action="close-submissions">Close synthetic submissions</button><button data-qa-action="open-submissions">Open synthetic submissions</button><button data-qa-action="resolve-report">Resolve first synthetic report</button><button data-qa-action="fail-report-ack">Fail synthetic report acknowledgement</button><button data-qa-action="restore-report-ack">Restore synthetic report acknowledgement</button><button data-qa-action="publish-review">Approve synthetic review</button><button data-qa-action="hide-review">Hide synthetic review</button><button data-qa-action="fail-review-ack">Fail synthetic review acknowledgement</button><button data-qa-action="restore-review-ack">Restore synthetic review acknowledgement</button><button data-qa-action="block-review-source">Block synthetic review source</button><button data-qa-action="restore-review-source">Restore synthetic review source</button><button data-qa-action="own-review-source">Make synthetic review source own</button><button data-qa-action="other-review-source">Make synthetic review source another creator</button><button data-qa-action="advance-review-source">Advance synthetic release</button><button data-qa-action="compete-review">Simulate competing review edit</button><button data-qa-action="page-reviews">Add synthetic review pagination fixtures</button><button data-qa-action="clear-page-reviews">Remove synthetic review pagination fixtures</button><button data-qa-action="staff-on">Appoint synthetic moderator</button><button data-qa-action="staff-off">Revoke synthetic moderator</button><button data-qa-action="staff-fixtures">Create synthetic staff review queue</button><button data-qa-action="staff-compete">Simulate competing staff decision</button><button data-qa-action="staff-fail-ack">Fail synthetic staff acknowledgement</button><button data-qa-action="staff-restore-ack">Restore synthetic staff acknowledgement</button><button data-qa-action="staff-own">Make first staff review self-authored</button><button data-qa-action="staff-withdraw">Withdraw first staff review</button><button data-qa-action="staff-report-fixtures">Create synthetic staff report queue</button><button data-qa-action="staff-report-compete">Simulate competing report closure</button><button data-qa-action="staff-report-fail-ack">Fail synthetic resolution acknowledgement</button><button data-qa-action="staff-report-restore-ack">Restore synthetic resolution acknowledgement</button><button data-qa-action="staff-report-own">Mark first report as involved</button><button data-qa-action="staff-report-legacy">Remove first report captured context</button><a href="/workspace/fork/?sourceVersionId=70000000-0000-4000-8000-000000000001">Open synthetic fork source</a><button data-qa-action="fork-block">Block synthetic fork source</button><button data-qa-action="fork-restore">Restore synthetic fork source</button><button data-qa-action="fork-fail-ack">Fail synthetic fork acknowledgement</button><button data-qa-action="fork-restore-ack">Restore synthetic fork acknowledgement</button><button data-qa-action="staff-submission-fixtures">Create synthetic submission queue</button><button data-qa-action="staff-submission-compete">Simulate competing submission decision</button><button data-qa-action="staff-submission-fail-ack">Fail synthetic submission acknowledgement</button><button data-qa-action="staff-submission-restore-ack">Restore synthetic submission acknowledgement</button><button data-qa-action="staff-submission-own">Make first submission self-authored</button><a href="/workspace/moderation/agent/?resourceId=20000000-0000-4000-8000-000000000001">Open synthetic agent access</a><button data-qa-action="resource-compete">Compete synthetic resource decision</button><button data-qa-action="resource-fail-ack">Fail synthetic resource acknowledgement</button><button data-qa-action="resource-restore-ack">Restore synthetic resource acknowledgement</button><button data-qa-action="resource-own">Make synthetic resource self-owned</button><button data-qa-action="resource-other">Make synthetic resource other-owned</button><button data-qa-action="resource-archive">Archive synthetic resource</button><button data-qa-action="host-fail-ack">Fail synthetic host evidence acknowledgement</button><button data-qa-action="host-restore-ack">Restore synthetic host evidence acknowledgement</button><button data-qa-action="release-evidence">Create synthetic publication evidence</button><button data-qa-action="release-fail-ack">Fail synthetic publication acknowledgement</button><button data-qa-action="release-restore-ack">Restore synthetic publication acknowledgement</button><p data-qa-status role="status"></p>';
                 document.body.append(tools);
                 tools.querySelectorAll('[data-qa-action]').forEach(button=>button.addEventListener('click',async()=>{try{const response=await fetch('/qa-control/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:button.dataset.qaAction})});tools.querySelector('[data-qa-status]').textContent=response.ok?'Synthetic state changed; reconnect the editor.':'Synthetic action refused.';}catch{tools.querySelector('[data-qa-status]').textContent='Synthetic control unavailable.';}}));
               },200));`,
@@ -747,7 +798,23 @@ export async function syntheticCommunityPreview() {
             chunks.push(chunk);
           }
           const action = JSON.parse(Buffer.concat(chunks).toString('utf8')).action;
-          if (action === 'host-fail-ack') failHostAck = true;
+          if (action === 'release-evidence') {
+            const source = [...staffSubmissions.values()][0];
+            if (!source) throw new Error('Create synthetic submissions first');
+            const synthetic = await publicationFixture();
+            for (const run of synthetic.hostRuns) {
+              const id = randomUUID();
+              hostRuns.set(id, {
+                id,
+                versionId: source.versionId,
+                contentDigest: source.contentDigest,
+                recordedAt: new Date().toISOString(),
+                run,
+              });
+            }
+          } else if (action === 'release-fail-ack') failReleaseAck = true;
+          else if (action === 'release-restore-ack') failReleaseAck = false;
+          else if (action === 'host-fail-ack') failHostAck = true;
           else if (action === 'host-restore-ack') failHostAck = false;
           else if (action === 'resource-compete') {
             staffResource.revision++;

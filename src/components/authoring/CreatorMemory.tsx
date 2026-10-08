@@ -9,12 +9,24 @@ import {
   type SetStateAction,
 } from 'react';
 import { flushSync } from 'react-dom';
+import type { RequestRelease } from '../../domain/release-approval';
+import type { ReleaseReviewDraft } from '../moderation/ReleaseReviewForm';
 import type { HostVerificationRun } from '../../domain/host-verification';
 import type { DraftEditorial } from '../../domain/draft-editorial';
 import type { DraftRecord, DraftSpecification } from '../../domain/draft';
 import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
 import type { ReviewInput } from '../../domain/reviews';
+
+export interface ReleaseReviewBuffer {
+  email: string;
+  versionId: string;
+  draft: ReleaseReviewDraft;
+  binding: Pick<
+    RequestRelease,
+    'versionId' | 'expectedDigest' | 'expectedResourceRevision' | 'expectedReleaseId'
+  >;
+}
 
 export interface HostEvidenceBuffer {
   email: string;
@@ -73,6 +85,8 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  releaseReview: ReleaseReviewBuffer | null;
+  setReleaseReview: Dispatch<SetStateAction<ReleaseReviewBuffer | null>>;
   hostEvidence: HostEvidenceBuffer | null;
   setHostEvidence: Dispatch<SetStateAction<HostEvidenceBuffer | null>>;
   resourceModerationNotes: ResourceModerationBuffer | null;
@@ -97,6 +111,7 @@ const Memory = createContext<{
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
+  const [releaseReview, setReleaseReview] = useState<ReleaseReviewBuffer | null>(null);
   const [hostEvidence, setHostEvidence] = useState<HostEvidenceBuffer | null>(null);
   const [resourceModerationNotes, setResourceModerationNotes] =
     useState<ResourceModerationBuffer | null>(null);
@@ -112,6 +127,7 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
   const [reviewEdits, setReviewEdits] = useState<ReviewBuffer | null>(null);
   useEffect(() => {
     if (
+      !releaseReview &&
       !hostEvidence &&
       !buffer?.dirty &&
       !profileEdits?.dirty &&
@@ -179,11 +195,13 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
     submissionModerationNotes,
     resourceModerationNotes,
     hostEvidence,
+    releaseReview,
   ]);
   return (
     <Memory.Provider
       value={{
         hasUnsaved: Boolean(
+          releaseReview ||
           hostEvidence ||
           buffer?.dirty ||
           profileEdits?.dirty ||
@@ -210,6 +228,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         setResourceModerationNotes,
         hostEvidence,
         setHostEvidence,
+        releaseReview,
+        setReleaseReview,
         reportModerationNotes,
         setReportModerationNotes,
       }}

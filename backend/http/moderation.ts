@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { RequestReleaseSchema, CancelReleaseSchema } from '../../src/domain/release-approval.ts';
 import { RecordHostRunSchema } from '../../src/domain/host-verification.ts';
 import { ResourceDecisionSchema } from '../../src/domain/resource-moderation.ts';
 import { RejectSubmissionSchema } from '../../src/domain/submission-moderation.ts';
@@ -32,6 +33,9 @@ export function moderationHandler(
         path = url.pathname;
       if (
         ![
+          '/api/moderation/release-requests/',
+          '/api/moderation/release-request/',
+          '/api/moderation/release-cancel/',
           '/api/moderation/host-record/',
           '/api/moderation/host-runs/',
           '/api/moderation/host-run/',
@@ -50,6 +54,8 @@ export function moderationHandler(
       )
         throw new HttpFailure(404, 'not-found');
       const mutation =
+        path === '/api/moderation/release-request/' ||
+        path === '/api/moderation/release-cancel/' ||
         path === '/api/moderation/host-run/' ||
         path === '/api/moderation/resource-decision/' ||
         path === '/api/moderation/decision/' ||
@@ -69,6 +75,16 @@ export function moderationHandler(
       const session = await authenticatedSession(runtime, request),
         data = dataForSession(session.provider);
       if (mutation) {
+        if (path === '/api/moderation/release-request/') {
+          const parsed = RequestReleaseSchema.safeParse(await readJsonBody(request, 14_000));
+          if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
+          return privateJson(await data.requestRelease(parsed.data));
+        }
+        if (path === '/api/moderation/release-cancel/') {
+          const parsed = CancelReleaseSchema.safeParse(await readJsonBody(request, 1000));
+          if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
+          return privateJson(await data.cancelRelease(parsed.data.requestId));
+        }
         if (path === '/api/moderation/host-run/') {
           const parsed = RecordHostRunSchema.safeParse(await readJsonBody(request, 100_000));
           if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
@@ -98,7 +114,9 @@ export function moderationHandler(
           ? ['recordId']
           : path === '/api/moderation/resource/'
             ? ['resourceId']
-            : path === '/api/moderation/submission/' || path === '/api/moderation/host-runs/'
+            : path === '/api/moderation/submission/' ||
+                path === '/api/moderation/host-runs/' ||
+                path === '/api/moderation/release-requests/'
               ? ['versionId']
               : path === '/api/moderation/review/'
                 ? ['reviewId']
@@ -115,6 +133,11 @@ export function moderationHandler(
         const id = z.uuid().safeParse(url.searchParams.get('recordId'));
         if (!id.success) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.hostRun(id.data));
+      }
+      if (path === '/api/moderation/release-requests/') {
+        const id = z.uuid().safeParse(url.searchParams.get('versionId'));
+        if (!id.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.releaseApprovals(id.data));
       }
       if (path === '/api/moderation/host-runs/') {
         const id = z.uuid().safeParse(url.searchParams.get('versionId'));

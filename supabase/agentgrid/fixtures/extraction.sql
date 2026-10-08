@@ -42,4 +42,6 @@ insert into public.agentgrid_reports(id,reporter_id,agent_id,category,explanatio
 insert into public.agentgrid_moderation_actions(actor_id,action,review_id,explanation) values
  ('10000000-0000-4000-8000-000000000001','published-review','40000000-0000-4000-8000-000000000001','Synthetic extraction action, not a real moderation claim.');
 insert into public.agentgrid_host_verification_runs(id,version_id,recorded_by,content_digest,run) select '60000000-0000-4000-8000-000000000001',id,'10000000-0000-4000-8000-000000000002',content_digest,'{"synthetic_extraction_only":"Not host evidence: verifies owned-data migration fidelity."}' from public.agentgrid_agent_versions where id='30000000-0000-4000-8000-000000000001';
+insert into public.agentgrid_release_requests(id,version_id,reviewed_by,review_request,self_review) values('70000000-0000-4000-8000-000000000001','30000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002','{"synthetic_extraction_only":true}',false);
+insert into public.agentgrid_release_request_outcomes(request_id,outcome,actor_id) values('70000000-0000-4000-8000-000000000001','cancelled','10000000-0000-4000-8000-000000000002');
 commit;

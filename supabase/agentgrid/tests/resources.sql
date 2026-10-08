@@ -97,6 +97,9 @@ reset role;
 
 set local role service_role;
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_releases','42501');
+select pg_temp.agentgrid_assert(not has_function_privilege('service_role','public.agentgrid_publish_version(uuid,uuid,text,jsonb)','execute'),'legacy publisher bypass revoked');
+reset role;
+-- Exercise the internal implementation as database owner; public publisher uses reviewed requests.
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_publish_version((select version_id from agentgrid_fixture_state where key='original'),'10000000-0000-4000-8000-000000000002','bad','{}')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_publish_version((select version_id from agentgrid_fixture_state where key='original'),'10000000-0000-4000-8000-000000000003','bad',pg_temp.agentgrid_evidence((select version_id from agentgrid_fixture_state where key='original')))$s$,'23514');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_publish_version((select version_id from agentgrid_fixture_state where key='original'),'10000000-0000-4000-8000-000000000003',pg_temp.agentgrid_evidence((select version_id from agentgrid_fixture_state where key='original'))->>'content_digest',jsonb_set(pg_temp.agentgrid_evidence((select version_id from agentgrid_fixture_state where key='original')),'{host_checks_passed}','false'))$s$,'23514');
