@@ -4,6 +4,8 @@ import { mkdtemp, readFile, writeFile, cp, copyFile, rm } from 'node:fs/promises
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { inspectExport } from './verify-export.mjs';
+import { verifyDocumentPolicy } from './static-csp.mjs';
+import { documentHeaderPolicy } from '../src/domain/document-security.ts';
 import { readPublication } from './verify-publication.mjs';
 import { assertCurrentCapture } from './promote-publication.mjs';
 import { capturePublicCatalogue } from '../backend/publication/snapshot.ts';
@@ -70,12 +72,15 @@ export async function verifyStagingDelivery(expected, transport = fetch) {
     const response = await get(path);
     if (
       response.status !== 200 ||
-      !response.headers.get('content-security-policy') ||
+      response.headers.get('content-security-policy') !== documentHeaderPolicy ||
       response.headers.get('x-content-type-options') !== 'nosniff' ||
       !/noindex/.test(response.headers.get('x-robots-tag') ?? '') ||
-      !(await response.text()).includes('AgentGrid')
+      !response.headers.get('x-frame-options')?.includes('DENY')
     )
       throw new Error('Staging HTML/headers failed.');
+    const html = await response.text();
+    if (!html.includes('AgentGrid')) throw new Error('Unexpected staging document.');
+    verifyDocumentPolicy(html);
   }
   const proof = await get('/agentgrid-release.json');
   if (proof.status !== 200 || JSON.stringify(await proof.json()) !== JSON.stringify(expected))

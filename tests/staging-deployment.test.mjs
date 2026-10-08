@@ -7,6 +7,7 @@ import {
   stagingOrigin,
 } from '../scripts/deploy-staging.mjs';
 import { stagingProjectPlan, stagingAccount } from '../scripts/configure-staging.mjs';
+import { hardenDocument, documentHeaderPolicy } from '../scripts/static-csp.mjs';
 const head = 'a'.repeat(40);
 const env = {
   GITHUB_ACTIONS: 'true',
@@ -67,13 +68,19 @@ test('staging receipt is verified against live headers, build identity, anonymou
     const path = new URL(url).pathname;
     if (path === changed) return new Response('wrong content', { status: 200 });
     if (path === '/' || path === '/sign-in/')
-      return new Response('AgentGrid', {
-        headers: {
-          'content-security-policy': "default-src 'self'",
-          'x-content-type-options': 'nosniff',
-          'x-robots-tag': 'noindex, nofollow',
+      return new Response(
+        hardenDocument(
+          '<!doctype html><html><head><meta charset="utf-8"></head><body>AgentGrid</body></html>',
+        ),
+        {
+          headers: {
+            'content-security-policy': documentHeaderPolicy,
+            'x-frame-options': 'DENY',
+            'x-content-type-options': 'nosniff',
+            'x-robots-tag': 'noindex, nofollow',
+          },
         },
-      });
+      );
     if (path === '/agentgrid-release.json') return Response.json(proof);
     if (path === '/api/identity/')
       return Response.json(

@@ -1,5 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve, relative, basename } from 'node:path';
+import { verifyDocumentPolicy } from './static-csp.mjs';
 
 export async function inspectExport(root, { localDesignPreview = false } = {}) {
   const errors = [];
@@ -37,6 +38,13 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
     }
     if (!/\.(html|js|json|txt|css|svg)$/.test(name)) continue;
     const content = await readFile(path, 'utf8');
+    if (name.endsWith('.html')) {
+      try {
+        verifyDocumentPolicy(content);
+      } catch {
+        errors.push(`Missing or mismatched static CSP: ${name}`);
+      }
+    }
     if (!localDesignPreview && content.includes('data-agentgrid-qa-client'))
       errors.push(`Local acceptance component in public artifact: ${name}`);
     if (

@@ -14,7 +14,7 @@ than treating existing code as completed functionality.
 | 4 — Identity/workspace           | In progress | Real owner sign-in/logout; saved-list boundary; synthetic creator CRUD/history/reauthentication, responsive and signed-in lab checks; real member/submission gates remain open        |
 | 5 — Community                    | In progress | Private reporting boundary and responsive recovery; full moderation/fork/review journeys remain open                                                                                  |
 | 6 — Publishing/inventory         | In progress | Private host evidence and reviewed release boundary validated; static capture/takedown and broad real host-tested inventory remain open                                               |
-| 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
+| 7 — Hardening                    | In progress | Static script policy and local negative browser checks; provider verification, restore/rollback and full cross-browser audits remain open                                             |
 | 8 — Production launch            | Not started | Domain, webmaster setup, production journeys and monitoring                                                                                                                           |
 
 ## Product invariants
@@ -921,3 +921,21 @@ account deep-link return and suspended-account denial. Responsive checks at 320,
 768, 1024 and 1440 CSS pixels found no horizontal overflow; confirmation input is
 48px high. Screenshots are retained under ignored local evidence. No real account
 was removed and migration 024 is not yet applied to the shared remote project.
+
+PR22 head `4c9ee9af62b2ffa21d7e76157541f59c0c2caee4` passed CI
+`37732091409`; merged main `4dd2c38f0477ebf497086d3587ab6396a07f90d4`
+passed `37732249852`. The shared-project rollout stopped at metadata prerequisites
+(one timeout and one protected-audit subprocess failure). Read-only reconciliation
+confirmed 23 installed migrations and 024 still pending. No transaction intent was
+created; no account or protected application data was changed. Do not bypass the
+guard or claim 024 remotely installed.
+
+### Static CSP hardening
+
+Generated per-document script/style hashes replace broad inline-script permission.
+The build parser and export gate reject missing, misplaced and mismatched policies;
+Function-delivered agent/listing responses now attach framing and related headers
+explicitly. The pinned HTML parser is build tooling only. Browser acceptance and
+the deliberate injection fixture pass; mobile lab results are 99 performance,
+100 accessibility, 100 best practices, LCP 2.0s, TBT 30ms and zero CLS. Noindex SEO
+63 remains intentional. See `STATIC_SECURITY.md` for limitations and evidence.

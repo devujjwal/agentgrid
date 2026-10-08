@@ -3,6 +3,12 @@ import {
   DeliveryResourceSchema,
   type DeliveryManifest,
 } from '../../src/domain/publication-snapshot.ts';
+import { documentSecurityHeaders } from '../../src/domain/document-security.ts';
+function secureAssets(response: Response) {
+  const headers = new Headers(response.headers);
+  for (const [name, value] of Object.entries(documentSecurityHeaders)) headers.set(name, value);
+  return new Response(response.body, { status: response.status, headers });
+}
 export type DeliveryStateReader = (slug: string) => Promise<unknown>;
 function failure(status: 404 | 410 | 503, method: string) {
   const message =
@@ -54,7 +60,7 @@ export function deliveryGuard(manifest: DeliveryManifest, read: DeliveryStateRea
     const path = url.pathname;
     if (!path.startsWith('/agents/') || /[%\\]/.test(path)) return failure(404, request.method);
     const relative = path.slice('/agents/'.length);
-    if (listingFiles.has(relative)) return assets();
+    if (listingFiles.has(relative)) return secureAssets(await assets());
     const segment = relative.split('/')[0] ?? '';
     const slug = segment.replace(/\.(?:html|txt)$/, '');
     const expected = resources.get(slug);
@@ -70,7 +76,7 @@ export function deliveryGuard(manifest: DeliveryManifest, read: DeliveryStateRea
         current.tag !== expected.tag
       )
         return failure(503, request.method);
-      const response = await assets();
+      const response = secureAssets(await assets());
       // Never retain detail content past a live moderation/version decision.
       const headers = new Headers(response.headers);
       headers.set('cache-control', 'private, no-store');
