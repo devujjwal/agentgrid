@@ -1,3 +1,4 @@
+import { parseDraftEditorial, type DraftEditorial } from '../../src/domain/draft-editorial.ts';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import {
@@ -70,9 +71,18 @@ export function draftResources(client: SupabaseClient, member: () => Promise<{ i
       resourceId: string,
       expectedRevision: number,
       specification: DraftSpecification,
+      editorial?: DraftEditorial,
     ) {
       const profile = await member();
       parseDraftSpecification(specification);
+      let guide: DraftEditorial | null = null;
+      if (editorial !== undefined) {
+        try {
+          guide = parseDraftEditorial(editorial);
+        } catch {
+          throw new HttpFailure(400, 'invalid-request');
+        }
+      }
       const current = await document(resourceId, profile.id);
       if (current.status !== 'active') throw new HttpFailure(403, 'request-refused');
       if (current.revision !== expectedRevision) throw new HttpFailure(409, 'conflict');
@@ -82,7 +92,7 @@ export function draftResources(client: SupabaseClient, member: () => Promise<{ i
         resource_id: resourceId,
         expected_revision: expectedRevision,
         updated_specification: specification,
-        updated_editorial: null,
+        updated_editorial: guide,
       });
       if (result.error) databaseFailure(result.error);
       if (result.data !== expectedRevision + 1) throw new HttpFailure(503, 'service-unavailable');

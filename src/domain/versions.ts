@@ -37,6 +37,7 @@ export const OwnedVersionDocumentSchema = z
     sourceVersionId: z.uuid().nullable(),
     record: OwnedVersionSchema,
     specification: AgentSpecificationSchema,
+    editorialText: z.string().min(2).max(32000),
   })
   .refine((value) => value.record.version === value.specification.version);
 export type OwnedVersionDocument = z.infer<typeof OwnedVersionDocumentSchema>;

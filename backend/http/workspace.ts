@@ -186,7 +186,12 @@ export function workspaceHandler(
       if (url.pathname.endsWith('/draft/')) {
         const value = await input(request, UpdateDraftSchema, 100_000);
         return privateJson(
-          await data.saveDraft(value.resourceId, value.expectedRevision, value.specification),
+          await data.saveDraft(
+            value.resourceId,
+            value.expectedRevision,
+            value.specification,
+            value.editorial,
+          ),
         );
       }
       if (url.pathname.endsWith('/agents/') || url.pathname.endsWith('/saved/')) {

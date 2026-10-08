@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DraftEditorialSchema } from './draft-editorial.ts';
 import {
   AgentSpecificationSchema,
   PackageLicenseSchema,
@@ -118,7 +119,7 @@ export const DraftRecordSchema = z.strictObject({
   revision: z.int().positive(),
   updatedAt: z.iso.datetime({ offset: true }),
   specification: DraftSpecificationSchema,
-  // Kept intact during guided editing; trusted editorial review owns this later.
+  // Author-provided content remains private until independent publication review.
   editorial: z.record(z.string(), z.json()),
   sourceVersionId: z.uuid().nullable(),
 });
@@ -128,6 +129,7 @@ export const UpdateDraftSchema = z.strictObject({
   resourceId: z.uuid(),
   expectedRevision: z.int().positive(),
   specification: DraftSpecificationSchema,
+  editorial: DraftEditorialSchema.optional(),
 });
 
 export function newDraft(
