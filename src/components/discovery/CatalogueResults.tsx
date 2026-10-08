@@ -110,7 +110,11 @@ export function CatalogueResults({
                     <span>{resource.summary}</span>
                   </span>
                   <span className="row-format">
-                    {resource.format === 'instructions' ? 'Instructions' : 'Workflow'}
+                    {resource.format === 'instructions'
+                      ? 'Instructions'
+                      : resource.format === 'recipe'
+                        ? 'Recipe'
+                        : 'Workflow'}
                     <span>{resource.state === 'draft' ? 'Draft · unverified' : 'Published'}</span>
                   </span>
                   <button

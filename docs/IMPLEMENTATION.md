@@ -1099,3 +1099,28 @@ export pass. Root-layout error rendering has compile coverage; provider-induced
 
 PR27 learning head `3454e4088fd7087fcdb4997d7b4cad0e7affa5ad` passed
 CI `37740433580` and was merged. No production deployment was performed.
+
+### Guided recipes and mixed discovery
+
+Six first-party draft workflows now connect everyday, education, research,
+ecommerce, marketing and business tasks to exact instruction versions. The
+server-rendered layout follows a visible sequence with explicit inputs, review
+checks, human handoffs, stop conditions and honest limits. Recipes participate in
+outcome search with qualified identities; agent-only browsing remains separate.
+The public manifest is empty until actual workflow evidence and editorial review
+pass. See `RECIPE_PUBLICATION.md` for the trusted publication boundary and batch
+withdrawal behavior. No new provider resources or costs were introduced.
+
+Acceptance verified pinned resource navigation, related learning guidance, step
+anchors, keyboard skip focus, canonical/noindex output and no horizontal overflow
+at 320/768/1024/1440px. Mixed search ranks the meeting follow-up recipe first and
+identifies its pending workflow review. Mobile Lighthouse scores 99 performance,
+100 accessibility and 100 best practices (LCP 2.2s, TBT 30ms, CLS 0). Intentional
+noindex limits SEO to 66; this is not production or field-performance evidence.
+148 Node and 11 Python tests, formatting, lint, strict typecheck and production
+build pass. An additional negative check rejects stale recipe HTML and RSC files.
+The public export has 24 documents and zero agent/recipe releases; local preview
+has 71 documents including 36 agent drafts and six recipe drafts.
+
+PR28 recovery head `e001d5bde3af2fc907e9e2eb0b9b6636247fa0cc` passed
+CI `37741877858` and merged. No application deployment was performed.

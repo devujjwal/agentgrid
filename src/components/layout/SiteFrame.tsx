@@ -37,6 +37,9 @@ export function SiteFrame({
           <Link prefetch={false} href="/#universe">
             Agent Universe<span aria-hidden="true">↗</span>
           </Link>
+          <Link prefetch={false} href="/recipes/">
+            Recipes
+          </Link>
           <Link prefetch={false} href="/learn/">
             Learn
           </Link>

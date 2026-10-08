@@ -46,7 +46,7 @@ export function TaskCommand({
       </div>
       <p id="task-search-help" className="sr-only">
         {draftCatalogue
-          ? 'Search the local draft catalogue by task. These resources use interactive instructions; no connector or background execution is implied.'
+          ? 'Search the local draft catalogue by task. Explore interactive instructions and guided recipes; no connector or background execution is implied.'
           : 'Search reviewed resources by task. Check each resource’s setup and requirements before granting access or taking action.'}
       </p>
       <div className="prompt-row">

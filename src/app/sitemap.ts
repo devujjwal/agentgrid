@@ -1,4 +1,6 @@
 import type { MetadataRoute } from 'next';
+import { publicRecipes } from '../data/recipes';
+import { recipePath } from '../domain/recipe';
 import { publicResources } from '../data/resources';
 import { resourcePath } from '../domain/public-resource';
 
@@ -8,9 +10,15 @@ export const dynamic = 'force-static';
  * meaningless filters or fabricated modification dates enter the sitemap.
  * Discovery/editorial landing URLs join this list at their own indexing gate.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
-  return publicResources().map((resource) => ({
-    url: `https://agentgrid.me${resourcePath(resource.specification.identity.slug)}`,
-    lastModified: resource.released_at,
-  }));
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  return [
+    ...publicResources().map((resource) => ({
+      url: `https://agentgrid.me${resourcePath(resource.specification.identity.slug)}`,
+      lastModified: resource.released_at,
+    })),
+    ...(await publicRecipes()).map(({ recipe, publication }) => ({
+      url: `https://agentgrid.me${recipePath(recipe.slug)}`,
+      lastModified: publication!.released_at,
+    })),
+  ];
 }
