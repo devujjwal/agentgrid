@@ -685,3 +685,42 @@ Final code-split production build and compiled-worker acceptance pass. Browser
 checks confirm all three on-demand guide tools load, preserve edits and save
 correctly, with no console errors. Eighteen migrations remain local until guarded
 rollout after the private pull request and exact-main CI gates.
+
+### Creator-guide CI gate
+
+PR16 head `b70139797ad99c95f7d6e6a5e494ac5c0fbc23fa` passed CI
+`37722276792`. Merge/main `bc715336358d5c1e036d379f1fecb5b9970f22e3`
+passed `37722502194`. The initial rollout attempt correctly refused before
+main CI completed; no migration was applied. Migrations 016–018 remain pending
+with 019 until the next clean exact-main rollout.
+
+### Revision-bound agent access moderation
+
+Migration 019 introduces status revisions for every agent status transition,
+including account archival. Staff decisions lock against governance changes,
+bind the expected revision and released version, reject self-review and archived
+resources, require an active owner for restoration, enforce quotas and append
+an immutable audit entry. Legacy direct moderation execution is revoked.
+Only existing safe columns and the status revision retain direct read permission;
+private investigation notes are available through a staff-checked projection.
+This explicit column grant corrects an issue caught during pre-commit security
+review: a table-level SELECT grant would otherwise expose newly added notes.
+
+The private access screen connects from report investigations and immutable
+submission inspection. It supports explicit confirmation, cancellation/focus
+restoration, stale decision recovery, uncertain acknowledgements, retained
+notes and staff revocation concealment. Static publishing/takedown remains a
+separate open gate; the UI never claims this live decision purges static content.
+
+Nineteen-migration actor/isolation/extraction tests pass after the privacy fix.
+Anonymous/nonmember/member/self-moderator/admin/suspended-owner/archived-resource
+paths are tested, alongside denied raw note access and unchanged PicMagic fixtures.
+Formatting, lint, strict typecheck, 103 Node/11 Python tests, production export
+and compiled workerd acceptance pass; the additional sign-in-path test also passes
+(104 Node tests total). Browser checks cover session return, member denial,
+confirmation/Escape focus, block/restore receipts, conflict/lost-ack recovery,
+self-review denial, navigation retention, revoked access and sign-out confirmation.
+320/768/1024/1440px layouts have no overflow or console errors. Mobile lab:
+performance 98, accessibility 100, best practices 96, LCP 2.266s, TBT 9.5ms,
+CLS 0.05650. Private noindex SEO 63 is intentional; CSP/production latency remain
+hardening gates. All fixture data stays local and is never published.

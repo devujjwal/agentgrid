@@ -188,6 +188,13 @@ export function StaffSubmissionDetail({
               </aside>
             )}
           </article>
+          <Link
+            prefetch={false}
+            className="action-secondary"
+            href={'/workspace/moderation/agent/?resourceId=' + submission.resourceId}
+          >
+            Review agent access ↗
+          </Link>
           <SubmissionDocument submission={submission} />
           <SubmissionRejectionForm
             submission={submission}

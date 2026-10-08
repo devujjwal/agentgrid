@@ -16,7 +16,13 @@ export function signInReturnPath(value: unknown): string {
     value === '/workspace/reports/' ||
     value === '/workspace/moderation/' ||
     value === '/workspace/moderation/reports/' ||
-    value === '/workspace/moderation/submissions/'
+    value === '/workspace/moderation/submissions/' ||
+    value === '/workspace/moderation/agent/'
+  )
+    return value;
+  if (
+    /^\/workspace\/moderation\/agent\/\?resourceId=[a-fA-F0-9-]{36}$/.test(value) &&
+    z.uuid().safeParse(value.split('=')[1]).success
   )
     return value;
   if (

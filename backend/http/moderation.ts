@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ResourceDecisionSchema } from '../../src/domain/resource-moderation.ts';
 import { RejectSubmissionSchema } from '../../src/domain/submission-moderation.ts';
 import { SubmissionStateSchema } from '../../src/domain/versions.ts';
 import type { IdentityRuntime } from '../auth/runtime.ts';
@@ -30,6 +31,8 @@ export function moderationHandler(
         path = url.pathname;
       if (
         ![
+          '/api/moderation/resource/',
+          '/api/moderation/resource-decision/',
           '/api/moderation/reviews/',
           '/api/moderation/review/',
           '/api/moderation/decision/',
@@ -43,6 +46,7 @@ export function moderationHandler(
       )
         throw new HttpFailure(404, 'not-found');
       const mutation =
+        path === '/api/moderation/resource-decision/' ||
         path === '/api/moderation/decision/' ||
         path === '/api/moderation/resolution/' ||
         path === '/api/moderation/rejection/';
@@ -60,6 +64,11 @@ export function moderationHandler(
       const session = await authenticatedSession(runtime, request),
         data = dataForSession(session.provider);
       if (mutation) {
+        if (path === '/api/moderation/resource-decision/') {
+          const parsed = ResourceDecisionSchema.safeParse(await readJsonBody(request, 12_000));
+          if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
+          return privateJson(await data.decideResource(parsed.data));
+        }
         if (path === '/api/moderation/rejection/') {
           const parsed = RejectSubmissionSchema.safeParse(await readJsonBody(request, 12_000));
           if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
@@ -75,19 +84,26 @@ export function moderationHandler(
         return privateJson(await data.decideReview(parsed.data));
       }
       const allowed =
-        path === '/api/moderation/submission/'
-          ? ['versionId']
-          : path === '/api/moderation/review/'
-            ? ['reviewId']
-            : path === '/api/moderation/report/'
-              ? ['reportId']
-              : ['state', 'offset'];
+        path === '/api/moderation/resource/'
+          ? ['resourceId']
+          : path === '/api/moderation/submission/'
+            ? ['versionId']
+            : path === '/api/moderation/review/'
+              ? ['reviewId']
+              : path === '/api/moderation/report/'
+                ? ['reportId']
+                : ['state', 'offset'];
       if (
         [...url.searchParams.keys()].some(
           (key) => !allowed.includes(key) || url.searchParams.getAll(key).length !== 1,
         )
       )
         throw new HttpFailure(400, 'invalid-request');
+      if (path === '/api/moderation/resource/') {
+        const id = z.uuid().safeParse(url.searchParams.get('resourceId'));
+        if (!id.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.staffResource(id.data));
+      }
       if (path === '/api/moderation/submission/') {
         const id = z.uuid().safeParse(url.searchParams.get('versionId'));
         if (!id.success) throw new HttpFailure(400, 'invalid-request');

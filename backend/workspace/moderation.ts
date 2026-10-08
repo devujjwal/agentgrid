@@ -12,6 +12,7 @@ import {
 } from '../../src/domain/moderation.ts';
 import { HttpFailure } from '../http/guard.ts';
 import { databaseFailure } from './failure.ts';
+import { resourceModerationResources } from './resource-moderation.ts';
 import { submissionModerationResources } from './submission-moderation.ts';
 import { reportModerationResources } from './report-moderation.ts';
 
@@ -29,6 +30,7 @@ export function moderationResources(
   }
   return {
     ...reportModerationResources(client, staff),
+    ...resourceModerationResources(client, staff),
     ...submissionModerationResources(client, staff),
     async reviewQueue(state: ReviewQueueState, offset: number) {
       await staff();

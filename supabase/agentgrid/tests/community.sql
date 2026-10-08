@@ -114,7 +114,7 @@ select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_review((
 select public.agentgrid_decide_review((select id from agentgrid_fixture_state where key='review'),2,1,'published','Synthetic updated revision reviewed.');
 select public.agentgrid_decide_report((select id from agentgrid_fixture_state where key='report'),'resolved','Synthetic reporting acceptance resolution.');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_decide_report((select id from agentgrid_fixture_state where key='report'),'resolved','Duplicate resolution cannot overwrite history')$s$,'40001');
-select public.agentgrid_moderate_agent('20000000-0000-4000-8000-000000000001',true,'Synthetic takedown acceptance only.');
+select public.agentgrid_decide_resource('20000000-0000-4000-8000-000000000001',0,'30000000-0000-4000-8000-000000000001','blocked','Synthetic takedown acceptance only.');
 reset role;
 set local role anon;
 select pg_temp.agentgrid_assert(not public.agentgrid_is_public_agent('20000000-0000-4000-8000-000000000001'),'blocked resource is unavailable live');
@@ -129,7 +129,7 @@ select pg_temp.agentgrid_expect_error($s$select public.agentgrid_set_favorite('2
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_moderate_agent('20000000-0000-4000-8000-000000000001',false,'Synthetic restoration acceptance only.');
+select public.agentgrid_decide_resource('20000000-0000-4000-8000-000000000001',1,'30000000-0000-4000-8000-000000000001','active','Synthetic restoration acceptance only.');
 select pg_temp.agentgrid_expect_error('delete from public.agentgrid_moderation_actions','42501');
 reset role;
 select pg_temp.agentgrid_expect_error('delete from public.agentgrid_moderation_actions','55000');
