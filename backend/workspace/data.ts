@@ -16,9 +16,12 @@ import { draftResources } from './drafts.ts';
 import { versionResources } from './versions.ts';
 import { reportResources } from './reports.ts';
 import { reviewResources } from './reviews.ts';
+import { forkResources } from './forks.ts';
 import { moderationResources } from './moderation.ts';
 
 export interface WorkspaceData {
+  forkSource: ReturnType<typeof forkResources>['forkSource'];
+  forkAgent: ReturnType<typeof forkResources>['forkAgent'];
   moderation: ReturnType<typeof moderationResources>;
   identity: () => Promise<z.infer<typeof WorkspaceIdentitySchema>>;
   agents: (offset: number) => Promise<z.infer<typeof WorkspaceListSchema>>;
@@ -74,6 +77,7 @@ export function workspaceData(
     moderation: moderationResources(client, identity),
     identity,
     ...savedResources(client, member),
+    ...forkResources(client, member),
     ...drafts,
     ...versionResources(client, member, drafts),
     ...reportResources(client, member),

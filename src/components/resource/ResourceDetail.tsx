@@ -64,6 +64,15 @@ export function ResourceDetail({
               ) : (
                 <span className="draft-status">Unpublished draft · distribution unavailable</span>
               )}
+              {publication?.specification.license.permissions.public_fork && (
+                <Link
+                  prefetch={false}
+                  className="action-secondary"
+                  href={'/workspace/fork/?sourceVersionId=' + publication.version_id}
+                >
+                  Fork agent <span aria-hidden="true">⑂</span>
+                </Link>
+              )}
               <span className="resource-version">Version {spec.version}</span>
               {publication && (
                 <SaveAgent resourceId={publication.resource_id} slug={spec.identity.slug} />

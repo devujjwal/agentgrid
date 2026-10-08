@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ForkInputSchema } from '../../src/domain/forks.ts';
 import type { IdentityRuntime } from '../auth/runtime.ts';
 import type { ProviderSession } from '../auth/contracts.ts';
 import { assertCsrf } from '../auth/csrf.ts';
@@ -46,6 +47,7 @@ export function workspaceHandler(
           '/api/workspace/version/',
           '/api/workspace/reports/',
           '/api/workspace/reviewcontext/',
+          '/api/workspace/forksource/',
         ].includes(url.pathname) ||
         (['/api/workspace/favorite/', '/api/workspace/draft/', '/api/workspace/review/'].includes(
           url.pathname,
@@ -59,6 +61,7 @@ export function workspaceHandler(
           '/api/workspace/visibility/',
           '/api/workspace/favorite/',
           '/api/workspace/create/',
+          '/api/workspace/fork/',
           '/api/workspace/draft/',
           '/api/workspace/submit/',
           '/api/workspace/withdraw/',
@@ -80,6 +83,18 @@ export function workspaceHandler(
       }
       const session = await authenticatedSession(runtime, request);
       const data = dataForSession(session.provider);
+      if (url.pathname === '/api/workspace/forksource/') {
+        if (
+          [...url.searchParams.keys()].some((key) => key !== 'sourceVersionId') ||
+          url.searchParams.getAll('sourceVersionId').length !== 1
+        )
+          throw new HttpFailure(400, 'invalid-request');
+        const source = z.uuid().safeParse(url.searchParams.get('sourceVersionId'));
+        if (!source.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.forkSource(source.data));
+      }
+      if (url.pathname === '/api/workspace/fork/')
+        return privateJson(await data.forkAgent(await input(request, ForkInputSchema)), 201);
       if (url.pathname === '/api/workspace/') {
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         return privateJson(await data.identity());
