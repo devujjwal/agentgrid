@@ -36,13 +36,14 @@ const routes = JSON.parse(await readFile(resolve(root, '_routes.json'), 'utf8'))
 if (
   routes.version !== 1 ||
   !Array.isArray(routes.include) ||
-  routes.include.length !== 2 ||
+  routes.include.length !== 3 ||
   !routes.include.includes('/api/*') ||
-  !routes.include.includes('/auth/callback')
+  !routes.include.includes('/auth/callback') ||
+  !routes.include.includes('/agents/*')
 )
   throw new Error('Unexpected Worker invocation routes.');
 const bytes = (await stat(resolve(root, 'index.js'))).size;
 if (bytes > 1_500_000) throw new Error('Identity Worker exceeds its bundle budget.');
 console.log(
-  `Server boundary compiled: ${bytes} bytes; only API and OAuth callback routes invoke it.`,
+  `Server boundary compiled: ${bytes} bytes; API, OAuth callback and guarded agent routes invoke it.`,
 );

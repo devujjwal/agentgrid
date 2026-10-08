@@ -835,3 +835,32 @@ fixture marker makes the export gate reject accidental future bundle inclusion.
 Production format/lint/typecheck/tests/export checks pass, the previously observed
 fixture strings are absent, and the local optimized build/browser fixture remains
 functional. This improves the delivery boundary before public deployment.
+
+### Consistent public capture and live detail withholding
+
+Migration 023 introduces an AgentGrid-owned snapshot revision, bounded anonymous
+public index and opaque detail-delivery tags. Capture rejects changes between its
+initial and final index, projects only public fields, and emits a local candidate
+with exact catalogue digest/version inventory. Frontend and Worker builds reject
+inconsistent inputs. The committed empty pair is bootstrap state, not a claimed
+remote capture. Production inventory remains zero.
+
+The compiled Pages boundary now covers agent detail HTML and Next navigation
+payloads: withdrawals return 410, changed/unverifiable versions return 503, and
+unknown paths return 404. All detail bodies are no-store; unverified content never
+falls through to static assets. Listings remain static and require urgent rebuild
+to remove withdrawn summaries. Fail-closed quota behavior and cache-rule checks
+are mandatory production gates, not yet verified provider settings.
+
+Local acceptance: 123 Node and 11 Python tests, formatting, lint, strict typecheck,
+production export and compiled workerd pass. The 23-migration actor/isolation suite
+and independent owned-data extraction/reassociation pass with protected fixtures
+unchanged. During extraction rehearsal only owned target user triggers are paused;
+FK checks complete before they are restored and the import commits. Browser checks
+of the branded 404/410/503 presentation cover 320/768/1024/1440px with no horizontal
+overflow and visible keyboard focus; controls are at least 48px high. No client JS
+or motion is required for these states. Evidence is local and ignored.
+
+Migration 023 is local pending exact-head/main CI and guarded rollout. Promotion,
+deployment batch receipts, production delivery checks and actual editorial/host
+inventory remain open. See PUBLICATION_DELIVERY.md for operational boundaries.

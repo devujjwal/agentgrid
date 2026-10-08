@@ -21,3 +21,5 @@ __pycache__/
 docs/evidence/*.jpg
 docs/evidence/*.json
 docs/evidence/*.png
+
+.agentgrid-publication-candidates/

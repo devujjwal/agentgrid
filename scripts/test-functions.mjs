@@ -22,6 +22,8 @@ const invokesWorker = (path) =>
   !routes.exclude.some((rule) => isRoutingRuleMatch(path, rule)) &&
   routes.include.some((rule) => isRoutingRuleMatch(path, rule));
 for (const path of [
+  '/agents/',
+  '/agents/unknown-resource/',
   '/api/identity/',
   '/api/workspace/',
   '/api/moderation/reviews/',
@@ -30,7 +32,7 @@ for (const path of [
   '/auth/callback',
 ])
   assert.equal(invokesWorker(path), true, path);
-for (const path of ['/', '/agents/', '/workspace/', '/sign-in/', '/auth/callback/extra'])
+for (const path of ['/', '/workspace/', '/sign-in/', '/auth/callback/extra'])
   assert.equal(invokesWorker(path), false, path);
 
 const origin = 'https://agentgrid-staging.pages.dev';
@@ -94,6 +96,11 @@ try {
       redirect: 'manual',
       headers: { 'CF-Connecting-IP': '127.0.0.1', ...init.headers },
     });
+  const unknownAgent = await send('/agents/unknown-resource/');
+  assert.equal(unknownAgent.status, 404);
+  assert.equal(unknownAgent.headers.get('cache-control'), 'private, no-store');
+  const listing = await send('/agents/');
+  assert.equal(await listing.text(), 'static-fallback');
   const initial = await send('/api/identity/');
   assert.equal(initial.status, 200);
   const identity = await initial.json();
