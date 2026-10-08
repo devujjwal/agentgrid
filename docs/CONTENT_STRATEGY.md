@@ -7,23 +7,29 @@ indexing through independent editorial value and observed host verification.
 
 ## Representative drafts
 
-These ten resources are editorial drafts, not launch inventory. Reuse terms are
+The 36 resources below are editorial drafts, not launch inventory. Reuse terms are
 unselected; examples describe expected behavior, not observed test results.
 Each has normal, missing-context and adversarial examples. All currently target
 interactive instructions, with no invented connector or background execution.
 
-| Category            | Representative task        | Specific quality focus                                                    |
-| ------------------- | -------------------------- | ------------------------------------------------------------------------- |
-| Marketing           | Campaign Message Planner   | Supported claims, labelled audience hypotheses, controlled message tests  |
-| Productivity        | Inbox Priority Triage      | Explicit time reference, deadline evidence, no subject-only urgency       |
-| Research            | Source Evidence Mapper     | Exact quotations, differing populations/measures, no invented citations   |
-| Education           | Retrieval Study Coach      | One question per turn, feedback tied to lesson, no assessment cheating    |
-| Content             | Article Structure Editor   | Approved section only, factual preservation, traceable edit ledger        |
-| Ecommerce           | Product Listing Auditor    | Attribute evidence, contradictory quantities, no fabricated certification |
-| Business operations | Meeting Decision Ledger    | Agreement versus proposal, accepted ownership, unresolved relative dates  |
-| Everyday            | Household Meal Planner     | Exclusions, unknown pantry quantities, no medical/allergen certification  |
-| SEO                 | Search Opportunity Auditor | Comparable periods, zero baselines, percentage points versus percentages  |
-| Development         | Pull Request Reviewer      | Concrete triggers and supplied line evidence, no invented test execution  |
+| Category            | Draft workflows                                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Marketing           | Campaign Message Planner; Survey Theme Synthesizer; Customer Interview Guide Designer; Launch Message Adapter |
+| Productivity        | Inbox Priority Triage; Weekly Capacity Planner; Calendar Conflict Checker; Context-Grounded Reply Drafter     |
+| Research            | Source Evidence Mapper; Research Question Scoper; Study Methods Reader; Literature Screening Assistant        |
+| Education           | Retrieval Study Coach; Analogy Learning Coach; Worked Solution Diagnostician; Flashcard Quality Designer      |
+| Content             | Article Structure Editor; Transcript Clip Planner; Plain Language Rewriter; Image Alt Text Editor             |
+| Ecommerce           | Product Listing Auditor; Product Variant Normalizer; Returns Feedback Analyst; Product FAQ Grounder           |
+| Business operations | Meeting Decision Ledger; SOP Gap Reviewer; Vendor Quote Comparator; Project Dependency Planner                |
+| Everyday            | Household Meal Planner; Packing Checklist Planner; Household Chore Coordinator; Moving Task Organizer         |
+| SEO                 | Search Opportunity Auditor; Redirect Map Reviewer                                                             |
+| Development         | Pull Request Reviewer; Bug Reproduction Brief Builder                                                         |
+
+The draft count is not the count of quality-approved launch agents. No draft is
+public, licensed for reuse or claimed as host-tested. Each includes a distinct
+bounded task, input/output contract, meaningful normal-case checks, a missing-input
+case and an adversarial source-input case. Curated discovery aliases cover ordinary
+problem language without claiming tool integrations.
 
 This is the foundation for authoring and visual work, not an artificial catalogue
 limit. Launch requires at least 36 approved resources and meaningful coverage
