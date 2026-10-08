@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import {
   StaffSubmissionSchema,
@@ -11,8 +12,13 @@ import { ConfirmAction } from '../feedback/ConfirmAction';
 import { SubmissionDocument } from './SubmissionDocument';
 import { SubmissionRejectionForm } from './SubmissionRejectionForm';
 
+const HostEvidencePanel = dynamic(() => import('./HostEvidencePanel'), {
+  loading: () => <p role="status">Loading evidence tools…</p>,
+});
+
 export function StaffSubmissionDetail({
   versionId,
+  email,
   csrf,
   notes,
   changeNotes,
@@ -20,12 +26,14 @@ export function StaffSubmissionDetail({
   recheck,
 }: {
   versionId: string;
+  email: string;
   csrf: string;
   notes: { explanation: string } | null;
   changeNotes: (value: { explanation: string } | null) => void;
   back: () => void;
   recheck: () => void;
 }) {
+  const [showEvidence, setShowEvidence] = useState(false);
   const [retry, setRetry] = useState(0),
     [busy, setBusy] = useState(false),
     [uncertain, setUncertain] = useState(false);
@@ -196,6 +204,14 @@ export function StaffSubmissionDetail({
             Review agent access ↗
           </Link>
           <SubmissionDocument submission={submission} />
+          <button
+            className="action-secondary"
+            aria-expanded={showEvidence}
+            onClick={() => setShowEvidence((value) => !value)}
+          >
+            {showEvidence ? 'Hide host evidence' : 'Review host evidence'}
+          </button>
+          {showEvidence && <HostEvidencePanel submission={submission} csrf={csrf} email={email} />}
           <SubmissionRejectionForm
             submission={submission}
             explanation={notes?.explanation ?? ''}

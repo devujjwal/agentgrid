@@ -724,3 +724,49 @@ self-review denial, navigation retention, revoked access and sign-out confirmati
 performance 98, accessibility 100, best practices 96, LCP 2.266s, TBT 9.5ms,
 CLS 0.05650. Private noindex SEO 63 is intentional; CSP/production latency remain
 hardening gates. All fixture data stays local and is never published.
+
+### Protected rollout and resource-moderation CI
+
+Migrations 016–018 were applied from clean main
+`bc715336358d5c1e036d379f1fecb5b9970f22e3` after exact-main CI. Protected
+PicMagic inventory remained unchanged before/after each migration. Post-rollout
+anonymous/authenticated-nonmember boundaries pass; no real application rows were
+created. PR17 head `a6d808fab6eda88e2260e946fac95d7cbe8432d9` passed CI
+`37723405537`; merge/main `559c19897cb35c7ab076ca3f823fb89f67601383`
+passed `37723682713`. Migration 019 remains pending with the evidence increment.
+
+### Private host-verification evidence
+
+Migration 020 retains immutable AgentGrid-only observations against exact submitted
+versions, with server-recorded staff provenance, digest binding, strict direct-RPC
+shape/size checks, quotas, a 60-record version limit and idempotent request IDs.
+Anonymous/nonmember/creator/raw-table access is denied. Recording does not approve
+a submission, and failed assertions remain visible. Only private staff projections
+return observations. Lists return compact summaries; full redacted input/output
+is requested only for a selected record. Existing shared app/Auth resources are
+untouched. Extraction includes an owned evidence fixture and preserves its data.
+
+The HTTP boundary reloads the immutable specification, computes its canonical
+checksum and refuses mismatched host/platform/content, stale/future dates, likely
+credentials, authority fields and oversized requests. Publication still requires
+an independent trusted review and full quality gate. These are observation records,
+not automatic proof that a staff member truthfully performed a real test.
+
+The on-demand editor covers host/model/date, input/output, explicit assertions
+(default unpassed), notes, redaction acknowledgement and confirmation. Browser
+acceptance verifies exact private receipts, failed-check retention, unchanged
+pending submission, lazy detail inspection, Escape cancellation, interrupted
+acknowledgement readback without duplicate writes, held edits across hide/show,
+and concealment after staff revocation. Native date entry was verified through
+keyboard commit. All evidence used for acceptance is synthetic, memory-only and
+explicitly labelled; none is recorded in Supabase or used as launch verification.
+
+108 Node/11 Python tests, formatting, lint, strict typecheck, production export,
+compiled workerd and the 20-migration isolation/extraction suite pass. Responsive
+320/768/1024/1440px checks have no overflow, 48px text inputs and no console errors.
+The isolated local editor lab measures performance 98, accessibility 100, best
+practices 96, LCP 2.326s, TBT 13ms and CLS 0. Private/local noindex SEO 63 is
+intentional. This is presentation lab evidence, not authenticated production
+latency or field INP. The QA route is removed and verified absent from production.
+Trusted release approval, publication batches/takedown/recovery and real launch
+inventory remain open work; this increment does not complete publication.
