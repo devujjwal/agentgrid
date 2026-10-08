@@ -24,6 +24,8 @@ const invokesWorker = (path) =>
 for (const path of [
   '/agents/',
   '/agents/unknown-resource/',
+  '/creators/synthetic_creator/',
+  '/api/community/creator/',
   '/api/identity/',
   '/api/workspace/',
   '/api/moderation/reviews/',
@@ -160,6 +162,11 @@ try {
   const moderation = await send('/api/moderation/reviews/?state=pending&offset=0');
   assert.equal(moderation.status, 401);
   assert.deepEqual(await moderation.json(), { error: 'not-signed-in' });
+  const invalidCreator = await send('/api/community/creator/?username=bad%40name');
+  assert.equal(invalidCreator.status, 400);
+  const invalidCreatorPage = await send('/creators/not%40allowed/');
+  assert.equal(invalidCreatorPage.status, 404);
+  assert.equal(invalidCreatorPage.headers.get('set-cookie'), null);
   const publicReview = await send('/api/community/reviews/?resourceId=invalid');
   assert.equal(publicReview.status, 400);
   assert.deepEqual(await publicReview.json(), { error: 'invalid-request' });

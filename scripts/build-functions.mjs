@@ -36,10 +36,11 @@ const routes = JSON.parse(await readFile(resolve(root, '_routes.json'), 'utf8'))
 if (
   routes.version !== 1 ||
   !Array.isArray(routes.include) ||
-  routes.include.length !== 3 ||
+  routes.include.length !== 4 ||
   !routes.include.includes('/api/*') ||
   !routes.include.includes('/auth/callback') ||
-  !routes.include.includes('/agents/*')
+  !routes.include.includes('/agents/*') ||
+  !routes.include.includes('/creators/*')
 )
   throw new Error('Unexpected Worker invocation routes.');
 const bytes = (await stat(resolve(root, 'index.js'))).size;

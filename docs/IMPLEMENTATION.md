@@ -1011,3 +1011,36 @@ and calendar overlap, complete calendar detail, and no horizontal overflow at
 `docs/evidence/phase6-inventory-*`. Full local checks pass: 138 Node and 11 Python
 tests, formatting, lint, strict typecheck and production export. Draft preview
 contains 58 documents; the public export still contains zero agent resources.
+
+### Live public creators and private profile reporting
+
+`/creators/[username]/` is a live Cloudflare-rendered HTML document using only the
+anonymous Supabase projection. This deliberately small, script-free surface avoids
+stale biography/privacy data in the static catalogue. Migration 026 returns only
+active, opted-in contributing profiles and current public releases, with bounded
+20-item pages. No shared identity, private drafts, roles or quality evidence enter
+the response. Static resource bylines link to the public creator route.
+
+The document has canonical/social metadata, semantic contribution links, explicit
+first-party/community attribution, plain escaped user text and a strict header CSP.
+Legacy unsafe website URLs are not rendered as links. Missing/private profiles
+return 404; lookup failures return no-store 503 instead of stale content. Creator
+profiles remain noindex pending a separate editorial indexing policy; their public
+existence alone is not proof of standalone search value. They are not placed in the
+sitemap. Profile requests consume the free Workers request allowance and a bounded
+public database read; real provider latency and quota validation remain staging gates.
+
+A dedicated private reporting entry resolves the current public creator and uses
+the existing authenticated, consent-bound report flow. Synthetic browser acceptance
+verified sign-in return, a recorded private report, immediate 404 after privacy
+change, outage/recovery, keyboard skip focus and script-free HTML. Creator and report
+layouts have no horizontal overflow at 320/768/1024/1440px. Browser inspection led
+to a grouped report heading and wrapping for long usernames. Lighthouse exposed a
+wordmark accessible-name mismatch, corrected before acceptance. Local evidence is
+retained under `docs/evidence/phase6-creator-*`.
+
+142 Node tests, 11 Python tests, formatting, lint, strict typecheck, production
+export and fresh compiled workerd tests pass. The 26-migration disposable database
+suite passes public/private/suspended/non-contributing projection checks, live
+profile edits, pagination bounds and protected application extraction/isolation.
+No synthetic creator or release has been inserted into a real provider database.

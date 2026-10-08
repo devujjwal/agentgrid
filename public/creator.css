@@ -1,0 +1,242 @@
+/* Live creator profiles use the same editorial palette, with no hydration. */
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--ink);
+  color: var(--surface);
+  transform: translateY(-200%);
+  z-index: 10;
+}
+.skip-link:focus {
+  transform: none;
+}
+header nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+}
+header nav a {
+  padding: 0.75rem 0;
+  text-decoration: none;
+}
+main {
+  max-width: 81rem;
+  padding: 2rem clamp(1rem, 5vw, 5rem) 5rem;
+}
+.breadcrumb {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  display: flex;
+  gap: 0.75rem;
+}
+.creator-introduction {
+  position: relative;
+  padding: 3rem 0 4rem;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+}
+.creator-handle {
+  font-family: Consolas, monospace;
+  color: var(--signal);
+  font-size: 0.875rem;
+  margin: 1.5rem 0;
+}
+.creator-bio {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+  max-width: 44rem;
+  font-size: 1.125rem;
+  margin: 1.5rem 0;
+}
+.creator-disclosure {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  max-width: 36rem;
+  margin-top: 2rem;
+}
+.creator-website {
+  display: inline-block;
+  padding: 0.75rem 0;
+  text-underline-offset: 0.3rem;
+}
+.creator-signal {
+  position: absolute;
+  right: 0;
+  top: 3rem;
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+.creator-signal:before,
+.creator-signal:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--signal);
+}
+.creator-signal:after {
+  transform: rotate(90deg);
+}
+.creator-signal span,
+.creator-signal i,
+.creator-signal b {
+  position: absolute;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--signal);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  left: calc(50% - 0.3rem);
+  top: -0.3rem;
+  z-index: 1;
+}
+.creator-signal i {
+  top: calc(50% - 0.3rem);
+  left: -0.3rem;
+  background: var(--accent);
+}
+.creator-signal b {
+  top: calc(100% - 0.3rem);
+}
+.creator-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+h2 {
+  font-family: Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  margin: 0;
+}
+.creator-section-heading > span,
+.version,
+.release-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.creator-agents {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 3rem;
+}
+.creator-agent {
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid var(--line);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.creator-agent > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.creator-agent .eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+}
+h3 {
+  font-size: 1.375rem;
+  line-height: 1.4;
+  letter-spacing: -0.04rem;
+  font-weight: 500;
+  margin: 1rem 0;
+}
+h3 a {
+  text-decoration: none;
+  display: block;
+}
+h3 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.creator-agent p {
+  line-height: 1.65;
+  max-width: 38rem;
+  color: var(--muted);
+}
+.creator-pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.creator-pagination a {
+  padding: 0.75rem 0;
+}
+.creator-report {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.creator-report a {
+  display: inline-block;
+  padding: 0.5rem 0;
+}
+footer {
+  border-top: 1px solid var(--line);
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+footer p {
+  margin: 0;
+}
+@media (max-width: 767px) {
+  .creator-agents {
+    grid-template-columns: 1fr;
+  }
+  .creator-section-heading {
+    display: block;
+  }
+  .creator-section-heading > span {
+    display: block;
+    margin-top: 1rem;
+  }
+  .creator-signal {
+    display: none;
+  }
+  .network-label {
+    display: none;
+  }
+  header {
+    gap: 1rem;
+  }
+  header nav {
+    gap: 1rem;
+  }
+  header nav a:last-child {
+    display: none;
+  }
+  .creator-introduction {
+    padding-top: 2rem;
+  }
+  footer {
+    display: block;
+  }
+  footer p {
+    margin-top: 1rem;
+  }
+}
