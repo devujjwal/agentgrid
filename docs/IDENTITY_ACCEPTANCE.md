@@ -411,3 +411,25 @@ signed-in viewport `phase5-staff-queue-mobile-lab.jpg`. Lighthouse: performance
 TBT 45.5ms and CLS 0.061325. Known inline-script CSP work is still a launch gate.
 The audit used temporary local synthetic cookies, deleted after completion; it
 made no provider request and does not establish production performance or INP.
+
+## Public entry and document-level sign-out
+
+The public header links to the workspace without fetching identity on every
+editorial/discovery page. The signed-out workspace offers a same-origin sign-in
+return; anonymous discovery remains available. Both workspace and sign-in main
+landmarks are keyboard-focusable skip targets.
+
+After a confirmed server logout, the client synchronously clears private state and
+unsaved-edit listeners before replacing the document with sign-in. Browser testing
+caught and corrected a listener/navigation race in the initial implementation.
+The corrected disposable journey verifies public entry, email-code return, an
+unsaved profile edit, discard confirmation, document navigation, absence of the
+private marker/identity and subsequent direct workspace denial. No real email or
+provider mutation occurred in this test. Existing real-provider auth proof remains
+separate from deployed acceptance.
+
+The installed Next documentation says preserved route Activity requires Cache
+Components; this application does not enable it. The full-document logout also
+avoids depending on router-cache eviction if that configuration changes later.
+Existing pagehide/visibility handling still removes private subtrees and requires
+fresh identity when returning. Cross-browser/provider acceptance remains open.

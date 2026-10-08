@@ -1150,3 +1150,20 @@ local preview has 82. No public agent or recipe release was created.
 
 PR29 recipe head `f487fbe` passed CI `37743505905` and merged. No deployment or
 provider resource change was performed in this milestone.
+
+### Community entry and sign-out polish
+
+A public workspace link now makes community entry discoverable without adding
+identity requests to public content. The mobile header keeps it alongside the
+wordmark and puts discovery links on a second row. Sign-in and workspace main
+landmarks support keyboard skip focus. After confirmed logout, synchronous state
+cleanup removes held edits and beforeunload listeners before document replacement.
+A browser test found the initial listener/navigation race; the corrected unsaved
+edit → discard → sign-in journey passes, and direct workspace access is signed out.
+Synthetic data is disposable and never sent to a provider. Full checks remain
+150 Node/11 Python tests with lint, format, typecheck and production export passing.
+
+PR30 category head `64f6e42` passed CI `37744699340` and merged. Remaining
+owner inputs (staging credential authorization, legal identity and first-party
+reuse decision) are unchanged. No paid service, public release or application
+deployment was activated.

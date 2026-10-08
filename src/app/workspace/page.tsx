@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function WorkspacePage() {
   return (
     <SiteFrame localPreview={process.env.AGENTGRID_LOCAL_DESIGN_PREVIEW === '1'}>
-      <main id="main-content" className="workspace-layout">
+      <main id="main-content" tabIndex={-1} className="workspace-layout">
         <Workspace />
       </main>
     </SiteFrame>
