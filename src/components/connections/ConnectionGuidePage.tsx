@@ -1,3 +1,4 @@
+import { socialImage } from '../../domain/social-metadata';
 import { DeclaredResources } from './DeclaredResources';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -28,12 +29,18 @@ export function connectionMetadata(kind: ConnectionKind, slug: string): Metadata
     alternates: { canonical: connectionPath(item) },
     robots: { index: false, follow: false },
     openGraph: {
+      images: [socialImage],
       type: 'article',
       title: item.name,
       description: item.summary,
       url: connectionPath(item),
     },
-    twitter: { card: 'summary', title: item.name, description: item.summary },
+    twitter: {
+      card: 'summary_large_image',
+      images: [socialImage],
+      title: item.name,
+      description: item.summary,
+    },
   };
 }
 export function ConnectionGuidePage({ kind, slug }: { kind: ConnectionKind; slug: string }) {

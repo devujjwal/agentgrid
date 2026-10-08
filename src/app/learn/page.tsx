@@ -1,3 +1,4 @@
+import { socialImage } from '../../domain/social-metadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFrame } from '../../components/layout/SiteFrame';
@@ -11,13 +12,15 @@ export const metadata: Metadata = {
   alternates: { canonical: '/learn/' },
   robots: { index: false, follow: false },
   openGraph: {
+    images: [socialImage],
     title: 'A field guide to useful AI agents',
     description: 'Choose with purpose. Test with evidence. Keep control of the action.',
     url: '/learn/',
     type: 'website',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
+    images: [socialImage],
     title: 'A field guide to useful AI agents',
     description: 'Practical guides and working templates from AgentGrid.',
   },
