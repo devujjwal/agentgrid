@@ -1,3 +1,4 @@
+import { verifySocialExport } from './verify-social-export.mjs';
 /** Builds a local-only optimized preview into an ignored, nondeployment directory. */
 import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
@@ -12,6 +13,7 @@ execFileSync('pnpm', ['exec', 'next', 'build'], {
   env: { ...process.env, AGENTGRID_LOCAL_DESIGN_PREVIEW: '1', NEXT_TELEMETRY_DISABLED: '1' },
 });
 await hardenStatic(resolve('.agentgrid-local-preview'));
+await verifySocialExport(resolve('.agentgrid-local-preview'));
 const html = await readFile(resolve('.agentgrid-local-preview/index.html'), 'utf8');
 if ((await inspectExport(resolve('.agentgrid-local-preview'), { localDesignPreview: true })).length)
   throw new Error('Local preview export boundary failed.');

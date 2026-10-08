@@ -1,3 +1,4 @@
+import { socialImage } from '../../../domain/social-metadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -22,13 +23,19 @@ export async function generateMetadata({
     alternates: { canonical: learningPath(slug) },
     robots: { index: false, follow: false },
     openGraph: {
+      images: [socialImage],
       type: 'article',
       title: guide.title,
       description: guide.summary,
       url: learningPath(slug),
       modifiedTime: guide.updated,
     },
-    twitter: { card: 'summary', title: guide.title, description: guide.summary },
+    twitter: {
+      card: 'summary_large_image',
+      images: [socialImage],
+      title: guide.title,
+      description: guide.summary,
+    },
   };
 }
 export default async function LearningPage({ params }: { params: Promise<{ slug: string }> }) {

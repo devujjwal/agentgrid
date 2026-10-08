@@ -1,3 +1,4 @@
+import { socialImage } from '../../../domain/social-metadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -26,12 +27,18 @@ export async function generateMetadata({
     alternates: { canonical: categoryPath(item.slug) },
     robots: { index: false, follow: false },
     openGraph: {
+      images: [socialImage],
       type: 'website',
       title: `${item.name} — AgentGrid`,
       description: item.summary,
       url: categoryPath(item.slug),
     },
-    twitter: { card: 'summary', title: `${item.name} — AgentGrid`, description: item.summary },
+    twitter: {
+      card: 'summary_large_image',
+      images: [socialImage],
+      title: `${item.name} — AgentGrid`,
+      description: item.summary,
+    },
   };
 }
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {

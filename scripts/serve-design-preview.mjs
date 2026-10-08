@@ -14,6 +14,7 @@ const types = {
   '.js': 'text/javascript',
   '.css': 'text/css',
   '.svg': 'image/svg+xml',
+  '.png': 'image/png',
   '.woff2': 'font/woff2',
 };
 if (process.env.CI || process.env.GITHUB_ACTIONS)

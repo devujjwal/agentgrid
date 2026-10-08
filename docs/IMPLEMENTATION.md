@@ -1192,3 +1192,24 @@ Guide mobile Lighthouse without the disposable QA toolbar: performance 99,
 accessibility 100, best practices 100, LCP 2.2s, TBT 30ms, CLS 0. SEO 66 reflects
 intentional prelaunch noindex. This is local lab evidence, not field INP or
 production delivery evidence.
+
+### Branded social previews
+
+A locally generated 1200 × 630 PNG now supplies Open Graph and Twitter large-image
+cards across static routes and live creator responses. It contains only brand
+copy and decorative network artwork. Titles/descriptions remain page-specific;
+no private data, invented activity or remote avatar enters the graphic. Generation
+uses the existing Next/React installation with no new dependency or runtime call.
+The rendered asset was visually inspected and its short description reflowed to
+avoid a stranded final word.
+
+The build verifies the actual PNG signature/dimensions/size and both exact-domain
+image references in every exported HTML document. Static production and local
+preview verification remain separate from external sharing-provider acceptance.
+See `SOCIAL_PREVIEWS.md` for regeneration and production checks.
+
+Social acceptance passes 154 Node/11 Python tests, lint/format/typecheck, 44-document
+production export, backend compilation/workerd boundary tests and 91-document
+private preview. Browser inspection confirms both canonical-domain image tags,
+large-card type and successful 1200 × 630 image delivery. External social caches,
+production headers and public crawl visibility remain deployment gates.

@@ -1,3 +1,4 @@
+import { socialImage } from '../../../domain/social-metadata';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { resourceDocuments } from '../../../data/resources';
@@ -29,12 +30,18 @@ export async function generateMetadata({
     alternates: { canonical: resourcePath(slug) },
     robots: { index: Boolean(document.publication), follow: Boolean(document.publication) },
     openGraph: {
+      images: [socialImage],
       type: 'website',
       title: spec.identity.name,
       description: spec.identity.summary,
       url: resourcePath(slug),
     },
-    twitter: { card: 'summary', title: spec.identity.name, description: spec.identity.summary },
+    twitter: {
+      card: 'summary_large_image',
+      images: [socialImage],
+      title: spec.identity.name,
+      description: spec.identity.summary,
+    },
   };
 }
 export default async function AgentPage({ params }: { params: Promise<{ slug: string }> }) {

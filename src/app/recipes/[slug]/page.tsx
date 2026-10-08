@@ -1,3 +1,4 @@
+import { socialImage } from '../../../domain/social-metadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -29,13 +30,15 @@ export async function generateMetadata({
     alternates: { canonical: recipePath(slug) },
     robots: { index: Boolean(document.publication), follow: Boolean(document.publication) },
     openGraph: {
+      images: [socialImage],
       type: 'article',
       title: document.recipe.title,
       description: document.recipe.summary,
       url: recipePath(slug),
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
+      images: [socialImage],
       title: document.recipe.title,
       description: document.recipe.summary,
     },
