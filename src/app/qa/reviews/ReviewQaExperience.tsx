@@ -4,12 +4,12 @@ import { useSearchParams } from 'next/navigation';
 import { ReviewResource } from '../../../components/reviews/ReviewResource';
 import { ReviewEditor } from '../../../components/reviews/ReviewEditor';
 
-/** Reproducible local reader/editor audit entry; the enclosing route is pruned
- * from every production export. This grants no identity or database authority. */
+/** Reproducible local reader/editor audit entry; the enclosing route is excluded
+ * from production compilation. This grants no identity or database authority. */
 export function ReviewQaExperience() {
   const editor = useSearchParams().get('panel') === 'editor';
   return (
-    <>
+    <div data-agentgrid-qa-client="local-only">
       <nav aria-label="Local review acceptance surfaces">
         <Link prefetch={false} href="/qa/reviews/" aria-current={!editor ? 'page' : undefined}>
           Reader acceptance
@@ -44,6 +44,6 @@ export function ReviewQaExperience() {
           path="/qa/reviews/"
         />
       )}
-    </>
+    </div>
   );
 }

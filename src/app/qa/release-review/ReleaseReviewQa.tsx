@@ -22,7 +22,7 @@ export function ReleaseReviewQa() {
   const [value, change] = useState(emptyReleaseReview),
     [message, setMessage] = useState('');
   return (
-    <>
+    <div data-agentgrid-qa-client="local-only">
       {message && <p role="status">{message}</p>}
       <ReleaseReviewForm
         value={value}
@@ -40,6 +40,6 @@ export function ReleaseReviewQa() {
           setMessage('Synthetic local presentation only. No publication request was stored.')
         }
       />
-    </>
+    </div>
   );
 }

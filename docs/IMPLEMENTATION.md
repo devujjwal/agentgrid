@@ -13,7 +13,7 @@ than treating existing code as completed functionality.
 | 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | In progress | Real owner sign-in/logout; saved-list boundary; synthetic creator CRUD/history/reauthentication, responsive and signed-in lab checks; real member/submission gates remain open        |
 | 5 — Community                    | In progress | Private reporting boundary and responsive recovery; full moderation/fork/review journeys remain open                                                                                  |
-| 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
+| 6 — Publishing/inventory         | In progress | Private host evidence and reviewed release boundary validated; static capture/takedown and broad real host-tested inventory remain open                                               |
 | 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
 | 8 — Production launch            | Not started | Domain, webmaster setup, production journeys and monitoring                                                                                                                           |
 
@@ -817,3 +817,21 @@ The local acceptance route is removed and verified absent from production.
 Static publication batches, deployment confirmation, urgent takedown/recovery,
 real host-tested inventory and the remaining launch gates are still open.
 Migrations 021–022 are local until private PR and exact-main CI acceptance.
+
+### Reviewed release rollout and local fixture build isolation
+
+PR19 head `8eb542dc7cb858cc6a08ab9c8f0faeb29a9da2cc` passed CI
+`37727384829`; merge/main `df4127fc86f2a6895be4fbeac5b9f9c4ad865dad`
+passed `37727594693`. Guarded migrations 021–022 were applied from that clean
+main commit with unchanged protected PicMagic fingerprints. Live anonymous and
+authenticated nonmember boundaries pass; no staff role, observation or release
+was fabricated or created remotely.
+
+A follow-up export audit found unused local acceptance components in generated
+production JavaScript despite their route removal. Test pages now use a custom
+`.qa.tsx` extension recognized only by the explicitly local preview configuration.
+Production excludes the entries and their client chunks at compilation. A client
+fixture marker makes the export gate reject accidental future bundle inclusion.
+Production format/lint/typecheck/tests/export checks pass, the previously observed
+fixture strings are absent, and the local optimized build/browser fixture remains
+functional. This improves the delivery boundary before public deployment.

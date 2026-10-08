@@ -13,7 +13,7 @@ import { SiteFrame } from '../../../components/layout/SiteFrame';
 import type { PublicResource } from '../../../domain/public-resource';
 
 /** Local component acceptance fixture, never a public release or host run.
- * Normal exports prune its generated not-found artifact before delivery.
+ * Its custom page extension excludes this route from production compilation.
  */
 export default function DistributionQaPage() {
   if (
