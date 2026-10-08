@@ -32,7 +32,9 @@ const server = createServer(async (request, response) => {
     privateBoundary &&
     (request.url?.startsWith('/api/') ||
       request.url?.startsWith('/auth/callback/') ||
-      (synthetic && ['/qa-control/', '/qa-tools.js'].includes(request.url)))
+      (synthetic &&
+        (request.url?.startsWith('/creators/') ||
+          ['/qa-control/', '/qa-tools.js'].includes(request.url))))
   ) {
     await privateBoundary.request(request, response);
     return;
