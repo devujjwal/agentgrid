@@ -118,6 +118,21 @@ try {
   const reused = await send('/api/identity/', { headers: { cookie } });
   assert.equal(reused.status, 200);
   assert.equal((await reused.json()).csrf, identity.csrf);
+  const deniedRemoval = await send('/api/workspace/deactivate/', {
+    method: 'POST',
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'x-agentgrid-synthetic-origin': origin,
+      'x-agentgrid-csrf': identity.csrf,
+    },
+    body: JSON.stringify({
+      profileId: '10000000-0000-4000-8000-000000000001',
+      username: 'synthetic_owner',
+      understandsRemoval: true,
+    }),
+  });
+  assert.equal(deniedRemoval.status, 401);
   const workspace = await send('/api/workspace/');
   assert.equal(workspace.status, 401);
   assert.deepEqual(await workspace.json(), { error: 'not-signed-in' });

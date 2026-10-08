@@ -1,3 +1,4 @@
+import { accountResources } from './account.ts';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { AuthConfiguration } from '../auth/configuration.ts';
@@ -20,6 +21,7 @@ import { forkResources } from './forks.ts';
 import { moderationResources } from './moderation.ts';
 
 export interface WorkspaceData {
+  deactivateAccount: ReturnType<typeof accountResources>['deactivateAccount'];
   forkSource: ReturnType<typeof forkResources>['forkSource'];
   forkAgent: ReturnType<typeof forkResources>['forkAgent'];
   moderation: ReturnType<typeof moderationResources>;
@@ -76,6 +78,7 @@ export function workspaceData(
   return {
     moderation: moderationResources(client, identity),
     identity,
+    ...accountResources(client, member),
     ...savedResources(client, member),
     ...forkResources(client, member),
     ...drafts,
