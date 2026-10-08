@@ -9,11 +9,19 @@ import {
   type SetStateAction,
 } from 'react';
 import { flushSync } from 'react-dom';
+import type { HostVerificationRun } from '../../domain/host-verification';
 import type { DraftEditorial } from '../../domain/draft-editorial';
 import type { DraftRecord, DraftSpecification } from '../../domain/draft';
 import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
 import type { ReviewInput } from '../../domain/reviews';
+
+export interface HostEvidenceBuffer {
+  email: string;
+  versionId: string;
+  recordId: string;
+  run: HostVerificationRun;
+}
 
 export interface ResourceModerationBuffer {
   email: string;
@@ -65,6 +73,8 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  hostEvidence: HostEvidenceBuffer | null;
+  setHostEvidence: Dispatch<SetStateAction<HostEvidenceBuffer | null>>;
   resourceModerationNotes: ResourceModerationBuffer | null;
   setResourceModerationNotes: Dispatch<SetStateAction<ResourceModerationBuffer | null>>;
   submissionModerationNotes: SubmissionModerationBuffer | null;
@@ -87,6 +97,7 @@ const Memory = createContext<{
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
+  const [hostEvidence, setHostEvidence] = useState<HostEvidenceBuffer | null>(null);
   const [resourceModerationNotes, setResourceModerationNotes] =
     useState<ResourceModerationBuffer | null>(null);
   const [submissionModerationNotes, setSubmissionModerationNotes] =
@@ -101,6 +112,7 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
   const [reviewEdits, setReviewEdits] = useState<ReviewBuffer | null>(null);
   useEffect(() => {
     if (
+      !hostEvidence &&
       !buffer?.dirty &&
       !profileEdits?.dirty &&
       !reportEdits?.input.explanation &&
@@ -166,11 +178,13 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
     reportModerationNotes,
     submissionModerationNotes,
     resourceModerationNotes,
+    hostEvidence,
   ]);
   return (
     <Memory.Provider
       value={{
         hasUnsaved: Boolean(
+          hostEvidence ||
           buffer?.dirty ||
           profileEdits?.dirty ||
           reportEdits?.input.explanation ||
@@ -194,6 +208,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         setSubmissionModerationNotes,
         resourceModerationNotes,
         setResourceModerationNotes,
+        hostEvidence,
+        setHostEvidence,
         reportModerationNotes,
         setReportModerationNotes,
       }}

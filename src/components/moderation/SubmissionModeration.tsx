@@ -60,6 +60,7 @@ export function SubmissionModeration() {
     <StaffSubmissionDetail
       key={versionId}
       versionId={versionId}
+      email={identity.identity.email}
       csrf={identity.identity.csrf}
       notes={notes?.email === identity.identity.email ? notes : null}
       changeNotes={(value) => {

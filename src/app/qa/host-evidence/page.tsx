@@ -1,0 +1,35 @@
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { SiteFrame } from '../../../components/layout/SiteFrame';
+import { HostEvidenceQa } from './HostEvidenceQa';
+import '../../identity.css';
+import '../../moderation.css';
+export const metadata: Metadata = {
+  title: 'Local evidence acceptance — AgentGrid',
+  robots: { index: false, follow: false },
+};
+export default function HostEvidenceQaPage() {
+  if (
+    process.env.AGENTGRID_LOCAL_DESIGN_PREVIEW !== '1' ||
+    process.env.CI ||
+    process.env.GITHUB_ACTIONS
+  )
+    notFound();
+  return (
+    <SiteFrame localPreview>
+      <main
+        id="main-content"
+        className="workspace-layout moderation-layout"
+        data-agentgrid-qa="local-only"
+      >
+        <h1>Local evidence editor acceptance.</h1>
+        <p>
+          Disposable presentation fixture only. No real host was tested; nothing is recorded in a
+          database or published.
+        </p>
+        <h2>Private evidence editor</h2>
+        <HostEvidenceQa />
+      </main>
+    </SiteFrame>
+  );
+}
