@@ -1,5 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve, relative, basename } from 'node:path';
+import { readRecipePublication } from './verify-recipe-publication.mjs';
 import { verifyDocumentPolicy } from './static-csp.mjs';
 
 export async function inspectExport(root, { localDesignPreview = false } = {}) {
@@ -26,8 +27,18 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
   for (const name of required) {
     if (!names.has(name)) errors.push(`Missing static delivery artifact: ${name}`);
   }
+  const recipeSlugs = localDesignPreview
+    ? null
+    : new Set((await readRecipePublication()).map(({ recipe }) => recipe.slug));
   for (const path of files) {
     const name = relative(root, path);
+    if (recipeSlugs && name.startsWith('recipes/')) {
+      const segment = name.slice('recipes/'.length).split('/')[0];
+      const listing =
+        ['index.html', 'index.txt'].includes(segment) || segment.startsWith('__next.');
+      if (!listing && !recipeSlugs.has(segment.replace(/\.(?:html|txt)$/, '')))
+        errors.push(`Unpublished or stale recipe artifact: ${name}`);
+    }
     if (
       name.includes('__agentgrid_unpublished__') ||
       (!localDesignPreview && name.startsWith('qa/'))

@@ -49,6 +49,14 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
     for (const name of ['index.html', '404.html', 'robots.txt', '_headers'])
       await writeFile(join(root, name), name.endsWith('.html') ? safeHtml : 'safe');
     assert.deepEqual(await inspectExport(root), []);
+    await mkdir(join(root, 'recipes/withdrawn-workflow'), { recursive: true });
+    await writeFile(join(root, 'recipes/withdrawn-workflow/index.html'), safeHtml);
+    await writeFile(join(root, 'recipes/withdrawn-workflow/index.txt'), 'Stale RSC payload');
+    const staleRecipes = (await inspectExport(root)).filter((error) =>
+      error.includes('Unpublished or stale recipe artifact'),
+    );
+    assert.equal(staleRecipes.length, 2);
+    await rm(join(root, 'recipes'), { recursive: true });
     await writeFile(
       join(root, 'index.html'),
       '<div data-agentgrid-preview="local-only">Local design preview</div>',

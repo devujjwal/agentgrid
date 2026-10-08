@@ -12,7 +12,7 @@ export interface DiscoveryResource {
   href: string;
   state: 'draft' | 'published';
   creatorName: string;
-  format: 'instructions' | 'workflow';
+  format: 'instructions' | 'workflow' | 'recipe';
 }
 
 export interface DiscoveryQuery {

@@ -1,0 +1,272 @@
+[
+  {
+    "slug": "turn-meeting-notes-into-follow-up",
+    "title": "Turn meeting notes into a useful follow-up",
+    "summary": "Separate agreed actions from suggestions, then prepare a follow-up draft that preserves owners, deadlines and unresolved questions.",
+    "category": "business-operations",
+    "inputs": [
+      "Redacted meeting notes with stable speaker labels and any agreed dates.",
+      "Your intended recipients, communication goal and approved tone."
+    ],
+    "outcome": "A checked action ledger and an unsent follow-up draft. You approve the wording and recipients before sending.",
+    "overview": "A meeting transcript often mixes decisions with proposals. Drafting a confident follow-up directly from that mixture can turn a suggestion into a commitment. This sequence creates a reviewable decision ledger first, then uses only the checked facts to prepare the message. It works with material you provide; it does not join meetings, access a mailbox or contact participants.",
+    "steps": [
+      {
+        "agent_slug": "meeting-decision-ledger",
+        "agent_version": "1.0.0",
+        "specification_sha256": "9f52c0db1d51b48b244e38b46df4593a7cf711e20a5896781bff909b30961436",
+        "title": "Extract what was actually agreed",
+        "send": "Supply the redacted notes and ask for decisions, actions, owners, dates and evidence excerpts. Keep suggestions in a separate unresolved section.",
+        "check": "Check each action against the original note. Confirm that an owner accepted it and that any deadline was explicitly agreed. Mark missing owners or dates as unresolved.",
+        "handoff": "Carry forward the checked ledger and its unresolved questions. Remove transcript details that the follow-up recipients do not need."
+      },
+      {
+        "agent_slug": "reply-draft-assistant",
+        "agent_version": "1.0.0",
+        "specification_sha256": "ea3951373f64c6f6b01e9e350777829163b0499e1ed754df44c5579ff715c2ec",
+        "title": "Draft the follow-up from checked facts",
+        "send": "Provide the checked ledger, intended recipients, tone and purpose. Ask for an unsent message with confirmed actions and a separate request for unresolved details.",
+        "check": "Compare every name, commitment and date with the ledger. Check that tentative proposals are questions rather than newly assigned work.",
+        "handoff": "Review the final recipients and message in your own mail tool. Sending is a separate action; this recipe does not perform it."
+      }
+    ],
+    "checkpoint": "If the notes contain no confirmed agreement, stop at a clarification draft. Do not invent action owners to make the follow-up look complete.",
+    "example": {
+      "input": "Notes: Mira agrees to share the draft on Friday. Dev suggests considering a launch next month; no decision is made.",
+      "expected": "The ledger records Mira’s agreed draft deadline and keeps the launch tentative. The follow-up requests a launch decision instead of announcing a launch date."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["turn", "meeting", "notes", "into", "useful", "follow-up"]
+  },
+  {
+    "slug": "plan-and-adapt-a-small-campaign",
+    "title": "Plan a small campaign without changing the promise",
+    "summary": "Build one supported message map, then adapt it into channel drafts while keeping availability, eligibility and limitations consistent.",
+    "category": "marketing",
+    "inputs": [
+      "An approved offer brief with evidence for each claim, target audience and limitations.",
+      "The channels, character limits and calls to action you intend to use."
+    ],
+    "outcome": "A checked campaign message map and channel-specific drafts ready for human review, not automatic publication.",
+    "overview": "A launch can drift as the same offer is shortened for different channels. This sequence establishes the supported promise and audience questions before adapting the wording. It is useful when one person must create several coherent drafts from a small approved brief. It does not research market demand, buy advertising or publish to social accounts.",
+    "steps": [
+      {
+        "agent_slug": "campaign-message-planner",
+        "agent_version": "1.0.0",
+        "specification_sha256": "d0447c65730c14aab534e25e8e72cb8df00559ab1ce133fe5c0790a4323ab375",
+        "title": "Establish the supported message",
+        "send": "Supply the offer brief, intended audience and evidence. Ask for a central promise, audience concerns and supported calls to action.",
+        "check": "Verify that benefits, comparisons and eligibility are present in the brief. Remove claims that need evidence you do not have.",
+        "handoff": "Turn the reviewed map into a compact approved launch brief, retaining all limitations and unresolved claims."
+      },
+      {
+        "agent_slug": "launch-message-adapter",
+        "agent_version": "1.0.0",
+        "specification_sha256": "72d2d36613909653c90ab38dcfc78c7bbc7eda75f1cbfc265d84ad85720f312c",
+        "title": "Adapt the brief by channel",
+        "send": "Provide the approved launch brief and exact channel requirements. Request separate drafts that preserve dates, eligibility, feature status and caveats.",
+        "check": "Compare every draft with the source brief. Count required limits where relevant and check that short versions do not imply a broader offer.",
+        "handoff": "Move only approved drafts into your publishing process. Check destination, timing and any media separately."
+      }
+    ],
+    "checkpoint": "If the offer details conflict, resolve them with the owner of the brief before preparing publication-ready copy.",
+    "example": {
+      "input": "Offer: a workshop for existing customers on 20 November, limited to 30 attendees. Requested drafts: an email and a short community announcement.",
+      "expected": "Both drafts preserve the existing-customer restriction, date and capacity. Neither calls the workshop open to everyone or guarantees a place."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["plan", "small", "campaign", "without", "changing", "the", "promise"]
+  },
+  {
+    "slug": "research-a-question-with-traceable-evidence",
+    "title": "Research a question with traceable evidence",
+    "summary": "Narrow a question before collecting sources, then build a claim-to-evidence ledger that keeps disagreement and missing support visible.",
+    "category": "research",
+    "inputs": [
+      "A topic, the decision it should inform, scope constraints and available research time.",
+      "Source excerpts you are authorized to share, each with a stable source identifier."
+    ],
+    "outcome": "A bounded research question and a checked evidence ledger. The sequence does not establish that a source set is complete.",
+    "overview": "Collecting more documents is not always the next useful step. A broad question can make every source seem relevant and every conclusion hard to defend. This sequence sets explicit boundaries first, then maps supplied material to specific claims. You remain responsible for source selection, access rights and checking the original context; neither resource performs a complete literature search.",
+    "steps": [
+      {
+        "agent_slug": "research-question-scoper",
+        "agent_version": "1.0.0",
+        "specification_sha256": "775afd76d897d84e957be93f2c302ada5bbf20172a8876ecfd5581b06f938a33",
+        "title": "Define the question and exclusions",
+        "send": "Describe the topic, intended decision, relevant population or context and practical constraints. Ask for a bounded question, exclusions and an evidence-gathering plan.",
+        "check": "Check that the proposed question answers your actual decision. Resolve ambiguous terms and confirm which contexts the work will exclude.",
+        "handoff": "Use the reviewed scope to collect a small source set. Keep citations and identifiers, and distinguish primary evidence from commentary."
+      },
+      {
+        "agent_slug": "source-evidence-mapper",
+        "agent_version": "1.0.0",
+        "specification_sha256": "b0ba281fe91ddc83d49115a5d4f75c60b00319adf2c91f6c3c8c0ec0b90e3349",
+        "title": "Map claims to the supplied sources",
+        "send": "Provide the reviewed question and labelled excerpts. Ask for claims, supporting or conflicting evidence, source identifiers and unresolved gaps.",
+        "check": "Open the original sources for important claims. Check that excerpts support the wording and that disagreements are not collapsed into a false consensus.",
+        "handoff": "Use the checked ledger to write a qualified synthesis or identify the next source needed. Preserve the scope and remaining uncertainty."
+      }
+    ],
+    "checkpoint": "If the sources do not address the agreed question, change the source set or explicitly revise the scope. Do not answer a different question without saying so.",
+    "example": {
+      "input": "Question: how did two small teams coordinate handoffs? Source A describes written checklists; source B describes brief daily calls, with no comparative outcome data.",
+      "expected": "The ledger records the two observed approaches and says the source set cannot establish which is more effective."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["research", "question", "with", "traceable", "evidence"]
+  },
+  {
+    "slug": "prepare-source-grounded-product-copy",
+    "title": "Prepare product copy from approved facts",
+    "summary": "Audit a listing against the attribute sheet, then answer customer questions using verified specifications and policies.",
+    "category": "ecommerce",
+    "inputs": [
+      "An approved product attribute sheet and the current draft title and bullets.",
+      "Current approved policies and a bounded list of customer questions."
+    ],
+    "outcome": "A corrected listing review and a checked FAQ draft, with unsupported claims and unknown answers kept visible.",
+    "overview": "Product copy can accumulate claims that are absent from the actual specification. A helpful FAQ can introduce the same problem if it guesses compatibility or return conditions. This sequence starts with an attribute-level audit and then builds answers from the corrected source set. It does not edit a marketplace listing or replace the merchant’s policy review.",
+    "steps": [
+      {
+        "agent_slug": "product-listing-auditor",
+        "agent_version": "1.0.0",
+        "specification_sha256": "a2fb063b98ddccee1d78fa1555b88552aeb55957c78e7a5fefe770d15880b251",
+        "title": "Audit the listing against the source sheet",
+        "send": "Supply the attribute sheet and draft listing. Ask for missing buyer information, contradictions and unsupported claims, each tied to the supplied facts.",
+        "check": "Verify measurements, included items and capability claims against the approved sheet. Resolve contradictions with the product owner instead of selecting a convenient answer.",
+        "handoff": "Prepare a corrected source sheet and reviewed listing draft. Keep unresolved facts in a separate queue."
+      },
+      {
+        "agent_slug": "product-faq-grounder",
+        "agent_version": "1.0.0",
+        "specification_sha256": "1a754b4ee62f0fc97a430b72ec2eafe574b0cfec36d738b907be0253282f4580",
+        "title": "Answer questions with the approved facts",
+        "send": "Provide the corrected source sheet, approved policies and customer questions. Request concise answers with evidence references and explicit unknowns.",
+        "check": "Check each answer against the correct specification or policy version. Reject invented guarantees, inferred compatibility and unstated return rights.",
+        "handoff": "Approve the FAQ and listing together before publishing them through your normal storefront process."
+      }
+    ],
+    "checkpoint": "If a policy or specification is outdated or contradictory, withhold the affected answer until an authoritative source is supplied.",
+    "example": {
+      "input": "Sheet: a bottle holds 750 ml and is hand-wash only. Draft: dishwasher safe. Question: is it dishwasher safe?",
+      "expected": "The audit flags the contradiction. The FAQ says hand-wash only, grounded in the supplied sheet, rather than repeating the draft claim."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["prepare", "product", "copy", "from", "approved", "facts"]
+  },
+  {
+    "slug": "turn-lesson-notes-into-retrieval-practice",
+    "title": "Turn lesson notes into focused retrieval practice",
+    "summary": "Create answerable flashcards from a supplied lesson, then use short practice questions to identify specific gaps in understanding.",
+    "category": "education",
+    "inputs": [
+      "A lesson excerpt appropriate to the learner, with clear source labels.",
+      "The learning goal, existing knowledge and time available for practice."
+    ],
+    "outcome": "A checked set of retrieval cards and a short practice session with feedback grounded in the supplied lesson.",
+    "overview": "A large deck of vague questions can feel productive while testing little. This sequence creates small, source-grounded prompts before using them in a focused practice session. It supports learning from supplied material and does not grade a real assessment, certify mastery or replace a teacher’s feedback. Keep a learner’s private information out of examples that do not require it.",
+    "steps": [
+      {
+        "agent_slug": "flashcard-quality-designer",
+        "agent_version": "1.0.0",
+        "specification_sha256": "9925e814723d93c7b858f2cc0a31444e6eb68ec382caf4392704765109b592a8",
+        "title": "Build a small, answerable set",
+        "send": "Provide the lesson and learning goal. Ask for a bounded number of cards, each testing one idea with an answer and source anchor.",
+        "check": "Check each answer against the lesson. Split overloaded questions and remove cards that depend on facts absent from the source.",
+        "handoff": "Carry the checked cards, lesson excerpt and learning goal into the practice session. Keep the answer key separate from the learner’s first attempt."
+      },
+      {
+        "agent_slug": "retrieval-study-coach",
+        "agent_version": "1.0.0",
+        "specification_sha256": "1f60486557e9754118c55513ee79d87bac16eba628cffe3bf4936f5ca7c9ffd2",
+        "title": "Practice and inspect the specific gaps",
+        "send": "Provide the lesson, checked questions and learner context. Request one question at a time, with feedback after an attempt rather than immediate answer disclosure.",
+        "check": "Check whether feedback addresses the learner’s actual answer and cites the lesson correctly. Distinguish a wording difference from a conceptual mistake.",
+        "handoff": "Record the concepts needing another attempt. A correct answer in one session is useful evidence, not proof of lasting mastery."
+      }
+    ],
+    "checkpoint": "If the lesson itself is unclear or appears incorrect, clarify it before turning it into a repeated practice target.",
+    "example": {
+      "input": "Lesson: evaporation happens at the surface; boiling happens throughout a liquid. The learner says both occur throughout the liquid.",
+      "expected": "A card separates the two locations. Practice feedback identifies the location misconception and asks a focused follow-up without inventing a temperature rule."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["turn", "lesson", "notes", "into", "focused", "retrieval", "practice"]
+  },
+  {
+    "slug": "plan-a-realistic-household-week",
+    "title": "Plan a household week around actual capacity",
+    "summary": "Check available time before assigning chores, then create a reviewable rota that shows workload differences and unresolved commitments.",
+    "category": "everyday",
+    "inputs": [
+      "Consenting household members’ stated availability and fixed commitments, using aliases if appropriate.",
+      "Agreed chores, estimated durations, constraints and preferences."
+    ],
+    "outcome": "A capacity check and a proposed chore rota that household members review together. No appointments or tasks are changed automatically.",
+    "overview": "A neat rota can still be impossible if it ignores fixed commitments or unagreed assumptions. This sequence separates available capacity from task assignment so overload is visible before names are attached to chores. It is a planning aid for a consenting household, not a way to infer who should carry more work from personal characteristics or to impose assignments without agreement.",
+    "steps": [
+      {
+        "agent_slug": "weekly-capacity-planner",
+        "agent_version": "1.0.0",
+        "specification_sha256": "2c43745197f0211330d9b04a520b26cb8836d993d98601fe5aeeeb386eddfeb1",
+        "title": "Check the available time",
+        "send": "Supply fixed commitments, available time and task estimates for the bounded planning period. Ask for explicit arithmetic, buffers and overcommitment before allocating optional work.",
+        "check": "Recalculate the capacity totals. Check that buffers are not counted twice and that missing estimates are labelled rather than guessed.",
+        "handoff": "Carry agreed available time and unresolved constraints into the chore plan. Do not treat a rough estimate as a binding commitment."
+      },
+      {
+        "agent_slug": "household-chore-coordinator",
+        "agent_version": "1.0.0",
+        "specification_sha256": "80d47ab37060b02d7f7c9cf88e7c3bab5ad40ec7e97946e684b5a97d13f05580",
+        "title": "Propose a rota for review",
+        "send": "Provide agreed chores, durations, availability, preferences and non-negotiable constraints. Ask for an explicit assignment proposal and total workload per person.",
+        "check": "Check every assignment against availability and agreement. Compare totals without treating equal minutes as the only possible definition of fairness.",
+        "handoff": "Discuss the proposal with the household. Confirm changes yourselves and revisit estimates after trying the plan."
+      }
+    ],
+    "checkpoint": "If required work exceeds the agreed capacity, reduce scope, defer tasks or renegotiate the plan. Do not silently remove rest time to make it fit.",
+    "example": {
+      "input": "Two people each offer 60 minutes. Required chores total 150 minutes before any buffer.",
+      "expected": "The capacity check reports at least a 30-minute shortfall. The rota keeps that gap visible and asks which work should be reduced or deferred."
+    },
+    "mode": "guided",
+    "version": "1.0.0",
+    "limitations": [
+      "This is a manual sequence. You review and transfer each intermediate result; no scheduler, connector or background execution is included.",
+      "Each platform processes supplied material under its own terms and privacy settings. Use authorized, appropriately redacted inputs.",
+      "AgentGrid access does not include model-provider subscriptions, usage allowances or integration charges. Check the selected host before starting."
+    ],
+    "keywords": ["plan", "household", "week", "around", "actual", "capacity"]
+  }
+]
