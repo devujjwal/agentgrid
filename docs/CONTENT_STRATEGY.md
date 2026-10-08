@@ -63,3 +63,24 @@ No review, creator, install count or activity is invented for launch. Actual
 first-party material is attributed to AgentGrid Editorial after verified owner
 onboarding. Examples and simulations are labelled; zero community data remains
 a truthful empty state.
+
+## Category guidance and discovery
+
+Ten original category guides live in bounded, schema-checked repository content.
+Each distinguishes two useful task choices, required inputs, review criteria and
+stop conditions. They connect to current resource documents by actual category;
+public builds never read private draft packages. Local previews label the linked
+drafts explicitly. Category guidance has its own `editorial` discovery state,
+which makes no host-test, installation or community-activity claim.
+
+Category URLs use `/categories/[slug]/`, avoiding collisions with agent slugs at
+`/agents/[slug]/`. Links are crawlable server-rendered anchors, with canonical
+URLs and breadcrumbs. These pages remain noindex and outside the sitemap during
+prelaunch review. Indexing requires a separate intent/value review and the broader
+launch gate; the number of matching agents does not automatically enable indexing.
+Category guides are not executable packages and confer no community reuse license.
+
+Search supports agent, recipe and category types through the existing provider
+interface. The visible type filter is reset with the query/category controls, and
+individual publication states remain visible on narrow screens. No remote search
+service, query logging or recurring cost is introduced.

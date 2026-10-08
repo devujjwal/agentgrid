@@ -10,9 +10,9 @@ export interface DiscoveryResource {
   connectionTags: readonly string[];
   platforms: readonly string[];
   href: string;
-  state: 'draft' | 'published';
+  state: 'draft' | 'published' | 'editorial';
   creatorName: string;
-  format: 'instructions' | 'workflow' | 'recipe';
+  format: 'instructions' | 'workflow' | 'recipe' | 'guide';
 }
 
 export interface DiscoveryQuery {

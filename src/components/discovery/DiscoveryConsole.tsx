@@ -16,6 +16,8 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
   const drafts = resources.every((resource) => resource.state === 'draft');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [kind, setKind] = useState<DiscoveryResource['kind'] | ''>('');
+  const kinds = useMemo(() => [...new Set(resources.map((item) => item.kind))], [resources]);
   const [page, setPage] = useState(0);
   const [selectedSlug, setSelectedSlug] = useState('source-evidence-mapper');
   const categories = useMemo(
@@ -27,9 +29,10 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
     () => ({
       text: query,
       ...(category ? { category } : {}),
+      ...(kind ? { kinds: [kind] } : {}),
       offset: page * 30,
     }),
-    [query, category, page],
+    [query, category, kind, page],
   );
   const search = useDiscoverySearch(provider, searchQuery);
   const searchPage = search.page;
@@ -62,6 +65,7 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
         onPrompt={(prompt) => {
           setQuery(prompt);
           setCategory('');
+          setKind('');
           setPage(0);
         }}
         onExplore={() => document.getElementById('discovery-results')?.focus()}
@@ -97,7 +101,9 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
             />
             <div className="universe-caption">
               <span>Connections describe shared capabilities.</span>
-              <span>{drafts ? 'Interactive instructions / Drafts' : 'Reusable resources'}</span>
+              <span>
+                {drafts ? 'Interactive instructions / Drafts' : 'Agents, recipes & guides'}
+              </span>
             </div>
           </div>
           <ResourceInspector relations={relations} selected={selected} />
@@ -112,6 +118,12 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
         query={query}
         category={category}
         categories={categories}
+        kind={kind}
+        kinds={kinds}
+        onKind={(value) => {
+          setKind(value);
+          setPage(0);
+        }}
         drafts={drafts}
         onCategory={(value) => {
           setCategory(value);
@@ -121,6 +133,7 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
         onReset={() => {
           setQuery('');
           setCategory('');
+          setKind('');
           setPage(0);
         }}
         onPage={(value) => {

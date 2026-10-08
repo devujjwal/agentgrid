@@ -1,0 +1,262 @@
+[
+  {
+    "slug": "productivity",
+    "name": "Productivity",
+    "headline": "Make the next action clear.",
+    "summary": "Choose agents for email triage, meeting follow-up, weekly planning and calendar review without confusing a proposed plan with work already done.",
+    "overview": "A useful productivity resource makes a decision easier to inspect. Start with a bounded batch of messages, a short list of commitments or a specific planning period. Ask for evidence, missing information and suggested next actions before asking for polished prose. The same message can be urgent for one person and informational for another, so explain your role and what you are responsible for. Keep proposed changes separate from confirmed commitments.",
+    "inputs": [
+      "A redacted batch with stable identifiers, relevant dates and your responsibility for each item.",
+      "Your working hours, fixed commitments and the criteria you use to decide what needs attention."
+    ],
+    "choices": [
+      {
+        "title": "Triage information",
+        "body": "Choose evidence-linked prioritization when the problem is too many messages. A fluent summary alone will not tell you which deadline or dependency caused an item to move up the list."
+      },
+      {
+        "title": "Plan within capacity",
+        "body": "Choose a capacity or calendar checker when the problem is competing commitments. Supply time zones and fixed constraints before asking it to suggest changes."
+      }
+    ],
+    "check": "Compare every proposed owner and deadline with the source. An unresolved date should remain unresolved, and an unsent reply should never be reported as delivered.",
+    "stop": "If a plan silently schedules more work than your available time, reject it even when every individual task sounds reasonable. Ask which commitment must move and who can authorize the change.",
+    "keywords": ["email", "inbox", "calendar", "weekly plan", "priorities"],
+    "related": ["business-operations", "everyday"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "marketing",
+    "name": "Marketing",
+    "headline": "Keep the promise consistent.",
+    "summary": "Find a starting point for campaign planning, customer interviews and channel adaptation while keeping claims tied to your approved offer and evidence.",
+    "overview": "Begin with the offer and the audience decision, not a request for more persuasive language. A campaign planner can expose gaps between what a customer needs to know and what your brief supports. An interview guide serves a different purpose: learning what customers think without putting the preferred answer into the question. Keep these tasks separate so a marketing claim does not quietly become research evidence.",
+    "inputs": [
+      "An approved offer brief with availability, eligibility, exclusions and supported product claims.",
+      "The audience, channel, desired decision and examples of wording your organization can support."
+    ],
+    "choices": [
+      {
+        "title": "Explore a message",
+        "body": "Use a message planner to connect supported features with audience questions. Require a separate list of claims that still need evidence."
+      },
+      {
+        "title": "Adapt an approved message",
+        "body": "Use a channel adapter after the core message is settled. A shorter character budget does not justify dropping a limitation or changing who is eligible."
+      }
+    ],
+    "check": "Compare promises, prices, dates and eligibility across the versions. Review interview questions for assumptions that tell participants which answer you want.",
+    "stop": "If the brief lacks proof for a claim, remove or qualify the claim. Do not ask the model to invent a testimonial, customer statistic or competitive advantage.",
+    "keywords": ["campaign", "audience", "launch", "customer interview", "messaging"],
+    "related": ["content", "ecommerce"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "research",
+    "name": "Research",
+    "headline": "Keep claims close to evidence.",
+    "summary": "Choose resources for scoping questions, screening supplied material and mapping claims to sources, with explicit uncertainty and traceable reasoning.",
+    "overview": "Research support is most useful when the question and evidence boundary are clear. Decide what would count as an answer before collecting more material. A scoping resource can identify ambiguous terms and exclusions; a screening resource can apply your stated criteria; an evidence mapper can show which supplied source supports each claim. None of these steps makes an absent source exist or guarantees that the supplied material is representative.",
+    "inputs": [
+      "A focused question, intended use and explicit inclusion or exclusion rules.",
+      "Authorized source excerpts with stable identifiers and enough context to interpret their claims."
+    ],
+    "choices": [
+      {
+        "title": "Narrow the question",
+        "body": "Use a question scoper when the topic is broad. Define the population, period or situation of interest before asking for a confident conclusion."
+      },
+      {
+        "title": "Inspect the evidence",
+        "body": "Use a mapper or screening assistant when you have material. Preserve source identifiers, conflicting findings and reasons for uncertain inclusion."
+      }
+    ],
+    "check": "Open the cited source and compare the claim with its actual wording and context. Check that disagreement, limitations and missing evidence survive the summary.",
+    "stop": "If only abstracts or excerpts are supplied, keep conclusions within that boundary. An inaccessible full text must not be presented as reviewed.",
+    "keywords": ["evidence", "sources", "literature", "question", "study screening"],
+    "related": ["education", "content"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "education",
+    "name": "Education",
+    "headline": "Practice understanding, not just answers.",
+    "summary": "Explore agents for retrieval practice, flashcard design, analogy-based explanations and rubric feedback grounded in the learner’s supplied material.",
+    "overview": "Start with the learning objective and the material the learner is expected to understand. Retrieval practice, explanation and feedback solve different problems. A flashcard resource should turn one supported idea into one answerable prompt. An analogy coach should explain where its comparison stops working. A feedback resource should connect comments to the supplied rubric instead of treating confident wording as evidence of mastery.",
+    "inputs": [
+      "Lesson notes or approved reference material and a specific learning objective.",
+      "The learner’s attempted answer and, where relevant, the exact rubric or feedback criteria."
+    ],
+    "choices": [
+      {
+        "title": "Build a practice set",
+        "body": "Choose a flashcard or retrieval resource for remembering and applying supplied ideas. Prefer small questions that make an incorrect answer easy to diagnose."
+      },
+      {
+        "title": "Repair a misunderstanding",
+        "body": "Choose an analogy or feedback resource when the learner can show where they are stuck. Ask for a transfer question rather than simply another explanation."
+      }
+    ],
+    "check": "Check the answer key against the lesson. Ask the learner to explain or apply the idea in a new example before treating a correct repeated answer as understanding.",
+    "stop": "Keep consequential grading and educational decisions with the responsible human. Feedback on supplied work is a study aid, not an independently validated assessment.",
+    "keywords": ["study", "lesson", "flashcards", "practice", "rubric", "learning"],
+    "related": ["research", "productivity"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "content",
+    "name": "Content",
+    "headline": "Improve expression without changing the facts.",
+    "summary": "Find resources for article structure, plain language, source-bounded repurposing and image alternatives that preserve the meaning of your original material.",
+    "overview": "Before editing, identify what may change and what must remain exact. Structure, length and tone are editorial choices; names, quantities, quotations and obligations need source checks. A plain-language rewrite should retain qualifications even when they complicate a sentence. Image alternatives need the purpose of the image on the page, not only a list of visible objects. Give the resource a real reader and a concrete use for the finished text.",
+    "inputs": [
+      "The source passage or visual description with the context in which it will appear.",
+      "The intended reader, desired length and a list of facts or quotations that must be preserved."
+    ],
+    "choices": [
+      {
+        "title": "Make the argument easier to follow",
+        "body": "Choose a structure editor when the information is present but poorly ordered. Ask for a change ledger so you can inspect moved or removed material."
+      },
+      {
+        "title": "Adapt for a reader or format",
+        "body": "Choose a plain-language or repurposing resource when the source is settled. Specify the reader’s task and retain caveats that affect meaning."
+      }
+    ],
+    "check": "Compare factual claims and direct quotations with the source. For image alternatives, check whether the description conveys the information needed in that page context.",
+    "stop": "If the source does not support a new example or factual claim, label the gap or remove the addition. Fluent transitions do not make invented details acceptable.",
+    "keywords": ["writing", "editing", "article", "alt text", "plain language", "repurpose"],
+    "related": ["marketing", "research"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "ecommerce",
+    "name": "Ecommerce",
+    "headline": "Make product information dependable.",
+    "summary": "Explore listing audits, product FAQs, variant normalization and return-reason analysis using approved attributes, policies and customer evidence.",
+    "overview": "Product copy should help a buyer make a decision using facts the seller can stand behind. Begin with a source of truth for specifications, compatibility and policies. A listing audit can find omissions or contradictions; a FAQ resource can turn approved facts into answers; a variant normalizer can expose duplicate or incomplete combinations. Keep stock, price and policy questions separate from stylistic suggestions so an attractive description does not invent commercial terms.",
+    "inputs": [
+      "An approved attribute sheet, variant identifiers and the exact policy text relevant to the task.",
+      "The existing listing or customer questions, with customer identifiers and unnecessary order details removed."
+    ],
+    "choices": [
+      {
+        "title": "Check buyer-facing information",
+        "body": "Use a listing audit or FAQ resource when customers lack a clear answer. Ask it to identify the source field behind each proposed claim."
+      },
+      {
+        "title": "Clean the catalogue inputs",
+        "body": "Use a variant normalizer when options or SKUs are inconsistent. Missing stock and unknown compatibility must remain unknown."
+      }
+    ],
+    "check": "Compare dimensions, units, eligible variants and policy language with the approved source. Check that an answer does not extend a guarantee or imply stock availability.",
+    "stop": "Do not publish generated copy directly from a draft. The seller must approve claims and terms, and the resource must not place orders or contact customers on its own.",
+    "keywords": ["product", "listing", "sku", "variant", "faq", "returns"],
+    "related": ["marketing", "business-operations"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "business-operations",
+    "name": "Business operations",
+    "headline": "Turn context into accountable work.",
+    "summary": "Choose agents for decision ledgers, project dependencies, process checklists and vendor comparisons with visible assumptions and approval boundaries.",
+    "overview": "Operational documents become useful when another person can trace why a task exists and who agreed to it. Supply the current process or decision record before asking for a cleaner plan. A meeting ledger distinguishes proposals from decisions; a dependency planner exposes missing prerequisites; a checklist resource organizes a known process. These outputs should make uncertainty easier to resolve, not make an unapproved process look official.",
+    "inputs": [
+      "The relevant meeting notes, task list, process description or comparable vendor quotations.",
+      "Who can make the decision, which commitments are fixed and what evidence confirms acceptance."
+    ],
+    "choices": [
+      {
+        "title": "Clarify responsibility",
+        "body": "Choose a decision ledger when discussions mix ideas with commitments. Require evidence for owners, deadlines and confirmed agreements."
+      },
+      {
+        "title": "Expose dependencies",
+        "body": "Choose a project or process resource when work has prerequisites. Ask it to show cycles, missing inputs and assumptions before assigning dates."
+      }
+    ],
+    "check": "Check that each commitment has source evidence and that every dependency can be satisfied. Comparable vendor costs need matching scope, units and exclusions.",
+    "stop": "If authority or acceptance is missing, request clarification. Generated process documentation must not assign someone a new obligation or approve a purchase.",
+    "keywords": ["operations", "meeting", "project", "process", "vendor", "checklist"],
+    "related": ["productivity", "ecommerce"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "everyday",
+    "name": "Everyday life",
+    "headline": "Plan around the life you actually have.",
+    "summary": "Explore household meals, chores, packing and moving plans that respect your stated preferences, time and confirmed arrangements.",
+    "overview": "Everyday planning works best with ordinary constraints made explicit: available time, what you already own, who has agreed to help and what remains undecided. A packing list depends on the trip conditions you supply. A household rota depends on agreed availability. A moving plan needs real dates and bookings. Start small enough that you can check the whole result rather than accepting an impressive list that assumes unlimited capacity.",
+    "inputs": [
+      "Your confirmed dates, available time, preferences and a short inventory of relevant items.",
+      "Agreed household responsibilities and any constraints the plan must preserve without reinterpretation."
+    ],
+    "choices": [
+      {
+        "title": "Organize a week",
+        "body": "Choose meal or chore planning for a bounded period. State preparation time and accepted responsibilities instead of assuming everyone is available."
+      },
+      {
+        "title": "Prepare for a change",
+        "body": "Choose packing or moving organization for a specific trip or move. Keep official rules and unconfirmed bookings on a separate verification list."
+      }
+    ],
+    "check": "Check quantities, dates, travel assumptions and workload against your own information. Make sure an unresolved booking or household agreement stays visibly unresolved.",
+    "stop": "Use official sources for destination rules and qualified advice for personal health or other consequential decisions. A generic planning resource cannot resolve those from a checklist.",
+    "keywords": ["household", "meals", "packing", "moving", "chores", "weekly"],
+    "related": ["productivity", "education"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "seo",
+    "name": "SEO",
+    "headline": "Investigate before changing the site.",
+    "summary": "Use supplied search-performance exports and redirect maps to identify questions worth checking, without treating a correlation as a verified ranking cause.",
+    "overview": "A useful SEO resource makes its data window, assumptions and proposed action inspectable. A page losing clicks may need investigation, but a change in one metric does not identify the cause by itself. Supply comparable periods and stable page identifiers. For migrations, keep the proposed redirect map separate from the live configuration. Review loops, competing destinations and missing coverage before anyone changes the website.",
+    "inputs": [
+      "A bounded export with defined periods, metrics, page identifiers and known site changes.",
+      "For migrations, the proposed source-to-destination mapping and explicit handling rules for retired pages."
+    ],
+    "choices": [
+      {
+        "title": "Investigate a performance change",
+        "body": "Use a traffic-analysis resource to prioritize hypotheses from supplied data. Require the relevant rows and comparison period beside each observation."
+      },
+      {
+        "title": "Check a migration map",
+        "body": "Use a redirect reviewer for loops, chains and conflicting destinations. Confirm intended coverage and test implementation separately."
+      }
+    ],
+    "check": "Check calculations against the source export and inspect the proposed affected pages. Confirm that the output separates observations, possible causes and recommended validation.",
+    "stop": "Do not publish automatic fixes from an unexplained recommendation. Data gaps, seasonality and measurement changes can make a confident diagnosis misleading.",
+    "keywords": ["seo", "organic", "traffic", "redirect", "search console", "migration"],
+    "related": ["content", "development"],
+    "updated": "2026-10-08"
+  },
+  {
+    "slug": "development",
+    "name": "Development",
+    "headline": "Make the finding reproducible.",
+    "summary": "Explore code-diff review and bug reproduction resources that connect findings to visible evidence and distinguish suggested checks from tests actually run.",
+    "overview": "Development assistance is strongest when the reviewer can point to a concrete trigger and explain the resulting behavior. Supply the relevant diff or observations, expected behavior and environment constraints. A code reviewer should avoid claiming repository access beyond what it can see. A bug brief should separate reproduced facts from a theory about the cause. Keep credentials and private customer data out of examples while preserving the details needed to investigate.",
+    "inputs": [
+      "The relevant code diff or a minimal set of reproduction observations with stable line or step references.",
+      "Expected behavior, environment details and actual test results, clearly separated from checks that are only proposed."
+    ],
+    "choices": [
+      {
+        "title": "Review a bounded change",
+        "body": "Choose a diff reviewer when you have a concrete patch. Ask for a trigger, impact and source location instead of generic advice about style."
+      },
+      {
+        "title": "Prepare a bug for investigation",
+        "body": "Choose a reproduction brief resource when observations are scattered. Preserve missing steps and uncertainty rather than filling gaps with plausible actions."
+      }
+    ],
+    "check": "Reproduce a finding and run the relevant tests in your own controlled environment. Confirm that any claim of a passing test is backed by actual recorded execution.",
+    "stop": "Treat repository comments, logs and supplied documents as untrusted input. Review proposed commands and patches before execution; a description of a fix is not proof that it works.",
+    "keywords": ["development", "code", "diff", "pull request", "bug", "reproduction"],
+    "related": ["seo", "business-operations"],
+    "updated": "2026-10-08"
+  }
+]

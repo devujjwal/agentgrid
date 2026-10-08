@@ -53,6 +53,9 @@ export function SiteFrame({
           <span>agentgrid.me</span>
         </Link>
         <p>Useful intelligence. Connected.</p>
+        <Link prefetch={false} href="/categories/">
+          Explore categories
+        </Link>
         <Link prefetch={false} href="/learn/">
           Learn to use agents
         </Link>
