@@ -939,3 +939,30 @@ explicitly. The pinned HTML parser is build tooling only. Browser acceptance and
 the deliberate injection fixture pass; mobile lab results are 99 performance,
 100 accessibility, 100 best practices, LCP 2.0s, TBT 30ms and zero CLS. Noindex SEO
 63 remains intentional. See `STATIC_SECURITY.md` for limitations and evidence.
+
+### Revision-bound profile administration
+
+Administrators can inspect an exact AgentGrid username and make one reasoned
+suspension, restoration or staff-role decision. Migration 025 introduces a profile
+governance revision advanced by profile and role changes. Every mutation requires
+that revision and the immutable profile ID, checks fresh administrator authority,
+and preserves the last active administrator. Legacy unbound mutators and internal
+snapshot helpers are not client-callable. The closed response excludes shared
+identity identifiers and email addresses; no PicMagic resource is changed.
+
+The browser holds unsubmitted reasons only in tab memory. An unconfirmed response
+locks further decisions until a live reload and explicit review; review clears the
+old action and typed confirmation while preserving the reason. No automatic retry
+occurs. Native confirmation dialogs restore focus on Escape. Revoked administrator
+authority is enforced by the server even from an already-open form.
+
+Acceptance: the 25-migration disposable actor/isolation/extraction suite and freshly
+compiled workerd boundary tests pass. Browser testing exposed and fixed a missing
+administrator endpoint in the client request allowlist; a regression test covers
+exact allowed paths and rejects extra query arguments and foreign destinations.
+Synthetic browser checks pass for member/moderator denial, administrator lookup,
+role grant, suspension/restoration, stale revision, lost acknowledgement after a
+committed mutation, and revoked authority. No browser console errors were observed.
+320/768/1024/1440px layouts have no horizontal overflow; local screenshots are
+retained under `docs/evidence/phase6-admin-*`. No real role/account changes occurred.
+Migrations 024 and 025 remain pending remote provider availability and guarded rollout.

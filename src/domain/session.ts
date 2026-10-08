@@ -16,6 +16,7 @@ export function signInReturnPath(value: unknown): string {
     value === '/saves/' ||
     value === '/workspace/reports/' ||
     value === '/workspace/moderation/' ||
+    value === '/workspace/moderation/people/' ||
     value === '/workspace/moderation/reports/' ||
     value === '/workspace/moderation/submissions/' ||
     value === '/workspace/moderation/agent/'

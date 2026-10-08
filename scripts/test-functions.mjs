@@ -27,6 +27,8 @@ for (const path of [
   '/api/identity/',
   '/api/workspace/',
   '/api/moderation/reviews/',
+  '/api/admin/profile/',
+  '/api/admin/profile-decision/',
   '/api/community/reviews/',
   '/auth/callback/',
   '/auth/callback',
@@ -133,6 +135,25 @@ try {
     }),
   });
   assert.equal(deniedRemoval.status, 401);
+  const deniedAdministrator = await send('/api/admin/profile/?username=synthetic_owner');
+  assert.equal(deniedAdministrator.status, 401);
+  assert.deepEqual(await deniedAdministrator.json(), { error: 'not-signed-in' });
+  const deniedProfileDecision = await send('/api/admin/profile-decision/', {
+    method: 'POST',
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'x-agentgrid-synthetic-origin': origin,
+      'x-agentgrid-csrf': identity.csrf,
+    },
+    body: JSON.stringify({
+      profileId: '10000000-0000-4000-8000-000000000001',
+      expectedRevision: 1,
+      decision: 'suspend',
+      explanation: 'Synthetic authorization boundary test only.',
+    }),
+  });
+  assert.equal(deniedProfileDecision.status, 401);
   const workspace = await send('/api/workspace/');
   assert.equal(workspace.status, 401);
   assert.deepEqual(await workspace.json(), { error: 'not-signed-in' });

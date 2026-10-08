@@ -11,6 +11,7 @@ import { publicCommunityConfiguration } from '../community/configuration.ts';
 import { publicReviewData } from '../community/reviews.ts';
 import { publicCommunityHandler } from './community.ts';
 import { moderationHandler } from './moderation.ts';
+import { administrationHandler } from './administration.ts';
 
 export interface PagesIdentityContext {
   request: Request;
@@ -31,6 +32,11 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
       identityStore(configuration),
       managedIdentity(configuration),
     );
+    if (new URL(context.request.url).pathname.startsWith('/api/admin/'))
+      return await administrationHandler(
+        runtime,
+        (session) => workspaceData(configuration, session).administration,
+      )(context.request);
     if (new URL(context.request.url).pathname.startsWith('/api/moderation/'))
       return await moderationHandler(
         runtime,

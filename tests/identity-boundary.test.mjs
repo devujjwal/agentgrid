@@ -112,6 +112,7 @@ test('redirects and flow cookies cannot cross the application boundary or inject
   assert.equal(signInReturnPath('/workspace/agent/'), '/workspace/agent/');
   assert.equal(signInReturnPath('/workspace/reports/'), '/workspace/reports/');
   assert.equal(signInReturnPath('/workspace/account/'), '/workspace/account/');
+  assert.equal(signInReturnPath('/workspace/moderation/people/'), '/workspace/moderation/people/');
   for (const value of [
     '//attacker.example/',
     'https://attacker.example/',

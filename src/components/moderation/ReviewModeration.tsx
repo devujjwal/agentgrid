@@ -92,6 +92,11 @@ export function ReviewModeration() {
         Investigate reports ↗
       </Link>
       <ReviewQueue select={setSelected} />
+      {access.administrator && (
+        <Link className="action-secondary" prefetch={false} href="/workspace/moderation/people/">
+          Manage profiles and staff ↗
+        </Link>
+      )}
     </>
   );
 }

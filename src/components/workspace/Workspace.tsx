@@ -23,16 +23,7 @@ export function Workspace() {
           )
         }
         signedOut={(csrf) => {
-          changeEdits(null);
-          memory.setBuffer(null);
-          memory.setReportEdits(null);
-          memory.setReviewEdits(null);
-          memory.setModerationNotes(null);
-          memory.setReportModerationNotes(null);
-          memory.setSubmissionModerationNotes(null);
-          memory.setResourceModerationNotes(null);
-          memory.setHostEvidence(null);
-          memory.setReleaseReview(null);
+          memory.clear();
           signedOut(csrf);
         }}
       />

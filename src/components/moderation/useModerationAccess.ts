@@ -39,5 +39,8 @@ export function useModerationAccess(connection: IdentityResponse | null) {
     error: current?.error,
     allowed:
       current?.workspace?.profile?.status === 'active' && Boolean(current.workspace.roles.length),
+    administrator:
+      current?.workspace?.profile?.status === 'active' &&
+      current.workspace.roles.includes('administrator'),
   };
 }
