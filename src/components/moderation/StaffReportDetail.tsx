@@ -166,6 +166,22 @@ export function StaffReportDetail({
               {report.targetKind} / {report.state}
             </p>
             <h3>{reportCategoryLabels[report.category]}</h3>
+            {(report.targetKind === 'agent' || report.context?.snapshot.kind === 'review') && (
+              <Link
+                prefetch={false}
+                className="action-secondary"
+                href={
+                  '/workspace/moderation/agent/?resourceId=' +
+                  (report.targetKind === 'agent'
+                    ? report.targetId
+                    : report.context?.snapshot.kind === 'review'
+                      ? report.context.snapshot.resourceId
+                      : '')
+                }
+              >
+                Review agent access ↗
+              </Link>
+            )}
             <h4>The concern</h4>
             <p className="moderation-prose">{report.explanation}</p>
             <p>
