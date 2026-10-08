@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { parseDraftEditorial } from '../../domain/draft-editorial';
 import { newDraft, parseDraftSpecification } from '../../domain/draft';
 import { DraftComposer } from './DraftComposer';
 /** Local presentation acceptance only. No session, provider, database or network. */
@@ -7,6 +8,7 @@ export function AuthoringQa() {
   const [value, setValue] = useState(() =>
     newDraft('Synthetic meal planning resource', 'synthetic-meal-planning', 'everyday', 'chatgpt'),
   );
+  const [editorial, setEditorial] = useState(() => parseDraftEditorial({}));
   const [revision, setRevision] = useState(1),
     [dirty, setDirty] = useState(false),
     [section, setSection] = useState(0);
@@ -14,6 +16,7 @@ export function AuthoringQa() {
   function save() {
     try {
       parseDraftSpecification(value);
+      parseDraftEditorial(editorial);
       setRevision((current) => current + 1);
       setDirty(false);
       setMessage(
@@ -35,6 +38,11 @@ export function AuthoringQa() {
         value={value}
         change={(next) => {
           setValue(next);
+          setDirty(true);
+        }}
+        editorial={editorial}
+        changeEditorial={(next) => {
+          setEditorial(next);
           setDirty(true);
         }}
         sourceVersionId={null}

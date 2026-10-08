@@ -148,9 +148,9 @@ export function CreatorWorkspace() {
                 <section className="draft-conflict">
                   <h2>This draft changed elsewhere.</h2>
                   <p>
-                    Your unsaved edits are retained in memory. Download the private definition
-                    before replacing them if needed. Reloading discards these edits and loads the
-                    current saved draft.
+                    Your unsaved edits are retained in memory. Download the private definition and
+                    guide before replacing them if needed. Reloading discards these edits and loads
+                    the current saved draft.
                   </p>
                   <button
                     type="button"
@@ -167,6 +167,8 @@ export function CreatorWorkspace() {
               <DraftComposer
                 value={editor.buffer.value}
                 change={editor.change}
+                editorial={editor.buffer.editorial}
+                changeEditorial={editor.changeEditorial}
                 sourceVersionId={editor.buffer.record.sourceVersionId}
                 revision={editor.buffer.record.revision}
                 dirty={editor.buffer.dirty}

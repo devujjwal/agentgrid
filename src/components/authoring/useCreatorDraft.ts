@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
+import { parseDraftEditorial, type DraftEditorial } from '../../domain/draft-editorial';
 import {
   DraftRecordSchema,
   parseDraftSpecification,
@@ -75,6 +76,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
               controller.signal,
             );
             if (controller.signal.aborted) return;
+            const editorial = parseDraftEditorial(record.editorial);
             setBuffer((current) =>
               current?.email === email && current.record.resourceId === resourceId && current.dirty
                 ? {
@@ -82,7 +84,14 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
                     conflict: current.conflict || current.record.revision !== record.revision,
                     record: { ...current.record, status: record.status },
                   }
-                : { email, record, value: record.specification, dirty: false, conflict: false },
+                : {
+                    email,
+                    record,
+                    value: record.specification,
+                    editorial,
+                    dirty: false,
+                    conflict: false,
+                  },
             );
           }
           if (!controller.signal.aborted)
@@ -197,6 +206,9 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
     change: (value: DraftSpecification) => {
       if (owned) setBuffer({ ...owned, value, dirty: true });
     },
+    changeEditorial: (editorial: DraftEditorial) => {
+      if (owned) setBuffer({ ...owned, editorial, dirty: true });
+    },
     discard: () => {
       setBuffer(null);
       setFeedback(null);
@@ -224,6 +236,7 @@ export function useCreatorDraft(identity: IdentityResponse | null, resourceId: s
               resourceId,
               expectedRevision: owned.record.revision,
               specification: parseDraftSpecification(owned.value),
+              editorial: parseDraftEditorial(owned.editorial),
             },
           },
           signal,

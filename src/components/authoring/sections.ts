@@ -47,4 +47,23 @@ export const sections = [
     title: 'Choose what travels with it.',
     description: 'Licensing and attribution belong to the package, including every fork.',
   },
+  {
+    id: 'guide',
+    name: 'Public guide',
+    title: 'Turn a definition into a useful resource.',
+    description: 'Help people understand the problem, follow the workflow and judge the result.',
+  },
+  {
+    id: 'sources',
+    name: 'Sources & discovery',
+    title: 'Make the useful facts easy to find.',
+    description: 'Ground claims in sources you checked and connect this agent to relevant tasks.',
+  },
+  {
+    id: 'guide-readiness',
+    name: 'Guide readiness',
+    title: 'Check what you are sending into the network.',
+    description:
+      'Your declarations help reviewers understand the work. They do not replace independent review.',
+  },
 ] as const;

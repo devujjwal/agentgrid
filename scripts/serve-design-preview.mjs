@@ -77,7 +77,7 @@ const server = createServer(async (request, response) => {
         ? Buffer.from(
             original
               .toString('utf8')
-              .replace('</body>', '<script src="/qa-tools.js"></script></body>'),
+              .replace('</body>', '<script defer src="/qa-tools.js"></script></body>'),
           )
         : original;
     const compress =

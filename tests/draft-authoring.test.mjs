@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { parseDraftEditorial } from '../src/domain/draft-editorial.ts';
+import { EditorialSchema } from '../src/domain/editorial.ts';
 import { newDraft, parseDraftSpecification } from '../src/domain/draft.ts';
 import { parseAgentSpecification } from '../src/domain/agent-specification.ts';
 import { workspaceData } from '../backend/workspace/data.ts';
@@ -110,7 +112,7 @@ function dataFixture() {
       return Response.json(resourceId);
     }
     if (url.pathname.endsWith('/agentgrid_save_draft')) {
-      assert.equal(body.updated_editorial, null);
+      if (body.updated_editorial !== null) state.editorial = body.updated_editorial;
       assert.equal(body.expected_revision, state.revision);
       state.revision++;
       state.specification = body.updated_specification;
@@ -226,6 +228,34 @@ test('draft HTTP validates bounded portable input, ignores no forged authorities
     ).status,
     200,
   );
+  const guide = parseDraftEditorial({ overview: 'Synthetic HTTP guide edit.' });
+  assert.equal(
+    (
+      await handler(
+        make('/api/workspace/draft/', {
+          resourceId,
+          expectedRevision: 1,
+          specification: draft(),
+          editorial: guide,
+        }),
+      )
+    ).status,
+    200,
+  );
+  assert.deepEqual(calls.at(-1), [resourceId, 1, draft(), guide]);
+  assert.equal(
+    (
+      await handler(
+        make('/api/workspace/draft/', {
+          resourceId,
+          expectedRevision: 1,
+          specification: draft(),
+          editorial: { ...guide, approved: true },
+        }),
+      )
+    ).status,
+    400,
+  );
   const before = calls.length;
   for (const body of [
     { specification: draft(), role: 'administrator' },
@@ -243,4 +273,77 @@ test('draft HTTP validates bounded portable input, ignores no forged authorities
     400,
   );
   assert.equal(calls.length, before);
+});
+
+test('unfinished guides never imply approval and enforce closed fields, dates and UTF-8 bounds', () => {
+  const blank = parseDraftEditorial({});
+  assert.equal(blank.overview, '');
+  assert.ok(Object.values(blank.review).every((value) => value === false));
+  assert.equal(EditorialSchema.safeParse(blank).success, false);
+  assert.equal(
+    parseDraftEditorial({ ...blank, overview: '<script>untrusted plain text</script>' }).overview,
+    '<script>untrusted plain text</script>',
+  );
+  for (const value of [
+    { ...blank, approved: true },
+    { ...blank, reviewed_on: '2030-99-40' },
+    { ...blank, sources: [{ title: '', url: '', supports: '', checked_on: 'invalid' }] },
+    { ...blank, review: { ...blank.review, moderator: true } },
+    { ...blank, workflow: Array(10).fill('界'.repeat(1000)), overview: '界'.repeat(4000) },
+  ])
+    assert.throws(() => parseDraftEditorial(value));
+});
+
+test('definition and guide save under one revision; stale or unauthorized writes preserve both', async () => {
+  const { data, state, calls } = dataFixture();
+  const guide = parseDraftEditorial({
+    overview: 'Synthetic author guide, intentionally unfinished.',
+  });
+  const edited = { ...draft(), purpose: 'Synthetic paired definition change.' };
+  assert.deepEqual(await data.saveDraft(resourceId, 1, edited, guide), { revision: 2 });
+  assert.deepEqual(state.editorial, guide);
+  assert.equal(state.specification.purpose, edited.purpose);
+  const before = calls.filter((call) => call.url.pathname.endsWith('/agentgrid_save_draft')).length;
+  await assert.rejects(
+    data.saveDraft(resourceId, 1, draft(), parseDraftEditorial({})),
+    (error) => error.status === 409,
+  );
+  state.ownerMatch = false;
+  await assert.rejects(
+    data.saveDraft(resourceId, 2, draft(), parseDraftEditorial({})),
+    (error) => error.status === 404,
+  );
+  state.ownerMatch = true;
+  await assert.rejects(
+    data.saveDraft(resourceId, 2, draft(), { ...guide, approved: true }),
+    (error) => error.status === 400,
+  );
+  assert.equal(
+    calls.filter((call) => call.url.pathname.endsWith('/agentgrid_save_draft')).length,
+    before,
+  );
+  assert.deepEqual(state.editorial, guide);
+});
+
+test('guide readiness offers author-facing corrections and rejects duplicate or future-dated claims', async () => {
+  const { guideReadinessIssues } = await import('../src/domain/guide-readiness.ts');
+  const blank = parseDraftEditorial({});
+  const issues = guideReadinessIssues(
+    {
+      ...blank,
+      reviewed_on: '2030-01-01',
+      related_agent_slugs: ['synthetic-path', 'synthetic-path'],
+    },
+    new Date('2026-10-08T00:00:00Z'),
+  );
+  assert.ok(issues.some((issue) => issue.includes('Audience: add 2–8 descriptions')));
+  assert.ok(issues.some((issue) => issue.includes('future-dated')));
+  assert.ok(issues.some((issue) => issue.includes('distinct resource paths')));
+  assert.equal(
+    issues.some(
+      (issue) =>
+        issue.includes('expected true') || issue.includes('>=') || issue.includes('Invalid input'),
+    ),
+    false,
+  );
 });

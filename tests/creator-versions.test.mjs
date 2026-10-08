@@ -103,6 +103,7 @@ async function dataFixture() {
               reviewedAt: state.submission.reviewed_at,
             },
             specification: state.frozenSpecification,
+            editorialText: '{"overview":"Synthetic immutable author guide."}',
           },
         );
       }
@@ -216,6 +217,7 @@ test('on-demand owned documents retain immutable instructions, follow live withd
   state.specification.version = '2.0.0';
   const snapshot = await data.versionDocument(resourceId, versionId);
   assert.deepEqual(snapshot.specification, original);
+  assert.equal(JSON.parse(snapshot.editorialText).overview, 'Synthetic immutable author guide.');
   assert.equal(snapshot.record.state, 'pending');
   assert.equal(
     calls.filter((call) => call.url.pathname.endsWith('/agentgrid_owned_version_document')).length,
@@ -230,7 +232,8 @@ test('on-demand owned documents retain immutable instructions, follow live withd
   for (const override of [
     { ...snapshot, resourceId: '20000000-0000-4000-8000-000000000002' },
     { ...snapshot, record: { ...snapshot.record, id: '30000000-0000-4000-8000-000000000002' } },
-    { ...snapshot, editorial: { private: 'Never export this' } },
+    { ...snapshot, publicationManifest: { private: 'Never export staff evidence' } },
+    { ...snapshot, editorialText: 'a'.repeat(32001) },
     { ...snapshot, specification: { ...snapshot.specification, version: '9.0.0' } },
     {
       ...snapshot,

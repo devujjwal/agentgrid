@@ -26,12 +26,12 @@ export default function CreatorVersionsPage() {
           </Link>
         </header>
         <section className="version-introduction" aria-labelledby="version-introduction-title">
-          <p className="eyebrow">Definition → immutable snapshot → review</p>
+          <p className="eyebrow">Definition + guide → immutable snapshot → review</p>
           <h2 id="version-introduction-title">From draft to a lasting version.</h2>
           <p>
-            Submitting freezes a saved definition and requests review. You can keep editing your
-            draft; the submitted content and version number cannot be overwritten. Submission does
-            not publish it.
+            Submitting freezes the saved definition and guide and requests review. You can keep
+            editing your draft; the submitted content and version number cannot be overwritten.
+            Submission does not publish it.
           </p>
         </section>
         <div className="version-connection">
