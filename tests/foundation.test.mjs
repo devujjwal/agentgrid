@@ -6,6 +6,10 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { validateEnvironment } from '../scripts/verify-environment.mjs';
 import { inspectExport } from '../scripts/verify-export.mjs';
+import { hardenDocument } from '../scripts/static-csp.mjs';
+const safeHtml = hardenDocument(
+  '<!doctype html><html><head><meta charset="utf-8"></head><body>safe</body></html>',
+);
 
 const validEnvironment = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
@@ -43,7 +47,7 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
   try {
     assert.equal((await inspectExport(root)).length, 4);
     for (const name of ['index.html', '404.html', 'robots.txt', '_headers'])
-      await writeFile(join(root, name), 'safe');
+      await writeFile(join(root, name), name.endsWith('.html') ? safeHtml : 'safe');
     assert.deepEqual(await inspectExport(root), []);
     await writeFile(
       join(root, 'index.html'),

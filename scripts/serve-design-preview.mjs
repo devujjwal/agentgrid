@@ -3,6 +3,8 @@ import { createServer } from 'node:http';
 import { readFile, realpath, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { documentHeaderPolicy } from './static-csp.mjs';
+import { cspBrowserFixture } from './csp-browser-fixture.mjs';
 
 const root = resolve('.agentgrid-local-preview');
 const types = {
@@ -39,10 +41,7 @@ const server = createServer(async (request, response) => {
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('Referrer-Policy', 'same-origin');
   response.setHeader('Cache-Control', 'private, no-cache');
-  response.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
-  );
+  response.setHeader('Content-Security-Policy', documentHeaderPolicy);
   if (
     !(synthetic ? ['localhost:3027'] : ['127.0.0.1:3027', 'localhost:3027']).includes(
       request.headers.host ?? '',
@@ -54,6 +53,11 @@ const server = createServer(async (request, response) => {
     return;
   }
   try {
+    if (synthetic && request.url === '/qa-csp/') {
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.end(request.method === 'HEAD' ? undefined : cspBrowserFixture());
+      return;
+    }
     const pathname = decodeURIComponent(
       new URL(request.url ?? '/', 'http://127.0.0.1:3027').pathname,
     );

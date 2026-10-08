@@ -147,11 +147,12 @@ and configured privileged values. It is a defense-in-depth check, not a complete
 secret scanner. It must be extended with publication allowlists and private-data
 tests when content publishing is implemented.
 
-The infrastructure proof uses noindex headers and a restrictive CSP. Next.js static
-hydration requires inline bootstrap scripts, so this initial policy includes
-`unsafe-inline` for scripts. Replace it with build-derived CSP hashes before public
-launch, and add only the exact Supabase/analytics origins required. CSP and headers
-are served by Pages via `_headers`, not by Next.js runtime configuration.
+The infrastructure proof remains noindex. Every exported HTML document now carries
+a build-derived CSP with exact inline-block hashes; arbitrary inline script and
+dynamic evaluation are denied. Header-only framing restrictions are delivered by
+Pages `_headers` and explicitly by guarded Functions. See
+[static document security](STATIC_SECURITY.md) for the scalable meta/header design,
+build gates, local browser evidence and remaining provider acceptance requirements.
 
 ## Deployment policy
 

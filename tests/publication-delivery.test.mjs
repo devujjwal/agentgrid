@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { deliveryGuard } from '../backend/publication/delivery.ts';
 import { publicCatalogueChecksum } from '../src/domain/publication-snapshot.ts';
 import { readPublication } from '../scripts/verify-publication.mjs';
+import { documentSecurityHeaders } from '../src/domain/document-security.ts';
 const resource = {
   resourceId: '20000000-0000-4000-8000-000000000001',
   versionId: '30000000-0000-4000-8000-000000000001',
@@ -46,6 +47,8 @@ test('detail aliases and RSC payloads require current delivery identity and neve
   ]) {
     const response = await guard(request(path), assets);
     assert.equal(response.status, 200);
+    for (const [name, value] of Object.entries(documentSecurityHeaders))
+      assert.equal(response.headers.get(name), value);
     assert.equal(await response.text(), 'instructions');
     assert.equal(response.headers.get('cache-control'), 'private, no-store');
     assert.equal(response.headers.get('cdn-cache-control'), 'no-store');
@@ -99,6 +102,8 @@ test('static listing is provider-independent; conditional or ranged content is n
       assert.fail('Listing should not query database');
     })(request(path), async () => new Response('listing'));
     assert.equal(await response.text(), 'listing');
+    for (const [name, value] of Object.entries(documentSecurityHeaders))
+      assert.equal(response.headers.get(name), value);
   }
   for (const status of [206, 304])
     assert.equal(
