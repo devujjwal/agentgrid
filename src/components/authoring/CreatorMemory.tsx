@@ -85,6 +85,7 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  clear: () => void;
   releaseReview: ReleaseReviewBuffer | null;
   setReleaseReview: Dispatch<SetStateAction<ReleaseReviewBuffer | null>>;
   hostEvidence: HostEvidenceBuffer | null;
@@ -200,6 +201,18 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
   return (
     <Memory.Provider
       value={{
+        clear: () => {
+          setBuffer(null);
+          setProfileEdits(null);
+          setReportEdits(null);
+          setReviewEdits(null);
+          setModerationNotes(null);
+          setReportModerationNotes(null);
+          setSubmissionModerationNotes(null);
+          setResourceModerationNotes(null);
+          setHostEvidence(null);
+          setReleaseReview(null);
+        },
         hasUnsaved: Boolean(
           releaseReview ||
           hostEvidence ||

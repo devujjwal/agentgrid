@@ -105,6 +105,9 @@ export function ConnectedWorkspace({
           <Link prefetch={false} href="/saves/">
             Your saved agents
           </Link>
+          <Link prefetch={false} href="/workspace/account/">
+            Account controls
+          </Link>
           <Link prefetch={false} href="/workspace/reports/">
             Your reports
           </Link>

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DeactivateAccountSchema } from '../../src/domain/account.ts';
 import { ForkInputSchema } from '../../src/domain/forks.ts';
 import type { IdentityRuntime } from '../auth/runtime.ts';
 import type { ProviderSession } from '../auth/contracts.ts';
@@ -56,6 +57,7 @@ export function workspaceHandler(
       const mutation =
         !read &&
         [
+          '/api/workspace/deactivate/',
           '/api/workspace/onboard/',
           '/api/workspace/profile/',
           '/api/workspace/visibility/',
@@ -83,6 +85,10 @@ export function workspaceHandler(
       }
       const session = await authenticatedSession(runtime, request);
       const data = dataForSession(session.provider);
+      if (url.pathname === '/api/workspace/deactivate/')
+        return privateJson(
+          await data.deactivateAccount(await input(request, DeactivateAccountSchema, 1000)),
+        );
       if (url.pathname === '/api/workspace/forksource/') {
         if (
           [...url.searchParams.keys()].some((key) => key !== 'sourceVersionId') ||

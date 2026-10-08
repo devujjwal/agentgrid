@@ -895,3 +895,29 @@ Worker output passes the export scan. Tests deny stale candidates, symlink input
 wrong repository/branch/commit, unsafe existing staging configuration, repeated
 uncertain creation and invalid live deployment receipts. No real staging deploy
 is claimed; provider credential bindings and authenticated QA remain pending.
+
+### Profile-bound account deactivation
+
+Account controls now expose deliberate AgentGrid-only deactivation with exact
+username confirmation, an unchecked acknowledgement and an accessible confirmation
+dialog. The request binds to the immutable business profile ID; migration 024
+revokes the old username-only entry point so a delayed request cannot remove a
+later membership. Last-administrator protection and retained immutable versions
+remain in force. Shared authentication and PicMagic application data are untouched.
+
+An unconfirmed response freezes removal and offers a fresh identity/account check.
+An active original membership resets consent before retry; suspended/replaced
+profiles are denied. Confirmed removal clears held creator buffers and provides
+scoped session sign-out. The UI explicitly describes retained submitted versions,
+including unpublished ones, and does not promise complete historical erasure.
+
+Local acceptance: 130 Node tests and 11 Python tests, formatting, lint, strict
+typecheck, production export and freshly compiled workerd checks pass. The
+24-migration disposable actor/isolation/extraction suite passes, including stale
+profile binding, revoked legacy permission and shared-auth retention. Browser QA
+uses memory-only synthetic identities: confirmation cancellation/focus restoration,
+successful removal, lost acknowledgement recovery, scoped sign-out/history, exact
+account deep-link return and suspended-account denial. Responsive checks at 320,
+768, 1024 and 1440 CSS pixels found no horizontal overflow; confirmation input is
+48px high. Screenshots are retained under ignored local evidence. No real account
+was removed and migration 024 is not yet applied to the shared remote project.

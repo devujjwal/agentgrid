@@ -32,7 +32,7 @@ insert into public.agentgrid_favorites(profile_id,agent_id) values('10000000-000
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000002','administrator',true,'Unauthorized self-promotion attempt')$s$,'42501');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_account('fixture_actor_1')$s$,'23514');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000002','fixture_actor_1')$s$,'23514');
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
@@ -43,7 +43,7 @@ set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000004","rol
 set local role authenticated;
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','administrator',false,'Attempt to remove last administrator')$s$,'42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000004',true,'Attempt to suspend last administrator')$s$,'42501');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_account('fixture_actor_4')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000004','fixture_actor_4')$s$,'42501');
 select public.agentgrid_change_role('10000000-0000-4000-8000-000000000003','administrator',true,'Synthetic administrator delegation for acceptance.');
 select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000001',true,'Synthetic suspension acceptance only.');
 reset role;
@@ -68,14 +68,14 @@ select public.agentgrid_change_role('10000000-0000-4000-8000-000000000004','admi
 reset role;
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000004","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_deactivate_account('fixture_actor_4');
+select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000004','fixture_actor_4');
 select pg_temp.agentgrid_assert(public.agentgrid_profile_id() is null,'deactivated administrator loses identity link');
 reset role;
 select pg_temp.agentgrid_assert((select count(*)=1 from auth.users where id='00000000-0000-4000-8000-000000000004'),'AgentGrid deactivation leaves shared identity untouched');
 
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
 set local role authenticated;
-select public.agentgrid_deactivate_account('fixture_actor_2');
+select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000002','fixture_actor_2');
 select pg_temp.agentgrid_assert(public.agentgrid_profile_id() is null,'old user JWT cannot access deactivated account');
 select pg_temp.agentgrid_assert((select count(*)=0 from public.agentgrid_favorites),'private saved state no longer accessible');
 reset role;
@@ -90,7 +90,17 @@ select pg_temp.agentgrid_assert((select status='archived' from public.agentgrid_
 set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000003","role":"authenticated"}';
 set local role authenticated;
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_moderate_profile('10000000-0000-4000-8000-000000000002',false,'Cannot revive a detached account using moderation')$s$,'42501');
-select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_account('fixture_actor_3')$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000003','fixture_actor_3')$s$,'42501');
+reset role;
+-- A later signup must not be removed by a stale deactivation request.
+insert into public.agentgrid_profiles(id,username,display_name,terms_version,privacy_version)
+values('10000000-0000-4000-8000-000000000005','fixture_actor_2','Re-created synthetic profile','fixture-v1','fixture-v1');
+insert into public.agentgrid_identities(user_id,profile_id) values('00000000-0000-4000-8000-000000000002','10000000-0000-4000-8000-000000000005');
+set local request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000002","role":"authenticated"}';
+set local role authenticated;
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_deactivate_profile('10000000-0000-4000-8000-000000000002','fixture_actor_2')$s$,'40001');
+select pg_temp.agentgrid_assert(public.agentgrid_profile_id()='10000000-0000-4000-8000-000000000005','stale request preserves recreated membership');
+select pg_temp.agentgrid_assert(not has_function_privilege('authenticated','public.agentgrid_deactivate_account(text)','execute'),'legacy unbound removal is not callable');
 reset role;
 -- An external managed deletion must still work even for the last administrator.
 delete from auth.users where id='00000000-0000-4000-8000-000000000003';

@@ -12,6 +12,7 @@ export function signInReturnPath(value: unknown): string {
   if (typeof value !== 'string') return '/workspace/';
   if (
     value === '/workspace/' ||
+    value === '/workspace/account/' ||
     value === '/saves/' ||
     value === '/workspace/reports/' ||
     value === '/workspace/moderation/' ||
