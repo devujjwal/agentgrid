@@ -12,6 +12,7 @@ import {
 } from '../../src/domain/moderation.ts';
 import { HttpFailure } from '../http/guard.ts';
 import { databaseFailure } from './failure.ts';
+import { releaseApprovalResources } from './release-approval.ts';
 import { hostVerificationResources } from './host-verification.ts';
 import { resourceModerationResources } from './resource-moderation.ts';
 import { submissionModerationResources } from './submission-moderation.ts';
@@ -32,6 +33,7 @@ export function moderationResources(
   const submissions = submissionModerationResources(client, staff);
   return {
     ...hostVerificationResources(client, staff, submissions.staffSubmission),
+    ...releaseApprovalResources(client, staff),
     ...reportModerationResources(client, staff),
     ...resourceModerationResources(client, staff),
     ...submissions,
