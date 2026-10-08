@@ -1,0 +1,230 @@
+[
+  {
+    "kind": "platform",
+    "slug": "chatgpt",
+    "name": "ChatGPT",
+    "summary": "Understand how to bring an instruction package into a ChatGPT conversation or project, then check the exact resource’s setup and tested version.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-08",
+    "sections": [
+      {
+        "title": "Choose the scope before adding instructions",
+        "body": "OpenAI describes a chat without a project as suitable for self-contained work. A project groups related chats with shared instructions, uploaded files and connected sources. Project instructions apply across its chats. Use a separate task context when you do not want a resource’s instructions to influence unrelated work."
+      },
+      {
+        "title": "Use the resource’s setup contract",
+        "body": "AgentGrid’s recommendation is to begin with the exact published instructions and a small, non-sensitive input. Follow the resource’s platform-specific steps rather than combining several instruction sets. Compare its expected output with the result, then test a case with missing information. A platform guide alone does not establish that a particular package has passed those checks."
+      },
+      {
+        "title": "Keep sources and permissions deliberate",
+        "body": "OpenAI notes that a ChatGPT project does not itself provide direct access to a local folder; sources must be uploaded or connected. Before adding material, check who may access it and the permissions of any connected tool. Copying instructions from AgentGrid grants no external account access and does not create a recurring job."
+      },
+      {
+        "title": "Account features and costs",
+        "body": "Check the current capabilities and usage limits of your own account before choosing a workflow. AgentGrid does not include a model-provider subscription. If the package requires a tool or feature that is unavailable, stop and choose an alternative rather than assuming a text-only run performed the missing action."
+      }
+    ],
+    "checklist": [
+      "Confirm that the resource names ChatGPT and identifies the distribution format you are using.",
+      "Use a bounded test input, inspect the result and retain the exact package version.",
+      "Review shared project context and tool permissions before adding private material."
+    ],
+    "sources": [
+      {
+        "title": "OpenAI: Projects and chats",
+        "url": "https://learn.chatgpt.com/docs/projects"
+      }
+    ],
+    "categories": ["productivity", "education"]
+  },
+  {
+    "kind": "platform",
+    "slug": "claude",
+    "name": "Claude",
+    "summary": "Learn where project instructions fit in Claude and what to verify before adapting an agent package to a different host.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-08",
+    "sections": [
+      {
+        "title": "Project instructions and knowledge have different jobs",
+        "body": "Claude’s documentation describes project instructions as guidance applied across project chats. The project knowledge area holds uploaded context. A project’s name and description are not themselves visible to Claude as task instructions. Put durable behavioral guidance in the appropriate instruction field and source material in the appropriate context area."
+      },
+      {
+        "title": "Porting requires a new check",
+        "body": "An instruction package tested on another platform is a candidate for adaptation, not automatically a verified Claude resource. AgentGrid recommends checking the package’s declared platforms and exact version first. If Claude is not listed, do not interpret this general guide as a compatibility badge. A creator must test and publish an appropriate version before making that claim."
+      },
+      {
+        "title": "Begin with a small, reviewable task",
+        "body": "Use a separate project or task context for the trial. Supply only the material required for that task and compare the result with the package’s normal, missing-input and adversarial-input expectations. Keep external actions disabled unless the resource explicitly requires them and you have separately approved the necessary access."
+      },
+      {
+        "title": "Check visibility and account availability",
+        "body": "Claude documents project visibility and sharing controls that depend on account context. Inspect the actual project’s audience before uploading material. Verify current plan limits in the provider documentation; this page does not promise a particular entitlement, integration or usage allowance."
+      }
+    ],
+    "checklist": [
+      "Check the package’s declared platform and distribution format before adapting it.",
+      "Keep task instructions separate from source documents and verify project visibility.",
+      "Record observed failures and uncertainties instead of treating fluent output as successful verification."
+    ],
+    "sources": [
+      {
+        "title": "Claude: Create and manage projects",
+        "url": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+      }
+    ],
+    "categories": ["research", "content"]
+  },
+  {
+    "kind": "platform",
+    "slug": "gemini",
+    "name": "Gemini",
+    "summary": "Understand Gemini’s current customization flow and its announced transition, while keeping package compatibility separate from provider feature availability.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-01",
+    "sections": [
+      {
+        "title": "A dated setup guide matters here",
+        "body": "Google’s documentation says personal-account Gems will transition automatically to skills starting in November 2026. The current guide describes creating a Gem with a name and instructions, optional knowledge files, a preview and a save action. Check the linked source and your account’s current interface before following a saved setup checklist."
+      },
+      {
+        "title": "Preserve the package while testing",
+        "body": "AgentGrid recommends retaining the original version of the instructions before adapting them to a host-specific field. If the host offers to rewrite or expand those instructions, treat the changed text as a new candidate that needs review. A rewritten instruction set may change permission boundaries, required inputs or expected output."
+      },
+      {
+        "title": "Check actual platform coverage",
+        "body": "Only an agent’s own platform list and publication record establish its declared setup. This general Gemini guide does not certify any package as tested. Use a small authorized input and check normal behavior, missing context and embedded source instructions before relying on an adapted resource."
+      },
+      {
+        "title": "Keep connected sources optional",
+        "body": "Google documents optional knowledge files and additional requirements for adding Drive material. A simple instruction trial need not become an account-connection exercise. Review the provider’s current terms, privacy settings and plan limits before supplying private content or enabling access; AgentGrid does not include those services."
+      }
+    ],
+    "checklist": [
+      "Check the announced Gems transition and the interface currently shown in your account.",
+      "Retain the original instructions and review any host-generated rewrite as a changed package.",
+      "Verify the exact agent platform claim and test it with a small authorized input."
+    ],
+    "sources": [
+      {
+        "title": "Google: Use Gems in Gemini Apps",
+        "url": "https://support.google.com/gemini/answer/15146780?hl=en"
+      }
+    ],
+    "categories": ["education", "everyday"]
+  },
+  {
+    "kind": "integration",
+    "slug": "google-search-console",
+    "name": "Google Search Console",
+    "summary": "Prepare a bounded Search Console export for an agent without mistaking a manual data handoff for a live integration.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-08",
+    "sections": [
+      {
+        "title": "Choose a manual handoff or an actual connector",
+        "body": "A package that reads a supplied CSV does not need access to your Google account. A live connector is a different setup with its own permissions, token handling and operational limits. Check the agent’s explicit tool requirements. Merely mentioning Search Console in a task does not mean that AgentGrid connects to it."
+      },
+      {
+        "title": "Keep the report boundary with the data",
+        "body": "Google documents that report exports retain the selected filters and grouping, with representative table data truncated to 1,000 rows. Available formats include CSV, Excel and Google Sheets. Record the date range, filters, grouping and export time alongside the file so the analysis can explain its actual coverage."
+      },
+      {
+        "title": "Do not equate exported zero with observed zero",
+        "body": "Google notes that unavailable values displayed as a tilde or dash become zero in downloaded data, and report totals may include data outside the table’s row limit. AgentGrid recommends keeping an accompanying note about these limitations. Ask the agent to distinguish a measured zero from an unavailable value wherever your source permits it."
+      },
+      {
+        "title": "Review the proposed action separately",
+        "body": "Use the output to choose what to investigate: affected pages, comparison periods and missing evidence. A traffic observation is not an authorized website change. Check calculations and page context before approving edits, redirects or new content. No API credential is required merely to read this guide."
+      }
+    ],
+    "checklist": [
+      "Keep the report’s dates, filters, grouping and truncation notes with the export.",
+      "Remove unrelated private identifiers and share only an authorized bounded file.",
+      "Require row-level evidence and separate observations from causal hypotheses."
+    ],
+    "sources": [
+      {
+        "title": "Google: Export Search Console report data",
+        "url": "https://support.google.com/webmasters/answer/12919797?hl=en"
+      }
+    ],
+    "categories": ["seo"]
+  },
+  {
+    "kind": "integration",
+    "slug": "github",
+    "name": "GitHub",
+    "summary": "Prepare a reviewable code change for an agent, with a clear distinction between supplied diffs, repository access and permission to publish a review.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-08",
+    "sections": [
+      {
+        "title": "A diff is a bounded source",
+        "body": "GitHub’s review quickstart uses the pull request summary and Files changed view to inspect a change. For an instruction-only review, provide the relevant diff and enough surrounding context to understand behavior. AgentGrid does not receive repository access because you open this guide or copy an instruction package."
+      },
+      {
+        "title": "State what was actually tested",
+        "body": "AgentGrid recommends supplying test output separately from proposed checks. Ask for findings with a concrete trigger, affected code and practical impact. If the agent cannot inspect another file or run a command, that limitation should remain visible. Do not treat a plausible diagnosis as a reproduced bug."
+      },
+      {
+        "title": "Posting and approving are separate decisions",
+        "body": "GitHub distinguishes pending review comments from the submitted review, and supports comment, approve and request-changes decisions. Review any generated feedback before posting it. An agent that drafts findings has not submitted a review, approved a pull request or merged code unless a separately authorized tool action actually did so."
+      },
+      {
+        "title": "Grant only the access the workflow needs",
+        "body": "If you later choose a connector or MCP server, inspect its operator, repository scope and read/write permissions. Avoid broad organization access for a task that only needs one diff. Keep credentials and private customer data out of supplied examples. Follow the package’s actual requirements rather than assuming every GitHub task uses the same integration."
+      }
+    ],
+    "checklist": [
+      "Provide a bounded diff, expected behavior and relevant actual test results.",
+      "Check findings against the source and reproduce important issues before acting.",
+      "Approve publishing, repository writes and merge operations separately from analysis."
+    ],
+    "sources": [
+      {
+        "title": "GitHub: Reviewing pull requests quickstart",
+        "url": "https://docs.github.com/en/pull-requests/get-started/reviewing-pull-requests-quickstart"
+      }
+    ],
+    "categories": ["development"]
+  },
+  {
+    "kind": "mcp",
+    "slug": "understanding-mcp",
+    "name": "Understanding MCP",
+    "summary": "Distinguish an instruction package from a tool connection, and inspect the host, server and permission boundaries before using an MCP-enabled workflow.",
+    "checked_on": "2026-10-08",
+    "review_after": "2026-11-08",
+    "sections": [
+      {
+        "title": "Three pieces with different responsibilities",
+        "body": "The Model Context Protocol documentation describes a host application, its clients and servers that provide context or capabilities. Servers can expose tools, resources and prompts. A tool may perform an action; a resource supplies context; a prompt provides an interaction template. These are not interchangeable with an AgentGrid instruction package."
+      },
+      {
+        "title": "Local and remote connections differ",
+        "body": "The documented transports include standard input/output for local processes and Streamable HTTP for remote communication. Local software can have access to the machine where it runs; a remote service has its own operator and access controls. Check the actual server documentation, supported protocol version and host compatibility instead of assuming an MCP label guarantees either safety or interoperability."
+      },
+      {
+        "title": "Review the authority, not just the name",
+        "body": "AgentGrid recommends identifying who operates the server, what data it can read, what it can change and how access is revoked. Start with the narrowest access that can complete the task. A useful agent page should name required tools and permissions explicitly. Do not paste tokens into public instructions, examples, reviews or submissions."
+      },
+      {
+        "title": "No automatic connection from this directory",
+        "body": "This page is protocol guidance, not an MCP server listing or installation action. AgentGrid has not connected a server on your behalf. Before a future server listing is approved, its setup, permission boundary, version support and failure behavior must be reviewed. Follow the selected host’s confirmation flow and inspect proposed tool actions before consequential changes."
+      }
+    ],
+    "checklist": [
+      "Identify the host, server operator, transport and supported protocol versions.",
+      "Check read/write scope, data handling, credential storage and revocation instructions.",
+      "Test a bounded task and a denied operation before relying on the connection."
+    ],
+    "sources": [
+      {
+        "title": "Model Context Protocol: Architecture overview",
+        "url": "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture"
+      }
+    ],
+    "categories": ["productivity", "development"]
+  }
+]

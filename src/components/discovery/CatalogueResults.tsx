@@ -146,7 +146,9 @@ export function CatalogueResults({
                   </span>
                   <span className="row-format">
                     {resource.format === 'guide'
-                      ? 'Category guide'
+                      ? resource.kind === 'category'
+                        ? 'Category guide'
+                        : 'Integration guide'
                       : resource.format === 'instructions'
                         ? 'Instructions'
                         : resource.format === 'recipe'

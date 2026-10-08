@@ -1,3 +1,6 @@
+import { Fragment } from 'react';
+import { connectionGuides } from '../../data/connections';
+import { connectionPath } from '../../domain/connection-guide';
 import { platformLabel } from '../../domain/platforms';
 import { ResourceReuse } from './ResourceReuse';
 import { SaveAgent } from './SaveAgent';
@@ -100,7 +103,25 @@ export function ResourceDetail({
           </div>
           <div>
             <dt>Platforms</dt>
-            <dd>{spec.platforms.map((item) => platformLabel(item.slug)).join(', ')}</dd>
+            <dd>
+              {spec.platforms.map((item, index) => {
+                const guide = connectionGuides.find(
+                  (guide) => guide.kind === 'platform' && guide.slug === item.slug,
+                );
+                return (
+                  <Fragment key={item.slug}>
+                    {index > 0 && ', '}
+                    {guide ? (
+                      <Link prefetch={false} href={connectionPath(guide)}>
+                        {platformLabel(item.slug)}
+                      </Link>
+                    ) : (
+                      platformLabel(item.slug)
+                    )}
+                  </Fragment>
+                );
+              })}
+            </dd>
           </div>
           <div>
             <dt>Access</dt>

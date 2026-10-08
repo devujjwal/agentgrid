@@ -61,6 +61,15 @@ export function SiteFrame({
         <Link prefetch={false} href="/learn/">
           Learn to use agents
         </Link>
+        <Link prefetch={false} href="/platforms/">
+          Platforms
+        </Link>
+        <Link prefetch={false} href="/integrations/">
+          Integrations
+        </Link>
+        <Link prefetch={false} href="/mcp/">
+          MCP
+        </Link>
         <span>{localPreview ? 'First-party draft foundation' : 'The agent network'}</span>
       </footer>
     </div>

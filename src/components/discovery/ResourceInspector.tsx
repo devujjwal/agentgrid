@@ -58,7 +58,9 @@ export function ResourceInspector({
               <dt>Format</dt>
               <dd>
                 {selected.format === 'guide'
-                  ? 'Category guide'
+                  ? selected.kind === 'category'
+                    ? 'Category guide'
+                    : 'Integration guide'
                   : selected.format === 'instructions'
                     ? 'Interactive instructions'
                     : selected.format === 'recipe'
@@ -74,7 +76,7 @@ export function ResourceInspector({
               <dt>Status</dt>
               <dd>
                 {selected.state === 'editorial'
-                  ? 'Practical selection guidance'
+                  ? 'Editorial guidance'
                   : selected.state === 'published'
                     ? 'Published resource'
                     : selected.kind === 'recipe'
@@ -91,7 +93,7 @@ export function ResourceInspector({
           )}
           <p className="inspector-note">
             {selected.state === 'editorial'
-              ? 'A guide to choosing useful work, preparing inputs and checking results. Linked agents have their own publication and verification status.'
+              ? 'Practical guidance for choosing a resource and checking its requirements. Linked agents have their own publication and verification status.'
               : selected.state === 'draft'
                 ? selected.kind === 'recipe'
                   ? 'An unpublished guided recipe. Its agent versions and complete sequence must pass review before publication.'
