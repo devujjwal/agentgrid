@@ -553,3 +553,53 @@ Formatting, lint, strict typecheck, 90 Node/11 Python tests, production export,
 and the 785,699-byte compiled worker pass. Fifteen-migration actor/isolation and
 extraction tests passed with the backend increment. Remote migrations remain
 001–013 until exact-main CI and the guarded additive operator complete.
+
+### Staff report rollout verified
+
+PR13 head `8533e9abf7f78cfbb8959cc3613253fe99502b9a` passed CI
+`37677114202`. Merge/main `f1ba28b58cad259ced1be838b6f32bbed24a512d`
+passed `37677553757`. The guarded operator applied 014 and 015 from that clean
+exact main. Protected fingerprints remained unchanged before/after both
+transactions. Read-only anonymous/nonmember isolation checks passed afterward;
+no application rows were created. Fifteen migrations are remote. Full community,
+registration and production launch remain open gates.
+
+### Fork creation — backend acceptance
+
+Atomic fork creation derives the portable definition from an approved available
+source, retaining its exact license and immutable ancestry. New private drafts
+start at 0.1.0 with empty editorial content; source approval never transfers.
+An owned same-source/same-path retry recovers its original resource rather than
+creating duplicates. Other owners' path collisions disclose no private content.
+The lineage insert guard refuses branches whose complete attribution would exceed
+the bounded public projection. Membership, source visibility, CSRF, exact receipt
+and protected-app denial are tested. Sixteen-migration disposable isolation and
+extraction tests pass. Migration 016 remains local; UI/browser gates are ongoing.
+
+### Fork browser and layout acceptance
+
+The source-to-branch interface performs live membership/source checks, keeps
+inherited terms visible, and opens the resulting private definition in the
+creator workspace. It reports new creation versus recovered creation honestly.
+Reserved/invalid paths have labelled feedback; an uncertain request locks its
+identity fields and retries the same database operation. The source permission
+is checked again during creation, not trusted from the displayed page.
+
+Synthetic browser checks pass anonymous sign-in return, occupied-path rejection,
+interrupted acknowledgement recovery, exact receipt/focus, editing the inherited
+private draft, locked source license, source blocking between load/write, and
+fresh successful creation. 320/768/1024/1440px checks have no overflow and inputs
+are 48px tall. Console errors: none. Public links appear only on released
+resources with explicit public-fork permission.
+
+The first mobile audit found footer movement during async loading (CLS 0.15168).
+Reserving the workspace's initial viewport fixed the measured issue. Repeat lab:
+performance 98, accessibility 100, best practices 96, LCP 2.330s, TBT 20ms, CLS 0.
+Private-route SEO 63 is intentional; CSP and real production latency remain
+separate launch gates. Full public fork/lineage publication requires the genuine
+release inventory; these fixtures are never published.
+
+Formatting, lint/typecheck, 93 Node/11 Python suite tests plus the added passing
+return-path test, production export and 787,688-byte compiled worker checks pass.
+Sixteen-migration actor/isolation/extraction passed. Private CI and guarded
+migration 016 rollout remain pending for this increment.

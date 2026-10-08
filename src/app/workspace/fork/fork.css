@@ -1,0 +1,106 @@
+.fork-layout {
+  /* Keep the footer below the initial viewport while private content resolves. */
+  min-height: 100svh;
+  max-width: 88rem;
+}
+.fork-connection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6rem minmax(0, 1.2fr);
+  align-items: start;
+  padding-block: 1rem 4rem;
+}
+.fork-source {
+  padding-block: 2.5rem;
+  min-width: 0;
+}
+.fork-source h2 {
+  font-family: var(--font-editorial);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.fork-source p {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.fork-source a {
+  display: inline-block;
+  padding-block: 0.75rem;
+  text-underline-offset: 0.25em;
+}
+.fork-rights {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.fork-rights h3 {
+  font-size: 1rem;
+}
+.fork-path {
+  width: 6rem;
+  height: 15rem;
+  margin-block: 3rem;
+  overflow: visible;
+  color: var(--signal);
+}
+.fork-path path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.fork-path circle {
+  fill: var(--surface);
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.fork-connected .fork-new-node {
+  fill: var(--signal);
+  animation: fork-activation 0.6s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.fork-destination {
+  min-width: 0;
+}
+.fork-destination h2 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+}
+.fork-destination input {
+  min-width: 0;
+}
+.fork-destination #fork-path-help {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.fork-destination .action-primary {
+  min-height: 3rem;
+}
+@keyframes fork-activation {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (max-width: 767px) {
+  .fork-connection {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fork-source {
+    padding-top: 0;
+  }
+  .fork-path {
+    height: 5rem;
+    margin: 0 0 1.5rem;
+    transform: rotate(-35deg);
+    transform-origin: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fork-connected .fork-new-node {
+    animation: none;
+  }
+}

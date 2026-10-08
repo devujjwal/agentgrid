@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createClient } from '@supabase/supabase-js';
+import { signInReturnPath } from '../src/domain/session.ts';
 import { forkResources } from '../backend/workspace/forks.ts';
 import { workspaceHandler } from '../backend/http/workspace.ts';
 import { identityFixture, identityOrigin, syntheticConfiguration } from './fixtures/identity.mjs';
@@ -165,4 +166,15 @@ test('fork HTTP confines source queries and creation to valid session, origin an
     ['source', sourceId],
     ['fork', input],
   ]);
+});
+
+test('fork sign-in returns only to a bounded same-origin source destination', () => {
+  const path = '/workspace/fork/?sourceVersionId=' + sourceId;
+  assert.equal(signInReturnPath(path), path);
+  for (const value of [
+    'https://untrusted.example' + path,
+    path + '&next=https://untrusted.example',
+    '/workspace/fork/?sourceVersionId=bad',
+  ])
+    assert.equal(signInReturnPath(value), '/workspace/');
 });

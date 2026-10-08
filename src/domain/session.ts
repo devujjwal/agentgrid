@@ -26,6 +26,11 @@ export function signInReturnPath(value: unknown): string {
     const id = z.uuid().safeParse(value.split('=')[1]);
     if (id.success) return value;
   }
+  if (
+    /^\/workspace\/fork\/\?sourceVersionId=[a-fA-F0-9-]{36}$/.test(value) &&
+    z.uuid().safeParse(value.split('=')[1]).success
+  )
+    return value;
   if (/^\/agents\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(value) && value.length <= 89) return value;
   return '/workspace/';
 }

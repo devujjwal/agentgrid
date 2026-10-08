@@ -75,8 +75,7 @@ export function DraftComposer({
         </header>
         {sourceVersionId && (
           <p className="draft-lineage">
-            Forked from immutable version {sourceVersionId}. Source attribution and reuse conditions
-            are retained.
+            This draft is a fork. Its source attribution and reuse conditions are retained.
           </p>
         )}
         <fieldset disabled={busy || readOnly} className="draft-fields">
