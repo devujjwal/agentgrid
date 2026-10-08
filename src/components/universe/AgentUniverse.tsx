@@ -52,7 +52,7 @@ export function AgentUniverse({
         className="agent-universe"
         viewBox={compact ? '0 0 360 440' : '0 0 660 550'}
         role="group"
-        aria-label="Agent Universe: select a draft resource to inspect its capabilities"
+        aria-label="Agent Universe: select a resource to inspect its capabilities"
       >
         <defs>
           <pattern id="universe-grid" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -106,7 +106,7 @@ export function AgentUniverse({
             );
           })}
         </g>
-        {model.nodes.map(({ resource, x, y, label, matched, related }) => {
+        {model.nodes.map(({ resource, x, y, label, labelLines, matched, related }) => {
           const selected = resource.slug === selectedSlug;
           return (
             <g
@@ -134,9 +134,17 @@ export function AgentUniverse({
                 <circle className="node-ring" r="13" />
                 <AgentGlyph category={resource.category} />
                 <text className="node-name" y="43" textAnchor="middle">
-                  {label}{' '}
+                  {labelLines.map((line, index) => (
+                    <tspan key={index} x="0" dy={index ? 17 : 0}>
+                      {line}
+                    </tspan>
+                  ))}
                 </text>
-                <text className="node-category" y="60" textAnchor="middle">
+                <text
+                  className="node-category"
+                  y={labelLines.length > 1 ? 78 : 61}
+                  textAnchor="middle"
+                >
                   {resource.category === 'seo' ? 'SEO' : resource.category.replaceAll('-', ' ')}
                 </text>
               </a>
@@ -144,7 +152,7 @@ export function AgentUniverse({
           );
         })}
       </svg>
-      {compact && (
+      {
         <div className="constellation-controls">
           <button
             type="button"
@@ -156,7 +164,11 @@ export function AgentUniverse({
           </button>
           <span>
             Focus {Math.max(0, currentIndex) + 1} / {matchedSlugs.length}
-            <small>Connected neighbors shown</small>
+            <small>
+              {compact
+                ? 'Connected neighbors shown'
+                : `${model.nodes.length} shown · this results page`}
+            </small>
           </span>
           <button
             type="button"
@@ -167,7 +179,7 @@ export function AgentUniverse({
             →
           </button>
         </div>
-      )}
+      }
     </>
   );
 }

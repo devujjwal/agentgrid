@@ -966,3 +966,48 @@ committed mutation, and revoked authority. No browser console errors were observ
 320/768/1024/1440px layouts have no horizontal overflow; local screenshots are
 retained under `docs/evidence/phase6-admin-*`. No real role/account changes occurred.
 Migrations 024 and 025 remain pending remote provider availability and guarded rollout.
+
+### Broad-consumer inventory expansion
+
+The editorial draft foundation now contains 36 distinct packages: four each in
+marketing, productivity, research, education, content, ecommerce, business
+operations and everyday workflows, plus two each in SEO and development. These
+are private first-party drafts, not 36 launch-ready or host-tested agents. The
+public catalogue remains empty. Every new package includes concrete instructions,
+privacy/limitations, normal expected behavior with task-specific assertions,
+missing-context and adversarial-input examples, and explicitly unselected rights.
+
+The new work includes response-versus-person survey counts, bounded weekly
+capacity arithmetic, timestamp/overlap checks, study design interpretation,
+source-grounded flashcards, contextual alt text, variant/SKU conflicts, missing
+return-rate denominators, dependency cycles and reviewable household planning.
+Curated aliases add 11 consumer search evaluation cases. A category test that
+assumed only one everyday resource was replaced by actual category membership
+checks. The public build remains isolated from every draft.
+
+First-party reuse terms are a concrete pending business decision in
+`FIRST_PARTY_REUSE_DECISION.md`. No package license was changed. Real host runs,
+editorial source review, immutable submission/release and publication evidence
+remain mandatory before any draft counts toward launch inventory.
+
+PR24 administrator head `4a793b07a2be131ca0780a612b970adcbf3e7b21`
+passed CI `37734761991` and merged to main
+`c77b759e4d1137a9af1f355fedb502c71a6d445f`. Guarded rollout installed
+024 and 025 and verified protected shared resources unchanged. Subsequent live
+anonymous/authenticated read-only boundaries passed; no application rows were
+created. PR25 creator head `dfab7f38456b03ac0c11ec635ecd14d34abd107b`
+passed CI `37735994904` and was merged. Migration 026 remains pending its guarded
+rollout. Creator mobile lab scores are 100 performance/accessibility/best
+practices, LCP 0.9s, TBT 0ms, CLS 0; noindex SEO remains intentionally limited.
+
+The 36-draft browser acceptance exposed crowded desktop node labels. The map now
+uses at most nine separated desktop positions (four on mobile), two bounded name
+lines with full accessible labels, and desktop paging controls. Search removes
+nonmatching nodes; reviewed draft capability links cover the added workflows.
+The list remains complete and authoritative. Browser acceptance verifies six
+remaining resources on page two, new-resource selection, task queries for alt text
+and calendar overlap, complete calendar detail, and no horizontal overflow at
+320/768/1024/1440px. Desktop/mobile screenshots are retained under
+`docs/evidence/phase6-inventory-*`. Full local checks pass: 138 Node and 11 Python
+tests, formatting, lint, strict typecheck and production export. Draft preview
+contains 58 documents; the public export still contains zero agent resources.
