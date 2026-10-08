@@ -643,3 +643,45 @@ All browser data is explicitly synthetic, local-only and never published.
 Final formatting, lint, strict typecheck, 98 Node/11 Python tests, production
 static export and the compiled worker acceptance suite pass. Remote 016/017
 remain unapplied until exact-main CI and the protected-resource operator pass.
+
+### Submission moderation CI gate
+
+PR15 head `294aeacabc77aa04378d2441cde07e38cebdd5ed` passed CI
+`37720872816`. Merge/main `7babc93ece247367670830a63eb87a4dddfd3599`
+passed `37721104749`. Guarded migrations 016/017 remain pending alongside 018.
+
+### Creator guide authoring and immutable export
+
+Creators now author private overview, audience, workflow, FAQ, checked sources,
+related-resource paths, discovery vocabulary and explicit readiness declarations.
+The definition and guide save under one optimistic revision. Omitted guide updates
+retain previous content; supplied updates use a closed bounded contract. Unfinished
+guides never imply staff approval or real host verification. Submission freezes the
+exact guide alongside the definition. Migration 018 includes this owned author
+content in private version exports; staff evidence and publication manifests remain
+separate and inaccessible. No protected shared-app resources are changed.
+
+Authoring adds guide import/download and practical readiness corrections. Browser
+acceptance verifies persistence after reload, conflicting-revision retention,
+deliberate discard, strict import rejection, source context, frozen guide inspection,
+and unchanged submitted content after later draft edits. Guide sections load on
+demand. 320/768/1024/1440px checks have no overflow or console errors. Mobile
+inspection prompted fixes for active-step visibility and the cramped save status.
+
+The initial signed-in mobile lab measured LCP 2.501s. The trace identified blocking
+local QA tooling and unused guide tools; QA injection is now deferred and guide
+components are split from initial authoring. Repeat: performance 97, accessibility
+100, best practices 96, LCP 2.493s, TBT 40ms, CLS 0.04583. This has little LCP
+headroom and is local lab evidence, not field INP or production performance. Public
+performance, CSP and real network conditions remain hardening gates. Private
+noindex SEO 63 is intentional. Fixtures never become public content.
+
+Eighteen-migration actor/isolation/extraction tests pass, including immutable guide
+preservation. Formatting, lint, strict typecheck, 101 Node/11 Python tests,
+production export and compiled-worker checks pass before the final code-splitting
+change; final build acceptance is recorded after that change below.
+
+Final code-split production build and compiled-worker acceptance pass. Browser
+checks confirm all three on-demand guide tools load, preserve edits and save
+correctly, with no console errors. Eighteen migrations remain local until guarded
+rollout after the private pull request and exact-main CI gates.

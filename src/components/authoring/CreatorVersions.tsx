@@ -107,8 +107,8 @@ export function CreatorVersions() {
         </p>
         <h2 id="submit-version-title">Your next version.</h2>
         <p>
-          Saved package version: <strong>{draft.specification.version}</strong>. Only this saved
-          definition will be submitted for review.
+          Saved package version: <strong>{draft.specification.version}</strong>. The saved
+          definition and guide will be submitted together for review.
         </p>
         <Link prefetch={false} href={editHref} className="action-secondary">
           Return to draft <span aria-hidden="true">↗</span>

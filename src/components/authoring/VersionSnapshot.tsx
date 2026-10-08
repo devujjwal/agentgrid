@@ -96,8 +96,9 @@ export function VersionSnapshot({
                 <h4>Frozen definition / {document.record.version}</h4>
                 <p>{document.specification.identity.summary}</p>
                 <p>
-                  This private snapshot includes the submitted definition and its source version
-                  reference. Exporting it does not publish it or establish platform compatibility.
+                  This private snapshot includes the submitted definition, author guide and source
+                  version reference. It excludes staff evidence and publication manifests. Exporting
+                  it does not publish it or establish platform compatibility.
                 </p>
                 <details>
                   <summary>Read the frozen JSON</summary>

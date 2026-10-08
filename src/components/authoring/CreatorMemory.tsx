@@ -9,6 +9,7 @@ import {
   type SetStateAction,
 } from 'react';
 import { flushSync } from 'react-dom';
+import type { DraftEditorial } from '../../domain/draft-editorial';
 import type { DraftRecord, DraftSpecification } from '../../domain/draft';
 import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
@@ -52,6 +53,7 @@ export interface DraftBuffer {
   email: string;
   record: DraftRecord;
   value: DraftSpecification;
+  editorial: DraftEditorial;
   dirty: boolean;
   conflict: boolean;
 }
@@ -131,7 +133,7 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         return;
       if (
         !window.confirm(
-          'Replace the unsaved draft in this tab? Return to it and save or download the private definition first if you need to keep it.',
+          'Replace the unsaved draft in this tab? Return to it and save or download the private definition and guide first if you need to keep it.',
         )
       ) {
         event.preventDefault();

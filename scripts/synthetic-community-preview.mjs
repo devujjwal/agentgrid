@@ -414,7 +414,7 @@ export async function syntheticCommunityPreview() {
         record
           ? {
               specification: record.specification,
-              editorial: {},
+              editorial: record.editorial ?? {},
               revision: record.revision,
               updated_at: record.updatedAt,
             }
@@ -447,6 +447,7 @@ export async function syntheticCommunityPreview() {
           { status: 409 },
         );
       record.specification = body.updated_specification;
+      if (body.updated_editorial !== null) record.editorial = body.updated_editorial;
       record.updatedAt = new Date().toISOString();
       return Response.json(++record.revision);
     }
@@ -493,6 +494,7 @@ export async function syntheticCommunityPreview() {
           reviewedAt: row.reviewed_at,
         },
         specification: row.specification,
+        editorialText: JSON.stringify(row.editorial ?? {}),
       });
     }
     if (url.pathname.endsWith('/agentgrid_owned_reports')) {
@@ -559,8 +561,14 @@ export async function syntheticCommunityPreview() {
         submitted_by: profile.id,
         version: record.specification.version,
         specification: structuredClone(record.specification),
+        editorial: structuredClone(record.editorial ?? {}),
         content_digest: createHash('sha256')
-          .update(JSON.stringify(record.specification))
+          .update(
+            JSON.stringify({
+              specification: record.specification,
+              editorial: record.editorial ?? {},
+            }),
+          )
           .digest('hex'),
         created_at: new Date().toISOString(),
         state: 'pending',

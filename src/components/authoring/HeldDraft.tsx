@@ -5,7 +5,7 @@ export function HeldDraft({ resourceId, discard }: { resourceId: string; discard
     <section className="draft-conflict">
       <h2>Another draft has unsaved changes.</h2>
       <p>
-        This tab holds one working definition. Return to it, or deliberately discard its
+        This tab holds one working definition and guide. Return to it, or deliberately discard its
         browser-only edits before authoring another agent.
       </p>
       <Link
