@@ -14,6 +14,12 @@ import type { ProfileEditBuffer } from '../workspace/ProfileEditor';
 import type { ReportInput } from '../../domain/reports';
 import type { ReviewInput } from '../../domain/reviews';
 
+export interface SubmissionModerationBuffer {
+  email: string;
+  versionId: string;
+  explanation: string;
+}
+
 export interface ReportModerationBuffer {
   email: string;
   reportId: string;
@@ -51,6 +57,8 @@ export interface DraftBuffer {
 }
 const Memory = createContext<{
   hasUnsaved: boolean;
+  submissionModerationNotes: SubmissionModerationBuffer | null;
+  setSubmissionModerationNotes: Dispatch<SetStateAction<SubmissionModerationBuffer | null>>;
   reportModerationNotes: ReportModerationBuffer | null;
   setReportModerationNotes: Dispatch<SetStateAction<ReportModerationBuffer | null>>;
   moderationNotes: ModerationBuffer | null;
@@ -69,6 +77,8 @@ const Memory = createContext<{
  * or storage. Private consumers render only after fresh identity/ownership checks.
  * This provider performs no session or data request on public page views. */
 export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
+  const [submissionModerationNotes, setSubmissionModerationNotes] =
+    useState<SubmissionModerationBuffer | null>(null);
   const [reportModerationNotes, setReportModerationNotes] = useState<ReportModerationBuffer | null>(
     null,
   );
@@ -84,7 +94,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       !reportEdits?.input.explanation &&
       !reviewEdits &&
       !moderationNotes?.explanation &&
-      !reportModerationNotes?.explanation
+      !reportModerationNotes?.explanation &&
+      !submissionModerationNotes?.explanation
     )
       return;
     const warn = (event: BeforeUnloadEvent) => {
@@ -133,7 +144,15 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('beforeunload', warn);
       document.removeEventListener('click', navigate, true);
     };
-  }, [buffer, profileEdits, reportEdits, reviewEdits, moderationNotes, reportModerationNotes]);
+  }, [
+    buffer,
+    profileEdits,
+    reportEdits,
+    reviewEdits,
+    moderationNotes,
+    reportModerationNotes,
+    submissionModerationNotes,
+  ]);
   return (
     <Memory.Provider
       value={{
@@ -143,7 +162,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
           reportEdits?.input.explanation ||
           reviewEdits ||
           moderationNotes?.explanation ||
-          reportModerationNotes?.explanation,
+          reportModerationNotes?.explanation ||
+          submissionModerationNotes?.explanation,
         ),
         buffer,
         setBuffer,
@@ -155,6 +175,8 @@ export function CreatorMemoryProvider({ children }: { children: ReactNode }) {
         setReviewEdits,
         moderationNotes,
         setModerationNotes,
+        submissionModerationNotes,
+        setSubmissionModerationNotes,
         reportModerationNotes,
         setReportModerationNotes,
       }}

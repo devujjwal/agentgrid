@@ -85,6 +85,9 @@ export function ReportModeration() {
           Your workspace ↗
         </Link>
       </div>
+      <Link className="action-secondary" prefetch={false} href="/workspace/moderation/submissions/">
+        Review submissions ↗
+      </Link>
       <Link className="action-secondary" prefetch={false} href="/workspace/moderation/">
         Moderate reviews ↗
       </Link>
