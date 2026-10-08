@@ -603,3 +603,43 @@ Formatting, lint/typecheck, 93 Node/11 Python suite tests plus the added passing
 return-path test, production export and 787,688-byte compiled worker checks pass.
 Sixteen-migration actor/isolation/extraction passed. Private CI and guarded
 migration 016 rollout remain pending for this increment.
+
+### Fork CI gate
+
+PR14 head `75854dfc6cf254fda1a4270ff98e5f5feec756f4` passed CI
+`37718899418`. Merge/main `504005727476c66d721b9b39c729b58027517873`
+passed `37719212069`. Migration 016 awaits guarded rollout with 017.
+
+### Immutable submission inspection and rejection
+
+Migration 017 adds bounded staff projections of immutable submitted versions,
+without exposing creator working drafts or shared Auth identity. Rejection is
+bound to the exact content digest, requires active AgentGrid staff, refuses
+self-review and competing decisions, applies a server quota and records the
+existing immutable audit trail. Legacy submission decisions retain owner
+withdrawal only; clients cannot bypass the new rejection boundary.
+
+The private queue supports 20+3 pagination, focus restoration, complete plaintext
+document inspection, structural issue summaries, creator feedback, explicit
+confirmation, uncertain-acknowledgement recovery and retained tab-local notes.
+Structural completeness is explicitly separate from editorial, safety, rights
+and real host verification. This increment does not claim publication approval;
+creator guide authoring and the trusted publication workflow remain open gates.
+
+Seventeen-migration disposable PostgreSQL actor/isolation/extraction tests pass.
+Browser checks cover anonymous/member denial, pagination/focus, cancellation,
+exact rejection receipt, competing withdrawal, lost acknowledgement recovery,
+self-review refusal, plaintext malformed JSON, staff revocation concealment,
+internal navigation retention and sign-out cancellation/clearing. The missing
+sign-in return route was corrected and verified against the restarted backend.
+
+Responsive checks at 320/768/1024/1440px have no overflow or console errors.
+Mobile lab: performance 96, accessibility 100, best practices 96, LCP 2.359s,
+TBT 33ms, CLS 0.08948. The audit caught and verified a corrected visible/accessibility
+label mismatch; the same report-queue mismatch was fixed. Private noindex SEO 63
+is intentional. Known inline CSP hardening remains a later security gate.
+All browser data is explicitly synthetic, local-only and never published.
+
+Final formatting, lint, strict typecheck, 98 Node/11 Python tests, production
+static export and the compiled worker acceptance suite pass. Remote 016/017
+remain unapplied until exact-main CI and the protected-resource operator pass.

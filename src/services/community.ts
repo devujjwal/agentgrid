@@ -35,7 +35,7 @@ export async function communityRequest<T>(
       path,
     );
   const staffPath =
-    /^\/api\/moderation\/(?:reviews\/\?state=(?:pending|published|hidden)&offset=\d{1,4}|review\/\?reviewId=[a-fA-F0-9-]{36}|reports\/\?state=(?:open|resolved|dismissed)&offset=\d{1,4}|report\/\?reportId=[a-fA-F0-9-]{36}|decision\/|resolution\/)$/.test(
+    /^\/api\/moderation\/(?:reviews\/\?state=(?:pending|published|hidden)&offset=\d{1,4}|review\/\?reviewId=[a-fA-F0-9-]{36}|reports\/\?state=(?:open|resolved|dismissed)&offset=\d{1,4}|report\/\?reportId=[a-fA-F0-9-]{36}|submissions\/\?state=(?:pending|approved|rejected|withdrawn)&offset=\d{1,4}|submission\/\?versionId=[a-fA-F0-9-]{36}|rejection\/|decision\/|resolution\/)$/.test(
       path,
     );
   if (

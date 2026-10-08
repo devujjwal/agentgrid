@@ -133,7 +133,7 @@ export function ReportQueue({ select }: { select: (id: string) => void }) {
                   <button
                     className="action-secondary"
                     onClick={() => select(report.id)}
-                    aria-label={`Inspect report ${offset + index + 1}: ${reportCategoryLabels[report.category]}`}
+                    aria-label={`Investigate report ${offset + index + 1}: ${reportCategoryLabels[report.category]}`}
                   >
                     Investigate <span aria-hidden="true">↗</span>
                   </button>
