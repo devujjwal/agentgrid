@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { RejectSubmissionSchema } from '../../src/domain/submission-moderation.ts';
+import { SubmissionStateSchema } from '../../src/domain/versions.ts';
 import type { IdentityRuntime } from '../auth/runtime.ts';
 import type { ProviderSession } from '../auth/contracts.ts';
 import type { moderationResources } from '../workspace/moderation.ts';
@@ -34,11 +36,16 @@ export function moderationHandler(
           '/api/moderation/reports/',
           '/api/moderation/report/',
           '/api/moderation/resolution/',
+          '/api/moderation/submissions/',
+          '/api/moderation/submission/',
+          '/api/moderation/rejection/',
         ].includes(path)
       )
         throw new HttpFailure(404, 'not-found');
       const mutation =
-        path === '/api/moderation/decision/' || path === '/api/moderation/resolution/';
+        path === '/api/moderation/decision/' ||
+        path === '/api/moderation/resolution/' ||
+        path === '/api/moderation/rejection/';
       if (mutation) {
         if (url.search) throw new HttpFailure(400, 'invalid-request');
         await assertCsrf(runtime, request);
@@ -53,6 +60,11 @@ export function moderationHandler(
       const session = await authenticatedSession(runtime, request),
         data = dataForSession(session.provider);
       if (mutation) {
+        if (path === '/api/moderation/rejection/') {
+          const parsed = RejectSubmissionSchema.safeParse(await readJsonBody(request, 12_000));
+          if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
+          return privateJson(await data.rejectSubmission(parsed.data));
+        }
         if (path === '/api/moderation/resolution/') {
           const parsed = ReportDecisionSchema.safeParse(await readJsonBody(request, 12_000));
           if (!parsed.success) throw new HttpFailure(400, 'invalid-request');
@@ -63,17 +75,31 @@ export function moderationHandler(
         return privateJson(await data.decideReview(parsed.data));
       }
       const allowed =
-        path === '/api/moderation/review/'
-          ? ['reviewId']
-          : path === '/api/moderation/report/'
-            ? ['reportId']
-            : ['state', 'offset'];
+        path === '/api/moderation/submission/'
+          ? ['versionId']
+          : path === '/api/moderation/review/'
+            ? ['reviewId']
+            : path === '/api/moderation/report/'
+              ? ['reportId']
+              : ['state', 'offset'];
       if (
         [...url.searchParams.keys()].some(
           (key) => !allowed.includes(key) || url.searchParams.getAll(key).length !== 1,
         )
       )
         throw new HttpFailure(400, 'invalid-request');
+      if (path === '/api/moderation/submission/') {
+        const id = z.uuid().safeParse(url.searchParams.get('versionId'));
+        if (!id.success) throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.staffSubmission(id.data));
+      }
+      if (path === '/api/moderation/submissions/') {
+        const state = SubmissionStateSchema.safeParse(url.searchParams.get('state')),
+          offset = url.searchParams.get('offset') ?? '0';
+        if (!state.success || !/^\d{1,4}$/.test(offset))
+          throw new HttpFailure(400, 'invalid-request');
+        return privateJson(await data.submissionQueue(state.data, Number(offset)));
+      }
       if (path === '/api/moderation/review/') {
         const id = z.uuid().safeParse(url.searchParams.get('reviewId'));
         if (!id.success) throw new HttpFailure(400, 'invalid-request');
