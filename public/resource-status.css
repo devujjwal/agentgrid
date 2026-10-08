@@ -1,0 +1,137 @@
+/* Lightweight delivery failures share the product palette without hydration. */
+:root {
+  --surface: #f7f6f0;
+  --ink: #182a27;
+  --muted: #59665f;
+  --signal: #226557;
+  --accent: #a85635;
+  --line: #d4d8cc;
+  --focus: #a14727;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+a {
+  color: inherit;
+}
+a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 6px;
+}
+header,
+footer {
+  margin: 0 clamp(1rem, 5vw, 5rem);
+}
+header {
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.wordmark {
+  padding: 0.75rem 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.075rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.wordmark span {
+  color: var(--muted);
+  font-weight: 400;
+}
+.network-label,
+.eyebrow,
+footer {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.network-label {
+  color: var(--muted);
+}
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 10vw, 8rem) clamp(1rem, 5vw, 5rem);
+  min-height: calc(100svh - 12rem);
+}
+.eyebrow {
+  margin: 2rem 0 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.075rem;
+  color: var(--accent);
+}
+h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.075rem;
+  line-height: 1.12;
+  max-width: 14ch;
+  margin: 0;
+  text-wrap: balance;
+}
+.explanation {
+  color: var(--muted);
+  max-width: 38rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  margin: 1.5rem 0 2rem;
+}
+.return-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  min-height: 3rem;
+  border-bottom: 1px solid var(--signal);
+  color: var(--signal);
+  font-weight: 600;
+  text-decoration: none;
+}
+.return-link:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+footer {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.signal-map {
+  display: flex;
+  align-items: center;
+  width: 10rem;
+  height: 1.5rem;
+}
+.signal-map i {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--signal);
+  border-radius: 50%;
+}
+.signal-map i:last-child {
+  border: 2px solid var(--accent);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.signal-map b {
+  flex: 1;
+  height: 1px;
+  border-top: 1px dashed var(--line);
+}
+@media (max-width: 40rem) {
+  .network-label {
+    display: none;
+  }
+  header {
+    min-height: 5rem;
+  }
+}

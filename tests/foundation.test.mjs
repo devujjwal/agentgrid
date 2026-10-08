@@ -60,6 +60,11 @@ test('export gate catches leaked credentials, source maps, and missing delivery 
     await writeFile(join(root, 'qa/distribution/index.html'), 'Synthetic fixture');
     assert.ok((await inspectExport(root)).some((error) => error.includes('Reserved')));
     await rm(join(root, 'qa'), { recursive: true });
+    await writeFile(join(root, 'bundle.js'), 'data-agentgrid-qa-client');
+    assert.ok(
+      (await inspectExport(root)).some((error) => error.includes('Local acceptance component')),
+    );
+    await rm(join(root, 'bundle.js'));
     for (const value of [
       'sb_secret_' + 'x'.repeat(24),
       'sbp_oauth_' + '0'.repeat(40),

@@ -191,3 +191,11 @@ rate-limited; both references resolve to the same verified OCI manifest digest,
 never a floating tag. If both fail, database acceptance fails rather than skipping
 checks. Disposable cleanup verifies the actual selected pinned image as well as
 container identity, purpose label and network isolation.
+
+The offline extraction rehearsal suppresses **only AgentGrid-owned user triggers
+on the new disposable target** during import, so publication counters and other
+side effects do not rewrite restored data. Foreign-key constraints remain enabled,
+are deliberately deferred, then checked immediately after identity reassociation.
+Owned user triggers are re-enabled before committing; an explicit post-import check
+rejects any disabled trigger. Never run this import procedure on the shared source,
+on a live target, or with a broader table/trigger allowlist.

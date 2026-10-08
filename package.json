@@ -14,8 +14,8 @@
   },
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3027",
-    "build": "next build && node scripts/prune-unpublished-export.mjs && node scripts/verify-export.mjs",
-    "build:backend": "node scripts/build-functions.mjs",
+    "build": "node scripts/verify-publication.mjs && next build && node scripts/prune-unpublished-export.mjs && node scripts/verify-export.mjs",
+    "build:backend": "node scripts/verify-publication.mjs && node scripts/build-functions.mjs",
     "test:backend": "node scripts/test-functions.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
@@ -31,7 +31,8 @@
     "audit:dependencies": "node scripts/audit-dependencies.mjs",
     "design:dev": "AGENTGRID_LOCAL_DESIGN_PREVIEW=1 next dev --hostname 127.0.0.1 --port 3027",
     "design:build": "node scripts/build-design-preview.mjs",
-    "design:preview": "node scripts/serve-design-preview.mjs"
+    "design:preview": "node scripts/serve-design-preview.mjs",
+    "publication:capture": "node scripts/capture-publication.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",

@@ -202,9 +202,18 @@ def main():
         )
         sql(
             "begin; set constraints all deferred;\n"
-            "delete from public.agentgrid_configuration; delete from public.agentgrid_categories; delete from public.agentgrid_platforms;\n"
-            + dump + "\n" + remapping + "\ncommit;", target_database
+            "delete from public.agentgrid_configuration; delete from public.agentgrid_categories; delete from public.agentgrid_platforms; delete from public.agentgrid_publication_state;\n"
+            # Suppress only owned user triggers during the deliberate offline import.
+            # Constraints stay enabled/deferred; protected tables/triggers are untouched.
+            + "\n".join(f"alter table public.{table} disable trigger user;" for table in tables)
+            + "\n" + dump + "\n"
+            + remapping + "\nset constraints all immediate;\n"
+            + "\n".join(f"alter table public.{table} enable trigger user;" for table in tables)
+            + "\ncommit;", target_database
         )
+
+        if sql("select count(*) from pg_catalog.pg_trigger t join pg_catalog.pg_class c on c.oid=t.tgrelid join pg_catalog.pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname like 'agentgrid\\_%' escape '\\' and not t.tgisinternal and t.tgenabled<>'O';", target_database) != "0":
+            raise RuntimeError("Owned import left a user trigger disabled")
 
         def application_snapshot(database_name):
             expressions = [

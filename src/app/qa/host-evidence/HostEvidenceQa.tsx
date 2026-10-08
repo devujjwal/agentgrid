@@ -21,7 +21,7 @@ export function HostEvidenceQa() {
   const [attested, setAttested] = useState(false),
     [message, setMessage] = useState('');
   return (
-    <>
+    <div data-agentgrid-qa-client="local-only">
       {message && <p role="status">{message}</p>}
       <HostEvidenceForm
         value={value}
@@ -37,6 +37,6 @@ export function HostEvidenceQa() {
           setMessage('Local presentation fixture only. Nothing was recorded or approved.')
         }
       />
-    </>
+    </div>
   );
 }

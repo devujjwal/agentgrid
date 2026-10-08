@@ -1,9 +1,9 @@
 import 'server-only';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { z } from 'zod';
+import { parseCatalogue } from '../domain/publication-snapshot';
 import type { AgentSpecification } from '../domain/agent-specification';
-import { parsePublicResource, type PublicResource } from '../domain/public-resource';
+import { type PublicResource } from '../domain/public-resource';
 import type { DiscoveryResource } from '../domain/discovery';
 import { localDesignSpecifications } from './design-preview';
 import { discoveryKeywords } from './discovery-metadata';
@@ -13,11 +13,6 @@ export interface ResourceDocument {
   publication: PublicResource | null;
 }
 
-const CatalogueEnvelope = z.strictObject({
-  contract_version: z.literal('0.1'),
-  resources: z.array(z.unknown()).max(10_000),
-});
-
 /** Only the explicit public projection is a production build input. Never query
  * the shared database, working drafts, private evidence or privileged keys here.
  */
@@ -25,14 +20,7 @@ export function publicResources(): PublicResource[] {
   const path = resolve('content/publication/catalogue.json');
   const bytes = readFileSync(path);
   if (bytes.byteLength > 32_000_000) throw new Error('Public catalogue exceeds build bounds.');
-  const catalogue = CatalogueEnvelope.parse(JSON.parse(bytes.toString('utf8')));
-  const resources = catalogue.resources.map(parsePublicResource);
-  for (const key of ['resource_id', 'version_id'] as const)
-    if (new Set(resources.map((item) => item[key])).size !== resources.length)
-      throw new Error('Duplicate public resource identity.');
-  if (new Set(resources.map((item) => item.specification.identity.slug)).size !== resources.length)
-    throw new Error('Duplicate public resource path.');
-  return resources;
+  return parseCatalogue(JSON.parse(bytes.toString('utf8'))).resources;
 }
 
 export function resourceDocuments(): ResourceDocument[] {

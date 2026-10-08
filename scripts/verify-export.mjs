@@ -37,6 +37,8 @@ export async function inspectExport(root, { localDesignPreview = false } = {}) {
     }
     if (!/\.(html|js|json|txt|css|svg)$/.test(name)) continue;
     const content = await readFile(path, 'utf8');
+    if (!localDesignPreview && content.includes('data-agentgrid-qa-client'))
+      errors.push(`Local acceptance component in public artifact: ${name}`);
     if (
       !localDesignPreview &&
       name.endsWith('.html') &&

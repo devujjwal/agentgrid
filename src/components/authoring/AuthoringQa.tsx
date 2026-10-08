@@ -27,7 +27,7 @@ export function AuthoringQa() {
     }
   }
   return (
-    <section className="workspace-layout creator-layout">
+    <section className="workspace-layout creator-layout" data-agentgrid-qa-client="local-only">
       <h2>Local authoring acceptance</h2>
       <p>
         Clearly synthetic, disposable UI state. This fixture makes no community requests and creates

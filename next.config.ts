@@ -6,6 +6,8 @@ if (designPreview && (process.env.CI || process.env.GITHUB_ACTIONS))
 
 const config: NextConfig = {
   output: 'export',
+  // Test pages are not production entry points, including their client chunks.
+  pageExtensions: designPreview ? ['qa.tsx', 'tsx', 'ts', 'jsx', 'js'] : ['tsx', 'ts', 'jsx', 'js'],
   distDir: designPreview ? '.agentgrid-local-preview' : '.next',
   trailingSlash: true,
   poweredByHeader: false,

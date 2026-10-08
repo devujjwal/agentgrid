@@ -13,7 +13,7 @@ than treating existing code as completed functionality.
 | 3 — Public discovery             | In progress | Search evaluation; distribution E2E; crawlable public HTML                                                                                                                            |
 | 4 — Identity/workspace           | In progress | Real owner sign-in/logout; saved-list boundary; synthetic creator CRUD/history/reauthentication, responsive and signed-in lab checks; real member/submission gates remain open        |
 | 5 — Community                    | In progress | Private reporting boundary and responsive recovery; full moderation/fork/review journeys remain open                                                                                  |
-| 6 — Publishing/inventory         | Not started | Failure recovery; broad tested inventory; no private-data leakage                                                                                                                     |
+| 6 — Publishing/inventory         | In progress | Private host evidence and reviewed release boundary validated; static capture/takedown and broad real host-tested inventory remain open                                               |
 | 7 — Hardening                    | Not started | Restore/rollback; browser/a11y/performance/security audits                                                                                                                            |
 | 8 — Production launch            | Not started | Domain, webmaster setup, production journeys and monitoring                                                                                                                           |
 
@@ -817,3 +817,50 @@ The local acceptance route is removed and verified absent from production.
 Static publication batches, deployment confirmation, urgent takedown/recovery,
 real host-tested inventory and the remaining launch gates are still open.
 Migrations 021–022 are local until private PR and exact-main CI acceptance.
+
+### Reviewed release rollout and local fixture build isolation
+
+PR19 head `8eb542dc7cb858cc6a08ab9c8f0faeb29a9da2cc` passed CI
+`37727384829`; merge/main `df4127fc86f2a6895be4fbeac5b9f9c4ad865dad`
+passed `37727594693`. Guarded migrations 021–022 were applied from that clean
+main commit with unchanged protected PicMagic fingerprints. Live anonymous and
+authenticated nonmember boundaries pass; no staff role, observation or release
+was fabricated or created remotely.
+
+A follow-up export audit found unused local acceptance components in generated
+production JavaScript despite their route removal. Test pages now use a custom
+`.qa.tsx` extension recognized only by the explicitly local preview configuration.
+Production excludes the entries and their client chunks at compilation. A client
+fixture marker makes the export gate reject accidental future bundle inclusion.
+Production format/lint/typecheck/tests/export checks pass, the previously observed
+fixture strings are absent, and the local optimized build/browser fixture remains
+functional. This improves the delivery boundary before public deployment.
+
+### Consistent public capture and live detail withholding
+
+Migration 023 introduces an AgentGrid-owned snapshot revision, bounded anonymous
+public index and opaque detail-delivery tags. Capture rejects changes between its
+initial and final index, projects only public fields, and emits a local candidate
+with exact catalogue digest/version inventory. Frontend and Worker builds reject
+inconsistent inputs. The committed empty pair is bootstrap state, not a claimed
+remote capture. Production inventory remains zero.
+
+The compiled Pages boundary now covers agent detail HTML and Next navigation
+payloads: withdrawals return 410, changed/unverifiable versions return 503, and
+unknown paths return 404. All detail bodies are no-store; unverified content never
+falls through to static assets. Listings remain static and require urgent rebuild
+to remove withdrawn summaries. Fail-closed quota behavior and cache-rule checks
+are mandatory production gates, not yet verified provider settings.
+
+Local acceptance: 123 Node and 11 Python tests, formatting, lint, strict typecheck,
+production export and compiled workerd pass. The 23-migration actor/isolation suite
+and independent owned-data extraction/reassociation pass with protected fixtures
+unchanged. During extraction rehearsal only owned target user triggers are paused;
+FK checks complete before they are restored and the import commits. Browser checks
+of the branded 404/410/503 presentation cover 320/768/1024/1440px with no horizontal
+overflow and visible keyboard focus; controls are at least 48px high. No client JS
+or motion is required for these states. Evidence is local and ignored.
+
+Migration 023 is local pending exact-head/main CI and guarded rollout. Promotion,
+deployment batch receipts, production delivery checks and actual editorial/host
+inventory remain open. See PUBLICATION_DELIVERY.md for operational boundaries.
