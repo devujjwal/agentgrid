@@ -152,6 +152,13 @@ def main():
 
         migrate(database)
         draft = json.loads((ROOT / "content/agents/inbox-priority-triage/1.0.0.agent.json").read_text())
+        # Database acceptance starts from a deliberately unlicensed synthetic
+        # draft independently of any real editorial licensing decision.
+        draft["license"] = {
+            "identifier": "unselected",
+            "statement": "Synthetic draft without a reuse grant; not production content.",
+            "permissions": {"use": False, "modify": False, "redistribute": False, "public_fork": False},
+        }
         fixture = json.dumps(draft).replace("'", "''")
         fixture_setting = "select pg_catalog.set_config('agentgrid.fixture_specification','" + fixture + "',false);\n"
         for path in sorted((directory / "tests").glob("*.sql")):

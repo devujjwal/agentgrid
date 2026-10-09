@@ -1,39 +1,36 @@
 # First-party package reuse decision
 
-Status: proposed; no package license changed and no public grant made.
+Approved by the owner on 2026-10-09: **custom restrictive terms**. The earlier
+CC BY 4.0 proposal was rejected and must not be applied to first-party packages.
 
-Recommend **Creative Commons Attribution 4.0 International (CC BY 4.0)** for
-AgentGrid Editorial instruction packages that pass the publication gates. This
-supports use, adaptation, redistribution and public forks, including commercial
-reuse, with attribution, a license link and identification of changes. These
-freedoms cannot be revoked from compliant recipients after publication. The
-[official deed](https://creativecommons.org/licenses/by/4.0/) summarizes the
-[legal code](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+The AgentGrid Internal Use and Hosted Fork License 1.0 allows personal and
+commercial workflow use, copying into supported platforms and internal adaptation.
+It expressly allows attributed public forks **within AgentGrid** under the same
+conditions, preserving source, version and lineage. General republishing,
+redistribution, resale, sublicensing, competing dataset/directory scraping and
+commercial reproduction of the package library are not granted. Workflow outputs
+are not restricted by this instruction-package license; other rights still apply.
 
-Scope: only a released first-party package's specification, instructions and
-included examples bearing this explicit notice. Application source, private
-repository, service code, branding, private test evidence and site editorial
-articles are excluded. Community packages retain the terms deliberately selected
-by their authors. This proposal does not license third-party material supplied by
-users or grant rights in model providers' products.
+The versioned full text is `/licenses/agentgrid-internal-use-v1/`; the portable
+notice is in `src/domain/legal.ts`. All 36 unpublished first-party definitions now
+carry that exact notice. Recipe dependency digests were refreshed because the
+license is part of the exact tested specification. No host-test evidence or release
+was created by this update. Copy/export/fork actions still require publication.
 
-Example notice for Household Meal Planner 1.0.0:
+`license.public_fork_scope: "agentgrid-only"` is an optional backwards-compatible
+field. It is valid only for custom terms with use, modification and public forks
+permitted and general redistribution denied. Omission retains existing general
+fork semantics. Standard open licenses cannot carry this restriction. The database
+and Zod parser enforce the same boundary; forks retain their entire source license.
+Package export remains denied when general redistribution is denied.
 
-> Household Meal Planner, version 1.0.0, by AgentGrid Editorial. This agent
-> instruction package and its included examples are licensed under Creative
-> Commons Attribution 4.0 International:
-> https://creativecommons.org/licenses/by/4.0/ . Retain attribution, link to the
-> source package and license, and indicate changes when redistributing or adapting
-> it. No endorsement by AgentGrid is implied.
+Original community drafts still default to unselected permissions. Creators choose
+their own license. This license does not cover application code, branding, general
+editorial pages or third-party material. The application repository remains private.
+Selected future first-party releases can explicitly use another license without
+changing the data model. Never silently rewrite an immutable released version or
+its historical grant. Update terms with a new version/path when the grant changes.
 
-On approved publication, substitute the actual canonical source URL and retain
-this notice in copied/exported instructions and fork lineage. Do not display a
-public reuse grant on an unselected draft. A later package containing software or
-workflow code needs a separate appropriate license decision rather than blindly
-applying this content license to executable code.
-
-Alternative: a custom restrictive first-party license can reserve redistribution
-or commercial rights, but public forks would then need compatible explicit grants
-and users would face less familiar reuse rules. The current platform already
-supports explicit custom permissions; there is no need to change application
-architecture whichever option is selected.
+Operator identity is centralized separately from each historical license notice.
+A future incorporation/transfer needs a new operator configuration and appropriate
+notices; it must not retroactively replace the named grantor in an old license.

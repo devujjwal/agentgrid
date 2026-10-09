@@ -52,6 +52,9 @@ export function attributedInstructionText(resource: PublicResource, platformSlug
     `Source: https://agentgrid.me/agents/${spec.identity.slug}/`,
     `License: ${spec.license.identifier}`,
     spec.license.statement,
+    ...(spec.license.public_fork_scope === 'agentgrid-only'
+      ? ['Public fork scope: within AgentGrid only. No general redistribution grant.']
+      : []),
     ...(spec.license.url ? [`License details: ${spec.license.url}`] : []),
     ...resource.lineage.map(
       (source) =>

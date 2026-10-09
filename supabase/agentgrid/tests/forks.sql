@@ -25,12 +25,30 @@ insert into public.agentgrid_agents(id,slug,owner_id) values
 insert into public.agentgrid_agent_versions(id,agent_id,version,specification,editorial,category_slug,submitted_by) values
  ('30000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000001','1.0.0',
  jsonb_set(jsonb_set(current_setting('agentgrid.fixture_specification')::jsonb,'{identity,slug}','"fixture-source"'),'{license}',
- '{"identifier":"CC-BY-4.0","statement":"Synthetic license for isolated acceptance only.","permissions":{"use":true,"modify":true,"redistribute":true,"public_fork":true}}'),
+ '{"identifier":"custom","statement":"Synthetic hosted-only license for isolated acceptance only.","public_fork_scope":"agentgrid-only","permissions":{"use":true,"modify":true,"redistribute":false,"public_fork":true}}'),
  '{"private_editorial":"must not transfer"}','productivity','10000000-0000-4000-8000-000000000001');
 insert into public.agentgrid_submissions(version_id,state,reviewed_by,reviewed_at) values
  ('30000000-0000-4000-8000-000000000001','approved','10000000-0000-4000-8000-000000000003',now());
 insert into public.agentgrid_releases(agent_id,version_id,released_by,quality_manifest) values
  ('20000000-0000-4000-8000-000000000001','30000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000003','{}');
+-- The hosted exception must not bypass any other grant validation.
+do $$ declare definition jsonb; invalid jsonb;
+begin
+ select specification into definition from public.agentgrid_agent_versions where id='30000000-0000-4000-8000-000000000001';
+ perform public.agentgrid_check_resource(definition,'fixture-source');
+ foreach invalid in array array[
+   definition #- '{license,public_fork_scope}',
+   jsonb_set(definition,'{license,public_fork_scope}','null'),
+   jsonb_set(definition,'{license,public_fork_scope}','"everywhere"'),
+   jsonb_set(definition,'{license,permissions,use}','false'),
+   jsonb_set(definition,'{license,permissions,modify}','false'),
+   jsonb_set(definition,'{license,permissions,redistribute}','true'),
+   jsonb_set(definition,'{license,permissions,public_fork}','false'),
+   jsonb_set(definition,'{license,identifier}','"MIT"')
+ ] loop
+   perform pg_temp.agentgrid_expect_error(format('select public.agentgrid_check_resource(%L::jsonb,%L)',invalid,'fixture-source'),'23514');
+ end loop;
+end $$;
 set local role anon;
 select pg_temp.agentgrid_expect_error('select public.agentgrid_fork_source(''30000000-0000-4000-8000-000000000001'')','42501');
 select pg_temp.agentgrid_expect_error('select public.agentgrid_fork_agent(''30000000-0000-4000-8000-000000000001'',''fixture-fork'',''Fixture fork'')','42501');
@@ -50,6 +68,13 @@ select pg_temp.agentgrid_assert((select d.editorial='{}'::jsonb and d.specificat
  and a.forked_from_version_id='30000000-0000-4000-8000-000000000001'::uuid
  from public.agentgrid_drafts d join public.agentgrid_agents a on a.id=d.agent_id where a.slug='fixture-fork'),'private draft has immutable source and fresh identity, no copied editorial');
 select pg_temp.agentgrid_expect_error('select public.agentgrid_fork_agent(''30000000-0000-4000-8000-000000000001'',''fixture-source'',''Fixture Fork'')','23505');
+select pg_temp.agentgrid_assert((select d.specification#>>'{license,public_fork_scope}'='agentgrid-only'
+ and d.specification#>>'{license,permissions,redistribute}'='false'
+ from public.agentgrid_drafts d join public.agentgrid_agents a on a.id=d.agent_id where a.slug='fixture-fork'),'hosted fork preserves restricted distribution');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_save_draft(
+ (select id from public.agentgrid_agents where slug='fixture-fork'),1,
+ (select jsonb_set(d.specification #- '{license,public_fork_scope}','{license,permissions,redistribute}','true')
+ from public.agentgrid_drafts d join public.agentgrid_agents a on a.id=d.agent_id where a.slug='fixture-fork'))$s$,'23514');
 select pg_temp.agentgrid_assert((select count(*)=0 from public.picmagic_private_fixture),'fork grants no protected app access');
 reset role;
 select pg_temp.agentgrid_assert((select count(*)=1 from public.agentgrid_releases),'fork never publishes');

@@ -14,7 +14,7 @@
       {
         "agent_slug": "meeting-decision-ledger",
         "agent_version": "1.0.0",
-        "specification_sha256": "9f52c0db1d51b48b244e38b46df4593a7cf711e20a5896781bff909b30961436",
+        "specification_sha256": "a12684aebb4b985f3e44d7e917cc065f681f9fe383ea800a29afac4845aa466f",
         "title": "Extract what was actually agreed",
         "send": "Supply the redacted notes and ask for decisions, actions, owners, dates and evidence excerpts. Keep suggestions in a separate unresolved section.",
         "check": "Check each action against the original note. Confirm that an owner accepted it and that any deadline was explicitly agreed. Mark missing owners or dates as unresolved.",
@@ -23,7 +23,7 @@
       {
         "agent_slug": "reply-draft-assistant",
         "agent_version": "1.0.0",
-        "specification_sha256": "ea3951373f64c6f6b01e9e350777829163b0499e1ed754df44c5579ff715c2ec",
+        "specification_sha256": "48b6fbf52417bc225cf2d1712c5588c9b396b3581f31ec8bee3441e843e76be2",
         "title": "Draft the follow-up from checked facts",
         "send": "Provide the checked ledger, intended recipients, tone and purpose. Ask for an unsent message with confirmed actions and a separate request for unresolved details.",
         "check": "Compare every name, commitment and date with the ledger. Check that tentative proposals are questions rather than newly assigned work.",
@@ -59,7 +59,7 @@
       {
         "agent_slug": "campaign-message-planner",
         "agent_version": "1.0.0",
-        "specification_sha256": "d0447c65730c14aab534e25e8e72cb8df00559ab1ce133fe5c0790a4323ab375",
+        "specification_sha256": "2fd1d41f9b9c2ac3718beaf5b351a58958f95ca43b82d94ee617b048a6596c96",
         "title": "Establish the supported message",
         "send": "Supply the offer brief, intended audience and evidence. Ask for a central promise, audience concerns and supported calls to action.",
         "check": "Verify that benefits, comparisons and eligibility are present in the brief. Remove claims that need evidence you do not have.",
@@ -68,7 +68,7 @@
       {
         "agent_slug": "launch-message-adapter",
         "agent_version": "1.0.0",
-        "specification_sha256": "72d2d36613909653c90ab38dcfc78c7bbc7eda75f1cbfc265d84ad85720f312c",
+        "specification_sha256": "0e86b8bdccf72aa1d20bbabe4bfc032e43d8538c2a7b6f6caa0a31479ef44570",
         "title": "Adapt the brief by channel",
         "send": "Provide the approved launch brief and exact channel requirements. Request separate drafts that preserve dates, eligibility, feature status and caveats.",
         "check": "Compare every draft with the source brief. Count required limits where relevant and check that short versions do not imply a broader offer.",
@@ -104,7 +104,7 @@
       {
         "agent_slug": "research-question-scoper",
         "agent_version": "1.0.0",
-        "specification_sha256": "775afd76d897d84e957be93f2c302ada5bbf20172a8876ecfd5581b06f938a33",
+        "specification_sha256": "04233c8aa997ac89ef557c1f001713f1e2820a039359051d2ccf8acb91c29db5",
         "title": "Define the question and exclusions",
         "send": "Describe the topic, intended decision, relevant population or context and practical constraints. Ask for a bounded question, exclusions and an evidence-gathering plan.",
         "check": "Check that the proposed question answers your actual decision. Resolve ambiguous terms and confirm which contexts the work will exclude.",
@@ -113,7 +113,7 @@
       {
         "agent_slug": "source-evidence-mapper",
         "agent_version": "1.0.0",
-        "specification_sha256": "b0ba281fe91ddc83d49115a5d4f75c60b00319adf2c91f6c3c8c0ec0b90e3349",
+        "specification_sha256": "fa4d340114aad97f5e1bac962cb7e7154aa772d420afd4999af06e9abac935ba",
         "title": "Map claims to the supplied sources",
         "send": "Provide the reviewed question and labelled excerpts. Ask for claims, supporting or conflicting evidence, source identifiers and unresolved gaps.",
         "check": "Open the original sources for important claims. Check that excerpts support the wording and that disagreements are not collapsed into a false consensus.",
@@ -149,7 +149,7 @@
       {
         "agent_slug": "product-listing-auditor",
         "agent_version": "1.0.0",
-        "specification_sha256": "a2fb063b98ddccee1d78fa1555b88552aeb55957c78e7a5fefe770d15880b251",
+        "specification_sha256": "3107f0f344bec7a53f235797d33523165761e638e584c03bac7583bf35d574e4",
         "title": "Audit the listing against the source sheet",
         "send": "Supply the attribute sheet and draft listing. Ask for missing buyer information, contradictions and unsupported claims, each tied to the supplied facts.",
         "check": "Verify measurements, included items and capability claims against the approved sheet. Resolve contradictions with the product owner instead of selecting a convenient answer.",
@@ -158,7 +158,7 @@
       {
         "agent_slug": "product-faq-grounder",
         "agent_version": "1.0.0",
-        "specification_sha256": "1a754b4ee62f0fc97a430b72ec2eafe574b0cfec36d738b907be0253282f4580",
+        "specification_sha256": "533b622b5c50dfc72f55cbb7c9af723d33f3153f7c867d423f2db95b2b5ee51b",
         "title": "Answer questions with the approved facts",
         "send": "Provide the corrected source sheet, approved policies and customer questions. Request concise answers with evidence references and explicit unknowns.",
         "check": "Check each answer against the correct specification or policy version. Reject invented guarantees, inferred compatibility and unstated return rights.",
@@ -194,7 +194,7 @@
       {
         "agent_slug": "flashcard-quality-designer",
         "agent_version": "1.0.0",
-        "specification_sha256": "9925e814723d93c7b858f2cc0a31444e6eb68ec382caf4392704765109b592a8",
+        "specification_sha256": "7dbafbaa13932d9e5d67682403c039c1c78ffc3dd7c343fadfe89c5cce806d34",
         "title": "Build a small, answerable set",
         "send": "Provide the lesson and learning goal. Ask for a bounded number of cards, each testing one idea with an answer and source anchor.",
         "check": "Check each answer against the lesson. Split overloaded questions and remove cards that depend on facts absent from the source.",
@@ -203,7 +203,7 @@
       {
         "agent_slug": "retrieval-study-coach",
         "agent_version": "1.0.0",
-        "specification_sha256": "1f60486557e9754118c55513ee79d87bac16eba628cffe3bf4936f5ca7c9ffd2",
+        "specification_sha256": "17ba92f78374343e4c243cbe3c9e46eb51ace21a23b2bd64348e5474a668700e",
         "title": "Practice and inspect the specific gaps",
         "send": "Provide the lesson, checked questions and learner context. Request one question at a time, with feedback after an attempt rather than immediate answer disclosure.",
         "check": "Check whether feedback addresses the learner’s actual answer and cites the lesson correctly. Distinguish a wording difference from a conceptual mistake.",
@@ -239,7 +239,7 @@
       {
         "agent_slug": "weekly-capacity-planner",
         "agent_version": "1.0.0",
-        "specification_sha256": "2c43745197f0211330d9b04a520b26cb8836d993d98601fe5aeeeb386eddfeb1",
+        "specification_sha256": "b29e9d4559fe7dc41b35720b5d1c0837e50c2c9e9c4253af00b517c9adbe8784",
         "title": "Check the available time",
         "send": "Supply fixed commitments, available time and task estimates for the bounded planning period. Ask for explicit arithmetic, buffers and overcommitment before allocating optional work.",
         "check": "Recalculate the capacity totals. Check that buffers are not counted twice and that missing estimates are labelled rather than guessed.",
@@ -248,7 +248,7 @@
       {
         "agent_slug": "household-chore-coordinator",
         "agent_version": "1.0.0",
-        "specification_sha256": "80d47ab37060b02d7f7c9cf88e7c3bab5ad40ec7e97946e684b5a97d13f05580",
+        "specification_sha256": "32b75c7e1f3a67d441e6751ef0427940f2bafa38687c5781f8d12d8b0a00ed72",
         "title": "Propose a rota for review",
         "send": "Provide agreed chores, durations, availability, preferences and non-negotiable constraints. Ask for an explicit assignment proposal and total workload per person.",
         "check": "Check every assignment against availability and agreement. Compare totals without treating equal minutes as the only possible definition of fairness.",

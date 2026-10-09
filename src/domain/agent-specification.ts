@@ -27,6 +27,9 @@ export const PackageLicenseSchema = z
     ]),
     statement: text(24, 1600),
     url: httpsUrl.optional(),
+    // Omission preserves the existing general redistribution/fork contract.
+    // This explicit exception grants hosted forks without off-site distribution.
+    public_fork_scope: z.literal('agentgrid-only').optional(),
     permissions: z.strictObject({
       use: z.boolean(),
       modify: z.boolean(),
@@ -36,6 +39,16 @@ export const PackageLicenseSchema = z
   })
   .superRefine((license, context) => {
     const permissions = license.permissions;
+    if (
+      license.public_fork_scope &&
+      (license.identifier !== 'custom' || !permissions.public_fork || permissions.redistribute)
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['public_fork_scope'],
+        message:
+          'AgentGrid-only forks require custom terms, a fork grant and no general redistribution grant.',
+      });
     if (license.identifier === 'unselected' && Object.values(permissions).some(Boolean))
       context.addIssue({
         code: 'custom',
@@ -53,12 +66,17 @@ export const PackageLicenseSchema = z
       });
     if (
       permissions.public_fork &&
-      !(permissions.use && permissions.modify && permissions.redistribute)
+      !(
+        permissions.use &&
+        permissions.modify &&
+        (permissions.redistribute || license.public_fork_scope === 'agentgrid-only')
+      )
     )
       context.addIssue({
         code: 'custom',
         path: ['permissions', 'public_fork'],
-        message: 'Public forks require use, modification and redistribution permissions.',
+        message:
+          'Public forks require use, modification and either redistribution or explicit AgentGrid-only fork permission.',
       });
     if (
       ['CC-BY-4.0', 'CC0-1.0', 'MIT'].includes(license.identifier) &&
