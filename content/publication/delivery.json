@@ -1,14 +1,20 @@
 {
   "contract_version": "0.1",
-  "source_revision": 21,
-  "captured_at": "2026-10-09T20:18:56.973Z",
-  "catalogue_sha256": "97fd32772d5c93334375527ef9ae2ed0c8392def4c0281354483293a36a3b431",
+  "source_revision": 27,
+  "captured_at": "2026-10-09T21:06:00.285Z",
+  "catalogue_sha256": "7ff6ba029a8dbd5b2141e8cbffa0be95ad39a99aea6133e428f8ce35008d3798",
   "resources": [
     {
       "resourceId": "125ccdd9-9e4b-44bb-a1d5-35a3f7278a62",
       "versionId": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
       "slug": "launch-message-adapter",
       "tag": "1325c94a3c39db02eb45f69355596d96d648fb9012207a0ad4bf6e505fd51c09"
+    },
+    {
+      "resourceId": "1a7a31ba-0815-49ca-bec2-4fb3580ba730",
+      "versionId": "1e904283-9350-4fe8-a990-86856c8c85d3",
+      "slug": "configuration-change-reviewer",
+      "tag": "d6ae6ca6d5b41135963dde2b3d5c11cb9103274a3fe2c47c2a1480f270fccaa5"
     },
     {
       "resourceId": "1d59c22b-af57-477f-a2f4-d40421f1fdfb",
@@ -21,6 +27,18 @@
       "versionId": "5dcee649-df71-4b60-af21-3084407564b7",
       "slug": "weekly-capacity-planner",
       "tag": "61e53ca32aaf40c1d06db4c5c8fcc1d4d0666abfe3fda9e56b80575831bb64d8"
+    },
+    {
+      "resourceId": "2ee5952d-5451-4712-b27c-47e656ddbf24",
+      "versionId": "c0c8e4ac-2959-49f1-8d3f-250f780f11de",
+      "slug": "sop-gap-reviewer",
+      "tag": "404aff5d31f7027f12d7a1b980cd3b7994129a5265e4d5ae930ef152a377a180"
+    },
+    {
+      "resourceId": "39866b1c-490c-47fa-9d47-0298342e87b2",
+      "versionId": "1bab9fb9-73fc-4ca7-9367-bab9bd3a5b16",
+      "slug": "search-snippet-claim-reviewer",
+      "tag": "115f10d9886c4508df161b681df3fc432eb943e05f634114b454023150c9cabb"
     },
     {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
