@@ -21,7 +21,10 @@ export async function generateMetadata({
     title: `${guide.title} — AgentGrid`,
     description: guide.summary,
     alternates: { canonical: learningPath(slug) },
-    robots: { index: false, follow: false },
+    robots: {
+      index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+      follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    },
     openGraph: {
       images: [socialImage],
       type: 'article',

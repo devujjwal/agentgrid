@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   description:
     'Connect a concrete problem to a sequence of agent resources, with explicit inputs, human review and handoff checkpoints.',
   alternates: { canonical: '/recipes/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 export default async function RecipesPage() {
   const documents = await recipeDocuments();

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LegalPage } from '../../components/legal/LegalPage';
 import { legalOperator } from '../../domain/legal';
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: 'Contact the operator — AgentGrid',
   description:
     'Contact Ujjwal Paul, the individual operator of AgentGrid in India, about support, privacy, rights, package permissions or community moderation.',

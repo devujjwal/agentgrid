@@ -5,7 +5,10 @@ export const metadata: Metadata = {
   description:
     'Compare how to bring agent instructions into ChatGPT, Claude and Gemini, including setup, permission boundaries and platform-specific limitations.',
   alternates: { canonical: '/platforms/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 export default function Page() {
   return <ConnectionIndex kind="platform" />;

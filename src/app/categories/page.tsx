@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   description:
     'Choose a useful starting point across work, learning and everyday life. Category guides explain suitable tasks, required inputs and how to check the result.',
   alternates: { canonical: '/categories/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 export default function CategoriesPage() {
   return (
