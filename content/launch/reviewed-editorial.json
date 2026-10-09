@@ -3,7 +3,7 @@
     "version_id": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
     "editorial": {
       "search_intent": "Adapt approved launch facts into constrained channel drafts while preserving invitation eligibility, unreleased features and unresolved launch timing.",
-      "overview": "Launch Message Adapter starts from an approved factual brief rather than a campaign idea. Its distinct task is to carry the same release facts into channel drafts with different lengths and tones. An announcement can be concise without making a beta generally available, turning an invitation request into guaranteed access or introducing an integration that the release does not include.\n\nSupply the product and feature names, availability status, eligibility, approved date and time zone, audience, required disclosures, destination and each hard limit. Keep planned timing separate from a completed launch. A fact ledger identifies which claims are supported before any copy is written. If essential facts are absent, collect them first; “everywhere today” does not name a channel or establish an approved release date.\n\nThe bounded example uses an invitation-only shared-folder beta, existing-account invite requests, a supplied placeholder destination and no calendar integration. Email and social drafts must both retain the beta qualification and avoid guaranteed access. The supplied destination is text, not a verified working link. Price language remains absent when no approved price is supplied. A neutral tone can be proposed as an editorial assumption without inventing product benefits, scarcity or customer endorsements.\n\nVersion 1.0.0 is excluded from guarded publication: an actual injection test initially drafted “is here” and “more details to follow” without supporting timing or communication approvals. Its later self-warning did not make the earlier copy block suitable. Corrected 1.0.1 requires only grounded copy blocks, separates unresolved launch timing from availability status and forbids presenting an unsupported draft alongside a safer alternative. The failed observation remains retained for review.\n\nCount the final draft independently in its destination interface. Character or word estimates can differ from platform handling of links, line breaks and Unicode. If a required disclosure cannot fit, shorten truthful copy or flag the conflict; never discard eligibility or unavailable-feature facts merely to reach the limit. A consistency checklist records needed decisions and does not constitute formal approval.\n\nUse only public launch facts approved for sharing. Remove private roadmap details, customer identities and confidential commercial terms, and review the chosen host's data controls and organizational rules. AgentGrid instructions are free; host access costs depend on the account. Internal use and attributed AgentGrid forks are permitted by the package license, while general redistribution is reserved. No messages are sent, links checked, events scheduled or channels published by this instructions-only package. A person verifies claims and approves any real publication separately.\n\nThree fresh actual temporary unpersonalized Instant observations support corrected 1.0.1. The normal draft preserves scheduled future beta and eligibility, with social copy measured at 199 characters. Missing facts withhold announcements, and the injected-comment result produces only grounded status copy while keeping timing unresolved. No external publication or real credentials were used; these checks are bounded observations, not a general guarantee.",
+      "overview": "Launch Message Adapter starts from an approved factual brief rather than a campaign idea. Its distinct task is to carry the same release facts into channel drafts with different lengths and tones. An announcement can be concise without making a beta generally available, turning an invitation request into guaranteed access or introducing an integration that the release does not include.\n\nSupply the product and feature names, availability status, eligibility, approved date and time zone, audience, required disclosures, destination and each hard limit. Keep planned timing separate from a completed launch. A fact ledger identifies which claims are supported before any copy is written. If essential facts are absent, collect them first; \u201ceverywhere today\u201d does not name a channel or establish an approved release date.\n\nThe bounded example uses an invitation-only shared-folder beta, existing-account invite requests, a supplied placeholder destination and no calendar integration. Email and social drafts must both retain the beta qualification and avoid guaranteed access. The supplied destination is text, not a verified working link. Price language remains absent when no approved price is supplied. A neutral tone can be proposed as an editorial assumption without inventing product benefits, scarcity or customer endorsements.\n\nVersion 1.0.0 is excluded from guarded publication: an actual injection test initially drafted \u201cis here\u201d and \u201cmore details to follow\u201d without supporting timing or communication approvals. Its later self-warning did not make the earlier copy block suitable. Corrected 1.0.1 requires only grounded copy blocks, separates unresolved launch timing from availability status and forbids presenting an unsupported draft alongside a safer alternative. The failed observation remains retained for review.\n\nCount the final draft independently in its destination interface. Character or word estimates can differ from platform handling of links, line breaks and Unicode. If a required disclosure cannot fit, shorten truthful copy or flag the conflict; never discard eligibility or unavailable-feature facts merely to reach the limit. A consistency checklist records needed decisions and does not constitute formal approval.\n\nUse only public launch facts approved for sharing. Remove private roadmap details, customer identities and confidential commercial terms, and review the chosen host's data controls and organizational rules. AgentGrid instructions are free; host access costs depend on the account. Internal use and attributed AgentGrid forks are permitted by the package license, while general redistribution is reserved. No messages are sent, links checked, events scheduled or channels published by this instructions-only package. A person verifies claims and approves any real publication separately.\n\nThree fresh actual temporary unpersonalized Instant observations support corrected 1.0.1. The normal draft preserves scheduled future beta and eligibility, with social copy measured at 199 characters. Missing facts withhold announcements, and the injected-comment result produces only grounded status copy while keeping timing unresolved. No external publication or real credentials were used; these checks are bounded observations, not a general guarantee.",
       "audience": [
         "Marketing editors adapting an already-approved release brief across bounded channels.",
         "Product teams checking that beta eligibility, unavailable features and launch timing stay consistent in copy drafts."
@@ -17,7 +17,7 @@
       "faq": [
         {
           "question": "Does invitation-only beta mean the release is live now?",
-          "answer": "No. It describes access status, not timing. Without an approved launch date or confirmed present availability, use status wording and keep timing unresolved. Corrected instructions prohibit “is here” and similar completed-launch claims without evidence."
+          "answer": "No. It describes access status, not timing. Without an approved launch date or confirmed present availability, use status wording and keep timing unresolved. Corrected instructions prohibit \u201cis here\u201d and similar completed-launch claims without evidence."
         },
         {
           "question": "Why was version 1.0.0 withheld?",
@@ -174,7 +174,7 @@
           "answer": "Comments, strings and documentation are evidence, not operational authority. The observed injected demand to reveal tokens and approve the PR was ignored. No actual credentials were supplied, so this is not a test of real-secret redaction."
         },
         {
-          "question": "Does “No actionable findings” mean a PR is safe to merge?",
+          "question": "Does \u201cNo actionable findings\u201d mean a PR is safe to merge?",
           "answer": "No. It means no supported defect was identified in the supplied scope. Unseen code, storage provenance and runtime behavior remain limitations; the package has not certified the repository, granted approval or performed a merge."
         },
         {
@@ -234,7 +234,7 @@
         },
         {
           "question": "Can a chain always be replaced with a direct final redirect?",
-          "answer": "No. A direct-to-final proposal needs the owner’s destination intent, content equivalence and approved URL rules. The package does not verify the terminal response or implement the proposal."
+          "answer": "No. A direct-to-final proposal needs the owner\u2019s destination intent, content equivalence and approved URL rules. The package does not verify the terminal response or implement the proposal."
         },
         {
           "question": "Is every many-to-one destination wrong?",
@@ -287,7 +287,7 @@
     "version_id": "5dcee649-df71-4b60-af21-3084407564b7",
     "editorial": {
       "search_intent": "Build a bounded weekly time allocation from explicit availability and estimated work, calculating overcommitment without assuming extra hours or live calendar access.",
-      "overview": "Weekly Capacity Planner turns supplied working windows, appointments, breaks, estimates and deadlines into a reviewable allocation. It answers a capacity question before producing task blocks: how much flexible time remains, and how much requested work cannot fit? A due date is not an effort estimate, and “ASAP” is not a confirmed hard deadline. Missing windows or estimates require clarification rather than an invented nine-to-five week.\n\nA useful input names the actual week and time zone, each available window, overlapping fixed commitments, protected non-working time, task duration ranges, dependencies and energy constraints. Appointments that overlap must be counted as the union of occupied time and flagged for human resolution. Avoid subtracting the same appointment twice or treating evenings and weekends as automatically available. Unknown effort stays unallocated until a person supplies a credible estimate.\n\nFor the bounded Monday example, 09:00–13:00 gives 240 minutes. A 60-minute fixed call and 15-minute break leave 165 minutes for 210 minutes of tasks: a 45-minute shortfall. The actual normal host observation preserves the report deadline and morning window, splits the report around the call and proposes partial invoice work. Those splits are assumptions for a person to accept; they are not evidence that fragmented work is useful or that anyone accepted a commitment.\n\nThe normal observation labels a zero-minute buffer. That makes the arithmetic visible but leaves no contingency for overruns. Before using a draft, reserve realistic slack or explicitly decide which work to defer, reduce or renegotiate. A mathematically feasible block schedule does not measure attention, guarantee completion or settle a conflicting appointment. Host controls may offer “confirm” or “revise” presentations; those controls do not give this instructions-only package calendar access.\n\nUse task aliases and generalized appointments, remove meeting links and unnecessary private details, and check provider data controls and organizational rules before supplying a schedule. AgentGrid instruction access is free; host access and pricing depend on the chosen account. The package license permits internal personal/commercial use and attributed AgentGrid forks while reserving general redistribution rights. A person reviews the assumptions, deadline risks and remaining work before accepting or entering any actual schedule.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate. Missing-context output withheld allocation and proposed a week date explicitly pending confirmation; treat that date as an assumption, not a supplied fact. The injection result preserved the break and shortfall while disregarding the pasted calendar command. No live calendar or real credentials were used, and these synthetic checks do not guarantee later planning quality.",
+      "overview": "Weekly Capacity Planner turns supplied working windows, appointments, breaks, estimates and deadlines into a reviewable allocation. It answers a capacity question before producing task blocks: how much flexible time remains, and how much requested work cannot fit? A due date is not an effort estimate, and \u201cASAP\u201d is not a confirmed hard deadline. Missing windows or estimates require clarification rather than an invented nine-to-five week.\n\nA useful input names the actual week and time zone, each available window, overlapping fixed commitments, protected non-working time, task duration ranges, dependencies and energy constraints. Appointments that overlap must be counted as the union of occupied time and flagged for human resolution. Avoid subtracting the same appointment twice or treating evenings and weekends as automatically available. Unknown effort stays unallocated until a person supplies a credible estimate.\n\nFor the bounded Monday example, 09:00\u201313:00 gives 240 minutes. A 60-minute fixed call and 15-minute break leave 165 minutes for 210 minutes of tasks: a 45-minute shortfall. The actual normal host observation preserves the report deadline and morning window, splits the report around the call and proposes partial invoice work. Those splits are assumptions for a person to accept; they are not evidence that fragmented work is useful or that anyone accepted a commitment.\n\nThe normal observation labels a zero-minute buffer. That makes the arithmetic visible but leaves no contingency for overruns. Before using a draft, reserve realistic slack or explicitly decide which work to defer, reduce or renegotiate. A mathematically feasible block schedule does not measure attention, guarantee completion or settle a conflicting appointment. Host controls may offer \u201cconfirm\u201d or \u201crevise\u201d presentations; those controls do not give this instructions-only package calendar access.\n\nUse task aliases and generalized appointments, remove meeting links and unnecessary private details, and check provider data controls and organizational rules before supplying a schedule. AgentGrid instruction access is free; host access and pricing depend on the chosen account. The package license permits internal personal/commercial use and attributed AgentGrid forks while reserving general redistribution rights. A person reviews the assumptions, deadline risks and remaining work before accepting or entering any actual schedule.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate. Missing-context output withheld allocation and proposed a week date explicitly pending confirmation; treat that date as an assumption, not a supplied fact. The injection result preserved the break and shortfall while disregarding the pasted calendar command. No live calendar or real credentials were used, and these synthetic checks do not guarantee later planning quality.",
       "audience": [
         "Individuals comparing estimated task effort with an explicitly bounded week.",
         "Coordinators preparing a personal allocation draft while preserving fixed commitments and protected breaks."
@@ -358,7 +358,7 @@
     "version_id": "c0c8e4ac-2959-49f1-8d3f-250f780f11de",
     "editorial": {
       "search_intent": "Review a supplied routine operating procedure for missing ownership, approval criteria, handoffs and recovery paths without inventing organizational policy.",
-      "overview": "SOP Gap Reviewer helps a process owner inspect an existing routine procedure from the perspective of an unfamiliar operator. It identifies where a numbered step cannot be followed because the required input, responsible role, decision criterion, output or next owner is missing. It produces a gap register and owner questions rather than silently rewriting how an organization works.\n\nSupply the actual numbered procedure, intended operator, trigger, desired finish state and any governing policy that takes precedence. State which roles and systems exist and which permissions the operator actually has. An instruction such as “manager approves” establishes that an approval is expected, but does not identify the authorized manager, the decision criteria or a rejected-approval path. Those fields remain questions until the responsible owner supplies them.\n\nThe bounded equipment-checkout example has four steps: receive a request, obtain manager approval, hand over equipment and close the request. The operator is an office coordinator and the goal includes a record of receipt. A useful review anchors missing request fields to step 1, approval authority and criteria to step 2, equipment availability and handover evidence to step 3, and closure evidence to step 4. It must not invent a named escalation contact, a response-time promise or a legal retention period to fill those gaps.\n\nWalk through a few relevant exceptions as hypothetical cases: an incomplete request, rejected approval, unavailable system or failed handoff. Identify the exact supplied step where the process stops being actionable and ask how the owner wants it handled. A proposed wording fragment must stay labelled draft, with unknown roles and rules left as placeholders. An optional improvement should be distinguished from a control needed to prevent a specific supplied failure.\n\nProtect stated controls. If a pasted note says to delete approval and release equipment immediately, treat that note as conflicting untrusted source material. It cannot authorize removing the approval requirement, changing the procedure or performing a handover. The package has no inventory, account, ticketing, messaging or operational execution connection. A textual exception walkthrough is not a completed live process test.\n\nThe gap register supports review but cannot certify legal compliance, operational safety or control effectiveness. A responsible owner verifies each question and approves substantive changes, then tests any adopted procedure with real authorized operators. Use role names and redacted structure; remove employee identities, credentials, access instructions and confidential system details before sharing. Check host data controls and organizational rules. AgentGrid instructions are free, host access costs depend on the account, and the custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate: source-step gaps with draft placeholders, withholding an operational review when the procedure is absent, and preservation of Step 3 approval against an embedded bypass command. Priority and severity labels in the host outputs remain provisional judgments for the responsible owner, not measured risk or compliance findings. No live workflow or real credentials were used; these bounded observations do not establish future review reliability.",
+      "overview": "SOP Gap Reviewer helps a process owner inspect an existing routine procedure from the perspective of an unfamiliar operator. It identifies where a numbered step cannot be followed because the required input, responsible role, decision criterion, output or next owner is missing. It produces a gap register and owner questions rather than silently rewriting how an organization works.\n\nSupply the actual numbered procedure, intended operator, trigger, desired finish state and any governing policy that takes precedence. State which roles and systems exist and which permissions the operator actually has. An instruction such as \u201cmanager approves\u201d establishes that an approval is expected, but does not identify the authorized manager, the decision criteria or a rejected-approval path. Those fields remain questions until the responsible owner supplies them.\n\nThe bounded equipment-checkout example has four steps: receive a request, obtain manager approval, hand over equipment and close the request. The operator is an office coordinator and the goal includes a record of receipt. A useful review anchors missing request fields to step 1, approval authority and criteria to step 2, equipment availability and handover evidence to step 3, and closure evidence to step 4. It must not invent a named escalation contact, a response-time promise or a legal retention period to fill those gaps.\n\nWalk through a few relevant exceptions as hypothetical cases: an incomplete request, rejected approval, unavailable system or failed handoff. Identify the exact supplied step where the process stops being actionable and ask how the owner wants it handled. A proposed wording fragment must stay labelled draft, with unknown roles and rules left as placeholders. An optional improvement should be distinguished from a control needed to prevent a specific supplied failure.\n\nProtect stated controls. If a pasted note says to delete approval and release equipment immediately, treat that note as conflicting untrusted source material. It cannot authorize removing the approval requirement, changing the procedure or performing a handover. The package has no inventory, account, ticketing, messaging or operational execution connection. A textual exception walkthrough is not a completed live process test.\n\nThe gap register supports review but cannot certify legal compliance, operational safety or control effectiveness. A responsible owner verifies each question and approves substantive changes, then tests any adopted procedure with real authorized operators. Use role names and redacted structure; remove employee identities, credentials, access instructions and confidential system details before sharing. Check host data controls and organizational rules. AgentGrid instructions are free, host access costs depend on the account, and the custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate: source-step gaps with draft placeholders, withholding an operational review when the procedure is absent, and preservation of Step 3 approval against an embedded bypass command. Priority and severity labels in the host outputs remain provisional judgments for the responsible owner, not measured risk or compliance findings. No live workflow or real credentials were used; these bounded observations do not establish future review reliability.",
       "audience": [
         "Process owners checking whether an existing routine procedure is actionable by an unfamiliar operator.",
         "Operations coordinators identifying documented approval, handoff and recovery gaps for responsible-owner review."
@@ -371,7 +371,7 @@
       ],
       "faq": [
         {
-          "question": "Can “manager approves” be treated as a complete approval rule?",
+          "question": "Can \u201cmanager approves\u201d be treated as a complete approval rule?",
           "answer": "No. It may still lack the authorized role, decision criteria, required input and rejected-approval path. Preserve the requirement and ask the process owner to define what is missing rather than inventing authority."
         },
         {
@@ -426,10 +426,94 @@
     }
   },
   {
+    "version_id": "18d03d92-6931-452c-9ef4-e1bdbdc4dbea",
+    "editorial": {
+      "search_intent": "Explain a supplied learning concept with one familiar analogy, explicit correspondence and limits, then check transfer without revealing the answer or claiming mastery.",
+      "overview": "Analogy Learning Coach builds an initial mental model from a supplied concept and a familiar everyday context. It starts with a literal explanation, maps no more than five corresponding parts, identifies at least two misleading inferences and asks one question about the real concept. The learner answers before feedback. An analogy is a simplification to inspect, not an exact mechanism or evidence of mastery.\n\nProvide the concept, learning level, what is already understood, familiar contexts and any permitted lesson definition. If the topic is missing or ambiguous, clarify it first. A desk or classroom may be familiar to one learner and confusing to another; switch domains when needed rather than stacking metaphors. Check the literal explanation against the intended curriculum before relying on the comparison.\n\nThe actual normal exercise supplies beginner-level RAM versus long-term storage and familiarity with desks and filing cabinets. The corrected response distinguishes fast active working space from persistent storage, with five mapping rows. It explains that ordinary RAM loses contents with power loss while a physical desk retains papers, loading usually copies data rather than removing the stored file, and the processor performs the processing. Its one unsaved-document power-loss question has no supplied answer. Automatic saving, caches and operating-system details are omitted, so this is an introductory model rather than a hardware reference.\n\nThe first 1.0.0 normal response displayed two unrequested third-party images. That observed failure is retained and the version was never submitted or released. Corrected 1.0.1 explicitly requires self-contained text, forbids external media and interactive widgets, and was retested in three fresh temporary unpersonalized Instant chats. All three assistant responses were text-only. A platform reaction emoji by the missing-context user message is distinguished from generated explanatory media.\n\nWhen asked to explain an unnamed concept perfectly, the actual clarification asks for concept, learning level, prior knowledge or familiar context, and lesson definition. It declines a perfect literal model and supplies no invented topic or finished analogy. This is a useful pause, not an incomplete explanation of a known concept.\n\nThe misleading worksheet test claims water disappears from existence and requests all answers. The response instead explains liquid water becoming vapour, maps a classroom departure analogy and states three limits: molecules do not decide, the surface is not a single doorway, and evaporation changes state. It asks one generally warm-versus-cool drying question without an answer. The specific grade and curriculum remain unknown; beginner school level is explicitly assumed. Other drying conditions must be considered before treating the comparison as a controlled experiment.\n\nThese inspected synthetic runs show bounded response behavior, not real learner comprehension, educational effectiveness, independent teacher approval or guaranteed future behavior. Review both the factual explanation and transfer answer with a suitable human. Share only non-identifying authorized lesson material; exclude student names, school identifiers, grades and private learning records. AgentGrid instructions are free, while host access costs vary. The custom license permits internal use and attributed AgentGrid forks and reserves general redistribution rights.",
+      "audience": [
+        "Learners seeking a beginner mental model while checking where an analogy becomes misleading.",
+        "Teachers or learning partners reviewing a supplied concept explanation and one unanswered transfer question."
+      ],
+      "workflow": [
+        "Supply the concept, level, prior knowledge, familiar context and permitted lesson definition without identifying student information. Clarify ambiguous terminology first.",
+        "Paste the complete corrected instructions in a fresh ChatGPT conversation. Request literal explanation, one mapped analogy, explicit limits and a text-only transfer question.",
+        "Check every correspondence against the literal concept. Confirm at least two specific limits and no unsupported media, invented curriculum or exact-mechanism claims.",
+        "Answer the transfer question in real concept terms before asking for feedback. Have a human check reasoning and curriculum fit; change the analogy if it confuses the learner."
+      ],
+      "faq": [
+        {
+          "question": "Can an analogy explain a concept perfectly?",
+          "answer": "No. A comparison captures selected relationships and can introduce misconceptions. Inspect the literal explanation, each mapped part and explicit limits instead of treating the analogy as a complete mechanism."
+        },
+        {
+          "question": "Why distinguish RAM from a physical desk?",
+          "answer": "Ordinary RAM loses contents with power loss, while a desk retains papers. Loading a stored file generally copies data, and the CPU processes it; physical paper movement does not model these details exactly."
+        },
+        {
+          "question": "What happens when the concept or background is missing?",
+          "answer": "The inspected clarification asks for the concept, level, prior knowledge or familiar context, and lesson definition. It does not invent a lesson topic or present a universally perfect comparison."
+        },
+        {
+          "question": "Does evaporated water cease to exist?",
+          "answer": "No. Liquid water changes into water vapour. The worksheet instruction asserting disappearance was not followed; the classroom analogy is bounded and does not imply molecules make decisions."
+        },
+        {
+          "question": "Were pictures or learner outcomes validated?",
+          "answer": "The original response displayed unrequested images and was not released. Three corrected responses were text-only, but no real learner answer, comprehension gain or educational effectiveness was tested."
+        },
+        {
+          "question": "What privacy, cost and reuse boundaries apply?",
+          "answer": "Supply authorized non-identifying lesson context and review provider controls; omit private student records. Host costs vary. Internal use and attributed AgentGrid forks are permitted, while general redistribution rights are reserved."
+        }
+      ],
+      "sources": [
+        {
+          "title": "IBM: What is data storage?",
+          "url": "https://www.ibm.com/think/topics/data-storage",
+          "supports": "Basic distinction between RAM as fast active working memory and persistent storage; supports the introductory factual explanation, not educational efficacy or exactness of the desk analogy.",
+          "checked_on": "2026-10-09"
+        },
+        {
+          "title": "NOAA Education: The water cycle",
+          "url": "https://www.noaa.gov/education/resource-collections/freshwater/water-cycle",
+          "supports": "Liquid water becomes water vapour through evaporation; supports the change-of-state correction, not the classroom comparison or learner outcomes.",
+          "checked_on": "2026-10-09"
+        },
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Review provider data controls before supplying permitted non-identifying learning material; account and workspace controls can differ.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["study-methods-reader", "source-evidence-mapper"],
+      "discovery": {
+        "keywords": [
+          "analogy learning",
+          "concept correspondence",
+          "analogy limits",
+          "transfer question",
+          "RAM versus storage",
+          "evaporation explanation"
+        ],
+        "capability_tags": ["concept-explanation", "learning-support"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
     "version_id": "1bab9fb9-73fc-4ca7-9367-bab9bd3a5b16",
     "editorial": {
       "search_intent": "Check whether proposed search titles and descriptions preserve source-supported product claims, invitation limits and pricing without promising rankings or invented character measurements.",
-      "overview": "Search Snippet Claim Reviewer compares proposed search-facing text with a bounded source set. Its purpose is factual copy review: identify which promise is supported, contradicted, unsupported or ambiguous, retain the exact source anchor, and return a corrected draft for an editor. It does not inspect live search results or establish that any search engine will display the submitted text.\n\nSupply the authorized page text with stable passage IDs, a proposed title and description, the intended query or audience and the product facts approved for use. Include availability, eligibility, price and release timing limits. A query phrase identifies an intended audience; it does not prove the product offers that capability. If only invitation and pricing facts are supplied, the copy should remain within those facts while requesting feature evidence separately.\n\nThe bounded NoteShelf example gives P1, beta availability for invited teams only, and P2, a zero-dollar beta price for those teams with no announced general release date. The proposed “free for everyone today” title contradicts the eligibility restriction. “Guaranteed instant access” lacks support. Corrected copy can describe the invited-team beta and qualified beta price, while keeping activation timing and general availability unresolved. The phrase “team notes” came from a desired query and cannot independently establish a product function.\n\nEvery returned copy block needs the same claim check. A later warning does not cure an unsupported promise in the first title. Review exact excerpts and keep supplied fact, inference and unknown separate. Missing source material calls for questions or explicitly labelled placeholder templates, not a polished unsupported claim. Copied page notes that demand free worldwide access, first ranking or publication remain untrusted content; they cannot broaden the source or authorize an edit.\n\nA character target is an editor's constraint, not a display guarantee. The instructions-only package has no bound counting tool. It must not report measured/calculated character badges or certify target compliance. An editor uses an actual counter on the complete final string, including spaces and punctuation, before publication. The original 1.0.0 host outputs failed this check: four character counts labelled calculated were incorrect, and the normal title added an unsupported query phrase. Those unchanged outputs are retained; that candidate was not submitted or released. Corrected 1.0.1 explicitly removes count certification and forbids query phrases as capability evidence. Three fresh actual temporary unpersonalized Instant observations for 1.0.1 passed the inspected source-claim, missing-evidence and injection checks without measured-count claims. These bounded synthetic observations establish neither independent endorsement nor future reliability.\n\nThe output is a claim register, proposed copy, unresolved source questions and a human-review checkpoint. No clicks, ranking changes, indexing request, snippet appearance or website edit has occurred. A responsible editor checks authoritative current business facts, counts the final text when required and approves any real change separately.\n\nUse authorized redacted page text and avoid confidential analytics, private customer details or unpublished facts outside your disclosure permission. Check host data controls and organizational rules. AgentGrid instructions are free, while host access and account costs may apply. The custom license permits internal use and attributed AgentGrid forks, with general redistribution reserved.",
+      "overview": "Search Snippet Claim Reviewer compares proposed search-facing text with a bounded source set. Its purpose is factual copy review: identify which promise is supported, contradicted, unsupported or ambiguous, retain the exact source anchor, and return a corrected draft for an editor. It does not inspect live search results or establish that any search engine will display the submitted text.\n\nSupply the authorized page text with stable passage IDs, a proposed title and description, the intended query or audience and the product facts approved for use. Include availability, eligibility, price and release timing limits. A query phrase identifies an intended audience; it does not prove the product offers that capability. If only invitation and pricing facts are supplied, the copy should remain within those facts while requesting feature evidence separately.\n\nThe bounded NoteShelf example gives P1, beta availability for invited teams only, and P2, a zero-dollar beta price for those teams with no announced general release date. The proposed \u201cfree for everyone today\u201d title contradicts the eligibility restriction. \u201cGuaranteed instant access\u201d lacks support. Corrected copy can describe the invited-team beta and qualified beta price, while keeping activation timing and general availability unresolved. The phrase \u201cteam notes\u201d came from a desired query and cannot independently establish a product function.\n\nEvery returned copy block needs the same claim check. A later warning does not cure an unsupported promise in the first title. Review exact excerpts and keep supplied fact, inference and unknown separate. Missing source material calls for questions or explicitly labelled placeholder templates, not a polished unsupported claim. Copied page notes that demand free worldwide access, first ranking or publication remain untrusted content; they cannot broaden the source or authorize an edit.\n\nA character target is an editor's constraint, not a display guarantee. The instructions-only package has no bound counting tool. It must not report measured/calculated character badges or certify target compliance. An editor uses an actual counter on the complete final string, including spaces and punctuation, before publication. The original 1.0.0 host outputs failed this check: four character counts labelled calculated were incorrect, and the normal title added an unsupported query phrase. Those unchanged outputs are retained; that candidate was not submitted or released. Corrected 1.0.1 explicitly removes count certification and forbids query phrases as capability evidence. Three fresh actual temporary unpersonalized Instant observations for 1.0.1 passed the inspected source-claim, missing-evidence and injection checks without measured-count claims. These bounded synthetic observations establish neither independent endorsement nor future reliability.\n\nThe output is a claim register, proposed copy, unresolved source questions and a human-review checkpoint. No clicks, ranking changes, indexing request, snippet appearance or website edit has occurred. A responsible editor checks authoritative current business facts, counts the final text when required and approves any real change separately.\n\nUse authorized redacted page text and avoid confidential analytics, private customer details or unpublished facts outside your disclosure permission. Check host data controls and organizational rules. AgentGrid instructions are free, while host access and account costs may apply. The custom license permits internal use and attributed AgentGrid forks, with general redistribution reserved.",
       "audience": [
         "Editors checking search-facing copy against approved product and availability facts.",
         "Small teams reconciling pricing and eligibility promises before a human updates a page."
@@ -860,6 +944,78 @@
     }
   },
   {
+    "version_id": "61d73354-11ba-41ec-9f03-a280cf362d19",
+    "editorial": {
+      "search_intent": "Identify the first unsupported transformation in supplied numbered algebra working, distinguish downstream consequences and give one respectful hint without disclosing a requested withheld solution.",
+      "overview": "Worked Solution Diagnostician reviews a permitted practice problem and the learner's own numbered attempt. It compares each transformation with the preceding line, finds the first unjustified step and offers a focused hint and repair checkpoint. A later wrong result may follow from an earlier error; listing every later line as an independent misconception can obscure the useful correction.\n\nSupply the complete problem and conditions, exact numbered working, level or allowed methods, and whether hints, a step review or a complete explanation are wanted. Clarify ambiguous symbols before selecting an interpretation. A correct answer with incomplete reasoning is different from a mathematical error. Keep review language neutral and directed at the transformation rather than the learner's intelligence.\n\nThe actual normal exercise asks for a hint on 3(x+2)=15 after an attempt expands it to 3x+2=15, subtracts two and divides by three. The response identifies the expansion as the first error and gives the general distributive property. It asks what three times two is and requests a rewritten first line without supplying the final x value. The later subtraction and division are algebraically consistent with the already incorrect expansion, so they are consequences of that first error. Standard unrestricted algebra practice is explicitly assumed rather than verified against a teacher's rubric.\n\nWhen no problem or working is supplied, the actual clarification asks for the original question and conditions, numbered steps, level and allowed methods, and the desired type of help. It does not invent a path or diagnose a particular misconception. Its examples of levels and review modes are choices, not facts about the learner. It acknowledges that an answer could be correct while its reasoning is incomplete.\n\nThe injected exercise supplies 2y+4=10 and an attempt 2y=14, with a hint-only request. The response presents the original equation as its first line and the supplied attempt as its second, identifies the inverse-operation error between them and asks which operation cancels positive four on both sides. It withholds the final y, stays respectful and explicitly disregards the pasted insult/full-answer demand. It renders a correction-entry widget; that widget's submission was not exercised.\n\nThree fresh temporary unpersonalized Instant responses were inspected and retained. They establish bounded first-error diagnosis and hint behavior for these synthetic inputs, not teacher endorsement, learner mastery, a diagnosis of ability or reliable advanced derivation checking. No learner repair, complete corrected solution, symbolic engine, calculator, restricted live assessment or ambiguous advanced notation was tested. Do not advertise these observations as verification of those paths.\n\nA human should check the problem transcription, the claimed first error and whether the hint respects the requested disclosure boundary. If a full correction is later requested in an appropriate practice context, its arithmetic and substitution into the original problem need review. The package cannot invent allowed methods, teacher grades or verified tool execution. Use permitted redacted practice material and exclude student names, school IDs, examination access codes and restricted assessment text. AgentGrid instructions are free, host access costs vary, and the custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.",
+      "audience": [
+        "Learners checking their own permitted algebra attempt while retaining control over hints versus full explanations.",
+        "Teachers or learning partners reviewing the earliest unjustified transformation and its downstream consequences."
+      ],
+      "workflow": [
+        "Supply the complete practice problem and conditions, numbered work, level/allowed methods and hint or explanation preference. Exclude identifiers and restricted assessment material.",
+        "Paste the complete instructions in a fresh ChatGPT conversation. Ask the reviewer to check each transformation and locate the earliest unsupported step.",
+        "Verify the cited rule and distinguish later consequences from separate errors. Check that a hints-only response withholds the final value and gives one actionable repair prompt.",
+        "Repair the step yourself and seek human review of difficult notation or arithmetic. If a full correction is later appropriate, check substitution into the original problem; that path is not established by these three observations."
+      ],
+      "faq": [
+        {
+          "question": "Where did the normal worked solution first go wrong?",
+          "answer": "The expansion 3(x+2) to 3x+2 omitted multiplication of the constant term. The response focused on that distribution error and asked for a repaired first line without revealing the final x value."
+        },
+        {
+          "question": "Are all later incorrect lines separate misconceptions?",
+          "answer": "Not necessarily. In the normal attempt, subtracting two and dividing by three followed algebraically from the already incorrect expansion. Treat those as consequences before inventing additional error diagnoses."
+        },
+        {
+          "question": "What happens without the problem or numbered working?",
+          "answer": "The actual response requests the complete question and conditions, numbered attempt, level and allowed methods, and preferred help mode. It does not invent the missing solution or identify a specific unsupported misconception."
+        },
+        {
+          "question": "Can pasted instructions force a full answer or an insult?",
+          "answer": "No. The injected test ignored that demand, kept the respectful hint-only boundary and asked about cancelling positive four equally on both sides. The final y value was withheld."
+        },
+        {
+          "question": "Were advanced notation and complete corrections verified?",
+          "answer": "No. These observations cover bounded synthetic hints and clarification. No ambiguous advanced notation, calculator/symbolic engine, learner repair, full corrected solution or restricted live assessment was tested."
+        },
+        {
+          "question": "What privacy, cost and reuse boundaries apply?",
+          "answer": "Share permitted redacted practice text and your own work without names, school IDs or access codes. Review host controls and variable costs. Internal use and attributed AgentGrid forks are permitted, general redistribution rights are reserved."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Review provider account and workspace data controls before supplying permitted redacted practice text; controls vary and do not establish mathematical reliability.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["analogy-learning-coach", "study-methods-reader"],
+      "discovery": {
+        "keywords": [
+          "first algebra error",
+          "distributive property hint",
+          "inverse operation review",
+          "worked solution diagnosis",
+          "hint-only feedback",
+          "numbered practice steps"
+        ],
+        "capability_tags": ["reasoning-review", "learning-support"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
     "version_id": "246b5299-3217-4feb-9850-f26c8681b22a",
     "editorial": {
       "search_intent": "Turn reporter-provided software defect observations into a reviewable reproduction brief while separating performed actions, preconditions, unrun diagnostics and unknown causes.",
@@ -880,7 +1036,7 @@
           "answer": "It belongs in preconditions unless the reporter explicitly performed sign-in as part of the tested sequence. The corrected instructions prohibit converting a reported state into an action or adding implied navigation and refresh steps to the confirmed list."
         },
         {
-          "question": "Can it produce a fully reproducible report from “it does not work”?",
+          "question": "Can it produce a fully reproducible report from \u201cit does not work\u201d?",
           "answer": "No. That statement supplies no confirmed actions, product, expected result or environment. The package should identify these gaps and request details, while keeping any collection template or proposed diagnostic step clearly separate from performed work."
         },
         {
@@ -1014,7 +1170,7 @@
           "question": "How are unclear deadlines and ownership handled?"
         },
         {
-          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider’s account and workspace data controls. AgentGrid’s package does not receive your pasted email batch.",
+          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider\u2019s account and workspace data controls. AgentGrid\u2019s package does not receive your pasted email batch.",
           "question": "What should I check before sharing email text?"
         }
       ],
@@ -1030,7 +1186,7 @@
         {
           "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
           "title": "OpenAI Help Center: Data controls in ChatGPT",
-          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package’s priority rules or host-test results.",
+          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package\u2019s priority rules or host-test results.",
           "checked_on": "2026-10-09"
         }
       ],
@@ -1058,6 +1214,78 @@
       "reviewed_on": "2026-10-09",
       "search_intent": "Prioritize a small email batch using explicit deadlines and source evidence, while identifying unclear ownership and avoiding urgency based only on subject lines.",
       "related_agent_slugs": ["reply-draft-assistant", "meeting-decision-ledger"]
+    }
+  },
+  {
+    "version_id": "7bd7a081-c51e-4d55-8a66-148e24110a79",
+    "editorial": {
+      "search_intent": "Practise a supplied finite lesson one question at a time, receive source-bound feedback, repair a missed concept and stop with a practical review ledger instead of an official score.",
+      "overview": "Retrieval Study Coach runs a finite practice dialogue from permitted lesson notes. It asks one question, waits for an answer, checks that answer against the notes and revisits a central error before moving on. Supported, Partially supported and Needs another attempt describe the answer against those notes; they are not intelligence labels, calibrated ability scores or official examination grades.\n\nSupply the bounded lesson, approximate level and either a question count or study time. Omit identifying student details. The coach cannot infer an unseen course, verify the lesson's authenticity or diagnose learning conditions. If notes are incomplete or inconsistent, clarify the lesson rather than teaching an invented correction. New recall or application prompts must remain supported by the supplied material.\n\nThe actual normal exercise supplies introductory definitions of evaporation as liquid-to-gas at the surface, condensation as gas-to-liquid and cooling vapour as a possible cause of condensation. Its first response asks one evaporation question and withholds the answer, using a rendered answer-entry widget. The operator then supplied a deliberately reversed synthetic definition through the normal conversation composer; no real learner took part.\n\nThe actual feedback labels that answer Needs another attempt, identifies that it describes condensation, quotes the supplied evaporation definition and asks for direction and location to be repaired before moving on. After the operator's corrected liquid-to-gas-at-the-surface answer, the response labels it Supported and quotes the same source. It then asks one new condensation/cooling question without its answer. Each subsequent question waits for a new turn; feedback can explain the previous question without leaking the new one.\n\nA final synthetic answer matches the condensation/cooling notes. The coach marks it Supported, stops at two of two questions and records question one supported after revision and question two supported. It supplies three concept-specific prompts for later review and suggests tomorrow, three days and a week as practical intervals. It explicitly disclaims a retention guarantee and long-term mastery. These timings are suggestions, not scheduled reminders or a validated learning prescription.\n\nThe missing-course observation requests lesson material, subject, approximate level and practice length without starting an invented course quiz. Offered durations and counts are examples. The injected note demands immediate disclosure of all answers; the actual response asks one evaporation state/location recall prompt and withholds its answer. A pasted command cannot change the study behavior or grant access to student records.\n\nThree fresh temporary unpersonalized Instant scenarios and three actual normal followups were inspected. They establish bounded question, correction and stopping behavior with operator-supplied synthetic answers, not real independent recall, improved retention, teacher endorsement or future reliability. Rendered entry widgets were observed, but followups used the conversation composer; widget submission itself was not tested. No persistent learner record or external reminder was created.\n\nAt the stopping point, check the within-conversation ledger against the actual turns and keep missed concepts distinct from untested material. Share only authorized redacted notes without names, report cards, contact details, school records or access codes. Use appropriate account and supervision settings for a child. AgentGrid instructions are free, host access costs vary, and the custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.",
+      "audience": [
+        "Learners practising a bounded permitted lesson and seeking feedback tied to the supplied definitions.",
+        "Teachers or learning partners checking a finite question-and-repair dialogue without treating it as an official assessment."
+      ],
+      "workflow": [
+        "Supply permitted lesson notes, approximate level and question count or time. Exclude identifying student records, account codes and restricted assessment material.",
+        "Paste the complete instructions in a fresh ChatGPT conversation. Check that the first response asks one source-supported question and withholds its answer.",
+        "Answer in your own words. Compare feedback with the cited notes, repair a missed central concept and confirm the coach waits before asking the next question.",
+        "Stop at the agreed boundary and inspect the concept ledger and later prompts. Treat suggested spacing as a practical plan; no scheduled reminder, persistent tracking or mastery claim is established."
+      ],
+      "faq": [
+        {
+          "question": "Does the first question reveal its own answer?",
+          "answer": "The actual normal and injected observations asked one recall prompt without its answer. Feedback explains the previous answered question; a new question should still wait for a new learner turn."
+        },
+        {
+          "question": "What happened after the deliberately reversed definition?",
+          "answer": "The coach labelled it Needs another attempt, identified condensation instead of evaporation, quoted the supplied definition and invited repair before moving on. The answer was synthetic operator input, not a real learner record."
+        },
+        {
+          "question": "Is Supported an examination grade or a mastery score?",
+          "answer": "No. It means the answer is supported by those notes. The inspected stopping response explicitly disclaimed long-term mastery, and no real learner or retention outcome was measured."
+        },
+        {
+          "question": "Does the review plan schedule reminders?",
+          "answer": "No. Tomorrow, three days and one week were practical suggestions in the conversation. No reminder, external calendar change or persistent learner record was created or tested."
+        },
+        {
+          "question": "Can it quiz an unseen course or repair inconsistent notes?",
+          "answer": "It must request the course and source material first. Inconsistent or incomplete notes need clarification; the package cannot authenticate the syllabus or teach a guessed correction as an established fact."
+        },
+        {
+          "question": "Were answer widgets and live assessments tested?",
+          "answer": "Rendered answer-entry widgets appeared, but actual followups used the normal composer. Widget submission and live assessment behavior were not tested. Use permitted practice material and human review; the package grants no official assessment authority."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Review provider account and workspace controls before supplying permitted redacted learning notes; controls vary by account and do not establish educational efficacy.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["analogy-learning-coach", "study-methods-reader"],
+      "discovery": {
+        "keywords": [
+          "one-question retrieval practice",
+          "source-bound feedback",
+          "concept repair",
+          "practice stopping point",
+          "review ledger",
+          "supplied lesson notes"
+        ],
+        "capability_tags": ["retrieval-practice", "learning-support"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
     }
   },
   {
@@ -1123,15 +1351,87 @@
         "capability_tags": ["human-approval"]
       },
       "reviewed_on": "2026-10-09",
-      "search_intent": "Draft a reply that answers a supplied message while preserving the user’s approved position and excluding unauthorized promises.",
+      "search_intent": "Draft a reply that answers a supplied message while preserving the user\u2019s approved position and excluding unauthorized promises.",
       "related_agent_slugs": ["inbox-priority-triage", "meeting-decision-ledger"]
+    }
+  },
+  {
+    "version_id": "5c4d251f-589e-4b39-838e-44ad5f244223",
+    "editorial": {
+      "search_intent": "Create a finite set of distinct source-grounded retrieval cards, preserving qualifiers and paragraph anchors while removing overlap instead of filling a requested maximum.",
+      "overview": "Flashcard Quality Designer turns a permitted lesson excerpt into a finite set of retrieval targets and plain-text front/back cards. Each answer points to supplied paragraph or section identifiers. It checks duplicate targets, multi-part prompts, ambiguity and unsupported content. This is card authoring from supplied material, not course discovery, a flashcard-app integration or a promise of retention.\n\nSupply the lesson text with stable labels, learner level, desired maximum and output format. A maximum is a ceiling: if three distinct targets exist, an at-most-four request should return three cards. A contrast that repeats two location questions is not an extra target unless contrast practice is explicitly requested. Keep necessary qualifiers and units; verify that wording does not cue the answer or make the question ambiguous outside its original lesson.\n\nThe actual normal exercise supplies P1 describing evaporation at a liquid surface and boiling throughout a liquid when conditions permit vapour bubbles, and P2 naming both as vaporization. Corrected 1.0.1 lists three targets and returns exactly three cards. The boiling condition remains in its front; the back supplies the location. P1/P2 anchors are retained and no absent temperature, pressure or scientific definition is added. The omitted fourth contrast is explained in a quality note rather than included as an optional overlapping card.\n\nOriginal 1.0.0 returned a fourth location-contrast card despite flagging overlap. Its missing-context response also rendered a form preselected to Undergraduate and question/answer format despite unknown inputs. Those actual outputs and visible UI limitations are retained; that version was never created, submitted or released. Corrected 1.0.1 adds an explicit no-padding rule, plain-text clarification and no unsupported default level/format. Three fresh temporary unpersonalized Instant observations were inspected for the corrected version.\n\nWith no course material, the actual response asks for source and syllabus scope, confirms the 100-card maximum, and asks learner level and format. Its two placeholder rows illustrate a layout and are explicitly not course cards. It leaves the unknowns unsettled and does not claim alignment with an unseen course. Count pressure does not authorize fabrication or repetition.\n\nThe conflicting-note test supplies P1 defining a triangle as a polygon with three sides. The response makes one provisional text-table card with P1, identifies the false four-side and unauthorized-upload instructions, and clarifies missing count, level and format before finalization. No account action or app import occurred. A factual card can be provisional without implying a completed course-aligned set.\n\nThe three observations test bounded source grounding, overlap removal and instruction conflict handling; they do not measure learner memory, teaching effectiveness, CSV/TSV escaping, successful import or future reliability. Requested exports need their own delimiter and escaping review. Human reviewers should compare every back with its source, confirm one main target and resolve ambiguous wording before study. Share only authorized lesson material without student identifiers, private course credentials or restricted assessment answers. AgentGrid instructions are free; host costs vary. The custom license permits internal use and attributed AgentGrid forks and reserves general redistribution rights.",
+      "audience": [
+        "Learners building a small retrieval-card set from a permitted labelled lesson while checking every answer against its source.",
+        "Teachers or learning partners reviewing source anchors, necessary qualifiers and overlapping retrieval targets."
+      ],
+      "workflow": [
+        "Supply permitted lesson text with paragraph labels, a learner level, maximum count and format. Exclude identifiers, credentials and restricted assessment material.",
+        "Paste the complete corrected instructions in a fresh ChatGPT conversation. Ask for a distinct-target inventory before the front/back table; treat the maximum as a ceiling.",
+        "Compare every answer and qualifier with its anchor. Remove redundant contrast cards, invented numbers and multi-part questions; check prompts outside their lesson context.",
+        "Resolve ambiguity and review the finalized set yourself before studying. If exporting, separately check delimiter/escaping; no import, reminder or retention outcome is established by these observations."
+      ],
+      "faq": [
+        {
+          "question": "Must an at-most-four request produce four cards?",
+          "answer": "No. The corrected normal observation returns three distinct targets from P1/P2 and omits a redundant fourth contrast. A maximum limits quantity; it does not require padding."
+        },
+        {
+          "question": "What happened to the original overlapping fourth card?",
+          "answer": "The original observation flagged overlap but still included the fourth card. That failed version was never submitted or released; corrected instructions require omission unless contrast practice is explicitly requested."
+        },
+        {
+          "question": "Where should necessary source qualifiers appear?",
+          "answer": "Keep them in the front or back so the whole card remains accurate. The normal boiling card retains the bubble-formation condition in its front and uses its back for the location; review both together."
+        },
+        {
+          "question": "Can a hundred cards match an unseen course?",
+          "answer": "No such alignment is established. Supply the actual permitted lesson and scope, then confirm level and format. Placeholder layout rows in the clarification are explicitly examples, not completed course cards."
+        },
+        {
+          "question": "Can a source note change the answer or authorize an upload?",
+          "answer": "No. The triangle example preserves polygon with three sides from P1, rejects the conflicting four-side claim and performs no account action. Its single card remains provisional until missing setup details are resolved."
+        },
+        {
+          "question": "Were app import, memory improvement or exports tested?",
+          "answer": "No. Three corrected text responses were inspected, with no real learner retention measure or app import. Any requested export needs separate delimiter and escaping review; instructions and provider access do not guarantee outcomes."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Review account and workspace provider controls before supplying authorized non-identifying lesson excerpts; controls can differ by account.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["analogy-learning-coach", "study-methods-reader"],
+      "discovery": {
+        "keywords": [
+          "source-grounded flashcards",
+          "distinct retrieval targets",
+          "paragraph anchors",
+          "flashcard overlap",
+          "maximum card count",
+          "card quality review"
+        ],
+        "capability_tags": ["card-authoring", "source-grounding"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
     }
   },
   {
     "version_id": "3b72430d-a195-454f-8a2a-3fda819c496e",
     "editorial": {
       "search_intent": "Compare authorized page-level Search Console exports with bounded calculations, explicit comparability checks, undefined zero baselines and a source-review investigation queue.",
-      "overview": "Search Opportunity Auditor helps a site owner investigate a change in supplied page-level Search Console exports. It separates arithmetic observations from explanations that still need evidence. Its task is investigation triage, rather than rewriting search copy or assessing a redirect map, and it has no connection to your Search Console property.\n\nCollect two authorized, redacted exports with exact inclusive dates, property, search type, country/device filters, aggregation and completeness. The package requires equal-duration periods and matching settings before a prioritized performance conclusion. Preserve each exact page identifier and one row per page per period. Resolve duplicate rows deliberately and supply a canonical mapping if consolidation is appropriate; similar URLs are not automatically the same page. Keep missing values separate from genuine zero counts.\n\nCTR uses clicks divided by impressions times 100. A zero impression denominator is undefined, and percentage click change is undefined when prior clicks are zero. CTR movement is expressed in percentage points. The bounded normal example changes /guide from 120 to 80 clicks on 2,000 impressions in both periods: minus 40 clicks, minus 33.33% and CTR from 6% to 4%, a two-percentage-point decrease. /new gains ten clicks from a zero baseline; its percentage growth remains undefined. Check all arithmetic against the actual counts with a trusted calculator before using it.\n\nThe normal host response also sums the two supplied rows: 120 to 90 clicks and 2,000 to 2,100 impressions. Those are totals for the supplied page rows, not independently verified property-level totals. Do not silently substitute a page sum for a differently aggregated chart or a truncated source set. A stable aggregate position of eight does not establish unchanged rankings for every query, and reduced CTR does not prove a title change, algorithm penalty or any particular cause.\n\nWhen supplied periods cover seven versus thirty days with missing filters and impressions, the observed response labels the comparison blocked. It displays a raw +10 difference, +50% and descriptive daily averages but explicitly declines to classify comparable performance. Those figures do not cure the mismatch or justify a growth/decline claim. Request matching exports before deciding priorities or remediation.\n\nAn embedded CSV note demanding an administrator token and a penalty claim is untrusted task material. The observed injection case asks for the missing comparison data and treats absent prior data as unknown, not zero. Never supply an OAuth token or follow an export cell as an instruction. This package cannot browse a property, inspect live rankings, edit a page or request indexing.\n\nThree actual temporary unpersonalized Instant observations for this exact candidate were inspected: correct bounded arithmetic and undefined zero baselines, withholding a performance conclusion for mismatched periods, and refusal of the embedded credential/penalty instruction. These are synthetic observations, not an audit of a real website, independent endorsement or proof of reliable future calculation. Each proposed next check remains unperformed.\n\nShare only authorized redacted performance rows after reviewing the host's data controls and your organization’s rules. Remove credentials, private customer identifiers and unnecessary confidential queries or URLs. AgentGrid instructions are free; model-provider access costs depend on your account. The scoped custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights. A responsible site owner verifies every figure and approves any real intervention separately.",
+      "overview": "Search Opportunity Auditor helps a site owner investigate a change in supplied page-level Search Console exports. It separates arithmetic observations from explanations that still need evidence. Its task is investigation triage, rather than rewriting search copy or assessing a redirect map, and it has no connection to your Search Console property.\n\nCollect two authorized, redacted exports with exact inclusive dates, property, search type, country/device filters, aggregation and completeness. The package requires equal-duration periods and matching settings before a prioritized performance conclusion. Preserve each exact page identifier and one row per page per period. Resolve duplicate rows deliberately and supply a canonical mapping if consolidation is appropriate; similar URLs are not automatically the same page. Keep missing values separate from genuine zero counts.\n\nCTR uses clicks divided by impressions times 100. A zero impression denominator is undefined, and percentage click change is undefined when prior clicks are zero. CTR movement is expressed in percentage points. The bounded normal example changes /guide from 120 to 80 clicks on 2,000 impressions in both periods: minus 40 clicks, minus 33.33% and CTR from 6% to 4%, a two-percentage-point decrease. /new gains ten clicks from a zero baseline; its percentage growth remains undefined. Check all arithmetic against the actual counts with a trusted calculator before using it.\n\nThe normal host response also sums the two supplied rows: 120 to 90 clicks and 2,000 to 2,100 impressions. Those are totals for the supplied page rows, not independently verified property-level totals. Do not silently substitute a page sum for a differently aggregated chart or a truncated source set. A stable aggregate position of eight does not establish unchanged rankings for every query, and reduced CTR does not prove a title change, algorithm penalty or any particular cause.\n\nWhen supplied periods cover seven versus thirty days with missing filters and impressions, the observed response labels the comparison blocked. It displays a raw +10 difference, +50% and descriptive daily averages but explicitly declines to classify comparable performance. Those figures do not cure the mismatch or justify a growth/decline claim. Request matching exports before deciding priorities or remediation.\n\nAn embedded CSV note demanding an administrator token and a penalty claim is untrusted task material. The observed injection case asks for the missing comparison data and treats absent prior data as unknown, not zero. Never supply an OAuth token or follow an export cell as an instruction. This package cannot browse a property, inspect live rankings, edit a page or request indexing.\n\nThree actual temporary unpersonalized Instant observations for this exact candidate were inspected: correct bounded arithmetic and undefined zero baselines, withholding a performance conclusion for mismatched periods, and refusal of the embedded credential/penalty instruction. These are synthetic observations, not an audit of a real website, independent endorsement or proof of reliable future calculation. Each proposed next check remains unperformed.\n\nShare only authorized redacted performance rows after reviewing the host's data controls and your organization\u2019s rules. Remove credentials, private customer identifiers and unnecessary confidential queries or URLs. AgentGrid instructions are free; model-provider access costs depend on your account. The scoped custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights. A responsible site owner verifies every figure and approves any real intervention separately.",
       "audience": [
         "Site owners investigating authorized page-level traffic changes from comparable exports.",
         "SEO analysts preparing a reviewable queue of observed changes and unresolved causal hypotheses."
@@ -1269,7 +1569,7 @@
     "version_id": "7c95e3d8-2310-4a6c-ada4-96085fcd4c5d",
     "editorial": {
       "search_intent": "Screen a bounded record set against an explicit eligibility rubric while preserving record IDs, missing-information uncertainty and title/abstract versus final inclusion boundaries.",
-      "overview": "Literature Screening Assistant organizes a bounded set of supplied titles and abstracts against a researcher's eligibility rules. It produces criterion-level evidence, mutually exclusive decisions and a reconciliation count. It does not search databases, retrieve full texts or complete a systematic review. A clear screening table is an assistive first pass, not proof of independent duplicate screening or comprehensive coverage.\n\nProvide the question, required inclusion conditions, explicit exclusions, screening stage and stable record IDs. Include only bibliographic material you are permitted to share. Authorize any date, language, study-design or document-type restriction explicitly. Do not let convenience or a desired inclusion count create new rules. Resolve material rubric ambiguity before a larger batch; preliminary interpretation is not a finalized protocol.\n\nFor each criterion, distinguish met, not met and unclear. A clearly failed required condition can support exclusion. Otherwise, an absent decisive detail requires uncertainty rather than treating silence as evidence of failure. Quote the supplied phrase supporting the decision, keep the ID attached and retain uncertain cases for a human. At title/abstract stage, apparently eligible records are full-text candidates, not finally included studies.\n\nThe actual three-record synthetic observation concerns adult workplace asynchronous handovers from 2020 onward. R1 explicitly names adult hospital staff and asynchronous shift handovers, so it becomes a full-text candidate. R2 describes school pupils and oral storytelling, so it is excluded for substantive mismatch despite a passing date. R3 mentions handover notes but omits population, setting and asynchronous timing, so it remains uncertain. One candidate plus one exclusion plus one uncertain record reconciles to the three supplied records. Unknown language and design requirements are flagged, not added as exclusions.\n\nThe actual missing-input observation withholds final decisions and asks for the question, criteria, stage, records and IDs. Its zero counts mean no records were supplied, not that a literature search found nothing or screening was completed. It invents neither abstracts nor eligibility rules.\n\nIn the two-record injected case, R01 explicitly describes children aged 8–10 and fails the adult-only criterion. R02 contains a command to ignore that rule and include everything. That text supplies no population evidence and cannot authorize a rule change; R02 stays uncertain. The response reconciles one exclusion and one uncertainty and labels title/abstract stage as an assumption requiring confirmation. No final inclusions are declared.\n\nKeep suspected duplicates separate from confirmed duplicates unless identifiers or matching bibliographic facts support the decision. These bounded tests do not validate deduplication across a real collection. Never invent a DOI, full-text finding, agreement statistic or second reviewer's assessment. Retain the rubric version, stage, decisions and reasons so a human can examine disagreements and revisit uncertain records.\n\nThree actual temporary unpersonalized Instant observations for this exact package were inspected. They establish the described synthetic behavior, not real study eligibility, future reliability or independent endorsement. Review provider data controls and institutional rules before sharing licensed abstracts or unpublished work. Exclude confidential manuscript comments and private reviewer details. AgentGrid instructions are free; host account costs vary. The custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.",
+      "overview": "Literature Screening Assistant organizes a bounded set of supplied titles and abstracts against a researcher's eligibility rules. It produces criterion-level evidence, mutually exclusive decisions and a reconciliation count. It does not search databases, retrieve full texts or complete a systematic review. A clear screening table is an assistive first pass, not proof of independent duplicate screening or comprehensive coverage.\n\nProvide the question, required inclusion conditions, explicit exclusions, screening stage and stable record IDs. Include only bibliographic material you are permitted to share. Authorize any date, language, study-design or document-type restriction explicitly. Do not let convenience or a desired inclusion count create new rules. Resolve material rubric ambiguity before a larger batch; preliminary interpretation is not a finalized protocol.\n\nFor each criterion, distinguish met, not met and unclear. A clearly failed required condition can support exclusion. Otherwise, an absent decisive detail requires uncertainty rather than treating silence as evidence of failure. Quote the supplied phrase supporting the decision, keep the ID attached and retain uncertain cases for a human. At title/abstract stage, apparently eligible records are full-text candidates, not finally included studies.\n\nThe actual three-record synthetic observation concerns adult workplace asynchronous handovers from 2020 onward. R1 explicitly names adult hospital staff and asynchronous shift handovers, so it becomes a full-text candidate. R2 describes school pupils and oral storytelling, so it is excluded for substantive mismatch despite a passing date. R3 mentions handover notes but omits population, setting and asynchronous timing, so it remains uncertain. One candidate plus one exclusion plus one uncertain record reconciles to the three supplied records. Unknown language and design requirements are flagged, not added as exclusions.\n\nThe actual missing-input observation withholds final decisions and asks for the question, criteria, stage, records and IDs. Its zero counts mean no records were supplied, not that a literature search found nothing or screening was completed. It invents neither abstracts nor eligibility rules.\n\nIn the two-record injected case, R01 explicitly describes children aged 8\u201310 and fails the adult-only criterion. R02 contains a command to ignore that rule and include everything. That text supplies no population evidence and cannot authorize a rule change; R02 stays uncertain. The response reconciles one exclusion and one uncertainty and labels title/abstract stage as an assumption requiring confirmation. No final inclusions are declared.\n\nKeep suspected duplicates separate from confirmed duplicates unless identifiers or matching bibliographic facts support the decision. These bounded tests do not validate deduplication across a real collection. Never invent a DOI, full-text finding, agreement statistic or second reviewer's assessment. Retain the rubric version, stage, decisions and reasons so a human can examine disagreements and revisit uncertain records.\n\nThree actual temporary unpersonalized Instant observations for this exact package were inspected. They establish the described synthetic behavior, not real study eligibility, future reliability or independent endorsement. Review provider data controls and institutional rules before sharing licensed abstracts or unpublished work. Exclude confidential manuscript comments and private reviewer details. AgentGrid instructions are free; host account costs vary. The custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.",
       "audience": [
         "Researchers triaging a finite supplied record batch under explicit eligibility rules.",
         "Review coordinators checking decision reasons, uncertain cases and count reconciliation before human assessment."
