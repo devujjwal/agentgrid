@@ -1,5 +1,6 @@
 import type { DraftSpecification } from '../../domain/draft';
 import { CheckField, ChoiceField, TextField } from './Fields';
+import { changeReusePermission, changeForkScope } from '../../domain/reuse-editing';
 export function ReuseFields({
   value,
   change,
@@ -77,13 +78,17 @@ export function ReuseFields({
             ['CC-BY-4.0', 'CC0-1.0', 'MIT'].includes(license.identifier)
           }
         >
+          <p>
+            Removing a permission also removes forks that depend on it. Choosing AgentGrid-only
+            forks explicitly permits use and modification within your stated terms.
+          </p>
           <CheckField
             label="Allow use"
             checked={license.permissions.use}
             change={(use) =>
               change({
                 ...value,
-                license: { ...license, permissions: { ...license.permissions, use } },
+                license: changeReusePermission(license, 'use', use),
               })
             }
           />
@@ -93,7 +98,7 @@ export function ReuseFields({
             change={(modify) =>
               change({
                 ...value,
-                license: { ...license, permissions: { ...license.permissions, modify } },
+                license: changeReusePermission(license, 'modify', modify),
               })
             }
           />
@@ -105,7 +110,7 @@ export function ReuseFields({
                 change={(redistribute) =>
                   change({
                     ...value,
-                    license: { ...license, permissions: { ...license.permissions, redistribute } },
+                    license: changeReusePermission(license, 'redistribute', redistribute),
                   })
                 }
               />
@@ -114,41 +119,27 @@ export function ReuseFields({
                   label="Public fork scope"
                   value={license.public_fork_scope ?? 'general'}
                   choices={[
-                    { value: 'general', label: 'Requires general redistribution permission' },
+                    { value: 'general', label: 'General redistribution required' },
                     {
                       value: 'agentgrid-only',
-                      label: 'Within AgentGrid only; no general redistribution',
+                      label: 'AgentGrid-only forks',
                     },
                   ]}
-                  change={(scope) => {
-                    const { public_fork_scope: previous, ...rest } = license;
-                    void previous;
-                    change({
-                      ...value,
-                      license:
-                        scope === 'agentgrid-only'
-                          ? {
-                              ...rest,
-                              public_fork_scope: 'agentgrid-only',
-                              permissions: {
-                                use: true,
-                                modify: true,
-                                redistribute: false,
-                                public_fork: true,
-                              },
-                            }
-                          : rest,
-                    });
-                  }}
+                  change={(scope) => change({ ...value, license: changeForkScope(license, scope) })}
                 />
               )}
               <CheckField
                 label="Allow public forks"
+                disabled={
+                  !license.permissions.use ||
+                  !license.permissions.modify ||
+                  (!license.permissions.redistribute && !license.public_fork_scope)
+                }
                 checked={license.permissions.public_fork}
                 change={(public_fork) =>
                   change({
                     ...value,
-                    license: { ...license, permissions: { ...license.permissions, public_fork } },
+                    license: changeReusePermission(license, 'public_fork', public_fork),
                   })
                 }
               />

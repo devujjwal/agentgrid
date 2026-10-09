@@ -78,14 +78,21 @@ export function CheckField({
   label,
   checked,
   change,
+  disabled = false,
 }: {
   label: string;
+  disabled?: boolean;
   checked: boolean;
   change: (value: boolean) => void;
 }) {
   return (
     <label className="draft-check">
-      <input type="checkbox" checked={checked} onChange={(event) => change(event.target.checked)} />
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={(event) => change(event.target.checked)}
+      />
       <span>{label}</span>
     </label>
   );
