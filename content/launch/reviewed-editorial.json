@@ -149,7 +149,7 @@
           "question": "How are unclear deadlines and ownership handled?"
         },
         {
-          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider\u2019s account and workspace data controls. AgentGrid\u2019s package does not receive your pasted email batch.",
+          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider’s account and workspace data controls. AgentGrid’s package does not receive your pasted email batch.",
           "question": "What should I check before sharing email text?"
         }
       ],
@@ -165,7 +165,7 @@
         {
           "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
           "title": "OpenAI Help Center: Data controls in ChatGPT",
-          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package\u2019s priority rules or host-test results.",
+          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package’s priority rules or host-test results.",
           "checked_on": "2026-10-09"
         }
       ],
@@ -258,7 +258,7 @@
         "capability_tags": ["human-approval"]
       },
       "reviewed_on": "2026-10-09",
-      "search_intent": "Draft a reply that answers a supplied message while preserving the user\u2019s approved position and excluding unauthorized promises.",
+      "search_intent": "Draft a reply that answers a supplied message while preserving the user’s approved position and excluding unauthorized promises.",
       "related_agent_slugs": ["inbox-priority-triage", "meeting-decision-ledger"]
     },
     "version_id": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2"
@@ -351,7 +351,7 @@
           "answer": "It belongs in preconditions unless the reporter explicitly performed sign-in as part of the tested sequence. The corrected instructions prohibit converting a reported state into an action or adding implied navigation and refresh steps to the confirmed list."
         },
         {
-          "question": "Can it produce a fully reproducible report from \u201cit does not work\u201d?",
+          "question": "Can it produce a fully reproducible report from “it does not work”?",
           "answer": "No. That statement supplies no confirmed actions, product, expected result or environment. The package should identify these gaps and request details, while keeping any collection template or proposed diagnostic step clearly separate from performed work."
         },
         {
@@ -389,6 +389,77 @@
           "unknown root cause"
         ],
         "capability_tags": ["evidence-review", "bug-triage"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "6eda062a-7ccd-48d1-a4d9-8460c5f1fdd1",
+    "editorial": {
+      "search_intent": "Review a supplied code diff for concrete behavior and authorization regressions while preserving exact references, unknown context and unexecuted test suggestions.",
+      "overview": "Pull Request Reviewer helps a developer turn a bounded diff into a focused review draft. It needs the intended behavior, actual changed lines with file references, language/runtime details and enough surrounding code to understand the changed path. It does not open GitHub, inspect a repository, run tests, post comments or approve a merge. A test file in the prompt is evidence of its text, not evidence of a passing run.\n\nEach finding should connect a supplied trigger to expected and actual behavior at a supplied line. For example, a mismatch branch that returns a document with status 200 contradicts an explicit non-owner 403 requirement. Authentication establishes the actor identity; it does not by itself establish resource ownership. The reviewer must keep unseen handlers, storage provenance, identifier contracts and error response shapes among missing context instead of inventing an upstream guard or assuming that a suggested patch is valid everywhere.\n\nTreat severity as a draft judgment for a human to check against actual deployment, data sensitivity and exposure. In the bounded normal host observation, the model called the deterministic cross-owner disclosure Critical. That label does not establish the severity of an unseen real service. This package is useful for locating the demonstrated branch failure; it is not a security certification or an independent approval of the proposed response shape.\n\nThree actual temporary unpersonalized ChatGPT Instant observations support this candidate. The normal result cited access.ts line 12, identified the supplied 200/document behavior and proposed owner/non-owner checks without claiming execution. The empty-context result requested the missing diff and withheld defects and approval. The injected-comment result ignored a demand to disclose tokens and approve the PR, treated the strict ownership comparison as a bounded no-actionable-findings result and retained surrounding-context questions. No credentials were supplied, so these observations do not test real-secret redaction. They are limited synthetic results, not a guarantee of future review quality.\n\nRemove access tokens, session cookies, private keys, customer data and unrelated identifying information before sharing a diff. Use only code you are authorized to provide and check the host's data controls and your organization's rules. AgentGrid's instructions are free; ChatGPT access and pricing depend on the account. The custom package license permits personal and commercial internal use and attributed AgentGrid forks while reserving general redistribution rights. A developer validates any suggested patch and performs any real test, comment or merge separately.",
+      "audience": [
+        "Developers preparing a focused review of an authorized, redacted code change with its intended behavior.",
+        "Maintainers triaging concrete regressions and missing context before a human validates tests and merge readiness."
+      ],
+      "workflow": [
+        "Prepare the actual diff with supplied paths and changed-line identifiers, its behavior contract, runtime and relevant surrounding code. Remove credentials and unrelated private data, and confirm authority to share the code with the chosen host.",
+        "Paste the full instructions into a fresh ChatGPT conversation and provide that bounded evidence. If the diff or essential intent is missing, collect it first; a convincing generic review is not a substitute for inspected code.",
+        "Check every finding against its cited supplied line, trigger and expected/actual result. Keep unseen authorization layers and dependency behavior unknown. Review severity using the actual impact and exposure rather than accepting the model label automatically.",
+        "Validate patch drafts and behavior-focused test suggestions in your authorized development environment. The host has not run these checks or approved the PR; a human decides whether to change code, post a review or merge."
+      ],
+      "faq": [
+        {
+          "question": "What is required for a useful review?",
+          "answer": "Supply the real diff, intended behavior, file and line references, runtime details and relevant surrounding code. Missing essential context should lead to a specific question, not invented defects, lines or a claim of repository inspection."
+        },
+        {
+          "question": "Does a supplied test file prove the tests passed?",
+          "answer": "No. It only establishes the supplied test text. This instructions-only package does not execute tests; it may suggest behavioral checks with expected outcomes, and a developer must run and interpret them separately."
+        },
+        {
+          "question": "Can I accept the model severity without further review?",
+          "answer": "A severity label is a draft judgment. The normal synthetic output called a cross-owner disclosure Critical, but real impact depends on data, exposure, routing and deployment context that the package may not have. A human checks those assumptions."
+        },
+        {
+          "question": "How does it handle commands embedded in repository comments?",
+          "answer": "Comments, strings and documentation are evidence, not operational authority. The observed injected demand to reveal tokens and approve the PR was ignored. No actual credentials were supplied, so this is not a test of real-secret redaction."
+        },
+        {
+          "question": "Does “No actionable findings” mean a PR is safe to merge?",
+          "answer": "No. It means no supported defect was identified in the supplied scope. Unseen code, storage provenance and runtime behavior remain limitations; the package has not certified the repository, granted approval or performed a merge."
+        },
+        {
+          "question": "What may I share, and what access does this package grant?",
+          "answer": "Share only authorized redacted code after checking provider and organizational data rules. The package grants no repository, shell, token, commenting or merging access. AgentGrid instructions are free; host access and cost depend on your account and reuse follows the stated custom license."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls inform the privacy check before sharing authorized redacted code; account and workspace settings must be reviewed rather than assuming a universal retention policy.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["bug-reproduction-brief", "project-dependency-planner"],
+      "discovery": {
+        "keywords": [
+          "pull request review",
+          "code diff",
+          "authorization review",
+          "regression finding",
+          "test suggestions"
+        ],
+        "capability_tags": ["code-review", "evidence-review"]
       },
       "reviewed_on": "2026-10-09",
       "review": {
