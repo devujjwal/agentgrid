@@ -30,6 +30,8 @@ const ownedKey = (keys) => {
     (matches.length &&
       (matches[0].type !== 'secret' ||
         matches[0].description !== stagingBackendDescription ||
+        JSON.stringify(matches[0].secret_jwt_template) !==
+          JSON.stringify({ role: 'service_role' }) ||
         !/^[a-f0-9-]{36}$/.test(matches[0].id)))
   )
     throw new Error('Staging key collision; inspect before changing anything.');
@@ -140,6 +142,7 @@ export async function configureStagingSecrets(values, apply = false, transport =
       type: 'secret',
       name: stagingBackendName,
       description: stagingBackendDescription,
+      secret_jwt_template: { role: 'service_role' },
     });
     key = ownedKey([created]);
     if (!key) throw new Error('Created key identity unavailable; inspect existing state.');

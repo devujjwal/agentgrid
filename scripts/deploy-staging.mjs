@@ -112,6 +112,24 @@ export async function verifyStagingDelivery(expected, transport = fetch) {
   if (robots.status !== 200 || !/Disallow:\s*\//.test(await robots.text()))
     throw new Error('Staging crawler exclusion failed.');
 }
+/** Retry only readback while the newly uploaded alias propagates. Never redeploy. */
+export async function verifyStagingReadiness(
+  expected,
+  verify = verifyStagingDelivery,
+  pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      await verify(expected);
+      return;
+    } catch {
+      if (attempt === 3)
+        throw new Error('Staging delivery did not settle within the readback window.');
+      await pause(2000);
+    }
+  }
+}
+let failurePhase = 'preflight';
 async function main() {
   const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const args = stagingDeploymentPlan(
@@ -121,6 +139,7 @@ async function main() {
   );
   if ((await inspectExport(resolve('out'))).length) throw new Error('Unsafe static export.');
   const publication = await readPublication(resolve('content/publication'));
+  failurePhase = 'public-capture-comparison';
   const rpc = publicPublicationSource({
     origin: process.env.NEXT_PUBLIC_SUPABASE_URL,
     key: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -170,6 +189,7 @@ async function main() {
     // Run outside the repository so Wrangler cannot discover setup env files or
     // rebuild a different functions directory. Deploy the tested advanced Worker.
     const cli = resolve('node_modules/wrangler/bin/wrangler.js');
+    failurePhase = 'upload';
     execFileSync(process.execPath, [cli, ...args], {
       cwd: temporary,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -189,6 +209,7 @@ async function main() {
         CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV: 'false',
       },
     });
+    failurePhase = 'deployment-receipt';
     const records = (await readFile(output, 'utf8'))
       .trim()
       .split('\n')
@@ -203,6 +224,7 @@ async function main() {
       !/^[a-f0-9-]{36}$/.test(receipt.deployment_id)
     )
       throw new Error('Unexpected deployment receipt.');
+    failurePhase = 'provider-readback';
     const deployed = await provider('/deployments/' + receipt.deployment_id);
     const current = await provider('');
     assertStagingBindings(current);
@@ -212,8 +234,10 @@ async function main() {
       current.canonical_deployment?.id !== receipt.deployment_id
     )
       throw new Error('Provider has not confirmed the current exact build.');
-    await verifyStagingDelivery(proof);
+    failurePhase = 'delivery-readback';
+    await verifyStagingReadiness(proof);
     // Receipt contains no account credentials and is retained by the private workflow.
+    failurePhase = 'receipt-retention';
     await writeFile(
       'staging-release-receipt.json',
       JSON.stringify(
@@ -240,7 +264,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(import.meta.filename
     await main();
   } catch {
     console.error(
-      'Staging release was not verified. Inspect provider state before retrying; an interrupted deployment may have completed. No automatic rollback or raw provider/credential output.',
+      `Staging release was not verified (${failurePhase}). Inspect provider state before retrying; an interrupted deployment may have completed. No automatic rollback or raw provider/credential output.`,
     );
     process.exitCode = 1;
   }

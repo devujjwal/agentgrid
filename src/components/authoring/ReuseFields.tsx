@@ -69,7 +69,7 @@ export function ReuseFields({
         <p>
           {['CC-BY-4.0', 'CC0-1.0', 'MIT'].includes(license.identifier)
             ? 'The selected standard open license grants use, modification, redistribution and public forks. Review its terms before publication.'
-            : 'Select only permissions your terms allow. Public forks require all four permissions.'}
+            : 'Select only permissions your terms allow. Public forks require use and modification, plus either general redistribution or an explicit AgentGrid-only grant.'}
         </p>
         <fieldset
           disabled={
@@ -109,6 +109,39 @@ export function ReuseFields({
                   })
                 }
               />
+              {license.identifier === 'custom' && (
+                <ChoiceField
+                  label="Public fork scope"
+                  value={license.public_fork_scope ?? 'general'}
+                  choices={[
+                    { value: 'general', label: 'Requires general redistribution permission' },
+                    {
+                      value: 'agentgrid-only',
+                      label: 'Within AgentGrid only; no general redistribution',
+                    },
+                  ]}
+                  change={(scope) => {
+                    const { public_fork_scope: previous, ...rest } = license;
+                    void previous;
+                    change({
+                      ...value,
+                      license:
+                        scope === 'agentgrid-only'
+                          ? {
+                              ...rest,
+                              public_fork_scope: 'agentgrid-only',
+                              permissions: {
+                                use: true,
+                                modify: true,
+                                redistribute: false,
+                                public_fork: true,
+                              },
+                            }
+                          : rest,
+                    });
+                  }}
+                />
+              )}
               <CheckField
                 label="Allow public forks"
                 checked={license.permissions.public_fork}

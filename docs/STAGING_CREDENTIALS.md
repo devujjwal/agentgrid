@@ -47,6 +47,22 @@ schema verification and anonymous/authenticated access-denial probes passed afte
 application. Successful binding/configuration readback does not yet prove Google
 code exchange, Resend delivery or a live member session; those remain staging QA.
 
+Live Google initiation exposed a missing JWT role in the newly created key. The
+exact named key was corrected to `secret_jwt_template: { role: "service_role" }`,
+within the explicitly approved project-wide backend scope. Key material, ID and
+all other project keys were unchanged. Bootstrap creation and existing-key checks
+now require this exact claim. Initiation still failed after that correction;
+safe operation-name/HTTP-status diagnostics were added for the next deployment.
+No provider messages, headers, parameters, identities or secret values enter them.
+
+The first staging upload `9650acf6-b0cd-4d4a-9aea-43623450e31f` at main `0592d193`
+succeeded at Cloudflare, but workflow `37889851369` did not confirm its receipt.
+Independent later delivery checks passed every assertion (headers, exact build
+identity, anonymous CSRF response, private/unknown route denial and robots).
+The original failure stage was not recorded; propagation is a possibility, not a
+proven diagnosis. The deployer now records a fixed phase label on failure and
+retries only delivery reads in a bounded window, never repeating an upload.
+
 Provider references verified on 2026-10-09:
 [Supabase API keys](https://supabase.com/docs/guides/getting-started/api-keys),
 [key creation](https://supabase.com/docs/reference/api/v1-create-project-api-key),

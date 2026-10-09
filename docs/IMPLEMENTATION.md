@@ -1295,3 +1295,31 @@ other shared auth settings and protected PicMagic resources are unchanged; live
 anonymous/authenticated access-denial checks pass. Actual code exchange and email
 delivery still need deployment acceptance. No MX record currently exists for
 agentgrid.me, so contact@agentgrid.me receiving setup is an explicit launch gate.
+
+### Individual operator and scoped package permissions
+
+Terms, privacy, public contact and a versioned first-party license page now name
+Ujjwal Paul as the individual operator in India. Public operator details are
+centralized. The custom license permits personal/commercial internal workflows and
+attributed forks inside AgentGrid, without general redistribution or resale.
+All 36 first-party draft definitions carry that grant; six recipe dependency pins
+were refreshed. No public release, platform-test claim or community license was
+created. New community drafts remain unselected.
+
+The optional `public_fork_scope` field preserves the existing contract when absent.
+Zod and additive migration 028 enforce the scoped exception; package export stays
+disabled and inherited license/lineage cannot be broadened. The 28-migration
+disposable database rehearsal passed with protected fixtures and extraction intact.
+Migration 028 awaits clean-main CI before the remote application.
+
+Browser checks passed at 320/768/1024/1440 widths: no overflow, readable legal
+navigation, working section links, canonical metadata, correct contact links,
+keyboard main focus and no console errors. Mobile privacy-page Lighthouse scored
+99 performance, 100 accessibility, 100 best practices, LCP 2.0s, TBT 20ms and CLS 0.
+SEO 66 reflects intentional noindex; this is lab evidence, not field INP. Production
+export audits 48 documents and 984 internal links. Public onboarding remains closed
+pending working contact mail, retention operations and real community acceptance.
+
+The staging upload is live but Google initiation remains under diagnosis after
+correcting the new key's missing service-role claim. See `STAGING_CREDENTIALS.md`.
+No paid service, production DNS change or public launch occurred.

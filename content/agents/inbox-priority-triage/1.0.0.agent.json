@@ -134,13 +134,15 @@
     "platform_costs": "AgentGrid instructions are intended to be free after publication. Model-provider access and feature pricing depend on the chosen account; this package supplies no paid runtime or background execution."
   },
   "license": {
-    "identifier": "unselected",
-    "statement": "First-party editorial draft. Public reuse terms must be explicitly selected and reviewed before publication; this draft does not grant public distribution or fork rights.",
+    "identifier": "custom",
+    "statement": "AgentGrid Internal Use and Hosted Fork License 1.0, by Ujjwal Paul (AgentGrid Editorial). You may use these instructions for your own personal and commercial workflows, copy them into supported AI platforms and adapt them for internal use. You may publish attributed forks within AgentGrid under these same terms, preserving source, version and lineage. No general right to republish elsewhere, redistribute, resell, sublicense, scrape into competing datasets or directories, or commercially reproduce the package library is granted. Keep this notice with instruction copies and forks. Workflow outputs are not restricted by this package license; third-party and platform terms still apply. See the versioned license for full terms.",
+    "url": "https://agentgrid.me/licenses/agentgrid-internal-use-v1/",
+    "public_fork_scope": "agentgrid-only",
     "permissions": {
-      "use": false,
-      "modify": false,
+      "use": true,
+      "modify": true,
       "redistribute": false,
-      "public_fork": false
+      "public_fork": true
     }
   }
 }

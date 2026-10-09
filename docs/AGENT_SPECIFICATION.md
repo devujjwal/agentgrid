@@ -53,11 +53,13 @@ ecommerce/business/everyday coverage alongside SEO and development.
 ## Licensing boundary
 
 Standard identifiers must agree with their standard reuse grants. Custom licenses
-must explicitly permit modification/redistribution before public forks are allowed.
+must explicitly permit use and modification plus either general redistribution or
+an explicit `public_fork_scope: "agentgrid-only"` grant. The latter is valid only
+with custom terms and redistribution denied; it never enables package export.
 Attribution and lineage remain attached to the immutable source version. The
 private application license is independent of package licensing. First-party
-release licensing will be reviewed with concrete reusable package terms before
-publication; drafting a package does not release it under an open license.
+packages use the owner-approved Internal Use and Hosted Fork License 1.0.
+Community defaults remain unselected; drafting does not publish a package.
 
 ## Publication acceptance
 

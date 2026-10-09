@@ -185,3 +185,23 @@ test('identity persistence restricts service-role traffic to fixed owned RPCs an
   await assert.rejects(store.loadSession(hash));
   assert.ok(requests.every((path) => path.startsWith('/rest/v1/rpc/agentgrid_auth_')));
 });
+
+test('identity failure diagnostics contain only a fixed operation and HTTP status', async () => {
+  const events = [];
+  const store = identityStore(
+    configuration,
+    async () =>
+      Response.json(
+        {
+          code: 'denied',
+          message: 'private-provider-message',
+          details: 'sensitive-credential',
+          hint: 'private-identity',
+        },
+        { status: 403 },
+      ),
+    (event) => events.push(event),
+  );
+  await assert.rejects(store.allow('google', 'f'.repeat(64)), (error) => error.status === 503);
+  assert.deepEqual(events, [{ operation: 'agentgrid_auth_allow', status: 403 }]);
+});

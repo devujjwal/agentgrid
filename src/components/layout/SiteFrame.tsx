@@ -74,6 +74,15 @@ export function SiteFrame({
         <Link prefetch={false} href="/mcp/">
           MCP
         </Link>
+        <Link prefetch={false} href="/terms/">
+          Terms
+        </Link>
+        <Link prefetch={false} href="/privacy/">
+          Privacy
+        </Link>
+        <Link prefetch={false} href="/contact/">
+          Contact
+        </Link>
         <span>{localPreview ? 'First-party draft foundation' : 'The agent network'}</span>
       </footer>
     </div>

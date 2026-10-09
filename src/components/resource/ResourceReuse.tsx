@@ -30,7 +30,13 @@ export function ResourceReuse({
           {Object.entries(spec.license.permissions).map(([key, value]) => (
             <div key={key}>
               <dt>{key.replaceAll('_', ' ')}</dt>
-              <dd>{value ? 'Permitted under the stated terms' : 'Not permitted'}</dd>
+              <dd>
+                {value
+                  ? key === 'public_fork' && spec.license.public_fork_scope === 'agentgrid-only'
+                    ? 'Within AgentGrid only; preserve attribution, lineage and these terms'
+                    : 'Permitted under the stated terms'
+                  : 'Not permitted'}
+              </dd>
             </div>
           ))}
         </dl>

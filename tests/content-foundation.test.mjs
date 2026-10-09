@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { parseAgentSpecification } from '../src/domain/agent-specification.ts';
 import { LAUNCH_CATEGORIES } from '../backend/publication/quality.ts';
+import { firstPartyPackageLicense } from '../src/domain/legal.ts';
 
 test('broad draft foundation stays portable, task-specific and unpublished', async () => {
   const agents = [];
@@ -14,8 +15,7 @@ test('broad draft foundation stays portable, task-specific and unpublished', asy
       const agent = parseAgentSpecification(source);
       assert.equal(agent.identity.slug, slug);
       assert.equal(file, `${agent.version}.agent.json`);
-      assert.equal(agent.license.identifier, 'unselected');
-      assert.ok(Object.values(agent.license.permissions).every((permission) => !permission));
+      assert.deepEqual(agent.license, firstPartyPackageLicense);
       assert.equal(agent.execution.mode, 'interactive');
       assert.equal(agent.examples.length, 3);
       assert.match(agent.platforms[0].compatibility_notes, /draft|before this draft/);

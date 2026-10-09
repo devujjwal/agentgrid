@@ -1,0 +1,121 @@
+.legal-page {
+  padding: 3rem var(--page-gutter) 5rem;
+  max-width: 100rem;
+  margin: auto;
+}
+.legal-header {
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2rem;
+}
+.legal-header h1 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.05;
+  margin: 1rem 0;
+  max-width: 17ch;
+}
+.legal-summary {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  max-width: 58ch;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.legal-record {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.legal-layout {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 3fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 3rem;
+}
+.legal-contents ol {
+  padding-left: 1.25rem;
+  margin-top: 1rem;
+}
+.legal-contents li {
+  padding-left: 0.25rem;
+  margin: 0.6rem 0;
+}
+.legal-contents a {
+  display: inline-block;
+  padding: 0.4rem 0;
+  line-height: 1.5;
+  text-underline-offset: 0.25em;
+}
+.legal-body {
+  max-width: 72ch;
+  overflow-wrap: anywhere;
+}
+.legal-body section {
+  margin-bottom: 2.5rem;
+  scroll-margin-top: 2rem;
+}
+.legal-body h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0 0 0.75rem;
+}
+.legal-body p,
+.legal-body li {
+  line-height: 1.8;
+  color: var(--muted);
+}
+.legal-body p + p {
+  margin-top: 0.75rem;
+}
+.legal-body ul {
+  padding-left: 1.25rem;
+}
+.legal-body a {
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.legal-contact {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.legal-contact h2 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: 1.75rem;
+  margin: 0.75rem 0;
+}
+.legal-contact p {
+  line-height: 1.6;
+}
+.legal-contact > a {
+  color: var(--signal);
+  padding: 0.75rem 0;
+  flex-shrink: 0;
+  text-underline-offset: 0.25em;
+}
+@media (max-width: 700px) {
+  .legal-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .legal-contents {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1.5rem;
+  }
+  .legal-contact {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

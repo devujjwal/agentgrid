@@ -8,13 +8,14 @@ const source = JSON.parse(
 );
 const draft = () => structuredClone(source);
 
-test('draft resource is portable, interactive and explicitly unlicensed/unverified', () => {
+test('first-party draft is portable and carries approved scoped rights without a publication claim', () => {
   const agent = parseAgentSpecification(draft());
   assert.equal(agent.schema_version, '0.1');
   assert.equal(agent.execution.mode, 'interactive');
   assert.equal(agent.tools.length, 0);
-  assert.equal(agent.license.identifier, 'unselected');
-  assert.equal(agent.license.permissions.public_fork, false);
+  assert.equal(agent.license.identifier, 'custom');
+  assert.equal(agent.license.public_fork_scope, 'agentgrid-only');
+  assert.equal(agent.license.permissions.redistribute, false);
   assert.ok(agent.examples[0].assertions.length >= 2);
   assert.equal(JSON.stringify(source), JSON.stringify(agent));
 });
@@ -48,12 +49,14 @@ test('automation/import claims need real artifacts and explicit write confirmati
 
 test('public fork grants require a selected license and consistent reuse permissions', () => {
   const unselected = draft();
+  unselected.license.identifier = 'unselected';
   unselected.license.permissions.public_fork = true;
   assert.throws(() => parseAgentSpecification(unselected));
   const contradictory = draft();
   contradictory.license.identifier = 'MIT';
   assert.throws(() => parseAgentSpecification(contradictory));
   const custom = draft();
+  delete custom.license.public_fork_scope;
   custom.license.identifier = 'custom';
   custom.license.permissions = { use: true, modify: true, redistribute: false, public_fork: true };
   assert.throws(() => parseAgentSpecification(custom));
