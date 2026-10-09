@@ -65,3 +65,26 @@ The real administrator session and real quality-reviewed inventory still require
 live acceptance. Local synthetic tests do not establish those results. Public-only
 capture and promotion use the existing publishable-key transport; they require no
 privileged local credential. The legacy local operator remains unprovisioned.
+
+## Temporary first-party authoring capacity
+
+Migration 031 adds `agentgrid_configuration.editorial_authoring_until`, initially
+null. Only the configured active first-party publisher with an existing
+administrator role can receive the temporary allowance, while submissions are
+enabled and the deadline has not passed. It permits at most forty resource
+creations and forty immutable submissions in each existing 24-hour window.
+Ordinary members retain ten; forks retain ten for everyone. Counters and window
+timestamps are retained when the allowance starts, expires or is revoked.
+
+An operator must retain the exact deadline and before/after configuration and
+quota readback. Use a deadline within seven days for initial catalogue preparation;
+clear it after that work. Browser roles and the application service role cannot
+change the configuration or call the internal quota helper. This setting grants
+no new account or staff access, creates no release, and changes no licensing,
+ownership, revision, immutable-version, evidence or publication checks.
+
+The shared migration operator uses the existing common Git directory for both
+its owned-schema record and uncertain-write intent. It accepts a clean detached
+checkout of the exact remote main commit so the primary workspace can remain
+untouched. Personal identity, remote ownership, exact committed SQL allowlist,
+completed main CI, applied checksums and protected-schema checks remain required.

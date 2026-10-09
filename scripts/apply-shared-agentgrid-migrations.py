@@ -55,6 +55,22 @@ def private_write(path, value):
     os.replace(temporary, path)
 
 
+def owned_state_path():
+    # Worktrees share the existing migration history and uncertain-write journal.
+    # Do not create a replacement baseline in a worktree's private Git directory.
+    common = Path(command(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"]))
+    return common / "agentgrid-owned-schema-state.json"
+
+
+def validate_checkout(commit):
+    # An isolated detached checkout of the exact main commit avoids changing the
+    # primary workspace. The remote-main and completed-CI checks remain below.
+    if (command(["git", "branch", "--show-current"]) not in ("", "main")
+        or command(["git", "rev-parse", "HEAD"]) != commit
+        or command(["git", "status", "--porcelain"])):
+        raise RuntimeError("Migration application requires a clean exact main commit checkout")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="Apply only the clean, CI-validated exact main commit")
@@ -80,7 +96,7 @@ def main():
         protected = audit.protected_inventory(inventory)
         return {kind: [row for row in rows if row not in protected[kind]] for kind, rows in inventory.items()}
 
-    state_path = Path(command(["git", "rev-parse", "--git-path", "agentgrid-owned-schema-state.json"]))
+    state_path = owned_state_path()
     intent_path = state_path.with_name("agentgrid-owned-schema-intent.json")
     history = installed_history()
     validate_history(history, sources)
@@ -120,10 +136,7 @@ def main():
         return
     if not args.commit or not re.fullmatch(r"[a-f0-9]{40}", args.commit):
         raise RuntimeError("An exact validated commit is required")
-    if (command(["git", "branch", "--show-current"]) != "main"
-        or command(["git", "rev-parse", "HEAD"]) != args.commit
-        or command(["git", "status", "--porcelain"])):
-        raise RuntimeError("Migration application requires the clean exact main checkout")
+    validate_checkout(args.commit)
     command(["pnpm", "verify:push"])
     tracked = command(["git", "ls-files", "--", "supabase/agentgrid/migrations"]).splitlines()
     expected_paths = [f"supabase/agentgrid/migrations/{name}.sql" for name in sources]
