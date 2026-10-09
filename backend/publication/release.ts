@@ -49,14 +49,31 @@ export async function executeReviewedRelease(
   requestId: string,
   now = new Date(),
   artifactResolver?: PublicationInput['artifactResolver'],
+  expectedReviewFingerprint?: string,
 ) {
   z.uuid().parse(requestId);
+  if (expectedReviewFingerprint !== undefined)
+    z.string()
+      .regex(/^[a-f0-9]{64}$/)
+      .parse(expectedReviewFingerprint);
   const read = await client.rpc('agentgrid_prepare_release_request', { request_id: requestId });
   if (read.error)
     throw new Error('Release preparation unavailable; inspect the private request status.');
   const prepared = await prepareReviewedRelease(read.data, now, artifactResolver);
   if (prepared.approval.requestId !== requestId)
     throw new Error('Release request identity mismatch.');
+  if (
+    expectedReviewFingerprint !== undefined &&
+    (await reviewedReleaseFingerprint(prepared)) !== expectedReviewFingerprint
+  )
+    throw new Error('Prepared review changed. Run preparation again before publishing.');
+  // A valid private artifact is not yet a usable public download. Keep the
+  // release transaction closed until guarded workflow delivery is implemented.
+  if (
+    prepared.specification.execution.artifact_path ||
+    prepared.specification.platforms.some((platform) => platform.distribution !== 'instructions')
+  )
+    throw new Error('Workflow artifact delivery is not ready for publication.');
   const write = await client.rpc('agentgrid_execute_release_request', {
     request_id: requestId,
     evidence: prepared.manifest,
@@ -82,6 +99,12 @@ export async function executeReviewedRelease(
       'Release acknowledgement is uncertain; read the recorded outcome before retrying.',
     );
   return { receipt: receipt.data, manifest: prepared.manifest };
+}
+
+export async function reviewedReleaseFingerprint(
+  prepared: Awaited<ReturnType<typeof prepareReviewedRelease>>,
+) {
+  return contentChecksum({ approval: prepared.approval, manifest: prepared.manifest });
 }
 
 /** Explicit readback after a lost acknowledgement; a released receipt is historical, not proof of current public visibility. */
