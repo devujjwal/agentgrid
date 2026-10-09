@@ -122,6 +122,16 @@ test('staging receipt is verified against live headers, build identity, anonymou
           },
         },
       );
+    if (path === '/api/community/creator/') {
+      assert.equal(new URL(url).search, '?username=admin');
+      return Response.json(
+        { error: 'not-found' },
+        {
+          status: 404,
+          headers: { 'cache-control': 'private, no-store' },
+        },
+      );
+    }
     if (path === '/robots.txt') return new Response('User-agent: *\nDisallow: /');
     return new Response(null, { status: 404 });
   };
@@ -131,6 +141,7 @@ test('staging receipt is verified against live headers, build identity, anonymou
     '/agentgrid-release.json',
     '/api/identity/',
     '/_worker.js',
+    '/api/community/creator/',
     '/qa/release-review/',
     '/robots.txt',
   ])
