@@ -1,9 +1,21 @@
 {
   "contract_version": "0.1",
-  "source_revision": 47,
-  "captured_at": "2026-10-09T22:34:22.457Z",
-  "catalogue_sha256": "44ab64a767a5527028eb532ab4be6085182f86367c88f7d835f02a45e5acd402",
+  "source_revision": 55,
+  "captured_at": "2026-10-09T23:09:07.979Z",
+  "catalogue_sha256": "80bc5775e088dc6252829018ab477d65e51608deecd922620cd9f298692e68c1",
   "resources": [
+    {
+      "resourceId": "0624b454-ff07-4380-8730-c59b3d3579ce",
+      "versionId": "987330e3-9d18-46cc-8c0f-84d555a41709",
+      "slug": "transcript-clip-planner",
+      "tag": "05ccd8692af1c2d3f718e4e9e2d0464e1effc641e845a4f6349126835f74c6c0"
+    },
+    {
+      "resourceId": "1200ad30-90c7-4d68-82f9-9f153345abd5",
+      "versionId": "f1541916-56f3-4105-ae20-556fab868543",
+      "slug": "plain-language-rewriter",
+      "tag": "e75fecd216170409741c9545cc1707fc2bed2d319ba7c84f570b4802654581b6"
+    },
     {
       "resourceId": "125ccdd9-9e4b-44bb-a1d5-35a3f7278a62",
       "versionId": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
@@ -57,6 +69,12 @@
       "versionId": "a96b45ed-c729-41e7-a47d-2697ff980d99",
       "slug": "source-evidence-mapper",
       "tag": "66507ae6024aefa3aef2478c16c1c2bc8c72fe99f07d6c6821617b1acb8a0f7e"
+    },
+    {
+      "resourceId": "3d6ef812-8a98-47ae-bac1-460c85c0afb5",
+      "versionId": "713fa71e-a75d-4079-9935-68c1fa331782",
+      "slug": "alt-text-editor",
+      "tag": "995c564b5b7e53ea0ecb9f92e0db949a109806a28a71bf97809b66799b0e1cce"
     },
     {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
@@ -123,6 +141,12 @@
       "versionId": "5c4d251f-589e-4b39-838e-44ad5f244223",
       "slug": "flashcard-quality-designer",
       "tag": "03e5b7700b5a9170aa7d15a4a6605d9c72b7d8e24b8bc5febe5daf085548d0e5"
+    },
+    {
+      "resourceId": "c948c146-bbf9-4deb-b422-2c1eb23ec415",
+      "versionId": "e14db8f7-ef45-4562-9042-6d3e9a01caa0",
+      "slug": "article-structure-editor",
+      "tag": "12763cbeb135aa543ee17334f054a2623a8233c9024cad22d9420f31069c09f1"
     },
     {
       "resourceId": "c98e3278-4885-492e-ace6-22348caff62b",
