@@ -3,6 +3,73 @@
     "editorial": {
       "faq": [
         {
+          "answer": "No. A calculation is conditional on supplied prerequisites, durations, capacity and calendar assumptions. Unknown scope or estimates prevent a credible schedule, and a precedence-only critical path is not a delivery guarantee.",
+          "question": "Can it guarantee a launch date?"
+        },
+        {
+          "answer": "No. Supply explicit predecessor IDs. Design, build and test appearing next to each other does not prove a strict sequence. An illustrative suggestion must stay labelled hypothetical until the team confirms the actual relationships.",
+          "question": "Does list order establish prerequisites?"
+        },
+        {
+          "answer": "The instructions require the cycle chain and withhold a valid topological order. A human must identify the mistaken prerequisite or split a task. Removing an edge merely to show readiness would change the project constraint without approval.",
+          "question": "What happens when tasks form a cycle?"
+        },
+        {
+          "answer": "No. Unknown owners remain gaps, and proposed assignments are not accepted responsibilities. The instructions have no account, task-system, messaging or scheduling integration and cannot establish that an external update occurred.",
+          "question": "Does it assign owners or update a project board?"
+        },
+        {
+          "answer": "The host can present its answer using diagrams or interactive controls in addition to copied text. Those presentations were seen in bounded testing, but their availability is not guaranteed and they do not grant this package project-system access. Verify the underlying task evidence and assumptions.",
+          "question": "Why might ChatGPT show extra diagrams or controls?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "title": "OpenAI ChatGPT Data Controls FAQ",
+          "supports": "Host data controls and Temporary Chat options inform provider-data-handling review before sharing authorized redacted project context.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "Project coordinators validating explicit prerequisites before proposing a delivery schedule.",
+        "Small teams distinguishing dependency blockers from resource capacity and missing estimates."
+      ],
+      "overview": "A task list does not establish a schedule. Project Dependency Planner turns explicitly supplied prerequisites into a reviewable dependency table, checks for missing references and cycles, and separates precedence from staffing capacity. Supply unique task IDs, descriptions, required predecessors, duration units, available capacity, known owners and any hard milestone. List order alone is not a dependency. Missing inputs remain questions rather than invented estimates or accepted assignments.\n\nFor an acyclic graph with explicit elapsed-day assumptions, the output can calculate earliest relative starts and finishes. Unlimited parallel resources are an exercise assumption, not evidence that a real team can run every ready task simultaneously. A critical path calculated from precedence alone does not guarantee a resource-feasible date. Check calendars, handoffs, uncertain estimates and approvals separately. If a cycle exists, the package should show the chain and ask which relationship is mistaken or which task needs splitting; a hypothetical repair is not an approved change.\n\nThree bounded ChatGPT web Instant observations were inspected on 9 October 2026. The normal example finished on relative day five under unlimited parallel resources. Missing scheduling context remained unresolved, with a clearly hypothetical sequence and host-generated question controls. The adversarial example retained its circular blocker despite a note demanding readiness and automatic assignments. These observations do not establish general scheduling reliability. The host may add diagrams or interactive controls; this package grants no project-board access or external action authority.\n\nUse task and role aliases and remove confidential dates, links and staff information that are unnecessary. The selected model provider processes what you paste. AgentGrid instructions are free; host access and pricing depend on your account. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant. A decision-maker must validate the proposed plan before treating any date or assignment as a commitment.",
+      "workflow": [
+        "Prepare a bounded redacted task set with unique IDs, descriptions, explicit predecessors, durations and units. Include available capacity, known owners, calendars and hard milestones; leave unknown information clearly marked.",
+        "Paste the complete instructions into a fresh ChatGPT conversation and supply that context. Clarify whether estimates mean elapsed or working time before accepting any timing calculation.",
+        "Inspect missing references, self-dependencies and cycle chains before considering an order. Compare each edge with the source; do not accept a suggested cycle repair without team approval.",
+        "Check relative finishes and critical-path assumptions against capacity and calendar constraints. Confirm owners, estimates, milestones and approval gates before manually updating your own project system; the package has made no such update."
+      ],
+      "discovery": {
+        "keywords": [
+          "task dependency planning",
+          "critical path assumptions",
+          "dependency cycle review",
+          "relative project schedule",
+          "resource capacity blockers"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Check explicit task dependencies, detect cycles and calculate earliest relative completion only under supplied duration and capacity assumptions.",
+      "related_agent_slugs": ["meeting-decision-ledger", "weekly-capacity-planner"]
+    },
+    "version_id": "8f8b913c-9184-4e46-8740-e3a6ab73786f"
+  },
+  {
+    "editorial": {
+      "faq": [
+        {
           "answer": "The instructions require an explicit acceptance or agreement statement rather than a confident suggestion or silence. A later revision or withdrawal changes the supported current state. If one speaker reports collective agreement, verify other participants when that matters operationally.",
           "question": "When is a decision treated as confirmed?"
         },
