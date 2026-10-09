@@ -1,9 +1,15 @@
 {
   "contract_version": "0.1",
-  "source_revision": 13,
-  "captured_at": "2026-10-09T19:24:30.078Z",
-  "catalogue_sha256": "071d7bcd3b3b764de6e3c82eb1156cc774867da590746c9a2914f387bacb8a65",
+  "source_revision": 15,
+  "captured_at": "2026-10-09T19:45:00.538Z",
+  "catalogue_sha256": "85741280277369d49defc3c9519b4803b218f6822e3b317603a8d76f6c9fd45d",
   "resources": [
+    {
+      "resourceId": "1d59c22b-af57-477f-a2f4-d40421f1fdfb",
+      "versionId": "6eda062a-7ccd-48d1-a4d9-8460c5f1fdd1",
+      "slug": "pull-request-reviewer",
+      "tag": "63e30cb0411f79b79e154562ed7d5a4866f7db721eba14dd0ec5dd19b2493cb7"
+    },
     {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
       "versionId": "8f8b913c-9184-4e46-8740-e3a6ab73786f",
