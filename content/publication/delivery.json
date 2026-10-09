@@ -1,8 +1,8 @@
 {
   "contract_version": "0.1",
-  "source_revision": 39,
-  "captured_at": "2026-10-09T21:59:19.161Z",
-  "catalogue_sha256": "ef97cd80800ebda494b2ff9af99b4f1223ee3c1f184f0122cd6083189ff4affb",
+  "source_revision": 47,
+  "captured_at": "2026-10-09T22:34:22.457Z",
+  "catalogue_sha256": "44ab64a767a5527028eb532ab4be6085182f86367c88f7d835f02a45e5acd402",
   "resources": [
     {
       "resourceId": "125ccdd9-9e4b-44bb-a1d5-35a3f7278a62",
@@ -41,6 +41,12 @@
       "tag": "404aff5d31f7027f12d7a1b980cd3b7994129a5265e4d5ae930ef152a377a180"
     },
     {
+      "resourceId": "32ede64c-80aa-4c69-ba4c-c7981798330d",
+      "versionId": "18d03d92-6931-452c-9ef4-e1bdbdc4dbea",
+      "slug": "analogy-learning-coach",
+      "tag": "ac8ab195b1dd2dffe41e514b185232b8c29a0f6118d11b924c9e606283db2817"
+    },
+    {
       "resourceId": "39866b1c-490c-47fa-9d47-0298342e87b2",
       "versionId": "1bab9fb9-73fc-4ca7-9367-bab9bd3a5b16",
       "slug": "search-snippet-claim-reviewer",
@@ -77,6 +83,12 @@
       "tag": "a3c0801804ced618f76d03d5b8fcfd368c8159a79472f6852994cce8f3556af3"
     },
     {
+      "resourceId": "a1fe171d-9d3e-413d-b0ec-df65329a1ac6",
+      "versionId": "61d73354-11ba-41ec-9f03-a280cf362d19",
+      "slug": "worked-solution-diagnostician",
+      "tag": "0268bdcef857cb9850cdd35b95ca06b295d8f642d2431d9cb21956c2fd303ab5"
+    },
+    {
       "resourceId": "a7bbfd0f-90bc-4595-bddc-7396ce1ab8b6",
       "versionId": "246b5299-3217-4feb-9850-f26c8681b22a",
       "slug": "bug-reproduction-brief",
@@ -95,10 +107,22 @@
       "tag": "5667ca5f324c66c1cb325a1f434d048b0f57541d9156c3996b192e2368cd9579"
     },
     {
+      "resourceId": "c74ac8be-e6e9-4fac-bcd2-1a1fe1186edc",
+      "versionId": "7bd7a081-c51e-4d55-8a66-148e24110a79",
+      "slug": "retrieval-study-coach",
+      "tag": "4bfc1f53f15be439f7131b1212ed3b6598d2db6c7c2065761cf8e24fb4dcd0b1"
+    },
+    {
       "resourceId": "c8598b10-849b-4802-9ae1-fa0cada87419",
       "versionId": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2",
       "slug": "reply-draft-assistant",
       "tag": "ce9accd5d2c523b85c2adc77aa41d5271516b1ab9164c0be537e96d76358e7e5"
+    },
+    {
+      "resourceId": "c931c56b-ab91-404e-8e19-9809c58a34ee",
+      "versionId": "5c4d251f-589e-4b39-838e-44ad5f244223",
+      "slug": "flashcard-quality-designer",
+      "tag": "03e5b7700b5a9170aa7d15a4a6605d9c72b7d8e24b8bc5febe5daf085548d0e5"
     },
     {
       "resourceId": "c98e3278-4885-492e-ace6-22348caff62b",
