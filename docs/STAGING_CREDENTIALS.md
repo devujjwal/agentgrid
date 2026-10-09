@@ -68,3 +68,24 @@ Provider references verified on 2026-10-09:
 [key creation](https://supabase.com/docs/reference/api/v1-create-project-api-key),
 [key inventory](https://supabase.com/docs/reference/api/v1-get-project-api-keys),
 [Cloudflare Pages configuration](https://developers.cloudflare.com/api/resources/pages/subresources/projects/methods/edit/).
+
+## Staging delivery and runtime diagnosis — 9 October 2026
+
+PR38 passed CI and merged as `0e7e54c1b2a8bdfde86c2057f092d9b855c17fd5`.
+Its main validation run `37891131472` and staging run `37891206397` both passed.
+Deployment `97f0e766-2c08-4974-919b-35c5dfef8875` passed exact-build readback,
+security headers, anonymous CSRF, unknown/private route denial and crawler exclusion.
+Migration 028 then passed the guarded remote rollout and live access-denial probes;
+protected PicMagic resources remain unchanged.
+
+The fixed-name/status-only runtime diagnostic reported `agentgrid_auth_allow`
+with status zero. The temporary provider tail was removed after inspection; raw
+request events, cookies, identities and upstream responses were discarded in memory.
+A disposable workerd test reproduced the failure: its native fetch rejects
+`redirect: 'error'` before sending a request. Server adapters now use one shared
+manual-redirect transport which rejects every 3xx response, cancels its body and
+never follows its destination. Browser fetch retains its supported error mode.
+No credential rotation, access expansion or shared provider change was needed.
+The compiled test now covers successful synthetic Google initiation through both
+owned RPCs and proves that a redirected provider response cannot cause another
+outbound request. This fix still needs deployment and actual Google code exchange.

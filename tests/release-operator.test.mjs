@@ -120,7 +120,7 @@ test('actual SDK publisher transport refuses arbitrary endpoints, writes in read
     (await client.rpc('agentgrid_release_request_status', { request_id: id })).error,
     null,
   );
-  assert.equal(calls[0].init.redirect, 'error');
+  assert.equal(calls[0].init.redirect, 'manual');
   assert.ok(calls[0].init.signal instanceof AbortSignal);
   assert.equal(new Headers(calls[0].init.headers).get('apikey'), configuration.SUPABASE_SECRET_KEY);
   assert.ok((await client.rpc('agentgrid_execute_release_request', {})).error);

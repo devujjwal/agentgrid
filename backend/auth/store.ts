@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { AuthConfiguration } from './configuration.ts';
@@ -16,9 +17,8 @@ export function identityStore(
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     global: {
       fetch: (input, init) =>
-        transport(input, {
+        providerFetch(transport, input, {
           ...init,
-          redirect: 'error',
           signal: AbortSignal.timeout(10_000),
         }),
     },

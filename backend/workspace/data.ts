@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { accountResources } from './account.ts';
 import { profileGovernance } from './profile-governance.ts';
 import { createClient } from '@supabase/supabase-js';
@@ -60,7 +61,7 @@ export function workspaceData(
     accessToken: async () => session.accessToken,
     global: {
       fetch: (input, init) =>
-        transport(input, { ...init, redirect: 'error', signal: AbortSignal.timeout(10_000) }),
+        providerFetch(transport, input, { ...init, signal: AbortSignal.timeout(10_000) }),
     },
   });
   const identity = async () => {

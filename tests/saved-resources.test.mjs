@@ -27,7 +27,7 @@ function fixture() {
     const headers = new Headers(init.headers);
     assert.equal(headers.get('apikey'), configuration.publishableKey);
     assert.equal(headers.get('authorization'), 'Bearer ' + session.accessToken);
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     calls.push({ path: url.pathname, body: JSON.parse(init.body) });
     if (url.pathname.endsWith('/agentgrid_workspace_identity'))
       return Response.json({

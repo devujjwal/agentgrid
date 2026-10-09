@@ -1323,3 +1323,31 @@ pending working contact mail, retention operations and real community acceptance
 The staging upload is live but Google initiation remains under diagnosis after
 correcting the new key's missing service-role claim. See `STAGING_CREDENTIALS.md`.
 No paid service, production DNS change or public launch occurred.
+
+### Staging rollout and transport correction
+
+Exact main `0e7e54c` passed validation `37891131472` and staging deployment
+`37891206397`. Migration 028 is applied; protected schema/auth fingerprints and
+live anonymous/authenticated denial probes pass. The legal pages and versioned
+first-party terms are delivered on staging. Public onboarding remains closed.
+
+Sanitized runtime diagnostics and a new compiled outbound test reproduced an
+edge-runtime incompatibility: native fetch rejects the `error` redirect mode.
+All server provider adapters now explicitly reject redirects using manual mode;
+credentials are never forwarded. No provider permissions were weakened. The
+compiled test exercises real transport to a synthetic provider, including Google
+PKCE initialization and redirect denial, without real credentials or network calls.
+Actual staging code exchange remains a separate acceptance gate.
+
+Guided license editing now removes dependent fork grants when use/modification or
+redistribution is revoked, clears obsolete scope fields and never silently grants
+general redistribution. Inherited source terms remain disabled. Unit acceptance
+covers these revocation and scope transitions; browser validation follows.
+
+This increment passes 174 Node tests, 12 Python tests, formatting, lint, strict
+TypeScript, production export and compiled workerd acceptance. Browser checks of
+the disposable creator editor verify scope selection, permission revocation,
+private-save acknowledgement and reload persistence. Widths 320/768/1024/1440 show
+no horizontal overflow; the mobile scope label was shortened and reinspected.
+No browser console errors were observed. These synthetic checks create no shared
+project profiles, reviews, activity or real package releases.

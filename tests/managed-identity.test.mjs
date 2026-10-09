@@ -62,7 +62,7 @@ test('pinned managed SDK uses PKCE, server verification, custom email generation
     const url = new URL(String(input)),
       headers = new Headers(init.headers);
     assert.equal(url.origin, configuration.supabaseOrigin);
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     assert.ok(init.signal);
     const body = init.body ? JSON.parse(init.body) : null;
     requests.push({ url, headers, body });
@@ -155,7 +155,7 @@ test('identity persistence restricts service-role traffic to fixed owned RPCs an
     const url = new URL(String(input));
     requests.push(url.pathname);
     assert.equal(new Headers(init.headers).get('apikey'), configuration.secretKey);
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     if (url.pathname.endsWith('/agentgrid_auth_session_load'))
       return Response.json(
         malformed

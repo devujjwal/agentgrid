@@ -25,7 +25,7 @@ test('creator projection uses anonymous authority, bounded pages and closed data
       'https://synthetic.supabase.co/rest/v1/rpc/agentgrid_public_creator_page',
     );
     assert.equal(new Headers(init.headers).get('apikey'), config.publishableKey);
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     assert.deepEqual(JSON.parse(init.body), { handle: 'synthetic_creator', requested_offset: 0 });
     return Response.json(value);
   });
