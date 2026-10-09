@@ -1,0 +1,28 @@
+begin;
+create function pg_temp.agentgrid_assert(condition boolean, explanation text) returns void
+language plpgsql as $$ begin if condition is distinct from true then raise exception 'Assertion failed: %',explanation; end if; end $$;
+select pg_temp.agentgrid_assert(not has_table_privilege('anon','public.agentgrid_analytics_daily','select'),'anonymous cannot inspect analytics');
+select pg_temp.agentgrid_assert(not has_table_privilege('authenticated','public.agentgrid_analytics_daily','select'),'members and staff cannot directly inspect analytics');
+select pg_temp.agentgrid_assert(not has_table_privilege('service_role','public.agentgrid_analytics_daily','insert'),'service uses narrow RPC');
+select pg_temp.agentgrid_assert(not has_function_privilege('anon','public.agentgrid_analytics_record(jsonb)','execute'),'no direct anonymous writes');
+select pg_temp.agentgrid_assert(not has_function_privilege('authenticated','public.agentgrid_analytics_summary()','execute'),'private summaries not exposed by member JWT');
+set local role service_role;
+select pg_temp.agentgrid_assert(public.agentgrid_analytics_record('{"event":"page_view","page":"home"}'),'valid aggregate accepted');
+select pg_temp.agentgrid_assert(public.agentgrid_analytics_record('{"event":"search","kind":"all","results":"none"}'),'search bucket accepted');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"search","kind":"all","results":"none","query":"private"}'),'no query retention');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"page_view","page":"workspace"}'),'private page excluded');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"page_view","page":null}'),'null rejected');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"agent_view","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000001"}'),'unpublished agent rejected');
+select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_analytics_summary())=2,'summary contains accepted aggregates only');
+reset role;
+insert into public.agentgrid_analytics_daily(day,event,dimension,count) values((current_timestamp at time zone 'UTC')::date-40,'page_view','home',1);
+set local role service_role;
+select public.agentgrid_analytics_prune();
+reset role;
+select pg_temp.agentgrid_assert((select count(*)=2 from public.agentgrid_analytics_daily),'expiry deletes only owned stale aggregates');
+update public.agentgrid_analytics_daily set count=1999 where event='page_view';
+set local role service_role;
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"page_view","page":"agents"}'),'global daily write ceiling');
+reset role;
+select pg_temp.agentgrid_assert((select sum(count)=2000 from public.agentgrid_analytics_daily),'quota rejection adds no row or count');
+rollback;

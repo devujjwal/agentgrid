@@ -26,6 +26,7 @@ for (const path of [
   '/agents/unknown-resource/',
   '/creators/synthetic_creator/',
   '/api/community/creator/',
+  '/api/analytics/',
   '/api/identity/',
   '/api/workspace/',
   '/api/moderation/reviews/',
@@ -100,6 +101,13 @@ try {
       redirect: 'manual',
       headers: { 'CF-Connecting-IP': '127.0.0.1', ...init.headers },
     });
+  const disabledMeasurement = await send('/api/analytics/', {
+    method: 'POST',
+    headers: { 'x-agentgrid-synthetic-origin': origin, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event: 'page_view', page: 'home' }),
+  });
+  assert.equal(disabledMeasurement.status, 204);
+  assert.equal(disabledMeasurement.headers.get('set-cookie'), null);
   const unknownAgent = await send('/agents/unknown-resource/');
   assert.equal(unknownAgent.status, 404);
   assert.equal(unknownAgent.headers.get('cache-control'), 'private, no-store');

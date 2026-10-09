@@ -53,6 +53,12 @@ create temp table agentgrid_capture_fixture as select
 -- Use actual fixture slugs, never production content.
 update agentgrid_capture_fixture set original_state=public.agentgrid_public_delivery_state((select slug from public.agentgrid_agents where id='20000000-0000-4000-8000-000000000001'));
 grant select on agentgrid_capture_fixture to anon,authenticated;
+set local role service_role;
+select pg_temp.agentgrid_assert(public.agentgrid_analytics_record('{"event":"agent_view","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000001"}'),'live published version accepts aggregate view');
+select pg_temp.agentgrid_assert(public.agentgrid_analytics_record('{"event":"copy_instructions","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000001","platform":"chatgpt"}'),'declared platform accepts copy observation');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"copy_instructions","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000001","platform":"invented"}'),'unsupported platform measurement denied');
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"agent_view","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000002"}'),'wrong version measurement denied');
+reset role;
 set local role anon;
 select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_publication_index(null)->'items')=2,'only publicly released rows are exported');
 select pg_temp.agentgrid_assert(public.agentgrid_publication_index('ffffffff-ffff-4fff-8fff-ffffffffffff')->'items'='[]'::jsonb,'cursor past final resource is bounded and empty');
@@ -64,6 +70,9 @@ update public.agentgrid_profiles set bio='Changed synthetic public author biogra
 select pg_temp.agentgrid_assert((public.agentgrid_publication_index(null)->>'revision')::bigint>(select (initial_index->>'revision')::bigint from agentgrid_capture_fixture),'creator changes advance consistency fence');
 select pg_temp.agentgrid_assert(public.agentgrid_public_delivery_state((select original_state->>'slug' from agentgrid_capture_fixture))->>'tag' is distinct from (select original_state->>'tag' from agentgrid_capture_fixture),'changed public creator data changes delivery tag');
 update public.agentgrid_agents set status='blocked' where id='20000000-0000-4000-8000-000000000001';
+set local role service_role;
+select pg_temp.agentgrid_assert(not public.agentgrid_analytics_record('{"event":"agent_view","resourceId":"20000000-0000-4000-8000-000000000001","versionId":"30000000-0000-4000-8000-000000000001"}'),'withdrawn version measurement denied');
+reset role;
 set local role anon;
 select pg_temp.agentgrid_assert(public.agentgrid_public_delivery_state((select original_state->>'slug' from agentgrid_capture_fixture)) is null,'takedown becomes unavailable immediately');
 select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_publication_index(null)->'items')=1,'blocked content is excluded from fresh capture');

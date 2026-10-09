@@ -1213,3 +1213,27 @@ production export, backend compilation/workerd boundary tests and 91-document
 private preview. Browser inspection confirms both canonical-domain image tags,
 large-card type and successful 1200 × 630 image delivery. External social caches,
 production headers and public crawl visibility remain deployment gates.
+
+### Private aggregate measurement foundation
+
+Optional first-party measurements now cover public landing views, settled result
+bands and published-resource actions. Browser projection and strict server/database
+validation exclude raw queries, URLs, cookies and visitor identifiers. DNT/GPC and
+private previews suppress collection. A serialized 2,000-event daily ceiling bounds
+accepted writes; it does not cap provider requests. No public popularity counters
+or install claims are derived from these observations. Both activation flags remain
+off. Retention/notice/provider acceptance requirements are in `ANALYTICS.md`.
+
+Acceptance passes 158 Node/11 Python tests, formatting, lint, typecheck, production
+export and backend/workerd tests. The 27-migration rehearsal preserves protected
+PicMagic fixtures and owned-data extraction/reassociation checksums and lineage.
+The rebuilt browser search returns the meeting follow-up recipe first, with honest
+draft labels, no horizontal overflow and no console errors. The browser inspection
+API does not expose resource timing, so live network absence is not claimed;
+disabled transport is verified by executable client and compiled Worker tests.
+Enabled production traffic and retention operations remain rollout gates.
+
+PR32 connection-guidance head `da535c4` passed CI `37747187575`; PR33 social-preview
+head `4ab5d67` passed CI `37747794550`. Both merged. No paid service or analytics
+activation was introduced. Migration 027 is locally validated and awaits the
+clean-main protected-schema rollout.
