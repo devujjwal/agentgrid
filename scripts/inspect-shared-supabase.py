@@ -12,6 +12,7 @@ import subprocess
 PROJECT_REF = "lxecbrvzpmgjmsqiachc"
 GOOGLE_AUTH_FIELDS = frozenset(("external_google_enabled", "external_google_client_id", "external_google_secret", "uri_allow_list"))
 LOCAL_OAUTH_CALLBACK = "http://localhost:3027/auth/callback/"
+STAGING_OAUTH_CALLBACK = "https://agentgrid-staging.pages.dev/auth/callback/"
 
 
 def decode_keyring_value(value):
@@ -124,6 +125,23 @@ def approved_google_transition(original_digest, before, current, evidence):
     )
 
 
+def approved_staging_transition(original_digest, original_before, google_evidence, current, evidence):
+    """Reconstruct the prior approved state; permit one exact additive callback only."""
+    redirects = (current.get("uri_allow_list") or "").split(",")
+    if redirects.count(STAGING_OAUTH_CALLBACK) != 1 or redirects[-1] != STAGING_OAUTH_CALLBACK:
+        return False
+    previous = {**current, "uri_allow_list": ",".join(redirects[:-1])}
+    return (
+        evidence.get("project_ref") == PROJECT_REF
+        and evidence.get("authorization") == "owner-approved-staging-configuration"
+        and evidence.get("callback") == STAGING_OAUTH_CALLBACK
+        and evidence.get("changed_fields") == ["uri_allow_list"]
+        and evidence.get("before_digest") == digest(previous)
+        and evidence.get("after_digest") == digest(current)
+        and approved_google_transition(original_digest, original_before, previous, google_evidence)
+    )
+
+
 def isolation_query(role):
     if role not in ("anon", "authenticated"):
         raise ValueError("Unsupported audit role")
@@ -175,9 +193,15 @@ def main():
                     original["auth_config_digest"], json.loads(before_path.read_text()), auth,
                     json.loads(evidence_path.read_text()),
                 )
+                staging_path = path.parent / "agentgrid-staging-auth-transition.json"
+                if not approved_transition and staging_path.exists():
+                    approved_transition = approved_staging_transition(
+                        original["auth_config_digest"], json.loads(before_path.read_text()),
+                        json.loads(evidence_path.read_text()), auth, json.loads(staging_path.read_text()),
+                    )
         if changed or not (auth_unchanged or approved_transition):
             raise RuntimeError("Protected shared-project baseline changed: " + ", ".join(changed or ["auth configuration"]))
-        print("Protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only the recorded owner-approved Google configuration differs."))
+        print("Protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only recorded owner-approved authentication deltas differ."))
     elif not path.exists():
         path.write_text(json.dumps(baseline, indent=2) + "\n")
         path.chmod(0o600)

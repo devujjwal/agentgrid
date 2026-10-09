@@ -75,6 +75,28 @@ class SharedSupabaseAuditTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 audit.decode_keyring_value(value)
 
+    def test_staging_delta_preserves_google_chain_and_rejects_other_auth_drift(self):
+        before, google, google_evidence = self.google_transition_fixture()
+        current = {**google, "uri_allow_list": google["uri_allow_list"] + "," + audit.STAGING_OAUTH_CALLBACK}
+        evidence = {
+            "project_ref": audit.PROJECT_REF,
+            "authorization": "owner-approved-staging-configuration",
+            "callback": audit.STAGING_OAUTH_CALLBACK,
+            "changed_fields": ["uri_allow_list"],
+            "before_digest": audit.digest(google), "after_digest": audit.digest(current),
+        }
+        check = lambda value, record: audit.approved_staging_transition(audit.digest(before), before, google_evidence, value, record)
+        self.assertTrue(check(current, evidence))
+        for change in (
+            {"site_url": "https://agentgrid.me"},
+            {"smtp_host": "changed"},
+            {"external_google_secret": "GOCSPX-" + "1" * 28},
+            {"uri_allow_list": current["uri_allow_list"] + ",https://attacker.example"},
+            {"uri_allow_list": current["uri_allow_list"].replace(audit.STAGING_OAUTH_CALLBACK, "https://agentgrid-staging.pages.dev/**")},
+        ):
+            mutated = {**current, **change}
+            self.assertFalse(check(mutated, {**evidence, "after_digest": audit.digest(mutated)}))
+
     def test_protected_resources_remain_in_fingerprint_after_agentgrid_additions(self):
         original = {
             "tables": [{"name": "prompts", "rls": True}],

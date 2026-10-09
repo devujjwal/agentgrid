@@ -1280,3 +1280,18 @@ Implementation of those decisions follows this milestone; contact delivery still
 needs verification. The owner also approved the named revocable staging backend
 credential and encrypted Cloudflare bindings, exclusively server-side. These
 decisions replace the earlier pending-input notes, not the publication gates.
+
+### Approved staging credential custody
+
+The named staging backend key and approved credentials are now encrypted in the
+personal Cloudflare staging main environment. Branch previews contain no secrets.
+Bootstrap tests cover dry-run behavior, collision refusal, partial recovery and
+lost acknowledgements without duplicate keys or replacing existing credentials.
+The ignored local Supabase/Resend copies were removed after provider confirmation.
+`STAGING_CREDENTIALS.md` records purpose, scope, recovery and extraction details.
+
+The exact staging OAuth callback was added with chained digest validation. All
+other shared auth settings and protected PicMagic resources are unchanged; live
+anonymous/authenticated access-denial checks pass. Actual code exchange and email
+delivery still need deployment acceptance. No MX record currently exists for
+agentgrid.me, so contact@agentgrid.me receiving setup is an explicit launch gate.
