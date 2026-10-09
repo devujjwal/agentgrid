@@ -1258,3 +1258,25 @@ PR34 analytics head `dfe4296` passed CI `37887252278` and merged as `0999605`. T
 remote operator inspected the protected schema, then refused application while
 the new main CI was still pending. No partial migration occurred: remote history
 remains at 26 migrations until a later successful exact-main application.
+
+### Reviewed release operator and owner decisions
+
+Migration 027 subsequently applied once exact main `0999605` passed CI. Live
+anonymous/authenticated privilege-denial checks passed and the protected PicMagic
+schema/shared authentication baseline remained unchanged. Analytics stays off.
+PR35 crawl-audit head `999df78` passed CI `37887779655` and merged as `98b3f95`.
+
+The explicit local release operator now supports read-only preparation, exact
+review fingerprints, guarded publication and separate uncertain-result readback.
+It refuses currently unservable workflow artifacts. Full local acceptance passes
+165 Node/11 Python tests, format, lint, typecheck and production export. See
+`RELEASE_OPERATOR.md`; no publication or publisher credential was activated.
+
+The owner supplied Ujjwal Paul, India and contact@agentgrid.me as the individual
+operator details; AgentGrid is a brand, not an incorporated entity. First-party
+packages must use custom terms permitting personal/commercial internal workflows
+and scoped in-platform forks, without blanket redistribution. CC BY was rejected.
+Implementation of those decisions follows this milestone; contact delivery still
+needs verification. The owner also approved the named revocable staging backend
+credential and encrypted Cloudflare bindings, exclusively server-side. These
+decisions replace the earlier pending-input notes, not the publication gates.
