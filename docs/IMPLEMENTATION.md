@@ -1351,3 +1351,27 @@ private-save acknowledgement and reload persistence. Widths 320/768/1024/1440 sh
 no horizontal overflow; the mobile scope label was shortened and reinspected.
 No browser console errors were observed. These synthetic checks create no shared
 project profiles, reviews, activity or real package releases.
+
+### Live Google session and isolated admission pilot
+
+PR39 passed exact-head CI and deployed through workflow `37892522496`; its runtime
+is serving staging. PR40 passed CI and strengthens subsequent staging deployments
+with a real anonymous database-transport probe, also verified against the deployed
+runtime. A fresh owner Google flow now completes the actual code exchange and
+returns to the live workspace. Community onboarding is still closed; no consent,
+profile or role was fabricated. The evidence screenshot records this distinction.
+
+Cloudflare is signed in to the personal account. AgentGrid's Free DNS zone is
+prepared but not authoritative. Its automatic scan found zero records, so activation
+is paused until the registrar's complete record inventory is available. Existing
+GoDaddy nameservers, website parking and Resend DNS remain unchanged. The owner
+was asked to sign in to GoDaddy; no paid feature or plan was selected.
+
+Additive migration 029 implements expiring, private identity-specific admission
+without enabling global registration. Both profile creation and workspace consent
+availability share the same database check; direct RPC callers cannot bypass the
+pilot. All current consent and private-membership rules remain in force. The local
+29-migration rehearsal passes, including anonymous/other-user/expired-pilot denial,
+staff admission denial, protected PicMagic fixtures and actual owned-data extraction
+with deliberate reassociation of both private Auth-link tables. No real pilot has
+been enrolled. Remote application still requires clean-main CI and boundary guards.
