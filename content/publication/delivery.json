@@ -1,8 +1,8 @@
 {
   "contract_version": "0.1",
-  "source_revision": 27,
-  "captured_at": "2026-10-09T21:06:00.285Z",
-  "catalogue_sha256": "7ff6ba029a8dbd5b2141e8cbffa0be95ad39a99aea6133e428f8ce35008d3798",
+  "source_revision": 31,
+  "captured_at": "2026-10-09T21:28:04.194Z",
+  "catalogue_sha256": "80c4e14cb9594f28ab6aa74117843ff9a7e2b9d7c06d04bf81fa28bd42a184cc",
   "resources": [
     {
       "resourceId": "125ccdd9-9e4b-44bb-a1d5-35a3f7278a62",
@@ -21,6 +21,12 @@
       "versionId": "6eda062a-7ccd-48d1-a4d9-8460c5f1fdd1",
       "slug": "pull-request-reviewer",
       "tag": "63e30cb0411f79b79e154562ed7d5a4866f7db721eba14dd0ec5dd19b2493cb7"
+    },
+    {
+      "resourceId": "24294586-2f14-4a85-b994-26013b70312a",
+      "versionId": "0d0b13f2-b96c-4078-beea-61e28f138506",
+      "slug": "redirect-map-reviewer",
+      "tag": "87ffa30d78d1dc5bde89f4bcef528d63764ec51897feb689564fec38cba9afe7"
     },
     {
       "resourceId": "2a2ae7ef-f285-4837-b3e0-9ef974644964",
@@ -75,6 +81,12 @@
       "versionId": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2",
       "slug": "reply-draft-assistant",
       "tag": "ce9accd5d2c523b85c2adc77aa41d5271516b1ab9164c0be537e96d76358e7e5"
+    },
+    {
+      "resourceId": "c98e3278-4885-492e-ace6-22348caff62b",
+      "versionId": "3b72430d-a195-454f-8a2a-3fda819c496e",
+      "slug": "search-opportunity-auditor",
+      "tag": "1a9c23e5d3305d87437ff65440da280895f6183e50788c65858256ca1dafc43e"
     },
     {
       "resourceId": "e782c062-59b0-4dcf-b695-41c41ab864f6",
