@@ -13,8 +13,14 @@ export function localDesignSpecifications(): AgentSpecification[] {
     throw new Error('Draft design fixtures are local-only.');
   const root = resolve('content/agents');
   return readdirSync(root).map((slug) => {
+    const files = readdirSync(resolve(root, slug)).filter((file) =>
+      /^\d+\.\d+\.\d+\.agent\.json$/.test(file),
+    );
+    const file = files[0];
+    if (files.length !== 1 || !file)
+      throw new Error('One active private draft per resource is required.');
     const agent = parseAgentSpecification(
-      JSON.parse(readFileSync(resolve(root, slug, '1.0.0.agent.json'), 'utf8')),
+      JSON.parse(readFileSync(resolve(root, slug, file), 'utf8')),
     );
     return agent;
   });

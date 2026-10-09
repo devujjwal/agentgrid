@@ -11,10 +11,12 @@ import {
 import { searchCatalogue } from '../src/domain/discovery.ts';
 const drafts = parseRecipeDrafts(JSON.parse(await readFile('content/recipes/drafts.json', 'utf8')));
 const specifications = [];
-for (const slug of new Set(drafts.flatMap((recipe) => recipe.steps.map((step) => step.agent_slug))))
-  specifications.push(
-    JSON.parse(await readFile(`content/agents/${slug}/1.0.0.agent.json`, 'utf8')),
-  );
+for (const reference of new Set(
+  drafts.flatMap((recipe) =>
+    recipe.steps.map((step) => `${step.agent_slug}/${step.agent_version}`),
+  ),
+))
+  specifications.push(JSON.parse(await readFile(`content/agents/${reference}.agent.json`, 'utf8')));
 test('guided recipes reference exact instruction packages and preserve concrete handoff checks', async () => {
   assert.equal(drafts.length, 6);
   for (const recipe of drafts) {

@@ -16,7 +16,11 @@ import {
 
 const resources = [];
 for (const slug of await readdir('content/agents')) {
-  const spec = JSON.parse(await readFile(`content/agents/${slug}/1.0.0.agent.json`, 'utf8'));
+  const files = (await readdir(`content/agents/${slug}`)).filter((file) =>
+    /^\d+\.\d+\.\d+\.agent\.json$/.test(file),
+  );
+  assert.equal(files.length, 1, 'Each resource has one active private draft.');
+  const spec = JSON.parse(await readFile(`content/agents/${slug}/${files[0]}`, 'utf8'));
   resources.push({
     slug,
     kind: 'agent',
