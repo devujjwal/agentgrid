@@ -1,8 +1,8 @@
 {
   "contract_version": "0.1",
-  "source_revision": 31,
-  "captured_at": "2026-10-09T21:28:04.194Z",
-  "catalogue_sha256": "80c4e14cb9594f28ab6aa74117843ff9a7e2b9d7c06d04bf81fa28bd42a184cc",
+  "source_revision": 39,
+  "captured_at": "2026-10-09T21:59:19.161Z",
+  "catalogue_sha256": "ef97cd80800ebda494b2ff9af99b4f1223ee3c1f184f0122cd6083189ff4affb",
   "resources": [
     {
       "resourceId": "125ccdd9-9e4b-44bb-a1d5-35a3f7278a62",
@@ -47,6 +47,12 @@
       "tag": "115f10d9886c4508df161b681df3fc432eb943e05f634114b454023150c9cabb"
     },
     {
+      "resourceId": "3d441e20-921b-4a0e-bd73-887ebfe98bc6",
+      "versionId": "a96b45ed-c729-41e7-a47d-2697ff980d99",
+      "slug": "source-evidence-mapper",
+      "tag": "66507ae6024aefa3aef2478c16c1c2bc8c72fe99f07d6c6821617b1acb8a0f7e"
+    },
+    {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
       "versionId": "8f8b913c-9184-4e46-8740-e3a6ab73786f",
       "slug": "project-dependency-planner",
@@ -57,6 +63,18 @@
       "versionId": "9dcdb5f2-9ec1-4e1c-9b86-1cea166825f7",
       "slug": "survey-theme-synthesizer",
       "tag": "0c89e2090f533b730997cfa4088016251c4f82d1646e7385da1f816ace462d9e"
+    },
+    {
+      "resourceId": "7cf5be2a-3303-40e0-9448-1b342cb997cc",
+      "versionId": "47410410-0a35-44fb-a11f-37f00d6ee43e",
+      "slug": "research-question-scoper",
+      "tag": "d1cf22cd3ee866eacf9cc720d310256d7c51419ecdb0b10f35e7fe9d042e1ddd"
+    },
+    {
+      "resourceId": "86eebaad-789e-47e5-98c9-b643a5115689",
+      "versionId": "8f436233-78b3-470b-9dd0-96ea380b35e9",
+      "slug": "study-methods-reader",
+      "tag": "a3c0801804ced618f76d03d5b8fcfd368c8159a79472f6852994cce8f3556af3"
     },
     {
       "resourceId": "a7bbfd0f-90bc-4595-bddc-7396ce1ab8b6",
@@ -93,6 +111,12 @@
       "versionId": "988c8211-4161-4310-84d9-8011a1bd4f9d",
       "slug": "meeting-decision-ledger",
       "tag": "3e858823a23968be6d62676b4eb3accc4242e0d3dab4853c611b0b2fef756633"
+    },
+    {
+      "resourceId": "f71e5635-fcee-47a1-85cd-4d6a09b19ded",
+      "versionId": "7c95e3d8-2310-4a6c-ada4-96085fcd4c5d",
+      "slug": "literature-screening-assistant",
+      "tag": "1fe94f2f6b6131004ca925176fcf6c941056507897dbd332b91aa3306f6c6282"
     }
   ]
 }
