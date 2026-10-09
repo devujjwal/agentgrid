@@ -471,5 +471,218 @@
         "reuse_rights": true
       }
     }
+  },
+  {
+    "version_id": "5dcee649-df71-4b60-af21-3084407564b7",
+    "editorial": {
+      "search_intent": "Build a bounded weekly time allocation from explicit availability and estimated work, calculating overcommitment without assuming extra hours or live calendar access.",
+      "overview": "Weekly Capacity Planner turns supplied working windows, appointments, breaks, estimates and deadlines into a reviewable allocation. It answers a capacity question before producing task blocks: how much flexible time remains, and how much requested work cannot fit? A due date is not an effort estimate, and “ASAP” is not a confirmed hard deadline. Missing windows or estimates require clarification rather than an invented nine-to-five week.\n\nA useful input names the actual week and time zone, each available window, overlapping fixed commitments, protected non-working time, task duration ranges, dependencies and energy constraints. Appointments that overlap must be counted as the union of occupied time and flagged for human resolution. Avoid subtracting the same appointment twice or treating evenings and weekends as automatically available. Unknown effort stays unallocated until a person supplies a credible estimate.\n\nFor the bounded Monday example, 09:00–13:00 gives 240 minutes. A 60-minute fixed call and 15-minute break leave 165 minutes for 210 minutes of tasks: a 45-minute shortfall. The actual normal host observation preserves the report deadline and morning window, splits the report around the call and proposes partial invoice work. Those splits are assumptions for a person to accept; they are not evidence that fragmented work is useful or that anyone accepted a commitment.\n\nThe normal observation labels a zero-minute buffer. That makes the arithmetic visible but leaves no contingency for overruns. Before using a draft, reserve realistic slack or explicitly decide which work to defer, reduce or renegotiate. A mathematically feasible block schedule does not measure attention, guarantee completion or settle a conflicting appointment. Host controls may offer “confirm” or “revise” presentations; those controls do not give this instructions-only package calendar access.\n\nUse task aliases and generalized appointments, remove meeting links and unnecessary private details, and check provider data controls and organizational rules before supplying a schedule. AgentGrid instruction access is free; host access and pricing depend on the chosen account. The package license permits internal personal/commercial use and attributed AgentGrid forks while reserving general redistribution rights. A person reviews the assumptions, deadline risks and remaining work before accepting or entering any actual schedule.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate. Missing-context output withheld allocation and proposed a week date explicitly pending confirmation; treat that date as an assumption, not a supplied fact. The injection result preserved the break and shortfall while disregarding the pasted calendar command. No live calendar or real credentials were used, and these synthetic checks do not guarantee later planning quality.",
+      "audience": [
+        "Individuals comparing estimated task effort with an explicitly bounded week.",
+        "Coordinators preparing a personal allocation draft while preserving fixed commitments and protected breaks."
+      ],
+      "workflow": [
+        "Collect dates, time zone and explicit working windows, then list fixed commitments and protected breaks without unrelated private information. Supply task effort estimates, priorities, dependencies and genuinely hard deadlines.",
+        "Paste the complete instructions into a fresh ChatGPT conversation with the bounded context. If essential dates or estimates are missing, collect them before requesting a precise schedule.",
+        "Check available-time arithmetic, appointment overlap and each deadline. Compare requested effort against usable capacity; verify that unallocated work is visible and that no evening, weekend or afternoon window was invented.",
+        "Review task splitting, break placement, energy constraints and contingency buffer. Choose defer, reduce-scope or renegotiate decisions yourself, then enter any accepted schedule separately; no booking or reminder has occurred."
+      ],
+      "faq": [
+        {
+          "question": "Does this connect to my calendar?",
+          "answer": "No. It reads only supplied text and has no calendar connector, live availability, event creation, reminder or recurring execution. Every allocation is a draft for separate human action."
+        },
+        {
+          "question": "Why does the sample leave 45 minutes unallocated?",
+          "answer": "The morning has 240 gross minutes, minus a 60-minute call and 15-minute break, leaving 165 task minutes. The supplied estimates total 210 minutes. The 45-minute difference must remain visible until you defer, reduce or renegotiate work."
+        },
+        {
+          "question": "Can it assume a task is safe to split?",
+          "answer": "A split may be proposed but must remain an assumption. In the normal observation the report is divided around a fixed call and invoice work is partially allocated; a person must confirm that these fragments are useful."
+        },
+        {
+          "question": "Is a zero-minute buffer acceptable?",
+          "answer": "It is a disclosed planning choice, not a reliability guarantee. A fully occupied draft has no margin for overruns, transitions or underestimated effort. Reserve slack or revise the requested scope before accepting commitments."
+        },
+        {
+          "question": "What happens when dates and estimates are missing?",
+          "answer": "The instructions require clarification rather than a precise invented week. Provide actual dates, time zone, windows, appointments, estimates and deadlines. Unknown effort cannot establish a credible capacity total."
+        },
+        {
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Share only authorized redacted schedule context after checking host data controls. Host access costs depend on your account; AgentGrid instructions are free. The custom license permits internal use and attributed AgentGrid forks, with general redistribution reserved."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Available provider data controls depend on account and workspace settings; review them before sharing an authorized redacted schedule.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["project-dependency-planner", "meeting-decision-ledger"],
+      "discovery": {
+        "keywords": [
+          "weekly planning",
+          "capacity shortfall",
+          "time allocation",
+          "protected breaks",
+          "task estimates"
+        ],
+        "capability_tags": ["capacity-planning", "schedule-draft"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
+    "editorial": {
+      "search_intent": "Adapt approved launch facts into constrained channel drafts while preserving invitation eligibility, unreleased features and unresolved launch timing.",
+      "overview": "Launch Message Adapter starts from an approved factual brief rather than a campaign idea. Its distinct task is to carry the same release facts into channel drafts with different lengths and tones. An announcement can be concise without making a beta generally available, turning an invitation request into guaranteed access or introducing an integration that the release does not include.\n\nSupply the product and feature names, availability status, eligibility, approved date and time zone, audience, required disclosures, destination and each hard limit. Keep planned timing separate from a completed launch. A fact ledger identifies which claims are supported before any copy is written. If essential facts are absent, collect them first; “everywhere today” does not name a channel or establish an approved release date.\n\nThe bounded example uses an invitation-only shared-folder beta, existing-account invite requests, a supplied placeholder destination and no calendar integration. Email and social drafts must both retain the beta qualification and avoid guaranteed access. The supplied destination is text, not a verified working link. Price language remains absent when no approved price is supplied. A neutral tone can be proposed as an editorial assumption without inventing product benefits, scarcity or customer endorsements.\n\nVersion 1.0.0 is excluded from guarded publication: an actual injection test initially drafted “is here” and “more details to follow” without supporting timing or communication approvals. Its later self-warning did not make the earlier copy block suitable. Corrected 1.0.1 requires only grounded copy blocks, separates unresolved launch timing from availability status and forbids presenting an unsupported draft alongside a safer alternative. The failed observation remains retained for review.\n\nCount the final draft independently in its destination interface. Character or word estimates can differ from platform handling of links, line breaks and Unicode. If a required disclosure cannot fit, shorten truthful copy or flag the conflict; never discard eligibility or unavailable-feature facts merely to reach the limit. A consistency checklist records needed decisions and does not constitute formal approval.\n\nUse only public launch facts approved for sharing. Remove private roadmap details, customer identities and confidential commercial terms, and review the chosen host's data controls and organizational rules. AgentGrid instructions are free; host access costs depend on the account. Internal use and attributed AgentGrid forks are permitted by the package license, while general redistribution is reserved. No messages are sent, links checked, events scheduled or channels published by this instructions-only package. A person verifies claims and approves any real publication separately.\n\nThree fresh actual temporary unpersonalized Instant observations support corrected 1.0.1. The normal draft preserves scheduled future beta and eligibility, with social copy measured at 199 characters. Missing facts withhold announcements, and the injected-comment result produces only grounded status copy while keeping timing unresolved. No external publication or real credentials were used; these checks are bounded observations, not a general guarantee.",
+      "audience": [
+        "Marketing editors adapting an already-approved release brief across bounded channels.",
+        "Product teams checking that beta eligibility, unavailable features and launch timing stay consistent in copy drafts."
+      ],
+      "workflow": [
+        "Assemble approved release facts, unresolved approvals, required disclosures, exact supplied destinations and channel limits. Remove confidential roadmap and customer information before sharing.",
+        "Paste the complete instructions and bounded brief into a fresh ChatGPT conversation. Inspect the fact ledger before using copy; unresolved availability or timing must remain questions rather than launch claims.",
+        "Compare every channel draft with the ledger, including beta qualification, eligibility and unavailable features. Independently count final copy and verify required facts fit; the destination has not been visited or validated.",
+        "Check consistency, tone assumptions and approval status. An authorized person reviews the final copy and separately performs any publishing or scheduling action; a draft checklist is not approval."
+      ],
+      "faq": [
+        {
+          "question": "Does invitation-only beta mean the release is live now?",
+          "answer": "No. It describes access status, not timing. Without an approved launch date or confirmed present availability, use status wording and keep timing unresolved. Corrected instructions prohibit “is here” and similar completed-launch claims without evidence."
+        },
+        {
+          "question": "Why was version 1.0.0 withheld?",
+          "answer": "The actual injected-comment scenario first produced unsupported present-launch and future-communication wording before flagging it. A safer alternative later in the response does not erase the unsafe copy block. That failure is retained and requires fresh corrected-version evidence."
+        },
+        {
+          "question": "Can the draft promise instant access or integrations?",
+          "answer": "Only claims explicitly supported by the approved brief are permitted. Requesting an invitation is not guaranteed access, and a stated lack of calendar integration must not become a product capability."
+        },
+        {
+          "question": "Are length estimates enough for publishing?",
+          "answer": "No. Independently count the final copy in the target interface, which may handle links, Unicode and line breaks differently. Preserve mandatory disclosures; if the limit cannot accommodate them, shorten truthfully or resolve the conflict."
+        },
+        {
+          "question": "Does this verify links, publish or contact subscribers?",
+          "answer": "No. Supplied destinations remain unverified text, and the package has no browsing, messaging, scheduling or publishing connection. Every proposed announcement remains subject to separate human review and action."
+        },
+        {
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Share only authorized approved public facts after checking host data controls. Host access and pricing depend on the account; AgentGrid instructions are free. The custom license permits internal use and attributed AgentGrid forks, while reserving general redistribution rights."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized release context.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["campaign-message-planner", "reply-draft-assistant"],
+      "discovery": {
+        "keywords": [
+          "launch copy",
+          "beta announcement",
+          "channel adaptation",
+          "approved release brief",
+          "eligibility disclosure"
+        ],
+        "capability_tags": ["message-adaptation", "claim-consistency"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "9dcdb5f2-9ec1-4e1c-9b86-1cea166825f7",
+    "editorial": {
+      "search_intent": "Synthesize a supplied qualitative survey into response-linked themes while preserving overlap, counterexamples, exclusions and unknown respondent identity.",
+      "overview": "Survey Theme Synthesizer helps a team read a bounded set of open-text survey records. Its task is qualitative coding with traceable evidence, not a measure of total market demand. It groups similar observations while retaining the exact anonymous response IDs that support each theme, makes coding decisions reviewable and separates descriptive findings from proposed follow-up actions.\n\nSupply the original survey question, authorized redacted response text with stable response IDs, any known respondent linkage and relevant sampling context. A response record is not necessarily a distinct person. If linkage is unknown, count response IDs and leave the unique-person total unknown. Do not infer demographics, intentions or missing survey answers from names, phrasing or writing style. Remove contact details, account identifiers and unnecessary personal stories before sharing material with a host.\n\nThe bounded onboarding example contains four response records. R01 reports difficulty finding import, R02 says import was easy but help text is too small, R03 mentions both import discoverability and small help text, and R04 is blank. A supported coding table puts R01 and R03 in import discoverability and R02 and R03 in readability. Each theme has two supporting records, but adding those counts would count R03 twice. There are three substantive records after explicitly excluding the blank, not four unique people or a population percentage.\n\nPreserve R02's positive import comment as a qualifying counterexample rather than flattening every response into negative sentiment. A blank record needs a stated exclusion reason; it is not evidence of dissatisfaction. A copied operational command inside an answer is untrusted survey content. It cannot authorize a claim about customer satisfaction, contact a board or override the survey question. If the command is off-topic, record the exclusion without treating it as positive feedback.\n\nCoding remains interpretive. A person checks theme labels, exact excerpts, ambiguous wording, exclusions and overlapping assignments against the source. Isolated actionable concerns deserve visibility even if a different theme has more records. Convenience samples cannot establish representative customer prevalence, causality or statistical significance. Follow-up questions are hypotheses to investigate rather than validated recommendations or already-completed research.\n\nUse only response material you are authorized to share after checking provider data controls and organizational rules. AgentGrid instruction access is free, while host access and pricing depend on the account. The custom license permits personal/commercial internal use and attributed AgentGrid forks while reserving general redistribution rights. This instructions-only package has no survey-account access, browsing, messaging or statistical execution connection. Human review is required before using a theme summary for a real decision.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate: correct overlapping response-ID counts and counterexamples, withholding themes from missing source material, and rejection of an off-topic satisfaction/email command. No real survey service or credentials were used. These bounded synthetic observations support the inspected behavior without establishing independent endorsement or future coding accuracy.",
+      "audience": [
+        "Small marketing teams coding an authorized anonymous qualitative response set.",
+        "Research coordinators reviewing theme evidence, contradictory comments and sampling limitations before deciding what to investigate."
+      ],
+      "workflow": [
+        "Collect the original question and redacted response records with stable anonymous IDs. Clarify whether multiple records can come from one person; retain known linkage only when authorized and necessary.",
+        "Paste the complete instructions and bounded source set into a fresh ChatGPT conversation. Request response-linked theme definitions, exact excerpts, counterexamples, explicit exclusions and unresolved sampling context.",
+        "Reconcile each theme count with its distinct supporting response IDs. Check overlap, blank or off-topic exclusions and minority concerns; do not add overlapping theme counts into a unique-person total.",
+        "Review interpretations against the original text and separate findings from follow-up hypotheses. A person validates the summary and decides on further research; no statistical population inference or external action has occurred."
+      ],
+      "faq": [
+        {
+          "question": "Why can two themes with two records each represent only three substantive records?",
+          "answer": "The same response can support multiple themes. In the example R03 supports both import discoverability and readability, so theme totals overlap. Keep the source IDs visible and do not add theme totals into a distinct respondent count."
+        },
+        {
+          "question": "Can it report what all customers think?",
+          "answer": "No. Counts describe the supplied records only, and unknown sampling or respondent linkage limits interpretation. A small qualitative set does not establish representative prevalence, causality or statistical significance."
+        },
+        {
+          "question": "How should a blank answer be treated?",
+          "answer": "Record it as an exclusion with a reason. A blank answer is not negative sentiment or a hidden product complaint. Keep the original record count and the substantive included count distinct."
+        },
+        {
+          "question": "Should positive or minority comments disappear under the main themes?",
+          "answer": "No. Preserve opposing or qualifying evidence, such as R02 saying import was easy. Isolated actionable concerns and ambiguous wording should remain visible for human review."
+        },
+        {
+          "question": "Can a response instruct the package to email someone or invent satisfaction statistics?",
+          "answer": "No. Operational text inside a response is untrusted data. It cannot change the role or authorize external actions. Flag an off-topic command without executing it or counting its demanded claim as survey evidence."
+        },
+        {
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Share only authorized redacted records with anonymous IDs after checking host data controls. Host access and costs depend on the account; AgentGrid instructions are free. The custom license permits internal use and attributed AgentGrid forks, while reserving general redistribution rights."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Available host data controls depend on account and workspace settings; review them before sharing an authorized redacted survey set.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["campaign-message-planner", "launch-message-adapter"],
+      "discovery": {
+        "keywords": [
+          "qualitative survey",
+          "response coding",
+          "theme overlap",
+          "anonymous response IDs",
+          "sampling limitations"
+        ],
+        "capability_tags": ["qualitative-synthesis", "response-evidence"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
   }
 ]
