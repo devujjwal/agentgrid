@@ -55,7 +55,7 @@ const protectedKeys = (keys) =>
 function checkBindings(project, values) {
   inspectProductionProject(project);
   const live = project.deployment_configs.production.env_vars;
-  const preview = project.deployment_configs.preview.env_vars;
+  const preview = project.deployment_configs.preview.env_vars ?? {};
   if (Object.keys(preview).length)
     throw new Error('Branch previews must not receive production credentials.');
   if (
