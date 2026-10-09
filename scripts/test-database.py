@@ -204,7 +204,8 @@ def main():
         }
         sql("insert into auth.users(id) values " + ",".join(f"('{identity}')" for identity in replacements.values()) + ";", target_database)
         remapping = "\n".join(
-            f"update public.agentgrid_identities set user_id='{new}' where user_id='{old}';"
+            f"update public.{table} set user_id='{new}' where user_id='{old}';"
+            for table in ("agentgrid_identities", "agentgrid_onboarding_pilots")
             for old, new in replacements.items()
         )
         sql(
@@ -230,8 +231,9 @@ def main():
             return json.loads(sql("select jsonb_build_object(" + ",".join(expressions) + ");", database_name))
 
         original_data = application_snapshot(source_database)
-        for link in original_data["agentgrid_identities"]:
-            link["user_id"] = replacements[link["user_id"]]
+        for table in ("agentgrid_identities", "agentgrid_onboarding_pilots"):
+            for link in original_data[table]:
+                link["user_id"] = replacements[link["user_id"]]
         imported_data = application_snapshot(target_database)
         if original_data != imported_data:
             changed = sorted(table for table in tables if original_data[table] != imported_data[table])

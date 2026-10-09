@@ -88,4 +88,18 @@ never follows its destination. Browser fetch retains its supported error mode.
 No credential rotation, access expansion or shared provider change was needed.
 The compiled test now covers successful synthetic Google initiation through both
 owned RPCs and proves that a redirected provider response cannot cause another
-outbound request. This fix still needs deployment and actual Google code exchange.
+outbound request.
+
+On October 9, deployment `3337f5bd-8692-4ee5-a3c0-04005e315e07` delivered exact main
+`a2bb951c6a8037df443c12bf46347cd9f769c80d` through successful workflow `37892522496`.
+A fresh owner Google sign-in completed the real code exchange and returned to the
+staging workspace with the expected personal identity. The prior expired flow had
+fallen back to PicMagic's protected Site URL; that setting was not changed. No
+profile, consent, staff role or public activity was created by this authentication
+test. Application OTP delivery, renewal/logout and member journeys still need
+their separate live acceptance.
+
+The deployment gate now calls the anonymous creator endpoint for the reserved
+`admin` handle, requiring its exact private/no-store 404 response and no cookie.
+That probes the real database transport without exposing a real profile or using
+privileged credentials. The updated gate passed against this staging deployment.

@@ -2,6 +2,8 @@
 begin;
 set constraints all deferred;
 insert into auth.users(id) values('00000000-0000-4000-8000-000000000001'),('00000000-0000-4000-8000-000000000002');
+insert into public.agentgrid_onboarding_pilots(user_id,expires_at)
+values('00000000-0000-4000-8000-000000000001',now()+interval '1 day');
 insert into public.agentgrid_profiles(id,username,display_name,terms_version,privacy_version,bio,visibility) values
  ('10000000-0000-4000-8000-000000000001','fixture_creator','Synthetic creator','fixture-v1','fixture-v1','Synthetic extraction fixture, never a real creator profile.','public'),
  ('10000000-0000-4000-8000-000000000002','fixture_member','Synthetic member','fixture-v1','fixture-v1','Synthetic extraction fixture, never a real member profile.','private');

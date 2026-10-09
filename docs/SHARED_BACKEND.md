@@ -119,6 +119,9 @@ Before extraction, rehearse these steps on an isolated target:
    not all shared users. Creator/business profile IDs are independent of Auth IDs.
    Choose a documented Supabase Auth migration/reassociation strategy; preserve
    Auth UUIDs where supported or remap only those private identity links deliberately;
+   include any deliberately retained `agentgrid_onboarding_pilots.user_id` links
+   in that reassociation. Normally retire expired admission records before export;
+   do not enroll unrelated shared users or renew pilot expiration during migration.
    profile IDs and agent ownership stay stable. Validate Google identity
    linking and require reauthentication when signing keys change. Do not assume
    old sessions or refresh tokens remain portable.
@@ -164,13 +167,36 @@ This is a data/identity-link rehearsal, not a GoTrue password/provider migration
 real email/Google identities, sessions, assets and cutover still need the deliberate
 managed-Auth strategy and acceptance steps above.
 
-The private identity table is the only AgentGrid FK into managed `auth.users`.
+The private identity table and short-lived onboarding pilot table reference managed
+`auth.users`; application ownership and roles reference stable AgentGrid profiles.
 AgentGrid never deletes a shared Auth user. If another application deletes that
 identity, an AgentGrid-owned trigger detaches the private link and deactivates and
 deidentifies its profile without deleting immutable creator records or blocking
 the managed deletion. Reserved pseudonymous handles encode the complete profile
 UUID to avoid deletion-blocking collisions. Product account deletion, retention,
 reports and published attribution need their own tested policy before launch.
+
+### Controlled onboarding before public registration
+
+Migration 029 adds `agentgrid_onboarding_pilots`, initially empty, without enabling
+global registration or creating profiles. A private managed-identity UUID and an
+expiration of at most 14 days permit the two existing authenticated onboarding
+RPCs to admit that caller. Missing current legal versions, expired enrollment and
+unlisted users remain denied even when bypassing the HTTP staging pilot. The
+database clock enforces expiry without depending on a scheduled cleanup task.
+The table and internal eligibility helper have no anonymous, member or service-role
+grant; moderator/administrator application roles cannot enroll additional users.
+This is admission only: no consent, public visibility, staff role or package
+ownership is inferred from enrollment. Existing members retain their membership
+after an admission record expires or is revoked.
+
+Before enrolling the real owner, inspect the verified managed identity, configure
+the deployed legal versions, retain global registration as false, and record the
+exact expiry privately. Consent must still be explicitly accepted in the UI.
+Public registration remains gated on contact delivery, retention operations and
+real community journey acceptance. Do not use the pilot as a permanent membership
+allowlist or as a substitute for RLS. Remove expired admission rows during the
+approved owned-data retention process; never remove shared Auth identities.
 
 ### Applied foundation and read-boundary verification
 
