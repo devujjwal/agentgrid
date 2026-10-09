@@ -22,11 +22,11 @@
       },
       {
         "agent_slug": "reply-draft-assistant",
-        "agent_version": "1.0.0",
-        "specification_sha256": "48b6fbf52417bc225cf2d1712c5588c9b396b3581f31ec8bee3441e843e76be2",
+        "agent_version": "1.0.1",
+        "specification_sha256": "55c52588bad232515acaaabae9239be2ffc1821c6921b8a78e0000bbbbee8f7c",
         "title": "Draft the follow-up from checked facts",
         "send": "Provide the checked ledger, intended recipients, tone and purpose. Ask for an unsent message with confirmed actions and a separate request for unresolved details.",
-        "check": "Compare every name, commitment and date with the ledger. Check that tentative proposals are questions rather than newly assigned work.",
+        "check": "Compare every name, commitment and date with the checked source. Keep tentative proposals as questions and remove unauthorized promises of updates, review or investigation. Do not invent an acknowledgment if the original message or thread is missing.",
         "handoff": "Review the final recipients and message in your own mail tool. Sending is a separate action; this recipe does not perform it."
       }
     ],
