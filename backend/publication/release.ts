@@ -1,7 +1,12 @@
 /** Offline trusted job. Never import into client components or accept caller-supplied observations. */
 import { z } from 'zod';
 import { contentChecksum } from '../../src/domain/content-checksum.ts';
-import type { SupabaseClient } from '@supabase/supabase-js';
+export interface PublicationClient {
+  rpc(
+    name: string,
+    parameters: Record<string, unknown>,
+  ): PromiseLike<{ data: unknown; error: unknown }>;
+}
 import { ReleaseApprovalSchema } from '../../src/domain/release-approval.ts';
 import { HostRunReceiptSchema } from '../../src/domain/host-verification.ts';
 import { preparePublication, type PublicationInput } from './quality.ts';
@@ -45,7 +50,7 @@ export async function prepareReviewedRelease(
   return { approval: review, ...prepared };
 }
 export async function executeReviewedRelease(
-  client: SupabaseClient,
+  client: PublicationClient,
   requestId: string,
   now = new Date(),
   artifactResolver?: PublicationInput['artifactResolver'],
@@ -108,7 +113,7 @@ export async function reviewedReleaseFingerprint(
 }
 
 /** Explicit readback after a lost acknowledgement; a released receipt is historical, not proof of current public visibility. */
-export async function inspectReviewedRelease(client: SupabaseClient, requestId: string) {
+export async function inspectReviewedRelease(client: PublicationClient, requestId: string) {
   z.uuid().parse(requestId);
   const result = await client.rpc('agentgrid_release_request_status', { request_id: requestId });
   if (result.error)

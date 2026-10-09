@@ -16,6 +16,8 @@ import { publicReviewData } from '../community/reviews.ts';
 import { publicCommunityHandler } from './community.ts';
 import { moderationHandler } from './moderation.ts';
 import { administrationHandler } from './administration.ts';
+import { publicationHandler } from './publication.ts';
+import { serverPublicationClient } from '../publication/server-client.ts';
 
 export interface PagesIdentityContext {
   request: Request;
@@ -52,6 +54,13 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
       }),
       managedIdentity(configuration),
     );
+    if (new URL(context.request.url).pathname === '/api/admin/publication/')
+      return await publicationHandler(
+        runtime,
+        (session) => workspaceData(configuration, session).identity(),
+        (subject) => serverPublicationClient(context.env, subject),
+        context.env.AGENTGRID_PUBLICATION_ENABLED === '1',
+      )(context.request);
     if (new URL(context.request.url).pathname.startsWith('/api/admin/'))
       return await administrationHandler(
         runtime,

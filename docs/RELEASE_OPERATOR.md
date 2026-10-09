@@ -34,3 +34,34 @@ server-side boundary. Do not weaken this requirement to release content.
 Verification uses synthetic fixtures only, including fingerprint drift, lost
 acknowledgements, readback, endpoint denial, oversized responses and output
 redaction. No fixture is host-test evidence for a real package.
+
+## Cloudflare server publication
+
+The reviewed server path is `/api/admin/publication/`. `AGENTGRID_PUBLICATION_ENABLED`
+defaults off. It supports explicit `inspect`, `prepare` and `publish` actions,
+with a request UUID and the preparation fingerprint for a write. It accepts no
+actor, manifest, specification or test output from browser JSON. The authenticated
+managed subject comes from the existing encrypted application session. A fresh
+user-RLS workspace lookup must show active AgentGrid administrator authority.
+
+Migration 030 adds one service-only `agentgrid_server_publication` RPC. It checks
+the supplied server-verified subject against AgentGrid identities, active profiles
+and administrator roles under the same transaction lock used by governance and
+publication. Browser roles, ordinary members, moderators, suspended users and
+revoked administrators cannot execute it. Shared Auth metadata is not authority.
+The narrow server adapter can reach only this RPC; the shared project secret stays
+inside its approved encrypted Cloudflare binding.
+
+The existing quality preparation, immutable evidence selection, fingerprint check,
+atomic release transaction and separate outcome readback remain in use. No shortcut
+accepts a browser-authored quality manifest. The UI requires preparation and a
+confirmation, removes the prepared action before writing, and blocks retry after
+an uncertain result until inspection succeeds. Historical release is distinguished
+from current visibility and static deployment. Workflow-artifact publication stays
+closed until artifact delivery is implemented and verified.
+
+Activate only after migration rollout and an exact-main verified deployment.
+The real administrator session and real quality-reviewed inventory still require
+live acceptance. Local synthetic tests do not establish those results. Public-only
+capture and promotion use the existing publishable-key transport; they require no
+privileged local credential. The legacy local operator remains unprovisioned.

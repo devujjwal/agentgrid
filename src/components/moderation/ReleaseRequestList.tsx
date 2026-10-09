@@ -1,11 +1,14 @@
 import type { ReleaseApproval } from '../../domain/release-approval';
+import { PublicationActions } from './PublicationActions';
 import { ConfirmAction } from '../feedback/ConfirmAction';
 export function ReleaseRequestList({
   approvals,
+  publicationCsrf,
   busy,
   cancel,
 }: {
   approvals: ReleaseApproval[];
+  publicationCsrf?: string;
   busy: boolean;
   cancel: (id: string) => void;
 }) {
@@ -35,6 +38,14 @@ export function ReleaseRequestList({
               confirmation="Cancel request"
               disabled={busy}
               confirm={() => cancel(row.requestId)}
+            />
+          )}
+          {publicationCsrf && (
+            <PublicationActions
+              key={row.requestId}
+              approval={row}
+              csrf={publicationCsrf}
+              disabled={busy}
             />
           )}
           {row.state === 'released' && (

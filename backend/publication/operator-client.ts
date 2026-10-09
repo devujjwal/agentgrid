@@ -7,6 +7,7 @@ export function releaseOperatorClient(
   environment: Record<string, unknown>,
   allowPublish: boolean,
   transport: typeof fetch = fetch,
+  serverOnly = false,
 ) {
   const configuration = publicCommunityConfiguration(environment);
   const key = environment.SUPABASE_SECRET_KEY;
@@ -17,6 +18,10 @@ export function releaseOperatorClient(
     '/rest/v1/rpc/agentgrid_release_request_status',
     ...(allowPublish ? ['/rest/v1/rpc/agentgrid_execute_release_request'] : []),
   ]);
+  if (serverOnly) {
+    allowed.clear();
+    allowed.add('/rest/v1/rpc/agentgrid_server_publication');
+  }
   return createClient(configuration.supabaseOrigin, key, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     global: {

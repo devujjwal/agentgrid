@@ -1389,3 +1389,27 @@ assigned Cloudflare nameservers. Initial public DNS and Cloudflare activation
 remain pending; contact receiving is not yet configured. The personal destination
 address is verified without a paid mailbox. See `DOMAIN_OPERATIONS.md` for the
 preserved inventory and exact activation, mail-delivery and production gates.
+
+### Server publication acceptance
+
+The local-secret publishing blocker now has a Cloudflare server implementation.
+The default-closed endpoint admits only a fresh active AgentGrid administrator;
+its narrow adapter supplies verified identity to additive migration 030, which
+rechecks authority transactionally before delegating to persisted-review quality
+preparation, execution or outcome inspection. No privileged local credential,
+new account, paid service or public inventory is introduced.
+
+Local acceptance: 178 Node and 12 Python tests; formatting, lint, strict typecheck,
+production export and compiled Worker checks pass. The 30-migration disposable
+PostgreSQL rehearsal preserves protected fixtures and complete extraction with
+identity reassociation. Browser acceptance covers preparation, explicit confirmation,
+keyboard cancellation/focus trapping, authority revocation, uncertain response,
+read-only recovery and prevention of blind repeat writes. Widths 320/768/1024/1440
+have no horizontal overflow and primary publication controls exceed 48px. No console
+errors were observed. Evidence is local/ignored; synthetic releases are never
+real-host evidence or community activity. Remote migration/activation follows
+exact-head CI and the existing protected-schema rollout guards.
+
+Cloudflare now displays the AgentGrid zone as active and public DNS resolves its
+assigned nameservers. Free contact-email DNS additions are prepared for action-time
+authorization; receiving and actual inbox delivery remain unverified.

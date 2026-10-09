@@ -41,7 +41,9 @@ export async function communityRequest<T>(
   if (
     !creatorPath &&
     !staffPath &&
-    !/^\/api\/admin\/(?:profile\/\?username=[a-z][a-z0-9_]{2,29}|profile-decision\/)$/.test(path) &&
+    !/^\/api\/admin\/(?:profile\/\?username=[a-z][a-z0-9_]{2,29}|profile-decision\/|publication\/)$/.test(
+      path,
+    ) &&
     !/^\/api\/workspace\/forksource\/\?sourceVersionId=[a-fA-F0-9-]{36}$/.test(path)
   )
     throw new CommunityError('request-refused');
