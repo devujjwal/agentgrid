@@ -197,3 +197,14 @@ test('new Resend credentials are required before mutations, while a human-provis
     'secret_text',
   );
 });
+
+test('Cloudflare null preview bindings remain empty and unchanged during production bootstrap', async () => {
+  const f = fixture();
+  f.project.deployment_configs.preview.env_vars = null;
+  const plan = await configureProductionSecrets(values, false, f.transport);
+  assert.equal(plan.previewSecrets, false);
+  assert.ok(f.calls.every((c) => c.init.method === 'GET'));
+  const receipt = await configureProductionSecrets(values, true, f.transport);
+  assert.equal(receipt.state, 'configured-and-verified');
+  assert.equal(f.project.deployment_configs.preview.env_vars, null);
+});
