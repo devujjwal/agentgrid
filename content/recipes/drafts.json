@@ -51,7 +51,7 @@
     "category": "marketing",
     "inputs": [
       "An approved offer brief with evidence for each claim, target audience and limitations.",
-      "The channels, character limits and calls to action you intend to use."
+      "The channels, character limits, intended calls to action and success metric you intend to measure."
     ],
     "outcome": "A checked campaign message map and channel-specific drafts ready for human review, not automatic publication.",
     "overview": "A launch can drift as the same offer is shortened for different channels. This sequence establishes the supported promise and audience questions before adapting the wording. It is useful when one person must create several coherent drafts from a small approved brief. It does not research market demand, buy advertising or publish to social accounts.",
@@ -59,10 +59,10 @@
       {
         "agent_slug": "campaign-message-planner",
         "agent_version": "1.0.0",
-        "specification_sha256": "2fd1d41f9b9c2ac3718beaf5b351a58958f95ca43b82d94ee617b048a6596c96",
+        "specification_sha256": "a686e40bb7b46045185c8d24ca5a9ed1484d523532ae02b163739fdce8d3c08e",
         "title": "Establish the supported message",
-        "send": "Supply the offer brief, intended audience and evidence. Ask for a central promise, audience concerns and supported calls to action.",
-        "check": "Verify that benefits, comparisons and eligibility are present in the brief. Remove claims that need evidence you do not have.",
+        "send": "Supply the offer brief, intended audience, source evidence, channel limits, desired action and success metric. Ask for two supported message angles and a controlled comparison plan.",
+        "check": "Verify benefits, comparisons and eligibility against the brief. Remove unsupported claims, measure headline lengths in the destination editor and confirm that the test changes only one message variable.",
         "handoff": "Turn the reviewed map into a compact approved launch brief, retaining all limitations and unresolved claims."
       },
       {
@@ -77,7 +77,7 @@
     ],
     "checkpoint": "If the offer details conflict, resolve them with the owner of the brief before preparing publication-ready copy.",
     "example": {
-      "input": "Offer: a workshop for existing customers on 20 November, limited to 30 attendees. Requested drafts: an email and a short community announcement.",
+      "input": "Offer: a workshop for existing customers on 20 November, limited to 30 attendees. Requested drafts: an email and a short community announcement. Desired action: visit the registration page. Success metric: unique click-through rate. Email headline maximum: 60 characters; announcement maximum: 280 characters.",
       "expected": "Both drafts preserve the existing-customer restriction, date and capacity. Neither calls the workshop open to everyone or guarantees a place."
     },
     "mode": "guided",
