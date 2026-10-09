@@ -1,7 +1,32 @@
 {
   "contract_version": "0.1",
-  "source_revision": 1,
-  "captured_at": "2026-10-09T15:04:43.144Z",
-  "catalogue_sha256": "3753ff08ba06b81f984125897d1a88c177c4c53eca2d8af8fdc1acb4f7e1682e",
-  "resources": []
+  "source_revision": 9,
+  "captured_at": "2026-10-09T15:47:10.770Z",
+  "catalogue_sha256": "5bbb19d5b371a625b75b9b2db6e7a9aa6e2d95f540222dacec6ab0bbf303ad6b",
+  "resources": [
+    {
+      "resourceId": "af5ba8ae-9437-4ef0-a7bd-ca4f6324eb85",
+      "versionId": "e83d21ce-a822-4ee1-b7a4-9458d5732494",
+      "slug": "campaign-message-planner",
+      "tag": "18e0ae5bb5812cdc2ed2956732dc5376df57fc84f16e759239c9bafad503ea35"
+    },
+    {
+      "resourceId": "c6a6f99d-9e3c-45d5-97f7-399e9c6d8703",
+      "versionId": "a10dd451-733f-46f7-9817-6dd321c09781",
+      "slug": "inbox-priority-triage",
+      "tag": "5667ca5f324c66c1cb325a1f434d048b0f57541d9156c3996b192e2368cd9579"
+    },
+    {
+      "resourceId": "c8598b10-849b-4802-9ae1-fa0cada87419",
+      "versionId": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2",
+      "slug": "reply-draft-assistant",
+      "tag": "ce9accd5d2c523b85c2adc77aa41d5271516b1ab9164c0be537e96d76358e7e5"
+    },
+    {
+      "resourceId": "e782c062-59b0-4dcf-b695-41c41ab864f6",
+      "versionId": "988c8211-4161-4310-84d9-8011a1bd4f9d",
+      "slug": "meeting-decision-ledger",
+      "tag": "3e858823a23968be6d62676b4eb3accc4242e0d3dab4853c611b0b2fef756633"
+    }
+  ]
 }

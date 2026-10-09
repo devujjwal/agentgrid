@@ -16,9 +16,11 @@ export function localDesignSpecifications(): AgentSpecification[] {
     const files = readdirSync(resolve(root, slug)).filter((file) =>
       /^\d+\.\d+\.\d+\.agent\.json$/.test(file),
     );
-    if (files.length !== 1) throw new Error('One active private draft per resource is required.');
+    const file = files[0];
+    if (files.length !== 1 || !file)
+      throw new Error('One active private draft per resource is required.');
     const agent = parseAgentSpecification(
-      JSON.parse(readFileSync(resolve(root, slug, files[0]), 'utf8')),
+      JSON.parse(readFileSync(resolve(root, slug, file), 'utf8')),
     );
     return agent;
   });
