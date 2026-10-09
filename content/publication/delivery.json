@@ -1,8 +1,8 @@
 {
   "contract_version": "0.1",
-  "source_revision": 55,
-  "captured_at": "2026-10-09T23:09:07.979Z",
-  "catalogue_sha256": "80bc5775e088dc6252829018ab477d65e51608deecd922620cd9f298692e68c1",
+  "source_revision": 63,
+  "captured_at": "2026-10-09T23:36:09.743Z",
+  "catalogue_sha256": "23af165436f1b47b129327c7578898904562eb09253a2badd51afe9009916a1c",
   "resources": [
     {
       "resourceId": "0624b454-ff07-4380-8730-c59b3d3579ce",
@@ -89,6 +89,12 @@
       "tag": "0c89e2090f533b730997cfa4088016251c4f82d1646e7385da1f816ace462d9e"
     },
     {
+      "resourceId": "7ba3ec4e-61b0-469e-b28e-a8eba1df875b",
+      "versionId": "297bf5a2-86f3-48f9-a6b3-e9608f849bdc",
+      "slug": "returns-feedback-analyst",
+      "tag": "2eb2b6c14ff8758d89c97603136b9fb395677413dd3751bce8d592ae924123b0"
+    },
+    {
       "resourceId": "7cf5be2a-3303-40e0-9448-1b342cb997cc",
       "versionId": "47410410-0a35-44fb-a11f-37f00d6ee43e",
       "slug": "research-question-scoper",
@@ -101,6 +107,18 @@
       "tag": "a3c0801804ced618f76d03d5b8fcfd368c8159a79472f6852994cce8f3556af3"
     },
     {
+      "resourceId": "88455739-e42a-4c71-8480-9ba0fb5831cd",
+      "versionId": "326cb714-dfe2-4cb1-a487-dab9cc3ab56b",
+      "slug": "product-listing-auditor",
+      "tag": "3d0ef90eb2abfc14522162f28690f000adf22a2a8669c24e435df05d8466d38e"
+    },
+    {
+      "resourceId": "8adceeec-e2c7-4faa-b176-acb98a1996ee",
+      "versionId": "1bc5e3d7-078b-4d12-b22d-d3a4053b0315",
+      "slug": "product-faq-grounder",
+      "tag": "39aad7155f86791beb0e7d39729c33504b4baf997fe9d610bfea964b591729d6"
+    },
+    {
       "resourceId": "a1fe171d-9d3e-413d-b0ec-df65329a1ac6",
       "versionId": "61d73354-11ba-41ec-9f03-a280cf362d19",
       "slug": "worked-solution-diagnostician",
@@ -111,6 +129,12 @@
       "versionId": "246b5299-3217-4feb-9850-f26c8681b22a",
       "slug": "bug-reproduction-brief",
       "tag": "bedda83d32cfc4e4d285afa1a26d77df8479276080767c8cf90e039a9d555bc0"
+    },
+    {
+      "resourceId": "ab106181-b145-4055-af50-71ceba76ed72",
+      "versionId": "4a5c3956-c104-4ece-bd04-9ac6dc8733f5",
+      "slug": "product-variant-normalizer",
+      "tag": "53218fffd5300f5127804f86bf11fae146c5789f86fcf7eed3d64e91e05541be"
     },
     {
       "resourceId": "af5ba8ae-9437-4ef0-a7bd-ca4f6324eb85",
