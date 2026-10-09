@@ -1375,3 +1375,17 @@ pilot. All current consent and private-membership rules remain in force. The loc
 staff admission denial, protected PicMagic fixtures and actual owned-data extraction
 with deliberate reassociation of both private Auth-link tables. No real pilot has
 been enrolled. Remote application still requires clean-main CI and boundary guards.
+
+PR41 head `15e58d0` passed CI `37894314026` and merged as `e10ca19`.
+Exact-main CI `37894636883` passed before guarded migration 029 application.
+Protected schema/auth fingerprints and live anonymous/authenticated denial probes
+passed afterward. The pilot table is empty; its helper and table remain inaccessible
+to anonymous/member/service roles. Public registration remains closed.
+
+The owner's GoDaddy login enabled complete DNS comparison, uncovering the existing
+DMARC record missed by scanning. That record was preserved in Cloudflare before
+the owner saved the reviewed nameserver change. GoDaddy now confirms the two
+assigned Cloudflare nameservers. Initial public DNS and Cloudflare activation
+remain pending; contact receiving is not yet configured. The personal destination
+address is verified without a paid mailbox. See `DOMAIN_OPERATIONS.md` for the
+preserved inventory and exact activation, mail-delivery and production gates.
