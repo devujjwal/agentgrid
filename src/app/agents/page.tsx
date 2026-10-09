@@ -6,6 +6,8 @@ import { discoveryResources } from '../../data/resources';
 
 export const metadata: Metadata = {
   title: 'Discover useful AI agents — AgentGrid',
+  description:
+    'Find AI agents by task. Compare the supplied instructions, required inputs, platform setup, reuse terms and limits before choosing a starting point.',
   alternates: { canonical: '/agents/' },
   robots: { index: false, follow: false },
 };

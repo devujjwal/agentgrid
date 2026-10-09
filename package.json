@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3027",
-    "build": "node scripts/verify-publication.mjs && node scripts/verify-recipe-publication.mjs && next build && node scripts/prune-unpublished-export.mjs && node scripts/harden-static.mjs && node scripts/verify-export.mjs && node scripts/verify-social-export.mjs",
+    "build": "node scripts/verify-publication.mjs && node scripts/verify-recipe-publication.mjs && next build && node scripts/prune-unpublished-export.mjs && node scripts/harden-static.mjs && node scripts/verify-export.mjs && node scripts/verify-social-export.mjs && node scripts/verify-crawl-export.mjs",
     "build:backend": "node scripts/verify-publication.mjs && node scripts/build-functions.mjs",
     "test:backend": "node scripts/test-functions.mjs",
     "typecheck": "next typegen && tsc --noEmit",
@@ -33,7 +33,8 @@
     "design:build": "node scripts/build-design-preview.mjs",
     "design:preview": "node scripts/serve-design-preview.mjs",
     "publication:capture": "node scripts/capture-publication.mjs",
-    "publication:promote": "node scripts/promote-publication.mjs"
+    "publication:promote": "node scripts/promote-publication.mjs",
+    "verify:crawl": "node scripts/verify-crawl-export.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",

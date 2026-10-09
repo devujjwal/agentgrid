@@ -1237,3 +1237,24 @@ PR32 connection-guidance head `da535c4` passed CI `37747187575`; PR33 social-pre
 head `4ab5d67` passed CI `37747794550`. Both merged. No paid service or analytics
 activation was introduced. Migration 027 is locally validated and awaits the
 clean-main protected-schema rollout.
+
+### Generated crawlability acceptance
+
+The production build now audits its rendered HTML: clean agentgrid.me canonical
+URLs, distinct public titles/descriptions, one meaningful H1/main landmark, unique
+element IDs, structured-data JSON, internal paths/fragments and publication-only
+sitemap consistency. Negative fixtures reject private/query sitemap entries,
+malformed XML/JSON, duplicate metadata, missing destinations and symlink inputs.
+Four directory descriptions now state their own search intent instead of inheriting
+the generic site description; the MCP title uses the correct acronym.
+
+Acceptance passes 161 Node/11 Python tests, formatting, lint, strict typecheck and
+production build. All 44 generated documents and 763 internal links pass the crawl
+audit. Zero released sitemap URLs correctly reflect the empty public inventory.
+Noindex, robots exclusion and the parked production domain remain unchanged; this
+is output verification, not public launch or provider acceptance.
+
+PR34 analytics head `dfe4296` passed CI `37887252278` and merged as `0999605`. The
+remote operator inspected the protected schema, then refused application while
+the new main CI was still pending. No partial migration occurred: remote history
+remains at 26 migrations until a later successful exact-main application.

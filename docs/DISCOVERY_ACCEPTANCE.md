@@ -1,5 +1,26 @@
 # Discovery and distribution acceptance
 
+## Generated crawl output gate — 9 October 2026
+
+`pnpm build` now checks the exported documents as well as source contracts.
+`pnpm verify:crawl` reruns the read-only check against an existing `out/` build.
+It validates clean production canonicals, distinct public titles/descriptions,
+one meaningful H1 and main landmark, document language, unique element IDs,
+parseable schema.org JSON-LD, internal destinations and decoded fragment targets.
+Private/status documents must retain noindex. Sitemap entries must exactly match
+the separately validated public agent/recipe inventory, resolve to generated pages
+and not contradict those pages' noindex metadata. Query/fragment sitemap variants,
+external origins, duplicates and malformed sitemap structure are refused.
+
+The audit makes no network requests, reads no credentials and changes no indexing
+setting. Dynamic creator links are recognized by their exact route family but
+require the separate live creator tests. This gate does not establish semantic
+schema validity, editorial quality, external-link freshness, JavaScript-generated
+links, HTTP status/redirect correctness or production robots/header behavior.
+Prelaunch crawler exclusion stays in place. Future approved editorial sitemap
+entries must be deliberately added to both the sitemap and its inventory contract;
+do not weaken the check to accept arbitrary generated pages.
+
 ## Scope and publication boundary
 
 The ten first-party drafts remain unlicensed, unverified and unpublished. They
