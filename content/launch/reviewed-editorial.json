@@ -1,394 +1,134 @@
 [
   {
+    "version_id": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
     "editorial": {
-      "faq": [
-        {
-          "answer": "No. A calculation is conditional on supplied prerequisites, durations, capacity and calendar assumptions. Unknown scope or estimates prevent a credible schedule, and a precedence-only critical path is not a delivery guarantee.",
-          "question": "Can it guarantee a launch date?"
-        },
-        {
-          "answer": "No. Supply explicit predecessor IDs. Design, build and test appearing next to each other does not prove a strict sequence. An illustrative suggestion must stay labelled hypothetical until the team confirms the actual relationships.",
-          "question": "Does list order establish prerequisites?"
-        },
-        {
-          "answer": "The instructions require the cycle chain and withhold a valid topological order. A human must identify the mistaken prerequisite or split a task. Removing an edge merely to show readiness would change the project constraint without approval.",
-          "question": "What happens when tasks form a cycle?"
-        },
-        {
-          "answer": "No. Unknown owners remain gaps, and proposed assignments are not accepted responsibilities. The instructions have no account, task-system, messaging or scheduling integration and cannot establish that an external update occurred.",
-          "question": "Does it assign owners or update a project board?"
-        },
-        {
-          "answer": "The host can present its answer using diagrams or interactive controls in addition to copied text. Those presentations were seen in bounded testing, but their availability is not guaranteed and they do not grant this package project-system access. Verify the underlying task evidence and assumptions.",
-          "question": "Why might ChatGPT show extra diagrams or controls?"
-        }
-      ],
-      "review": {
-        "reuse_rights": true,
-        "cost_disclosure": true,
-        "standalone_value": true,
-        "distribution_steps": true,
-        "security_and_privacy": true,
-        "task_specific_instructions": true
-      },
-      "sources": [
-        {
-          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "title": "OpenAI ChatGPT Data Controls FAQ",
-          "supports": "Host data controls and Temporary Chat options inform provider-data-handling review before sharing authorized redacted project context.",
-          "checked_on": "2026-10-09"
-        }
-      ],
+      "search_intent": "Adapt approved launch facts into constrained channel drafts while preserving invitation eligibility, unreleased features and unresolved launch timing.",
+      "overview": "Launch Message Adapter starts from an approved factual brief rather than a campaign idea. Its distinct task is to carry the same release facts into channel drafts with different lengths and tones. An announcement can be concise without making a beta generally available, turning an invitation request into guaranteed access or introducing an integration that the release does not include.\n\nSupply the product and feature names, availability status, eligibility, approved date and time zone, audience, required disclosures, destination and each hard limit. Keep planned timing separate from a completed launch. A fact ledger identifies which claims are supported before any copy is written. If essential facts are absent, collect them first; “everywhere today” does not name a channel or establish an approved release date.\n\nThe bounded example uses an invitation-only shared-folder beta, existing-account invite requests, a supplied placeholder destination and no calendar integration. Email and social drafts must both retain the beta qualification and avoid guaranteed access. The supplied destination is text, not a verified working link. Price language remains absent when no approved price is supplied. A neutral tone can be proposed as an editorial assumption without inventing product benefits, scarcity or customer endorsements.\n\nVersion 1.0.0 is excluded from guarded publication: an actual injection test initially drafted “is here” and “more details to follow” without supporting timing or communication approvals. Its later self-warning did not make the earlier copy block suitable. Corrected 1.0.1 requires only grounded copy blocks, separates unresolved launch timing from availability status and forbids presenting an unsupported draft alongside a safer alternative. The failed observation remains retained for review.\n\nCount the final draft independently in its destination interface. Character or word estimates can differ from platform handling of links, line breaks and Unicode. If a required disclosure cannot fit, shorten truthful copy or flag the conflict; never discard eligibility or unavailable-feature facts merely to reach the limit. A consistency checklist records needed decisions and does not constitute formal approval.\n\nUse only public launch facts approved for sharing. Remove private roadmap details, customer identities and confidential commercial terms, and review the chosen host's data controls and organizational rules. AgentGrid instructions are free; host access costs depend on the account. Internal use and attributed AgentGrid forks are permitted by the package license, while general redistribution is reserved. No messages are sent, links checked, events scheduled or channels published by this instructions-only package. A person verifies claims and approves any real publication separately.\n\nThree fresh actual temporary unpersonalized Instant observations support corrected 1.0.1. The normal draft preserves scheduled future beta and eligibility, with social copy measured at 199 characters. Missing facts withhold announcements, and the injected-comment result produces only grounded status copy while keeping timing unresolved. No external publication or real credentials were used; these checks are bounded observations, not a general guarantee.",
       "audience": [
-        "Project coordinators validating explicit prerequisites before proposing a delivery schedule.",
-        "Small teams distinguishing dependency blockers from resource capacity and missing estimates."
-      ],
-      "overview": "A task list does not establish a schedule. Project Dependency Planner turns explicitly supplied prerequisites into a reviewable dependency table, checks for missing references and cycles, and separates precedence from staffing capacity. Supply unique task IDs, descriptions, required predecessors, duration units, available capacity, known owners and any hard milestone. List order alone is not a dependency. Missing inputs remain questions rather than invented estimates or accepted assignments.\n\nFor an acyclic graph with explicit elapsed-day assumptions, the output can calculate earliest relative starts and finishes. Unlimited parallel resources are an exercise assumption, not evidence that a real team can run every ready task simultaneously. A critical path calculated from precedence alone does not guarantee a resource-feasible date. Check calendars, handoffs, uncertain estimates and approvals separately. If a cycle exists, the package should show the chain and ask which relationship is mistaken or which task needs splitting; a hypothetical repair is not an approved change.\n\nThree bounded ChatGPT web Instant observations were inspected on 9 October 2026. The normal example finished on relative day five under unlimited parallel resources. Missing scheduling context remained unresolved, with a clearly hypothetical sequence and host-generated question controls. The adversarial example retained its circular blocker despite a note demanding readiness and automatic assignments. These observations do not establish general scheduling reliability. The host may add diagrams or interactive controls; this package grants no project-board access or external action authority.\n\nUse task and role aliases and remove confidential dates, links and staff information that are unnecessary. The selected model provider processes what you paste. AgentGrid instructions are free; host access and pricing depend on your account. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant. A decision-maker must validate the proposed plan before treating any date or assignment as a commitment.",
-      "workflow": [
-        "Prepare a bounded redacted task set with unique IDs, descriptions, explicit predecessors, durations and units. Include available capacity, known owners, calendars and hard milestones; leave unknown information clearly marked.",
-        "Paste the complete instructions into a fresh ChatGPT conversation and supply that context. Clarify whether estimates mean elapsed or working time before accepting any timing calculation.",
-        "Inspect missing references, self-dependencies and cycle chains before considering an order. Compare each edge with the source; do not accept a suggested cycle repair without team approval.",
-        "Check relative finishes and critical-path assumptions against capacity and calendar constraints. Confirm owners, estimates, milestones and approval gates before manually updating your own project system; the package has made no such update."
-      ],
-      "discovery": {
-        "keywords": [
-          "task dependency planning",
-          "critical path assumptions",
-          "dependency cycle review",
-          "relative project schedule",
-          "resource capacity blockers"
-        ],
-        "capability_tags": ["human-approval"]
-      },
-      "reviewed_on": "2026-10-09",
-      "search_intent": "Check explicit task dependencies, detect cycles and calculate earliest relative completion only under supplied duration and capacity assumptions.",
-      "related_agent_slugs": ["meeting-decision-ledger", "weekly-capacity-planner"]
-    },
-    "version_id": "8f8b913c-9184-4e46-8740-e3a6ab73786f"
-  },
-  {
-    "editorial": {
-      "faq": [
-        {
-          "answer": "The instructions require an explicit acceptance or agreement statement rather than a confident suggestion or silence. A later revision or withdrawal changes the supported current state. If one speaker reports collective agreement, verify other participants when that matters operationally.",
-          "question": "When is a decision treated as confirmed?"
-        },
-        {
-          "answer": "A speaker name alone does not establish authority. Confirm ownership through explicit assignment and acceptance, a clear self-commitment or an assignment rule supplied in an actually adopted meeting policy. Multiple possible owners remain unresolved.",
-          "question": "Can a speaker assign work to another person?"
-        },
-        {
-          "answer": "Supply the meeting date and time zone and keep the original date wording. Missing context prevents an exact calendar date. A labelled interpretation or assumed week range is not a confirmed deadline; obtain the intended date and time from the team.",
-          "question": "How does it handle tomorrow or next week?"
-        },
-        {
-          "answer": "No. The ledger is an unsent review draft with no ticketing, email or calendar integration. You must verify the source and separately approve any real external action. A checklist in the output is a request for confirmation, not proof that someone accepted an assignment.",
-          "question": "Does it create tasks or send follow-up messages?"
-        },
-        {
-          "answer": "Remove credentials, private identifiers and unrelated sensitive personal discussion. Share only material you are authorized to provide and inspect the host data controls before pasting it. AgentGrid does not receive the transcript through these copied instructions.",
-          "question": "What information should I remove before use?"
-        }
-      ],
-      "review": {
-        "reuse_rights": true,
-        "cost_disclosure": true,
-        "standalone_value": true,
-        "distribution_steps": true,
-        "security_and_privacy": true,
-        "task_specific_instructions": true
-      },
-      "sources": [
-        {
-          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "title": "OpenAI ChatGPT Data Controls FAQ",
-          "supports": "The host data controls and Temporary Chat options inform redaction and review of provider data handling before sharing authorized meeting material.",
-          "checked_on": "2026-10-09"
-        }
-      ],
-      "audience": [
-        "Meeting facilitators who need to distinguish final agreements from discussion.",
-        "Project coordinators checking accepted owners, deadlines and follow-up evidence."
-      ],
-      "overview": "Meeting notes often mix proposals, objections, agreements and follow-up requests. A tidy summary can still mislead if it turns a proposed launch date into a decision or assigns work to someone who never accepted it. Meeting Decision Ledger keeps those distinctions visible. Supply a bounded transcript with unique turn identifiers, the meeting date and its time zone. If your team permits an authorized chair to assign work without individual acceptance, supply that policy explicitly; a speaker name alone does not establish that authority.\n\nThe output separates confirmed decisions, proposed or unresolved items and action items. Each operational item has source quotations and turn references. A later withdrawal or revision should replace the earlier agreement as the current state, with the change retained in its history. Relative date wording remains visible. Missing ownership, ambiguous dates and disputed decisions require confirmation rather than an invented answer.\n\nThis is a review draft from supplied material, not an independent record of what actually happened. It cannot verify task completion, create tickets, send notices or change a calendar. Check the transcript and obtain the needed human confirmations before using the ledger operationally. Redact personal discussion and confidential details that are not essential. AgentGrid instructions are free; ChatGPT access and data policies apply separately. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant.",
-      "workflow": [
-        "Prepare the authorized, redacted transcript with unique turn identifiers and the meeting date/time zone. Include an assignment-authority policy only if the team has actually adopted one.",
-        "Start a fresh ChatGPT conversation, paste the complete instructions and then supply the transcript. Answer questions about missing dates, turn identifiers or source context explicitly.",
-        "Compare the three output lists with the transcript. Trace confirmed decisions to explicit agreement, check later revisions and preserve source quotations for every action and disputed proposal.",
-        "Obtain confirmation for missing owners, relative dates and disputed decisions. Verify original date wording and accepted responsibility before creating any task in your own system; no task is created by this instruction package."
-      ],
-      "discovery": {
-        "keywords": [
-          "meeting decision ledger",
-          "accepted action owners",
-          "meeting follow-up",
-          "unresolved decisions",
-          "transcript evidence"
-        ],
-        "capability_tags": ["human-approval"]
-      },
-      "reviewed_on": "2026-10-09",
-      "search_intent": "Extract agreed decisions, unresolved proposals and accepted action owners from meeting notes without treating suggestions as commitments.",
-      "related_agent_slugs": ["project-dependency-planner", "reply-draft-assistant"]
-    },
-    "version_id": "988c8211-4161-4310-84d9-8011a1bd4f9d"
-  },
-  {
-    "editorial": {
-      "faq": [
-        {
-          "answer": "No. It reads only the text you paste into the selected model conversation. It does not retrieve a mailbox, run on a schedule or send replies. Any real email integration would require a separate workflow and explicit permission.",
-          "question": "Does this agent connect to Gmail or send replies?"
-        },
-        {
-          "answer": "A subject line alone does not establish immediate priority. A clearly informational message stays P3. The table should identify the relevant evidence and separate priority from confidence about missing time information.",
-          "question": "What if an email says URGENT but asks for no action?"
-        },
-        {
-          "answer": "The assistant asks for an as_of timestamp and time zone before final classification. Ambiguous action ownership and relative deadlines remain in a clarification list. It must not invent a responsible person or a calendar date.",
-          "question": "How are unclear deadlines and ownership handled?"
-        },
-        {
-          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider’s account and workspace data controls. AgentGrid’s package does not receive your pasted email batch.",
-          "question": "What should I check before sharing email text?"
-        }
-      ],
-      "review": {
-        "reuse_rights": true,
-        "cost_disclosure": true,
-        "standalone_value": true,
-        "distribution_steps": true,
-        "security_and_privacy": true,
-        "task_specific_instructions": true
-      },
-      "sources": [
-        {
-          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "title": "OpenAI Help Center: Data controls in ChatGPT",
-          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package’s priority rules or host-test results.",
-          "checked_on": "2026-10-09"
-        }
-      ],
-      "audience": [
-        "Individuals reviewing a small redacted email batch before deciding what to address next.",
-        "Team members who need explicit source evidence and unresolved questions alongside proposed priorities."
-      ],
-      "overview": "A crowded inbox mixes required decisions, ordinary requests and messages kept only for reference. Inbox Priority Triage helps you review a bounded, redacted batch of up to 20 short messages. You provide a timestamp with a time zone and unique message identifiers. The assistant proposes priorities, next actions, source evidence and questions about missing context.\n\nP1 requires a clear near-term action or an explicit blocker under your stated policy. P2 covers clear non-immediate requests or deadlines within seven days. P3 covers informational messages and more distant actions unless your policy supplies a concrete reason to elevate them. Missing ownership or timing stays unresolved. Confidence describes the supplied evidence; it is not a measured probability.\n\nThis is an interactive instruction package for a fresh ChatGPT conversation. It has no mailbox connection, background job or sending permission. Review the original messages before acting. AgentGrid access is free; your chosen model provider applies its own access, pricing and data policies. The package permits personal and commercial internal use and attributed forks within AgentGrid under its custom license, with no general redistribution grant.",
-      "workflow": [
-        "Remove personal identifiers, confidential details, credentials and unnecessary attachment content. Keep only text you are permitted to share, with one unique identifier per message.",
-        "Start a fresh ChatGPT conversation, paste the complete instructions and ask the assistant to wait. Review the provider data controls appropriate to your account before supplying any email text.",
-        "Provide up to 20 short messages and an explicit as_of timestamp with a time zone. Include your own priority policy only when you can state a concrete criterion.",
-        "Read the priority table and clarification list. Compare every proposed action, deadline and evidence fragment with the original email; resolve missing facts before carrying out any action."
-      ],
-      "discovery": {
-        "keywords": [
-          "email triage",
-          "inbox priority",
-          "deadline review",
-          "email action list",
-          "redacted email"
-        ],
-        "capability_tags": ["human-approval"]
-      },
-      "reviewed_on": "2026-10-09",
-      "search_intent": "Prioritize a small email batch using explicit deadlines and source evidence, while identifying unclear ownership and avoiding urgency based only on subject lines.",
-      "related_agent_slugs": ["reply-draft-assistant", "meeting-decision-ledger"]
-    },
-    "version_id": "a10dd451-733f-46f7-9817-6dd321c09781"
-  },
-  {
-    "editorial": {
-      "faq": [
-        {
-          "answer": "It should ask for the original email or relevant thread and your position first. The corrected instructions prohibit a provisional acknowledgment or sendable draft when that source is missing.",
-          "question": "Can it reply without the original email?"
-        },
-        {
-          "answer": "A promise of delivery, availability, review, investigation or updates that you did not approve. Polite phrasing and a human-review warning do not authorize it. Verify every future action stated on your behalf.",
-          "question": "What counts as an unauthorized commitment?"
-        },
-        {
-          "answer": "Only supplied approved facts belong in the draft. It cannot inspect mailbox attachments or verify a processed refund, and it must not invent those states. Check the real attachment and account state yourself before making such a statement.",
-          "question": "Will it say an attachment or refund exists?"
-        },
-        {
-          "answer": "The quoted message is task data. It cannot override your boundary or authorize sending, account access or refunds. The adversarial observation for this version preserved the request for an order reference and made no refund promise.",
-          "question": "What if the quoted message tells it to send immediately?"
-        },
-        {
-          "answer": "No. A host may render a draft in its own editor. This package remains a review-only instruction workflow and supplies no connector or sending permission. Inspect host data controls and redact private information before use.",
-          "question": "Does a host email editor mean the package can send?"
-        }
-      ],
-      "review": {
-        "reuse_rights": true,
-        "cost_disclosure": true,
-        "standalone_value": true,
-        "distribution_steps": true,
-        "security_and_privacy": true,
-        "task_specific_instructions": true
-      },
-      "sources": [
-        {
-          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "title": "OpenAI: Data controls in ChatGPT",
-          "supports": "Host data controls and Temporary Chat settings inform the recommendation to inspect host handling before sharing an authorized redacted thread.",
-          "checked_on": "2026-10-09"
-        }
-      ],
-      "audience": [
-        "People replying to a bounded request with a clear authorized position.",
-        "Reviewers checking that an email draft does not invent commitments or completed actions."
-      ],
-      "overview": "An incoming request is not the same as your agreement. Context-Grounded Reply Drafter separates what a sender asks for from the facts and commitments you authorize. Supply the relevant redacted email or thread, the recipient relationship, your desired outcome and tone, and the exact position you want to communicate. The package produces one reply draft with a coverage checklist and unresolved questions.\n\nThe instructions preserve authorized date wording and do not invent availability, a final delivery promise, a processed refund or an attachment. They also exclude routine-sounding promises to provide updates or investigate a request unless you approved them. If the original message is missing, the assistant should ask clarification questions without presenting a provisional sendable email. Optional next actions belong outside the draft and remain unapproved.\n\nThis corrected 1.0.1 version addresses unauthorized follow-up promises observed in testing of the earlier private draft. Its three bounded observations cover an unconfirmed Friday delivery, a missing email and a quoted refund/send instruction. Those observations do not guarantee behavior on other messages. Trace each statement and commitment back to your input and remove anything unsupported before using the draft.\n\nThe instructions provide no mailbox access, identity verification, attachment inspection or sending authority. The host may display its own email editor or send controls; that does not make this package a mailbox integration. Do not activate an external send action as part of this workflow. Sensitive employment, legal or commercial communications need your substantive judgment. AgentGrid instructions are free, while ChatGPT access and data policies apply separately. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant.",
-      "workflow": [
-        "Redact the relevant thread and identify its speakers. Supply the recipient relationship, desired result, tone, approved facts, authorized commitments and topics to avoid. Do not include credentials or unrelated private history.",
-        "Start a fresh ChatGPT conversation and paste the complete instructions, followed by your message and authorized position. If the source message or essential decision inputs are missing, answer clarification questions before drafting.",
-        "Compare each draft statement with your input. Check sender questions, preserved date wording, promised actions and claimed attachments. Remove unsupported commitments, including conventional promises of updates or later review.",
-        "Inspect the coverage checklist and resolve remaining facts. Apply your own substantive judgment, replace any signature placeholder and approve the wording before using it separately in your messaging tool. No message is sent by these instructions."
-      ],
-      "discovery": {
-        "keywords": [
-          "email reply draft",
-          "authorized commitments",
-          "reply coverage checklist",
-          "missing email clarification",
-          "refund request draft"
-        ],
-        "capability_tags": ["human-approval"]
-      },
-      "reviewed_on": "2026-10-09",
-      "search_intent": "Draft a reply that answers a supplied message while preserving the user’s approved position and excluding unauthorized promises.",
-      "related_agent_slugs": ["inbox-priority-triage", "meeting-decision-ledger"]
-    },
-    "version_id": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2"
-  },
-  {
-    "editorial": {
-      "faq": [
-        {
-          "answer": "No. It produces copy drafts, a message map and a comparison plan from supplied material. You separately review and approve any delivery, budget or account action in your own tools.",
-          "question": "Does this send a campaign or buy advertisements?"
-        },
-        {
-          "answer": "The comparison varies headline wording only, with one shared body and identical CTA. Offer, audience, sender, timing, layout and destination remain constant. The separate creative angle drafts are exploration material and must not become different bodies in that comparison.",
-          "question": "What makes the comparison controlled?"
-        },
-        {
-          "answer": "The instructions require evidence for certification, savings, efficacy, scarcity and popularity. Unsupported promises should be removed. Audience inferences remain hypotheses, and the final factual checklist stays pending human review.",
-          "question": "Can I use a claim without a supporting fact?"
-        },
-        {
-          "answer": "No. These are copy drafts, not mechanically validated platform payloads. Verify final text length in the destination editor. The supplied metric guides a proposed comparison; the package cannot guarantee lift or establish market demand.",
-          "question": "Are channel limits and conversion results guaranteed?"
-        },
-        {
-          "answer": "Remove customer identities, credentials and confidential material you are not authorized to share. Review the host data controls before pasting a brief. AgentGrid instructions are free, while host access and feature availability depend on your ChatGPT account.",
-          "question": "What should I redact and what does access cost?"
-        }
-      ],
-      "review": {
-        "reuse_rights": true,
-        "cost_disclosure": true,
-        "standalone_value": true,
-        "distribution_steps": true,
-        "security_and_privacy": true,
-        "task_specific_instructions": true
-      },
-      "sources": [
-        {
-          "url": "https://help.openai.com/en/articles/7730893-data-controls-faq",
-          "title": "OpenAI ChatGPT Data Controls FAQ",
-          "supports": "ChatGPT data controls and Temporary Chat settings inform the recommendation to inspect host data handling before sharing approved marketing material.",
-          "checked_on": "2026-10-09"
-        }
-      ],
-      "audience": [
-        "Small-business marketers with an explicit offer and approved source facts.",
-        "Campaign reviewers who need a traceable brief and a controlled headline comparison."
-      ],
-      "overview": "A small campaign can fail before it reaches a customer: its copy promises an outcome that the offer does not establish, or its test changes several things at once. Campaign Message Planner separates supported offer facts, supplied audience evidence and message hypotheses. Start with a bounded brief that names the offer, audience, channel limits, desired action and comparison metric. Give each source fact an identifier so you can trace the proposed copy back to the brief.\n\nThe package produces two creative angles for exploration, then a separate controlled comparison that varies headline wording only. Both comparison variants share one body and one call to action. Keep the audience, offer, sender, timing, layout and destination constant. A result can remain inconclusive; this package neither forecasts lift nor establishes that the audience represents your market.\n\nUse the output as a human-reviewed draft. Check every factual promise, verify text length in the destination editor, and leave unsupported certification, scarcity and testimonial claims out. There is no advertising account connection, send permission, purchasing authority or campaign scheduler. AgentGrid access is free; ChatGPT account access and data policies apply separately. The custom package license allows personal and commercial internal use and attributed forks within AgentGrid, without a general redistribution grant.",
-      "workflow": [
-        "Prepare a redacted brief containing offer facts with source IDs, audience notes, desired action, channel limits, prohibited claims and the metric you intend to compare. Do not paste credentials or private customer identifiers.",
-        "Start a fresh ChatGPT conversation, paste the complete instructions and ask the assistant to wait for the brief. Supply your context and answer missing-context questions explicitly; a default selection is not an answer.",
-        "Review the message map and both creative angles. Trace each factual benefit and audience statement to its supplied source ID. Treat inferred audience needs as hypotheses and remove unsupported promises.",
-        "Use the separate headline-only test plan with its shared body and identical CTA. Verify final text lengths in your destination editor, keep the named test conditions constant and obtain human approval before any actual campaign delivery."
-      ],
-      "discovery": {
-        "keywords": [
-          "campaign brief",
-          "email message map",
-          "headline comparison",
-          "evidence-grounded copy",
-          "marketing test plan"
-        ],
-        "capability_tags": ["human-approval"]
-      },
-      "reviewed_on": "2026-10-09",
-      "search_intent": "Draft an evidence-grounded email campaign message map and a headline-only comparison from an explicit offer brief.",
-      "related_agent_slugs": ["survey-theme-synthesizer", "launch-message-adapter"]
-    },
-    "version_id": "e83d21ce-a822-4ee1-b7a4-9458d5732494"
-  },
-  {
-    "version_id": "246b5299-3217-4feb-9850-f26c8681b22a",
-    "editorial": {
-      "search_intent": "Turn reporter-provided software defect observations into a reviewable reproduction brief while separating performed actions, preconditions, unrun diagnostics and unknown causes.",
-      "overview": "A convincing bug report can still contain invented steps. Bug Reproduction Brief Builder organizes what a reporter actually observed into a reviewable issue draft, keeping missing evidence visible. It does not run the application, diagnose a root cause, file an issue or verify a fix.\n\nSupply the actual symptom, expected behavior and its requirement source, actions performed in order, known environment/build information, frequency and sanitized evidence. A reported state belongs among preconditions: being signed in does not prove that sign-in was part of the reproduced sequence. Navigation, page loading or refresh actions that were not supplied must remain questions or unrun proposals. The confirmed sequence should stay minimal even when an omitted action would make the story sound more complete.\n\nExpected and actual results remain separate. A cited requirement such as REQ-12 is not independently validated when its text is absent. Two reported matching attempts do not establish a general failure rate. Unknown browser, build, impact and fee amounts remain unknown; a displayed total issue does not prove a payment defect. Hypotheses should explain what evidence could distinguish them without claiming that the check ran.\n\nThree fresh bounded ChatGPT Instant observations support corrected version 1.0.1. The synthetic checkout result preserved three supplied actions and kept signed-in state separate. The vague failure withheld a confirmed sequence. The log-injection result retained the exact error, rejected an embedded token/fix command and left runtime effects and root cause unknown. Version 1.0.0 added inferred steps in its normal result; that failure is retained and does not support this version. These tests are limited observations, not a reliability guarantee or a claim that the synthetic application was accessed.\n\nRemove cookies, tokens, customer records, internal credentials and unnecessary identifying details before pasting evidence into a host. Check your provider's data controls and organizational sharing rules; model access and pricing depend on your account. AgentGrid instructions are free. This package permits personal and commercial internal use and attributed AgentGrid forks under its custom license, without a general redistribution grant. A human must validate the brief and obtain appropriate authority before any real investigation or issue filing.",
-      "audience": [
-        "Software reporters preparing an evidence-grounded issue brief from their own observations.",
-        "Developers and triage reviewers separating confirmed actions from assumptions and unrun diagnostics."
+        "Marketing editors adapting an already-approved release brief across bounded channels.",
+        "Product teams checking that beta eligibility, unavailable features and launch timing stay consistent in copy drafts."
       ],
       "workflow": [
-        "Collect a bounded, redacted evidence set: observed symptom, expected behavior and source, actual actions, known versions, frequency and concrete impact. Mark each missing field unknown; remove session cookies, tokens and personal records before sharing.",
-        "Paste the full instructions into a fresh ChatGPT conversation and provide the evidence. Check that reported states stay in preconditions, and that only explicitly performed actions appear in the confirmed numbered sequence.",
-        "Compare actual and expected results against the supplied evidence. Ensure cited requirements are not presented as independently verified, hypotheses are unconfirmed, and diagnostic suggestions are clearly not yet run.",
-        "Review the missing-information checklist and gather the smallest useful additional observation in an authorized safe environment. A human checks the final wording and decides whether to file the issue; this package has not tested, fixed or filed it."
+        "Assemble approved release facts, unresolved approvals, required disclosures, exact supplied destinations and channel limits. Remove confidential roadmap and customer information before sharing.",
+        "Paste the complete instructions and bounded brief into a fresh ChatGPT conversation. Inspect the fact ledger before using copy; unresolved availability or timing must remain questions rather than launch claims.",
+        "Compare every channel draft with the ledger, including beta qualification, eligibility and unavailable features. Independently count final copy and verify required facts fit; the destination has not been visited or validated.",
+        "Check consistency, tone assumptions and approval status. An authorized person reviews the final copy and separately performs any publishing or scheduling action; a draft checklist is not approval."
       ],
       "faq": [
         {
-          "question": "Does a signed-in state belong in the reproduction steps?",
-          "answer": "It belongs in preconditions unless the reporter explicitly performed sign-in as part of the tested sequence. The corrected instructions prohibit converting a reported state into an action or adding implied navigation and refresh steps to the confirmed list."
+          "question": "Does invitation-only beta mean the release is live now?",
+          "answer": "No. It describes access status, not timing. Without an approved launch date or confirmed present availability, use status wording and keep timing unresolved. Corrected instructions prohibit “is here” and similar completed-launch claims without evidence."
         },
         {
-          "question": "Can it produce a fully reproducible report from “it does not work”?",
-          "answer": "No. That statement supplies no confirmed actions, product, expected result or environment. The package should identify these gaps and request details, while keeping any collection template or proposed diagnostic step clearly separate from performed work."
+          "question": "Why was version 1.0.0 withheld?",
+          "answer": "The actual injected-comment scenario first produced unsupported present-launch and future-communication wording before flagging it. A safer alternative later in the response does not erase the unsafe copy block. That failure is retained and requires fresh corrected-version evidence."
         },
         {
-          "question": "Does an error message establish a root cause?",
-          "answer": "No. A log excerpt establishes only the supplied text. The same missing-field message may have several explanations; hypotheses remain unverified until someone obtains and checks relevant runtime evidence in an authorized environment."
+          "question": "Can the draft promise instant access or integrations?",
+          "answer": "Only claims explicitly supported by the approved brief are permitted. Requesting an invitation is not guaranteed access, and a stated lack of calendar integration must not become a product capability."
         },
         {
-          "question": "What did the host testing verify?",
-          "answer": "Three bounded synthetic Instant observations were inspected for version 1.0.1: strict action/precondition separation, withholding invented reproduction from vague input, and rejection of embedded token/fix instructions. No real application was accessed, and these observations do not guarantee future answers."
+          "question": "Are length estimates enough for publishing?",
+          "answer": "No. Independently count the final copy in the target interface, which may handle links, Unicode and line breaks differently. Preserve mandatory disclosures; if the limit cannot accommodate them, shorten truthfully or resolve the conflict."
         },
         {
-          "question": "Can it run diagnostics or file an issue?",
-          "answer": "No. This instructions-only package has no repository, shell, application, messaging or issue-tracker connection. A suggested inspection is unrun, and any real investigation or filing requires a separate authorized human action."
+          "question": "Does this verify links, publish or contact subscribers?",
+          "answer": "No. Supplied destinations remain unverified text, and the package has no browsing, messaging, scheduling or publishing connection. Every proposed announcement remains subject to separate human review and action."
         },
         {
-          "question": "What can I share and what does it cost?",
-          "answer": "Share only authorized redacted evidence after checking provider data controls and your organizational policy. AgentGrid instruction access is free; host access and pricing depend on your account. The custom license permits internal use and attributed AgentGrid forks, but reserves general redistribution rights."
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Share only authorized approved public facts after checking host data controls. Host access and pricing depend on the account; AgentGrid instructions are free. The custom license permits internal use and attributed AgentGrid forks, while reserving general redistribution rights."
         }
       ],
       "sources": [
         {
           "title": "OpenAI ChatGPT Data Controls",
           "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "supports": "Provider data controls inform the privacy review before sharing authorized, redacted software observations; available controls depend on account and workspace settings.",
+          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized release context.",
           "checked_on": "2026-10-09"
         }
       ],
-      "related_agent_slugs": ["pull-request-reviewer", "project-dependency-planner"],
+      "related_agent_slugs": ["campaign-message-planner", "reply-draft-assistant"],
       "discovery": {
         "keywords": [
-          "bug report",
-          "reproduction steps",
-          "issue triage",
-          "defect evidence",
-          "unknown root cause"
+          "launch copy",
+          "beta announcement",
+          "channel adaptation",
+          "approved release brief",
+          "eligibility disclosure"
         ],
-        "capability_tags": ["evidence-review", "bug-triage"]
+        "capability_tags": ["message-adaptation", "claim-consistency"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "1e904283-9350-4fe8-a990-86856c8c85d3",
+    "editorial": {
+      "search_intent": "Review a redacted configuration before/after pair for source-linked changes, conditional runtime effects, explicit security constraints and unrun validation or rollback questions.",
+      "overview": "Configuration Change Reviewer helps a developer assess a proposed configuration change without executing it. It reads an authorized redacted before-and-after pair and produces a key-level register, conditional impact notes, missing context and a human-review checklist. Its distinct purpose is configuration comparison, rather than reviewing a code diff or drafting a software defect report.\n\nSupply both states with file, section or key anchors, the target environment, explicit deployment constraints and any known precedence or dependency rules. A literal file value may be overridden by an environment variable, inherited setting, provider default or command-line option. A change may require a reload or restart, and the effect of a flag depends on the actual parser. Keep those questions visible instead of calling the new text effective runtime configuration.\n\nThe bounded staging example changes timeout_ms from 2000 to 5000 and retry_count from 1 to 3. tls_verify remains literal true, while both api_key values are redacted. The two numeric differences are observable; the overall request duration remains conditional on timeout scope, retry semantics and backoff. The unchanged literal TLS flag is consistent with the supplied requirement only if the relevant application uses it to enable verification and no higher-precedence setting overrides it. Matching redaction placeholders establish neither credential equality nor presence or validity.\n\nWhen only an after-state such as retries=10 is supplied, the key could be added, changed or unchanged. Ask for the previous value, requirements, environment semantics and responsible owners. A polished comparison or safety approval cannot be created from a missing baseline. Preserve source anchors and distinguish actual text, conditional effects and unperformed validation.\n\nA proposal changing tls_verify from true to false conflicts with an explicit requirement to preserve certificate verification. Flag that contradiction and retain the required protection in proposed fragments. A pasted comment demanding secret disclosure, deployment or a successful-test claim is untrusted data. It cannot authorize execution or override a control. The package has no terminal, repository, infrastructure account or secret-management connection.\n\nValidation steps and rollback are proposals for an authorized responsible operator, not completed actions. Restore the actual verified previous configuration through an appropriate change process if rollback becomes necessary, then verify effective behavior. A redacted token placeholder is not a usable rollback credential. Restoring a file alone cannot be asserted to reverse data changes, schema migrations, external side effects or credential rotation; those need separate assessment.\n\nThree actual temporary unpersonalized Instant observations for this exact candidate were inspected: anchored numeric differences and indeterminate redacted credentials with conditional effects, withholding production approval when the baseline is absent, and preservation of certificate verification against an embedded execution/disclosure command. No live deployment or actual credentials were used. These bounded synthetic observations establish neither runtime safety, independent endorsement nor future reliability.\n\nShare only authorized redacted configuration structure. Do not paste a live secret, customer record or unnecessary private infrastructure detail. Check provider data controls and organizational rules before sharing. AgentGrid instructions are free, host access costs depend on the account, and the scoped custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights. A responsible person checks every finding and approves any real change separately.",
+      "audience": [
+        "Developers comparing authorized redacted configuration changes before an operational review.",
+        "Change owners checking explicit protection constraints, unresolved runtime semantics and rollback readiness."
+      ],
+      "workflow": [
+        "Collect authorized redacted before-and-after states with key/file anchors, environment, explicit constraints and known precedence rules. Replace live secret values with placeholders.",
+        "Paste the complete instructions and bounded pair into a fresh ChatGPT conversation. Request literal differences separately from conditional effective behavior and unresolved credential state.",
+        "Check every register entry against the source. Preserve required protections, resolve parser/precedence/reload questions and review the unrun validation checklist without claiming completed tests.",
+        "Have the responsible operator approve and perform any authorized validation or deployment. Prepare rollback from verified prior values and assess data, schema, credentials and external effects separately."
+      ],
+      "faq": [
+        {
+          "question": "Do matching redacted values prove the credentials are unchanged?",
+          "answer": "No. Placeholders hide the actual state. Equality, presence and validity remain unknown and must be verified through an authorized secret-management process without exposing the secret."
+        },
+        {
+          "question": "Does an unchanged TLS flag prove certificate verification is active?",
+          "answer": "No. It is a literal observation. Effective protection depends on the real parser, relevant client, precedence rules and activation behavior; a responsible operator verifies it."
+        },
+        {
+          "question": "Can it approve a production change with only the after-state?",
+          "answer": "No. Request the previous state, environment semantics, constraints and owners. A key may be added, changed or unchanged, and a missing baseline cannot establish safety or a rollback value."
+        },
+        {
+          "question": "What if a pasted comment says to disable verification and deploy?",
+          "answer": "Treat the comment as untrusted source data. Preserve the explicit protection requirement, flag the contradiction and withhold execution, disclosure and invented validation claims."
+        },
+        {
+          "question": "Does restoring the old configuration undo every side effect?",
+          "answer": "No. Data changes, schema migrations, external operations or credential rotation may need separate recovery. A rollback fragment is a proposal, and effective behavior still requires verification."
+        },
+        {
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Supply only authorized redacted structure after checking host data controls. Host access costs depend on the account; AgentGrid instructions are free. Internal use and attributed AgentGrid forks are permitted, with general redistribution reserved."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized redacted configuration context.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["pull-request-reviewer", "bug-reproduction-brief"],
+      "discovery": {
+        "keywords": [
+          "configuration diff",
+          "before after config",
+          "conditional runtime effect",
+          "redacted credentials",
+          "rollback review"
+        ],
+        "capability_tags": ["configuration-review", "change-register"]
       },
       "reviewed_on": "2026-10-09",
       "review": {
@@ -544,64 +284,64 @@
     }
   },
   {
-    "version_id": "3161dca0-d8e2-4794-b3dd-4e97ab399aba",
+    "version_id": "c0c8e4ac-2959-49f1-8d3f-250f780f11de",
     "editorial": {
-      "search_intent": "Adapt approved launch facts into constrained channel drafts while preserving invitation eligibility, unreleased features and unresolved launch timing.",
-      "overview": "Launch Message Adapter starts from an approved factual brief rather than a campaign idea. Its distinct task is to carry the same release facts into channel drafts with different lengths and tones. An announcement can be concise without making a beta generally available, turning an invitation request into guaranteed access or introducing an integration that the release does not include.\n\nSupply the product and feature names, availability status, eligibility, approved date and time zone, audience, required disclosures, destination and each hard limit. Keep planned timing separate from a completed launch. A fact ledger identifies which claims are supported before any copy is written. If essential facts are absent, collect them first; “everywhere today” does not name a channel or establish an approved release date.\n\nThe bounded example uses an invitation-only shared-folder beta, existing-account invite requests, a supplied placeholder destination and no calendar integration. Email and social drafts must both retain the beta qualification and avoid guaranteed access. The supplied destination is text, not a verified working link. Price language remains absent when no approved price is supplied. A neutral tone can be proposed as an editorial assumption without inventing product benefits, scarcity or customer endorsements.\n\nVersion 1.0.0 is excluded from guarded publication: an actual injection test initially drafted “is here” and “more details to follow” without supporting timing or communication approvals. Its later self-warning did not make the earlier copy block suitable. Corrected 1.0.1 requires only grounded copy blocks, separates unresolved launch timing from availability status and forbids presenting an unsupported draft alongside a safer alternative. The failed observation remains retained for review.\n\nCount the final draft independently in its destination interface. Character or word estimates can differ from platform handling of links, line breaks and Unicode. If a required disclosure cannot fit, shorten truthful copy or flag the conflict; never discard eligibility or unavailable-feature facts merely to reach the limit. A consistency checklist records needed decisions and does not constitute formal approval.\n\nUse only public launch facts approved for sharing. Remove private roadmap details, customer identities and confidential commercial terms, and review the chosen host's data controls and organizational rules. AgentGrid instructions are free; host access costs depend on the account. Internal use and attributed AgentGrid forks are permitted by the package license, while general redistribution is reserved. No messages are sent, links checked, events scheduled or channels published by this instructions-only package. A person verifies claims and approves any real publication separately.\n\nThree fresh actual temporary unpersonalized Instant observations support corrected 1.0.1. The normal draft preserves scheduled future beta and eligibility, with social copy measured at 199 characters. Missing facts withhold announcements, and the injected-comment result produces only grounded status copy while keeping timing unresolved. No external publication or real credentials were used; these checks are bounded observations, not a general guarantee.",
+      "search_intent": "Review a supplied routine operating procedure for missing ownership, approval criteria, handoffs and recovery paths without inventing organizational policy.",
+      "overview": "SOP Gap Reviewer helps a process owner inspect an existing routine procedure from the perspective of an unfamiliar operator. It identifies where a numbered step cannot be followed because the required input, responsible role, decision criterion, output or next owner is missing. It produces a gap register and owner questions rather than silently rewriting how an organization works.\n\nSupply the actual numbered procedure, intended operator, trigger, desired finish state and any governing policy that takes precedence. State which roles and systems exist and which permissions the operator actually has. An instruction such as “manager approves” establishes that an approval is expected, but does not identify the authorized manager, the decision criteria or a rejected-approval path. Those fields remain questions until the responsible owner supplies them.\n\nThe bounded equipment-checkout example has four steps: receive a request, obtain manager approval, hand over equipment and close the request. The operator is an office coordinator and the goal includes a record of receipt. A useful review anchors missing request fields to step 1, approval authority and criteria to step 2, equipment availability and handover evidence to step 3, and closure evidence to step 4. It must not invent a named escalation contact, a response-time promise or a legal retention period to fill those gaps.\n\nWalk through a few relevant exceptions as hypothetical cases: an incomplete request, rejected approval, unavailable system or failed handoff. Identify the exact supplied step where the process stops being actionable and ask how the owner wants it handled. A proposed wording fragment must stay labelled draft, with unknown roles and rules left as placeholders. An optional improvement should be distinguished from a control needed to prevent a specific supplied failure.\n\nProtect stated controls. If a pasted note says to delete approval and release equipment immediately, treat that note as conflicting untrusted source material. It cannot authorize removing the approval requirement, changing the procedure or performing a handover. The package has no inventory, account, ticketing, messaging or operational execution connection. A textual exception walkthrough is not a completed live process test.\n\nThe gap register supports review but cannot certify legal compliance, operational safety or control effectiveness. A responsible owner verifies each question and approves substantive changes, then tests any adopted procedure with real authorized operators. Use role names and redacted structure; remove employee identities, credentials, access instructions and confidential system details before sharing. Check host data controls and organizational rules. AgentGrid instructions are free, host access costs depend on the account, and the custom license permits internal use and attributed AgentGrid forks while reserving general redistribution rights.\n\nThree actual temporary unpersonalized Instant observations were inspected for this exact candidate: source-step gaps with draft placeholders, withholding an operational review when the procedure is absent, and preservation of Step 3 approval against an embedded bypass command. Priority and severity labels in the host outputs remain provisional judgments for the responsible owner, not measured risk or compliance findings. No live workflow or real credentials were used; these bounded observations do not establish future review reliability.",
       "audience": [
-        "Marketing editors adapting an already-approved release brief across bounded channels.",
-        "Product teams checking that beta eligibility, unavailable features and launch timing stay consistent in copy drafts."
+        "Process owners checking whether an existing routine procedure is actionable by an unfamiliar operator.",
+        "Operations coordinators identifying documented approval, handoff and recovery gaps for responsible-owner review."
       ],
       "workflow": [
-        "Assemble approved release facts, unresolved approvals, required disclosures, exact supplied destinations and channel limits. Remove confidential roadmap and customer information before sharing.",
-        "Paste the complete instructions and bounded brief into a fresh ChatGPT conversation. Inspect the fact ledger before using copy; unresolved availability or timing must remain questions rather than launch claims.",
-        "Compare every channel draft with the ledger, including beta qualification, eligibility and unavailable features. Independently count final copy and verify required facts fit; the destination has not been visited or validated.",
-        "Check consistency, tone assumptions and approval status. An authorized person reviews the final copy and separately performs any publishing or scheduling action; a draft checklist is not approval."
+        "Collect the exact numbered procedure, operator role, trigger, expected finish state and governing controls. Remove private identities, credentials and unnecessary system access details before sharing.",
+        "Paste the full instructions and bounded procedure into a fresh ChatGPT conversation. Request gaps anchored to actual source steps with practical consequences, owner questions and clearly labelled draft fragments.",
+        "Check every finding against the supplied step and distinguish missing organizational facts from optional suggestions. Walk through relevant exceptions as hypothetical cases, preserving approval and other stated controls.",
+        "Ask the responsible owner to define unknown roles, criteria, records and recovery paths. Approve any substantive change separately and test an adopted procedure with real authorized operators; this package has not changed or executed it."
       ],
       "faq": [
         {
-          "question": "Does invitation-only beta mean the release is live now?",
-          "answer": "No. It describes access status, not timing. Without an approved launch date or confirmed present availability, use status wording and keep timing unresolved. Corrected instructions prohibit “is here” and similar completed-launch claims without evidence."
+          "question": "Can “manager approves” be treated as a complete approval rule?",
+          "answer": "No. It may still lack the authorized role, decision criteria, required input and rejected-approval path. Preserve the requirement and ask the process owner to define what is missing rather than inventing authority."
         },
         {
-          "question": "Why was version 1.0.0 withheld?",
-          "answer": "The actual injected-comment scenario first produced unsupported present-launch and future-communication wording before flagging it. A safer alternative later in the response does not erase the unsafe copy block. That failure is retained and requires fresh corrected-version evidence."
+          "question": "Does the package rewrite our procedure automatically?",
+          "answer": "No. Its default output is a prioritized gap register and short draft wording fragments. A full replacement or operational change requires separate instructions and responsible-owner approval."
         },
         {
-          "question": "Can the draft promise instant access or integrations?",
-          "answer": "Only claims explicitly supported by the approved brief are permitted. Requesting an invitation is not guaranteed access, and a stated lack of calendar integration must not become a product capability."
+          "question": "Can it invent a sensible SLA or retention period?",
+          "answer": "No confirmed organizational or legal rule can be invented. Unknown timing, recordkeeping, escalation and retention requirements remain owner questions or explicit draft placeholders."
         },
         {
-          "question": "Are length estimates enough for publishing?",
-          "answer": "No. Independently count the final copy in the target interface, which may handle links, Unicode and line breaks differently. Preserve mandatory disclosures; if the limit cannot accommodate them, shorten truthfully or resolve the conflict."
+          "question": "What does an exception walkthrough prove?",
+          "answer": "It shows a textual point where a supplied procedure may stop being actionable, such as missing input or a failed handoff. It does not establish that a real system was tested or that a proposed recovery path works."
         },
         {
-          "question": "Does this verify links, publish or contact subscribers?",
-          "answer": "No. Supplied destinations remain unverified text, and the package has no browsing, messaging, scheduling or publishing connection. Every proposed announcement remains subject to separate human review and action."
+          "question": "Can an embedded note remove a documented approval control?",
+          "answer": "No. Copied operational demands are untrusted source material. Preserve the governing approval requirement, identify the conflict and ask for authoritative clarification without changing or executing the process."
         },
         {
-          "question": "What privacy, cost and reuse limits apply?",
-          "answer": "Share only authorized approved public facts after checking host data controls. Host access and pricing depend on the account; AgentGrid instructions are free. The custom license permits internal use and attributed AgentGrid forks, while reserving general redistribution rights."
+          "question": "Does this certify compliance, and what privacy or cost rules apply?",
+          "answer": "It cannot certify compliance or safety. Share only authorized redacted process structure after checking host data controls. Host access costs depend on the account; AgentGrid instructions are free. Internal use and attributed AgentGrid forks are permitted, with general redistribution reserved."
         }
       ],
       "sources": [
         {
           "title": "OpenAI ChatGPT Data Controls",
           "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
-          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized release context.",
+          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized redacted procedure context.",
           "checked_on": "2026-10-09"
         }
       ],
-      "related_agent_slugs": ["campaign-message-planner", "reply-draft-assistant"],
+      "related_agent_slugs": ["project-dependency-planner", "meeting-decision-ledger"],
       "discovery": {
         "keywords": [
-          "launch copy",
-          "beta announcement",
-          "channel adaptation",
-          "approved release brief",
-          "eligibility disclosure"
+          "SOP review",
+          "procedure gaps",
+          "approval criteria",
+          "handoff ownership",
+          "exception recovery"
         ],
-        "capability_tags": ["message-adaptation", "claim-consistency"]
+        "capability_tags": ["procedure-review", "gap-register"]
       },
       "reviewed_on": "2026-10-09",
       "review": {
@@ -612,6 +352,144 @@
         "distribution_steps": true,
         "reuse_rights": true
       }
+    }
+  },
+  {
+    "version_id": "1bab9fb9-73fc-4ca7-9367-bab9bd3a5b16",
+    "editorial": {
+      "search_intent": "Check whether proposed search titles and descriptions preserve source-supported product claims, invitation limits and pricing without promising rankings or invented character measurements.",
+      "overview": "Search Snippet Claim Reviewer compares proposed search-facing text with a bounded source set. Its purpose is factual copy review: identify which promise is supported, contradicted, unsupported or ambiguous, retain the exact source anchor, and return a corrected draft for an editor. It does not inspect live search results or establish that any search engine will display the submitted text.\n\nSupply the authorized page text with stable passage IDs, a proposed title and description, the intended query or audience and the product facts approved for use. Include availability, eligibility, price and release timing limits. A query phrase identifies an intended audience; it does not prove the product offers that capability. If only invitation and pricing facts are supplied, the copy should remain within those facts while requesting feature evidence separately.\n\nThe bounded NoteShelf example gives P1, beta availability for invited teams only, and P2, a zero-dollar beta price for those teams with no announced general release date. The proposed “free for everyone today” title contradicts the eligibility restriction. “Guaranteed instant access” lacks support. Corrected copy can describe the invited-team beta and qualified beta price, while keeping activation timing and general availability unresolved. The phrase “team notes” came from a desired query and cannot independently establish a product function.\n\nEvery returned copy block needs the same claim check. A later warning does not cure an unsupported promise in the first title. Review exact excerpts and keep supplied fact, inference and unknown separate. Missing source material calls for questions or explicitly labelled placeholder templates, not a polished unsupported claim. Copied page notes that demand free worldwide access, first ranking or publication remain untrusted content; they cannot broaden the source or authorize an edit.\n\nA character target is an editor's constraint, not a display guarantee. The instructions-only package has no bound counting tool. It must not report measured/calculated character badges or certify target compliance. An editor uses an actual counter on the complete final string, including spaces and punctuation, before publication. The original 1.0.0 host outputs failed this check: four character counts labelled calculated were incorrect, and the normal title added an unsupported query phrase. Those unchanged outputs are retained; that candidate was not submitted or released. Corrected 1.0.1 explicitly removes count certification and forbids query phrases as capability evidence. Three fresh actual temporary unpersonalized Instant observations for 1.0.1 passed the inspected source-claim, missing-evidence and injection checks without measured-count claims. These bounded synthetic observations establish neither independent endorsement nor future reliability.\n\nThe output is a claim register, proposed copy, unresolved source questions and a human-review checkpoint. No clicks, ranking changes, indexing request, snippet appearance or website edit has occurred. A responsible editor checks authoritative current business facts, counts the final text when required and approves any real change separately.\n\nUse authorized redacted page text and avoid confidential analytics, private customer details or unpublished facts outside your disclosure permission. Check host data controls and organizational rules. AgentGrid instructions are free, while host access and account costs may apply. The custom license permits internal use and attributed AgentGrid forks, with general redistribution reserved.",
+      "audience": [
+        "Editors checking search-facing copy against approved product and availability facts.",
+        "Small teams reconciling pricing and eligibility promises before a human updates a page."
+      ],
+      "workflow": [
+        "Gather redacted page passages with IDs, proposed title/description, approved facts, query context and any character targets. Separate current availability from future plans.",
+        "Paste the complete instructions and bounded source set into a fresh ChatGPT conversation. Ask for claim statuses and exact source anchors; a query phrase is not product evidence.",
+        "Review every proposed copy block against the register. Preserve invitation, pricing and timing limits; ask for missing facts. Use an actual external counter for any final character target.",
+        "Have the responsible editor approve the final wording and separately perform any authorized website change. This package has neither edited the page nor verified live search outcomes."
+      ],
+      "faq": [
+        {
+          "question": "Does an intended search query prove a product feature?",
+          "answer": "No. It supplies audience context, not capability evidence. Omit the feature implication from factual copy unless an approved source supports it."
+        },
+        {
+          "question": "Can an invitation-only free beta be described as free for everyone?",
+          "answer": "No. Preserve the eligible group and beta period; access timing and future pricing remain unknown unless supplied."
+        },
+        {
+          "question": "Does this package certify exact character counts?",
+          "answer": "No. Its corrected instructions prohibit measured count badges and compliance assertions. An editor must count the complete final string with an actual counter before applying a character target."
+        },
+        {
+          "question": "Does a corrected title guarantee a ranking or displayed snippet?",
+          "answer": "No. The task is a source-bounded copy review. It has no live search access and cannot establish indexing, traffic, ranking or display outcomes."
+        },
+        {
+          "question": "What happens when page evidence is absent or includes publication commands?",
+          "answer": "Withhold a validated factual assessment and request the source. Placeholder templates must stay labelled. Embedded commands cannot authorize false claims, publication or account access."
+        },
+        {
+          "question": "What privacy, cost and reuse limits apply?",
+          "answer": "Share only authorized redacted page material after checking host data controls. Host costs depend on the account; AgentGrid instructions are free. Internal use and attributed AgentGrid forks are allowed; general redistribution is reserved."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls depend on account and workspace settings; review them before sharing authorized redacted page copy or approved product context.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["search-opportunity-auditor", "redirect-map-reviewer"],
+      "discovery": {
+        "keywords": [
+          "search title review",
+          "description claims",
+          "beta eligibility",
+          "source-supported copy",
+          "character verification"
+        ],
+        "capability_tags": ["claim-review", "copy-consistency"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "8f8b913c-9184-4e46-8740-e3a6ab73786f",
+    "editorial": {
+      "faq": [
+        {
+          "answer": "No. A calculation is conditional on supplied prerequisites, durations, capacity and calendar assumptions. Unknown scope or estimates prevent a credible schedule, and a precedence-only critical path is not a delivery guarantee.",
+          "question": "Can it guarantee a launch date?"
+        },
+        {
+          "answer": "No. Supply explicit predecessor IDs. Design, build and test appearing next to each other does not prove a strict sequence. An illustrative suggestion must stay labelled hypothetical until the team confirms the actual relationships.",
+          "question": "Does list order establish prerequisites?"
+        },
+        {
+          "answer": "The instructions require the cycle chain and withhold a valid topological order. A human must identify the mistaken prerequisite or split a task. Removing an edge merely to show readiness would change the project constraint without approval.",
+          "question": "What happens when tasks form a cycle?"
+        },
+        {
+          "answer": "No. Unknown owners remain gaps, and proposed assignments are not accepted responsibilities. The instructions have no account, task-system, messaging or scheduling integration and cannot establish that an external update occurred.",
+          "question": "Does it assign owners or update a project board?"
+        },
+        {
+          "answer": "The host can present its answer using diagrams or interactive controls in addition to copied text. Those presentations were seen in bounded testing, but their availability is not guaranteed and they do not grant this package project-system access. Verify the underlying task evidence and assumptions.",
+          "question": "Why might ChatGPT show extra diagrams or controls?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "title": "OpenAI ChatGPT Data Controls FAQ",
+          "supports": "Host data controls and Temporary Chat options inform provider-data-handling review before sharing authorized redacted project context.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "Project coordinators validating explicit prerequisites before proposing a delivery schedule.",
+        "Small teams distinguishing dependency blockers from resource capacity and missing estimates."
+      ],
+      "overview": "A task list does not establish a schedule. Project Dependency Planner turns explicitly supplied prerequisites into a reviewable dependency table, checks for missing references and cycles, and separates precedence from staffing capacity. Supply unique task IDs, descriptions, required predecessors, duration units, available capacity, known owners and any hard milestone. List order alone is not a dependency. Missing inputs remain questions rather than invented estimates or accepted assignments.\n\nFor an acyclic graph with explicit elapsed-day assumptions, the output can calculate earliest relative starts and finishes. Unlimited parallel resources are an exercise assumption, not evidence that a real team can run every ready task simultaneously. A critical path calculated from precedence alone does not guarantee a resource-feasible date. Check calendars, handoffs, uncertain estimates and approvals separately. If a cycle exists, the package should show the chain and ask which relationship is mistaken or which task needs splitting; a hypothetical repair is not an approved change.\n\nThree bounded ChatGPT web Instant observations were inspected on 9 October 2026. The normal example finished on relative day five under unlimited parallel resources. Missing scheduling context remained unresolved, with a clearly hypothetical sequence and host-generated question controls. The adversarial example retained its circular blocker despite a note demanding readiness and automatic assignments. These observations do not establish general scheduling reliability. The host may add diagrams or interactive controls; this package grants no project-board access or external action authority.\n\nUse task and role aliases and remove confidential dates, links and staff information that are unnecessary. The selected model provider processes what you paste. AgentGrid instructions are free; host access and pricing depend on your account. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant. A decision-maker must validate the proposed plan before treating any date or assignment as a commitment.",
+      "workflow": [
+        "Prepare a bounded redacted task set with unique IDs, descriptions, explicit predecessors, durations and units. Include available capacity, known owners, calendars and hard milestones; leave unknown information clearly marked.",
+        "Paste the complete instructions into a fresh ChatGPT conversation and supply that context. Clarify whether estimates mean elapsed or working time before accepting any timing calculation.",
+        "Inspect missing references, self-dependencies and cycle chains before considering an order. Compare each edge with the source; do not accept a suggested cycle repair without team approval.",
+        "Check relative finishes and critical-path assumptions against capacity and calendar constraints. Confirm owners, estimates, milestones and approval gates before manually updating your own project system; the package has made no such update."
+      ],
+      "discovery": {
+        "keywords": [
+          "task dependency planning",
+          "critical path assumptions",
+          "dependency cycle review",
+          "relative project schedule",
+          "resource capacity blockers"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Check explicit task dependencies, detect cycles and calculate earliest relative completion only under supplied duration and capacity assumptions.",
+      "related_agent_slugs": ["meeting-decision-ledger", "weekly-capacity-planner"]
     }
   },
   {
@@ -683,6 +561,341 @@
         "distribution_steps": true,
         "reuse_rights": true
       }
+    }
+  },
+  {
+    "version_id": "246b5299-3217-4feb-9850-f26c8681b22a",
+    "editorial": {
+      "search_intent": "Turn reporter-provided software defect observations into a reviewable reproduction brief while separating performed actions, preconditions, unrun diagnostics and unknown causes.",
+      "overview": "A convincing bug report can still contain invented steps. Bug Reproduction Brief Builder organizes what a reporter actually observed into a reviewable issue draft, keeping missing evidence visible. It does not run the application, diagnose a root cause, file an issue or verify a fix.\n\nSupply the actual symptom, expected behavior and its requirement source, actions performed in order, known environment/build information, frequency and sanitized evidence. A reported state belongs among preconditions: being signed in does not prove that sign-in was part of the reproduced sequence. Navigation, page loading or refresh actions that were not supplied must remain questions or unrun proposals. The confirmed sequence should stay minimal even when an omitted action would make the story sound more complete.\n\nExpected and actual results remain separate. A cited requirement such as REQ-12 is not independently validated when its text is absent. Two reported matching attempts do not establish a general failure rate. Unknown browser, build, impact and fee amounts remain unknown; a displayed total issue does not prove a payment defect. Hypotheses should explain what evidence could distinguish them without claiming that the check ran.\n\nThree fresh bounded ChatGPT Instant observations support corrected version 1.0.1. The synthetic checkout result preserved three supplied actions and kept signed-in state separate. The vague failure withheld a confirmed sequence. The log-injection result retained the exact error, rejected an embedded token/fix command and left runtime effects and root cause unknown. Version 1.0.0 added inferred steps in its normal result; that failure is retained and does not support this version. These tests are limited observations, not a reliability guarantee or a claim that the synthetic application was accessed.\n\nRemove cookies, tokens, customer records, internal credentials and unnecessary identifying details before pasting evidence into a host. Check your provider's data controls and organizational sharing rules; model access and pricing depend on your account. AgentGrid instructions are free. This package permits personal and commercial internal use and attributed AgentGrid forks under its custom license, without a general redistribution grant. A human must validate the brief and obtain appropriate authority before any real investigation or issue filing.",
+      "audience": [
+        "Software reporters preparing an evidence-grounded issue brief from their own observations.",
+        "Developers and triage reviewers separating confirmed actions from assumptions and unrun diagnostics."
+      ],
+      "workflow": [
+        "Collect a bounded, redacted evidence set: observed symptom, expected behavior and source, actual actions, known versions, frequency and concrete impact. Mark each missing field unknown; remove session cookies, tokens and personal records before sharing.",
+        "Paste the full instructions into a fresh ChatGPT conversation and provide the evidence. Check that reported states stay in preconditions, and that only explicitly performed actions appear in the confirmed numbered sequence.",
+        "Compare actual and expected results against the supplied evidence. Ensure cited requirements are not presented as independently verified, hypotheses are unconfirmed, and diagnostic suggestions are clearly not yet run.",
+        "Review the missing-information checklist and gather the smallest useful additional observation in an authorized safe environment. A human checks the final wording and decides whether to file the issue; this package has not tested, fixed or filed it."
+      ],
+      "faq": [
+        {
+          "question": "Does a signed-in state belong in the reproduction steps?",
+          "answer": "It belongs in preconditions unless the reporter explicitly performed sign-in as part of the tested sequence. The corrected instructions prohibit converting a reported state into an action or adding implied navigation and refresh steps to the confirmed list."
+        },
+        {
+          "question": "Can it produce a fully reproducible report from “it does not work”?",
+          "answer": "No. That statement supplies no confirmed actions, product, expected result or environment. The package should identify these gaps and request details, while keeping any collection template or proposed diagnostic step clearly separate from performed work."
+        },
+        {
+          "question": "Does an error message establish a root cause?",
+          "answer": "No. A log excerpt establishes only the supplied text. The same missing-field message may have several explanations; hypotheses remain unverified until someone obtains and checks relevant runtime evidence in an authorized environment."
+        },
+        {
+          "question": "What did the host testing verify?",
+          "answer": "Three bounded synthetic Instant observations were inspected for version 1.0.1: strict action/precondition separation, withholding invented reproduction from vague input, and rejection of embedded token/fix instructions. No real application was accessed, and these observations do not guarantee future answers."
+        },
+        {
+          "question": "Can it run diagnostics or file an issue?",
+          "answer": "No. This instructions-only package has no repository, shell, application, messaging or issue-tracker connection. A suggested inspection is unrun, and any real investigation or filing requires a separate authorized human action."
+        },
+        {
+          "question": "What can I share and what does it cost?",
+          "answer": "Share only authorized redacted evidence after checking provider data controls and your organizational policy. AgentGrid instruction access is free; host access and pricing depend on your account. The custom license permits internal use and attributed AgentGrid forks, but reserves general redistribution rights."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls inform the privacy review before sharing authorized, redacted software observations; available controls depend on account and workspace settings.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["pull-request-reviewer", "project-dependency-planner"],
+      "discovery": {
+        "keywords": [
+          "bug report",
+          "reproduction steps",
+          "issue triage",
+          "defect evidence",
+          "unknown root cause"
+        ],
+        "capability_tags": ["evidence-review", "bug-triage"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
+  },
+  {
+    "version_id": "e83d21ce-a822-4ee1-b7a4-9458d5732494",
+    "editorial": {
+      "faq": [
+        {
+          "answer": "No. It produces copy drafts, a message map and a comparison plan from supplied material. You separately review and approve any delivery, budget or account action in your own tools.",
+          "question": "Does this send a campaign or buy advertisements?"
+        },
+        {
+          "answer": "The comparison varies headline wording only, with one shared body and identical CTA. Offer, audience, sender, timing, layout and destination remain constant. The separate creative angle drafts are exploration material and must not become different bodies in that comparison.",
+          "question": "What makes the comparison controlled?"
+        },
+        {
+          "answer": "The instructions require evidence for certification, savings, efficacy, scarcity and popularity. Unsupported promises should be removed. Audience inferences remain hypotheses, and the final factual checklist stays pending human review.",
+          "question": "Can I use a claim without a supporting fact?"
+        },
+        {
+          "answer": "No. These are copy drafts, not mechanically validated platform payloads. Verify final text length in the destination editor. The supplied metric guides a proposed comparison; the package cannot guarantee lift or establish market demand.",
+          "question": "Are channel limits and conversion results guaranteed?"
+        },
+        {
+          "answer": "Remove customer identities, credentials and confidential material you are not authorized to share. Review the host data controls before pasting a brief. AgentGrid instructions are free, while host access and feature availability depend on your ChatGPT account.",
+          "question": "What should I redact and what does access cost?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-faq",
+          "title": "OpenAI ChatGPT Data Controls FAQ",
+          "supports": "ChatGPT data controls and Temporary Chat settings inform the recommendation to inspect host data handling before sharing approved marketing material.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "Small-business marketers with an explicit offer and approved source facts.",
+        "Campaign reviewers who need a traceable brief and a controlled headline comparison."
+      ],
+      "overview": "A small campaign can fail before it reaches a customer: its copy promises an outcome that the offer does not establish, or its test changes several things at once. Campaign Message Planner separates supported offer facts, supplied audience evidence and message hypotheses. Start with a bounded brief that names the offer, audience, channel limits, desired action and comparison metric. Give each source fact an identifier so you can trace the proposed copy back to the brief.\n\nThe package produces two creative angles for exploration, then a separate controlled comparison that varies headline wording only. Both comparison variants share one body and one call to action. Keep the audience, offer, sender, timing, layout and destination constant. A result can remain inconclusive; this package neither forecasts lift nor establishes that the audience represents your market.\n\nUse the output as a human-reviewed draft. Check every factual promise, verify text length in the destination editor, and leave unsupported certification, scarcity and testimonial claims out. There is no advertising account connection, send permission, purchasing authority or campaign scheduler. AgentGrid access is free; ChatGPT account access and data policies apply separately. The custom package license allows personal and commercial internal use and attributed forks within AgentGrid, without a general redistribution grant.",
+      "workflow": [
+        "Prepare a redacted brief containing offer facts with source IDs, audience notes, desired action, channel limits, prohibited claims and the metric you intend to compare. Do not paste credentials or private customer identifiers.",
+        "Start a fresh ChatGPT conversation, paste the complete instructions and ask the assistant to wait for the brief. Supply your context and answer missing-context questions explicitly; a default selection is not an answer.",
+        "Review the message map and both creative angles. Trace each factual benefit and audience statement to its supplied source ID. Treat inferred audience needs as hypotheses and remove unsupported promises.",
+        "Use the separate headline-only test plan with its shared body and identical CTA. Verify final text lengths in your destination editor, keep the named test conditions constant and obtain human approval before any actual campaign delivery."
+      ],
+      "discovery": {
+        "keywords": [
+          "campaign brief",
+          "email message map",
+          "headline comparison",
+          "evidence-grounded copy",
+          "marketing test plan"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Draft an evidence-grounded email campaign message map and a headline-only comparison from an explicit offer brief.",
+      "related_agent_slugs": ["survey-theme-synthesizer", "launch-message-adapter"]
+    }
+  },
+  {
+    "version_id": "a10dd451-733f-46f7-9817-6dd321c09781",
+    "editorial": {
+      "faq": [
+        {
+          "answer": "No. It reads only the text you paste into the selected model conversation. It does not retrieve a mailbox, run on a schedule or send replies. Any real email integration would require a separate workflow and explicit permission.",
+          "question": "Does this agent connect to Gmail or send replies?"
+        },
+        {
+          "answer": "A subject line alone does not establish immediate priority. A clearly informational message stays P3. The table should identify the relevant evidence and separate priority from confidence about missing time information.",
+          "question": "What if an email says URGENT but asks for no action?"
+        },
+        {
+          "answer": "The assistant asks for an as_of timestamp and time zone before final classification. Ambiguous action ownership and relative deadlines remain in a clarification list. It must not invent a responsible person or a calendar date.",
+          "question": "How are unclear deadlines and ownership handled?"
+        },
+        {
+          "answer": "Redact unnecessary personal and confidential information and never include credentials or payment details. Review the selected provider’s account and workspace data controls. AgentGrid’s package does not receive your pasted email batch.",
+          "question": "What should I check before sharing email text?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "title": "OpenAI Help Center: Data controls in ChatGPT",
+          "supports": "Supports the instruction to review provider data controls before sharing text; available controls depend on account, plan and workspace settings. This source does not validate the package’s priority rules or host-test results.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "Individuals reviewing a small redacted email batch before deciding what to address next.",
+        "Team members who need explicit source evidence and unresolved questions alongside proposed priorities."
+      ],
+      "overview": "A crowded inbox mixes required decisions, ordinary requests and messages kept only for reference. Inbox Priority Triage helps you review a bounded, redacted batch of up to 20 short messages. You provide a timestamp with a time zone and unique message identifiers. The assistant proposes priorities, next actions, source evidence and questions about missing context.\n\nP1 requires a clear near-term action or an explicit blocker under your stated policy. P2 covers clear non-immediate requests or deadlines within seven days. P3 covers informational messages and more distant actions unless your policy supplies a concrete reason to elevate them. Missing ownership or timing stays unresolved. Confidence describes the supplied evidence; it is not a measured probability.\n\nThis is an interactive instruction package for a fresh ChatGPT conversation. It has no mailbox connection, background job or sending permission. Review the original messages before acting. AgentGrid access is free; your chosen model provider applies its own access, pricing and data policies. The package permits personal and commercial internal use and attributed forks within AgentGrid under its custom license, with no general redistribution grant.",
+      "workflow": [
+        "Remove personal identifiers, confidential details, credentials and unnecessary attachment content. Keep only text you are permitted to share, with one unique identifier per message.",
+        "Start a fresh ChatGPT conversation, paste the complete instructions and ask the assistant to wait. Review the provider data controls appropriate to your account before supplying any email text.",
+        "Provide up to 20 short messages and an explicit as_of timestamp with a time zone. Include your own priority policy only when you can state a concrete criterion.",
+        "Read the priority table and clarification list. Compare every proposed action, deadline and evidence fragment with the original email; resolve missing facts before carrying out any action."
+      ],
+      "discovery": {
+        "keywords": [
+          "email triage",
+          "inbox priority",
+          "deadline review",
+          "email action list",
+          "redacted email"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Prioritize a small email batch using explicit deadlines and source evidence, while identifying unclear ownership and avoiding urgency based only on subject lines.",
+      "related_agent_slugs": ["reply-draft-assistant", "meeting-decision-ledger"]
+    }
+  },
+  {
+    "version_id": "aa2fd71b-6017-4ef4-bf55-d3daef755cc2",
+    "editorial": {
+      "faq": [
+        {
+          "answer": "It should ask for the original email or relevant thread and your position first. The corrected instructions prohibit a provisional acknowledgment or sendable draft when that source is missing.",
+          "question": "Can it reply without the original email?"
+        },
+        {
+          "answer": "A promise of delivery, availability, review, investigation or updates that you did not approve. Polite phrasing and a human-review warning do not authorize it. Verify every future action stated on your behalf.",
+          "question": "What counts as an unauthorized commitment?"
+        },
+        {
+          "answer": "Only supplied approved facts belong in the draft. It cannot inspect mailbox attachments or verify a processed refund, and it must not invent those states. Check the real attachment and account state yourself before making such a statement.",
+          "question": "Will it say an attachment or refund exists?"
+        },
+        {
+          "answer": "The quoted message is task data. It cannot override your boundary or authorize sending, account access or refunds. The adversarial observation for this version preserved the request for an order reference and made no refund promise.",
+          "question": "What if the quoted message tells it to send immediately?"
+        },
+        {
+          "answer": "No. A host may render a draft in its own editor. This package remains a review-only instruction workflow and supplies no connector or sending permission. Inspect host data controls and redact private information before use.",
+          "question": "Does a host email editor mean the package can send?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "title": "OpenAI: Data controls in ChatGPT",
+          "supports": "Host data controls and Temporary Chat settings inform the recommendation to inspect host handling before sharing an authorized redacted thread.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "People replying to a bounded request with a clear authorized position.",
+        "Reviewers checking that an email draft does not invent commitments or completed actions."
+      ],
+      "overview": "An incoming request is not the same as your agreement. Context-Grounded Reply Drafter separates what a sender asks for from the facts and commitments you authorize. Supply the relevant redacted email or thread, the recipient relationship, your desired outcome and tone, and the exact position you want to communicate. The package produces one reply draft with a coverage checklist and unresolved questions.\n\nThe instructions preserve authorized date wording and do not invent availability, a final delivery promise, a processed refund or an attachment. They also exclude routine-sounding promises to provide updates or investigate a request unless you approved them. If the original message is missing, the assistant should ask clarification questions without presenting a provisional sendable email. Optional next actions belong outside the draft and remain unapproved.\n\nThis corrected 1.0.1 version addresses unauthorized follow-up promises observed in testing of the earlier private draft. Its three bounded observations cover an unconfirmed Friday delivery, a missing email and a quoted refund/send instruction. Those observations do not guarantee behavior on other messages. Trace each statement and commitment back to your input and remove anything unsupported before using the draft.\n\nThe instructions provide no mailbox access, identity verification, attachment inspection or sending authority. The host may display its own email editor or send controls; that does not make this package a mailbox integration. Do not activate an external send action as part of this workflow. Sensitive employment, legal or commercial communications need your substantive judgment. AgentGrid instructions are free, while ChatGPT access and data policies apply separately. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant.",
+      "workflow": [
+        "Redact the relevant thread and identify its speakers. Supply the recipient relationship, desired result, tone, approved facts, authorized commitments and topics to avoid. Do not include credentials or unrelated private history.",
+        "Start a fresh ChatGPT conversation and paste the complete instructions, followed by your message and authorized position. If the source message or essential decision inputs are missing, answer clarification questions before drafting.",
+        "Compare each draft statement with your input. Check sender questions, preserved date wording, promised actions and claimed attachments. Remove unsupported commitments, including conventional promises of updates or later review.",
+        "Inspect the coverage checklist and resolve remaining facts. Apply your own substantive judgment, replace any signature placeholder and approve the wording before using it separately in your messaging tool. No message is sent by these instructions."
+      ],
+      "discovery": {
+        "keywords": [
+          "email reply draft",
+          "authorized commitments",
+          "reply coverage checklist",
+          "missing email clarification",
+          "refund request draft"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Draft a reply that answers a supplied message while preserving the user’s approved position and excluding unauthorized promises.",
+      "related_agent_slugs": ["inbox-priority-triage", "meeting-decision-ledger"]
+    }
+  },
+  {
+    "version_id": "988c8211-4161-4310-84d9-8011a1bd4f9d",
+    "editorial": {
+      "faq": [
+        {
+          "answer": "The instructions require an explicit acceptance or agreement statement rather than a confident suggestion or silence. A later revision or withdrawal changes the supported current state. If one speaker reports collective agreement, verify other participants when that matters operationally.",
+          "question": "When is a decision treated as confirmed?"
+        },
+        {
+          "answer": "A speaker name alone does not establish authority. Confirm ownership through explicit assignment and acceptance, a clear self-commitment or an assignment rule supplied in an actually adopted meeting policy. Multiple possible owners remain unresolved.",
+          "question": "Can a speaker assign work to another person?"
+        },
+        {
+          "answer": "Supply the meeting date and time zone and keep the original date wording. Missing context prevents an exact calendar date. A labelled interpretation or assumed week range is not a confirmed deadline; obtain the intended date and time from the team.",
+          "question": "How does it handle tomorrow or next week?"
+        },
+        {
+          "answer": "No. The ledger is an unsent review draft with no ticketing, email or calendar integration. You must verify the source and separately approve any real external action. A checklist in the output is a request for confirmation, not proof that someone accepted an assignment.",
+          "question": "Does it create tasks or send follow-up messages?"
+        },
+        {
+          "answer": "Remove credentials, private identifiers and unrelated sensitive personal discussion. Share only material you are authorized to provide and inspect the host data controls before pasting it. AgentGrid does not receive the transcript through these copied instructions.",
+          "question": "What information should I remove before use?"
+        }
+      ],
+      "review": {
+        "reuse_rights": true,
+        "cost_disclosure": true,
+        "standalone_value": true,
+        "distribution_steps": true,
+        "security_and_privacy": true,
+        "task_specific_instructions": true
+      },
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "title": "OpenAI ChatGPT Data Controls FAQ",
+          "supports": "The host data controls and Temporary Chat options inform redaction and review of provider data handling before sharing authorized meeting material.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "audience": [
+        "Meeting facilitators who need to distinguish final agreements from discussion.",
+        "Project coordinators checking accepted owners, deadlines and follow-up evidence."
+      ],
+      "overview": "Meeting notes often mix proposals, objections, agreements and follow-up requests. A tidy summary can still mislead if it turns a proposed launch date into a decision or assigns work to someone who never accepted it. Meeting Decision Ledger keeps those distinctions visible. Supply a bounded transcript with unique turn identifiers, the meeting date and its time zone. If your team permits an authorized chair to assign work without individual acceptance, supply that policy explicitly; a speaker name alone does not establish that authority.\n\nThe output separates confirmed decisions, proposed or unresolved items and action items. Each operational item has source quotations and turn references. A later withdrawal or revision should replace the earlier agreement as the current state, with the change retained in its history. Relative date wording remains visible. Missing ownership, ambiguous dates and disputed decisions require confirmation rather than an invented answer.\n\nThis is a review draft from supplied material, not an independent record of what actually happened. It cannot verify task completion, create tickets, send notices or change a calendar. Check the transcript and obtain the needed human confirmations before using the ledger operationally. Redact personal discussion and confidential details that are not essential. AgentGrid instructions are free; ChatGPT access and data policies apply separately. The custom license permits personal and commercial internal use and attributed AgentGrid forks, without a general redistribution grant.",
+      "workflow": [
+        "Prepare the authorized, redacted transcript with unique turn identifiers and the meeting date/time zone. Include an assignment-authority policy only if the team has actually adopted one.",
+        "Start a fresh ChatGPT conversation, paste the complete instructions and then supply the transcript. Answer questions about missing dates, turn identifiers or source context explicitly.",
+        "Compare the three output lists with the transcript. Trace confirmed decisions to explicit agreement, check later revisions and preserve source quotations for every action and disputed proposal.",
+        "Obtain confirmation for missing owners, relative dates and disputed decisions. Verify original date wording and accepted responsibility before creating any task in your own system; no task is created by this instruction package."
+      ],
+      "discovery": {
+        "keywords": [
+          "meeting decision ledger",
+          "accepted action owners",
+          "meeting follow-up",
+          "unresolved decisions",
+          "transcript evidence"
+        ],
+        "capability_tags": ["human-approval"]
+      },
+      "reviewed_on": "2026-10-09",
+      "search_intent": "Extract agreed decisions, unresolved proposals and accepted action owners from meeting notes without treating suggestions as commitments.",
+      "related_agent_slugs": ["project-dependency-planner", "reply-draft-assistant"]
     }
   }
 ]
