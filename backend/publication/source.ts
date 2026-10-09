@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { PublicPublicationRpc } from './snapshot.ts';
@@ -29,9 +30,8 @@ export function publicPublicationSource(
           init?.method !== 'POST'
         )
           throw new Error('Unexpected public capture request.');
-        const response = await transport(input, {
+        const response = await providerFetch(transport, input, {
           ...init,
-          redirect: 'error',
           signal: AbortSignal.timeout(15000),
         });
         if (

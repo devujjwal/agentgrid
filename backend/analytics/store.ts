@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { AnalyticsEventSchema, type AnalyticsEvent } from '../../src/domain/analytics.ts';
 import { publicCommunityConfiguration } from '../community/configuration.ts';
 import { HttpFailure } from '../http/guard.ts';
@@ -11,13 +12,13 @@ export function analyticsStore(
     throw new Error('Analytics configuration unavailable.');
   return async (value: AnalyticsEvent) => {
     const event = AnalyticsEventSchema.parse(value);
-    const response = await transport(
+    const response = await providerFetch(
+      transport,
       config.supabaseOrigin + '/rest/v1/rpc/agentgrid_analytics_record',
       {
         method: 'POST',
         headers: { apikey: key, 'Content-Type': 'application/json' },
         body: JSON.stringify({ measurement: event }),
-        redirect: 'error',
         signal: AbortSignal.timeout(3000),
       },
     );

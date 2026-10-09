@@ -22,7 +22,7 @@ test('sign-in transport confines credentials and code to the intended provider',
   });
   assert.deepEqual(result, { receiptId });
   assert.equal(request.url, 'https://api.resend.com/emails');
-  assert.equal(request.options.redirect, 'error');
+  assert.equal(request.options.redirect, 'manual');
   assert.equal(request.options.headers.Authorization, `Bearer ${configuration.apiKey}`);
   assert.equal(request.options.headers['Idempotency-Key'], `agentgrid_signin_${email.challengeId}`);
   const body = JSON.parse(request.options.body);

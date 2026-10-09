@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 /** Local trusted publisher only. This module is never a Pages route or build input. */
 import { createClient } from '@supabase/supabase-js';
 import { publicCommunityConfiguration } from '../community/configuration.ts';
@@ -31,9 +32,8 @@ export function releaseOperatorClient(
           init?.method !== 'POST'
         )
           throw new Error('Unexpected publisher operation.');
-        const response = await transport(input, {
+        const response = await providerFetch(transport, input, {
           ...init,
-          redirect: 'error',
           signal: AbortSignal.timeout(15000),
         });
         if (

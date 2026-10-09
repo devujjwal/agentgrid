@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { PublicReviewSchema, PublicReviewsSchema } from '../../src/domain/reviews.ts';
@@ -24,7 +25,7 @@ export function publicReviewData(
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     global: {
       fetch: (input, init) =>
-        transport(input, { ...init, redirect: 'error', signal: AbortSignal.timeout(10000) }),
+        providerFetch(transport, input, { ...init, signal: AbortSignal.timeout(10000) }),
     },
   });
   return async (resourceId: string, offset: number) => {

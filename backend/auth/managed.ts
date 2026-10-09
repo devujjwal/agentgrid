@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js';
 import type { AuthConfiguration } from './configuration.ts';
 import {
@@ -22,9 +23,8 @@ export function managedIdentity(
   transport: typeof fetch = fetch,
 ): ManagedIdentity {
   const safeFetch: typeof fetch = (input, init) =>
-    transport(input, {
+    providerFetch(transport, input, {
       ...init,
-      redirect: 'error',
       signal: AbortSignal.timeout(15_000),
     });
   const client = (privileged = false, storage = new Map<string, string>()): SupabaseClient =>

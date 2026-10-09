@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 import { createClient } from '@supabase/supabase-js';
 import {
   CreatorProjectionSchema,
@@ -23,9 +24,8 @@ export function publicCreatorData(
           init?.method !== 'POST'
         )
           throw new Error('Unexpected public creator request.');
-        const response = await transport(input, {
+        const response = await providerFetch(transport, input, {
           ...init,
-          redirect: 'error',
           signal: AbortSignal.timeout(10000),
         });
         if (

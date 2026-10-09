@@ -21,7 +21,7 @@ test('public capture sends only anonymous, origin-confined RPC requests with no 
     String(calls[0].input),
     configuration.origin + '/rest/v1/rpc/agentgrid_publication_index',
   );
-  assert.equal(calls[0].init.redirect, 'error');
+  assert.equal(calls[0].init.redirect, 'manual');
   assert.equal(calls[0].init.method, 'POST');
   const headers = new Headers(calls[0].init.headers);
   assert.equal(headers.get('apikey'), configuration.key);

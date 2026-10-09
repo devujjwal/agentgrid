@@ -144,7 +144,7 @@ test('store sends only validated observations to its fixed RPC with a bounded se
     calls[0].url,
     'https://synthetic.supabase.co/rest/v1/rpc/agentgrid_analytics_record',
   );
-  assert.equal(calls[0].init.redirect, 'error');
+  assert.equal(calls[0].init.redirect, 'manual');
   assert.deepEqual(JSON.parse(calls[0].init.body), { measurement: sample });
   await assert.rejects(record({ ...sample, query: 'private' }));
   assert.equal(calls.length, 1);

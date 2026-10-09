@@ -177,7 +177,7 @@ test('workspace uses publishable key plus the verified bearer, explicit owner fi
     requests.push(url);
     assert.equal(headers.get('apikey'), configuration.publishableKey);
     assert.equal(headers.get('authorization'), 'Bearer ' + session.accessToken);
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     if (url.pathname === '/rest/v1/rpc/agentgrid_workspace_identity')
       return Response.json(snapshot);
     if (url.pathname === '/rest/v1/agentgrid_agents') return Response.json([]);

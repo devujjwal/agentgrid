@@ -56,6 +56,8 @@ const bindings = {
   ]),
 };
 let outboundCalls = 0;
+const providerCalls = [];
+let redirectProvider = false;
 // Miniflare's HTTP bridge overwrites Host with its ephemeral loopback listener.
 // The synthetic wrapper restores the request URL's host before the real guard;
 // production source is unchanged. Tests still exercise wrong URL origins.
@@ -87,8 +89,18 @@ const mf = new Miniflare(
     compatibilityDate: '2026-10-07',
     bindings,
     serviceBindings: { ASSETS: async () => new Response('static-fallback') },
-    outboundService: async () => {
+    outboundService: async (request) => {
       outboundCalls++;
+      const url = new URL(request.url);
+      if (url.origin === bindings.NEXT_PUBLIC_SUPABASE_URL && request.method === 'POST') {
+        const operation = url.pathname.split('/').pop();
+        if (['agentgrid_auth_allow', 'agentgrid_auth_flow_create'].includes(operation)) {
+          assert.equal(request.headers.get('apikey'), bindings.SUPABASE_SECRET_KEY);
+          providerCalls.push(operation);
+          if (redirectProvider) return Response.redirect('https://untrusted.example.test/', 307);
+          return Response.json(operation === 'agentgrid_auth_allow' ? true : null);
+        }
+      }
       return new Response('Synthetic acceptance forbids provider traffic', { status: 502 });
     },
   }),
@@ -202,8 +214,38 @@ try {
   const staticResource = await send('/agents/');
   assert.equal(await staticResource.text(), 'static-fallback');
   assert.equal(outboundCalls, 0);
+  const google = await send('/api/identity/google/', {
+    method: 'POST',
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'x-agentgrid-synthetic-origin': origin,
+      'x-agentgrid-csrf': identity.csrf,
+    },
+    body: '{}',
+  });
+  assert.equal(google.status, 200);
+  const authorization = await google.json();
+  assert.equal(new URL(authorization.destination).origin, bindings.NEXT_PUBLIC_SUPABASE_URL);
+  assert.match(google.headers.get('set-cookie'), /__Host-agentgrid_oauth=.*HttpOnly.*Secure/);
+  assert.deepEqual(providerCalls, ['agentgrid_auth_allow', 'agentgrid_auth_flow_create']);
+  assert.equal(outboundCalls, 2);
+  redirectProvider = true;
+  const refusedRedirect = await send('/api/identity/google/', {
+    method: 'POST',
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'x-agentgrid-synthetic-origin': origin,
+      'x-agentgrid-csrf': identity.csrf,
+    },
+    body: '{}',
+  });
+  assert.equal(refusedRedirect.status, 503);
+  assert.deepEqual(await refusedRedirect.json(), { error: 'service-unavailable' });
+  assert.equal(outboundCalls, 3, 'A provider redirect must never cause another request');
   console.log(
-    'Compiled workerd acceptance passed: routing, AEAD cookie round-trip, origin/CSRF, private denial and static fallback; no provider traffic.',
+    'Compiled workerd acceptance passed: routing, AEAD cookie round-trip, origin/CSRF, private denial, Google initiation, provider redirect refusal and static fallback; synthetic outbound only.',
   );
 } finally {
   await mf.dispose();

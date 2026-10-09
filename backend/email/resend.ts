@@ -1,3 +1,4 @@
+import { providerFetch } from '../http/provider-fetch.ts';
 /** Server transport only. Public code must never import from backend/. */
 export type EmailFailure =
   'invalid-input' | 'transport-failed' | 'provider-rejected' | 'invalid-response';
@@ -55,9 +56,8 @@ export async function sendSignInEmail(
   validate(configuration, email);
   let response: Response;
   try {
-    response = await transport('https://api.resend.com/emails', {
+    response = await providerFetch(transport, 'https://api.resend.com/emails', {
       method: 'POST',
-      redirect: 'error',
       headers: {
         Authorization: `Bearer ${configuration.apiKey}`,
         'Content-Type': 'application/json',
