@@ -1,8 +1,9 @@
 'use client';
 
+import { measure, resultBand } from '../../analytics/client';
 import { CatalogueResults } from './CatalogueResults';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { DiscoveryResource } from '../../domain/discovery';
 import { createCatalogueSearch } from '../../domain/discovery';
 import { useDiscoverySearch } from './useDiscoverySearch';
@@ -41,6 +42,17 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
     ? selectedSlug
     : (matches[0]?.resource.slug ?? '');
   const selected = resources.find((resource) => resource.slug === activeSlug);
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_AGENTGRID_ANALYTICS !== '1') return;
+    if (!query.trim() || search.pending || search.failed || page !== 0) return;
+    const timer = setTimeout(
+      () =>
+        measure({ event: 'search', kind: kind || 'all', results: resultBand(searchPage.total) }),
+      1500,
+    );
+    return () => clearTimeout(timer);
+  }, [query, kind, page, search.pending, search.failed, searchPage.total]);
 
   function inspect(slug: string, focusDetails = true) {
     setSelectedSlug(slug);

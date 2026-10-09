@@ -1,3 +1,4 @@
+import { PublicMeasurement } from '../../analytics/PublicMeasurement';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { NetworkMark } from '../brand/NetworkMark';
@@ -48,6 +49,9 @@ export function SiteFrame({
           Workspace <span aria-hidden="true">↗</span>
         </Link>
       </header>
+      {process.env.NEXT_PUBLIC_AGENTGRID_ANALYTICS === '1' && !localPreview && (
+        <PublicMeasurement />
+      )}
       {children}
       <footer className="site-footer">
         <Link prefetch={false} className="brand" href="/">

@@ -1,3 +1,5 @@
+import { analyticsHandler } from '../analytics/collector.ts';
+import { analyticsStore } from '../analytics/store.ts';
 import { authConfiguration } from '../auth/configuration.ts';
 import { identityRuntime } from '../auth/runtime.ts';
 import { managedIdentity } from '../auth/managed.ts';
@@ -21,6 +23,15 @@ export interface PagesIdentityContext {
 }
 export async function pagesIdentityRequest(context: PagesIdentityContext): Promise<Response> {
   try {
+    if (new URL(context.request.url).pathname.startsWith('/api/analytics')) {
+      const configuration = publicCommunityConfiguration(context.env);
+      const enabled = context.env.AGENTGRID_ANALYTICS_ENABLED === '1';
+      return await analyticsHandler(
+        configuration.origin,
+        enabled,
+        enabled ? analyticsStore(context.env) : async () => {},
+      )(context.request);
+    }
     if (new URL(context.request.url).pathname.startsWith('/api/community/')) {
       const configuration = publicCommunityConfiguration(context.env);
       if (new URL(context.request.url).pathname === '/api/community/creator/')

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { measure } from '../../analytics/client';
+import { useEffect, useState } from 'react';
 import type { PublicResource } from '../../domain/public-resource';
 import type { AgentSpecification } from '../../domain/agent-specification';
 import { platformLabel } from '../../domain/platforms';
@@ -23,11 +24,31 @@ export function ResourceSetup({
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'manual'>('idle');
   const policy = distributionPolicy(spec, published, platform);
   const selected = spec.platforms.find((item) => item.slug === platform);
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_AGENTGRID_ANALYTICS !== '1') return;
+    if (!publication) return;
+    const timer = setTimeout(
+      () =>
+        measure({
+          event: 'agent_view',
+          resourceId: publication.resource_id,
+          versionId: publication.version_id,
+        }),
+      500,
+    );
+    return () => clearTimeout(timer);
+  }, [publication]);
   async function copy() {
     if (!policy.canCopy || !publication) return;
     try {
       await navigator.clipboard.writeText(attributedInstructionText(publication, platform));
       setCopyState('copied');
+      measure({
+        event: 'copy_instructions',
+        resourceId: publication.resource_id,
+        versionId: publication.version_id,
+        platform,
+      });
     } catch {
       setCopyState('manual');
     }
@@ -41,6 +62,11 @@ export function ResourceSetup({
     link.download = `${spec.identity.slug}.${spec.version}.agentgrid.json`;
     link.click();
     setDownloadReady(true);
+    measure({
+      event: 'definition_download',
+      resourceId: publication.resource_id,
+      versionId: publication.version_id,
+    });
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   return (
@@ -61,6 +87,13 @@ export function ResourceSetup({
         value={platform}
         onChange={(event) => {
           setPlatform(event.target.value);
+          if (publication)
+            measure({
+              event: 'platform_select',
+              resourceId: publication.resource_id,
+              versionId: publication.version_id,
+              platform: event.target.value,
+            });
           setCopyState('idle');
         }}
       >
