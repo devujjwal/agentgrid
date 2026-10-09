@@ -43,12 +43,14 @@ function fixture() {
         type: 'secret',
         name: stagingBackendName,
         description: stagingBackendDescription,
+        secret_jwt_template: { role: 'service_role' },
       });
       const key = {
         id: '11111111-1111-4111-8111-111111111111',
         type: 'secret',
         name: stagingBackendName,
         description: stagingBackendDescription,
+        secret_jwt_template: { role: 'service_role' },
       };
       keys.push(key);
       return Response.json({ ...key, api_key: 'sb_secret_' + 's'.repeat(32) }, { status: 201 });
@@ -120,6 +122,7 @@ test('partial bootstrap recovers its named key and refuses conflicting, deployed
     type: 'secret',
     name: stagingBackendName,
     description: stagingBackendDescription,
+    secret_jwt_template: { role: 'service_role' },
   });
   f.project.deployment_configs.production.env_vars.AGENTGRID_RATE_KEY = { type: 'secret_text' };
   await configureStagingSecrets(values, true, f.transport);

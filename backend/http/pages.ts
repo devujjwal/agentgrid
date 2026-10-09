@@ -47,7 +47,9 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
     const configuration = authConfiguration(context.env);
     const runtime = await identityRuntime(
       configuration,
-      identityStore(configuration),
+      identityStore(configuration, fetch, (event) => {
+        console.warn('agentgrid_identity_dependency_failure', event.operation, event.status);
+      }),
       managedIdentity(configuration),
     );
     if (new URL(context.request.url).pathname.startsWith('/api/admin/'))

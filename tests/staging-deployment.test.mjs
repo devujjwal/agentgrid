@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   stagingDeploymentPlan,
   verifyStagingDelivery,
+  verifyStagingReadiness,
   assertStagingBindings,
   stagingOrigin,
 } from '../scripts/deploy-staging.mjs';
@@ -19,6 +20,35 @@ const env = {
   CLOUDFLARE_ACCOUNT_ID: stagingAccount,
   CLOUDFLARE_API_TOKEN: 'synthetic-only',
 };
+test('staging propagation retries only bounded verification reads and still refuses persistent failure', async () => {
+  let reads = 0;
+  const pauses = [];
+  await verifyStagingReadiness(
+    { commit: head },
+    async (proof) => {
+      assert.equal(proof.commit, head);
+      if (++reads < 3) throw new Error('propagating');
+    },
+    async (ms) => {
+      pauses.push(ms);
+    },
+  );
+  assert.equal(reads, 3);
+  assert.deepEqual(pauses, [2000, 2000]);
+  reads = 0;
+  await assert.rejects(
+    verifyStagingReadiness(
+      {},
+      async () => {
+        reads++;
+        throw new Error('private-diagnostic');
+      },
+      async () => {},
+    ),
+    /did not settle/,
+  );
+  assert.equal(reads, 4);
+});
 test('staging deploy is exact-main and cannot target a production domain, work repository or dirty tree', () => {
   const args = stagingDeploymentPlan(env, head, true);
   assert.equal(args[args.indexOf('--project-name') + 1], 'agentgrid-staging');

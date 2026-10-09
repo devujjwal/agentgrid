@@ -10,6 +10,7 @@ import { HttpFailure } from '../http/guard.ts';
 export function identityStore(
   configuration: AuthConfiguration,
   transport: typeof fetch = fetch,
+  reportFailure: (event: { operation: string; status: number }) => void = () => {},
 ): IdentityStore {
   const client = createClient(configuration.supabaseOrigin, configuration.secretKey, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
@@ -24,7 +25,15 @@ export function identityStore(
   });
   const call = async (name: string, parameters: Record<string, unknown>): Promise<unknown> => {
     const result = await client.rpc(name, parameters);
-    if (result.error) throw new HttpFailure(503, 'service-unavailable');
+    if (result.error) {
+      // Fixed operation names and numeric HTTP status only. Never provider
+      // messages, bodies, headers, parameters, credentials or user identifiers.
+      reportFailure({
+        operation: name,
+        status: Number.isInteger(result.status) ? result.status : 0,
+      });
+      throw new HttpFailure(503, 'service-unavailable');
+    }
     return result.data;
   };
   const boolean = async (name: string, parameters: Record<string, unknown>) => {
