@@ -97,6 +97,33 @@ class SharedSupabaseAuditTests(unittest.TestCase):
             mutated = {**current, **change}
             self.assertFalse(check(mutated, {**evidence, "after_digest": audit.digest(mutated)}))
 
+    def test_production_callback_preserves_full_prior_chain(self):
+        before, google, google_evidence = self.google_transition_fixture()
+        staging = {**google, "uri_allow_list": google["uri_allow_list"] + "," + audit.STAGING_OAUTH_CALLBACK}
+        staging_evidence = {
+            "project_ref": audit.PROJECT_REF, "authorization": "owner-approved-staging-configuration",
+            "callback": audit.STAGING_OAUTH_CALLBACK, "changed_fields": ["uri_allow_list"],
+            "before_digest": audit.digest(google), "after_digest": audit.digest(staging),
+        }
+        current = {**staging, "uri_allow_list": staging["uri_allow_list"] + "," + audit.PRODUCTION_OAUTH_CALLBACK}
+        evidence = {
+            "project_ref": audit.PROJECT_REF, "authorization": "owner-authorized-production-launch",
+            "callback": audit.PRODUCTION_OAUTH_CALLBACK, "changed_fields": ["uri_allow_list"],
+            "before_digest": audit.digest(staging), "after_digest": audit.digest(current),
+        }
+        check = lambda value, record: audit.approved_production_transition(audit.digest(before), before, google_evidence, staging_evidence, value, record)
+        self.assertTrue(check(current, evidence))
+        for change in (
+            {"site_url": "https://agentgrid.me"}, {"smtp_host": "changed"},
+            {"external_google_secret": "changed"},
+            {"uri_allow_list": current["uri_allow_list"] + ",https://attacker.example"},
+            {"uri_allow_list": current["uri_allow_list"].replace(audit.PRODUCTION_OAUTH_CALLBACK, "https://agentgrid.me/**")},
+            {"uri_allow_list": current["uri_allow_list"] + "," + audit.PRODUCTION_OAUTH_CALLBACK},
+        ):
+            mutated = {**current, **change}
+            self.assertFalse(check(mutated, {**evidence, "after_digest": audit.digest(mutated)}))
+        self.assertFalse(check(current, {**evidence, "before_digest": "0" * 64}))
+
     def test_protected_resources_remain_in_fingerprint_after_agentgrid_additions(self):
         original = {
             "tables": [{"name": "prompts", "rls": True}],

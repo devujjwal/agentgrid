@@ -13,6 +13,7 @@ PROJECT_REF = "lxecbrvzpmgjmsqiachc"
 GOOGLE_AUTH_FIELDS = frozenset(("external_google_enabled", "external_google_client_id", "external_google_secret", "uri_allow_list"))
 LOCAL_OAUTH_CALLBACK = "http://localhost:3027/auth/callback/"
 STAGING_OAUTH_CALLBACK = "https://agentgrid-staging.pages.dev/auth/callback/"
+PRODUCTION_OAUTH_CALLBACK = "https://agentgrid.me/auth/callback/"
 
 
 def decode_keyring_value(value):
@@ -142,6 +143,23 @@ def approved_staging_transition(original_digest, original_before, google_evidenc
     )
 
 
+def approved_production_transition(original_digest, original_before, google_evidence, staging_evidence, current, evidence):
+    """Permit only the canonical callback after the intact Google/staging chain."""
+    redirects = (current.get("uri_allow_list") or "").split(",")
+    if redirects.count(PRODUCTION_OAUTH_CALLBACK) != 1 or redirects[-1] != PRODUCTION_OAUTH_CALLBACK:
+        return False
+    previous = {**current, "uri_allow_list": ",".join(redirects[:-1])}
+    return (
+        evidence.get("project_ref") == PROJECT_REF
+        and evidence.get("authorization") == "owner-authorized-production-launch"
+        and evidence.get("callback") == PRODUCTION_OAUTH_CALLBACK
+        and evidence.get("changed_fields") == ["uri_allow_list"]
+        and evidence.get("before_digest") == digest(previous)
+        and evidence.get("after_digest") == digest(current)
+        and approved_staging_transition(original_digest, original_before, google_evidence, previous, staging_evidence)
+    )
+
+
 def isolation_query(role):
     if role not in ("anon", "authenticated"):
         raise ValueError("Unsupported audit role")
@@ -178,8 +196,8 @@ def main():
         "inventory": protected_inventory(inventory),
         "auth_config_digest": digest(auth),
     }
-    git_path = subprocess.check_output(["git", "rev-parse", "--git-path", "agentgrid-protected-baseline-v2.json"], text=True).strip()
-    path = Path(git_path)
+    git_common = subprocess.check_output(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], text=True).strip()
+    path = Path(git_common) / "agentgrid-protected-baseline-v2.json"
     if args.verify:
         original = json.loads(path.read_text())
         changed = [key for key in original["inventory"] if original["inventory"][key] != baseline["inventory"][key]]
@@ -199,6 +217,13 @@ def main():
                         original["auth_config_digest"], json.loads(before_path.read_text()),
                         json.loads(evidence_path.read_text()), auth, json.loads(staging_path.read_text()),
                     )
+                    production_path = path.parent / "agentgrid-production-auth-transition.json"
+                    if not approved_transition and production_path.exists():
+                        approved_transition = approved_production_transition(
+                            original["auth_config_digest"], json.loads(before_path.read_text()),
+                            json.loads(evidence_path.read_text()), json.loads(staging_path.read_text()),
+                            auth, json.loads(production_path.read_text()),
+                        )
         if changed or not (auth_unchanged or approved_transition):
             raise RuntimeError("Protected shared-project baseline changed: " + ", ".join(changed or ["auth configuration"]))
         print("Protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only recorded owner-approved authentication deltas differ."))

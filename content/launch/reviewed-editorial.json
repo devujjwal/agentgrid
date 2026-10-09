@@ -329,5 +329,76 @@
       "related_agent_slugs": ["survey-theme-synthesizer", "launch-message-adapter"]
     },
     "version_id": "e83d21ce-a822-4ee1-b7a4-9458d5732494"
+  },
+  {
+    "version_id": "246b5299-3217-4feb-9850-f26c8681b22a",
+    "editorial": {
+      "search_intent": "Turn reporter-provided software defect observations into a reviewable reproduction brief while separating performed actions, preconditions, unrun diagnostics and unknown causes.",
+      "overview": "A convincing bug report can still contain invented steps. Bug Reproduction Brief Builder organizes what a reporter actually observed into a reviewable issue draft, keeping missing evidence visible. It does not run the application, diagnose a root cause, file an issue or verify a fix.\n\nSupply the actual symptom, expected behavior and its requirement source, actions performed in order, known environment/build information, frequency and sanitized evidence. A reported state belongs among preconditions: being signed in does not prove that sign-in was part of the reproduced sequence. Navigation, page loading or refresh actions that were not supplied must remain questions or unrun proposals. The confirmed sequence should stay minimal even when an omitted action would make the story sound more complete.\n\nExpected and actual results remain separate. A cited requirement such as REQ-12 is not independently validated when its text is absent. Two reported matching attempts do not establish a general failure rate. Unknown browser, build, impact and fee amounts remain unknown; a displayed total issue does not prove a payment defect. Hypotheses should explain what evidence could distinguish them without claiming that the check ran.\n\nThree fresh bounded ChatGPT Instant observations support corrected version 1.0.1. The synthetic checkout result preserved three supplied actions and kept signed-in state separate. The vague failure withheld a confirmed sequence. The log-injection result retained the exact error, rejected an embedded token/fix command and left runtime effects and root cause unknown. Version 1.0.0 added inferred steps in its normal result; that failure is retained and does not support this version. These tests are limited observations, not a reliability guarantee or a claim that the synthetic application was accessed.\n\nRemove cookies, tokens, customer records, internal credentials and unnecessary identifying details before pasting evidence into a host. Check your provider's data controls and organizational sharing rules; model access and pricing depend on your account. AgentGrid instructions are free. This package permits personal and commercial internal use and attributed AgentGrid forks under its custom license, without a general redistribution grant. A human must validate the brief and obtain appropriate authority before any real investigation or issue filing.",
+      "audience": [
+        "Software reporters preparing an evidence-grounded issue brief from their own observations.",
+        "Developers and triage reviewers separating confirmed actions from assumptions and unrun diagnostics."
+      ],
+      "workflow": [
+        "Collect a bounded, redacted evidence set: observed symptom, expected behavior and source, actual actions, known versions, frequency and concrete impact. Mark each missing field unknown; remove session cookies, tokens and personal records before sharing.",
+        "Paste the full instructions into a fresh ChatGPT conversation and provide the evidence. Check that reported states stay in preconditions, and that only explicitly performed actions appear in the confirmed numbered sequence.",
+        "Compare actual and expected results against the supplied evidence. Ensure cited requirements are not presented as independently verified, hypotheses are unconfirmed, and diagnostic suggestions are clearly not yet run.",
+        "Review the missing-information checklist and gather the smallest useful additional observation in an authorized safe environment. A human checks the final wording and decides whether to file the issue; this package has not tested, fixed or filed it."
+      ],
+      "faq": [
+        {
+          "question": "Does a signed-in state belong in the reproduction steps?",
+          "answer": "It belongs in preconditions unless the reporter explicitly performed sign-in as part of the tested sequence. The corrected instructions prohibit converting a reported state into an action or adding implied navigation and refresh steps to the confirmed list."
+        },
+        {
+          "question": "Can it produce a fully reproducible report from \u201cit does not work\u201d?",
+          "answer": "No. That statement supplies no confirmed actions, product, expected result or environment. The package should identify these gaps and request details, while keeping any collection template or proposed diagnostic step clearly separate from performed work."
+        },
+        {
+          "question": "Does an error message establish a root cause?",
+          "answer": "No. A log excerpt establishes only the supplied text. The same missing-field message may have several explanations; hypotheses remain unverified until someone obtains and checks relevant runtime evidence in an authorized environment."
+        },
+        {
+          "question": "What did the host testing verify?",
+          "answer": "Three bounded synthetic Instant observations were inspected for version 1.0.1: strict action/precondition separation, withholding invented reproduction from vague input, and rejection of embedded token/fix instructions. No real application was accessed, and these observations do not guarantee future answers."
+        },
+        {
+          "question": "Can it run diagnostics or file an issue?",
+          "answer": "No. This instructions-only package has no repository, shell, application, messaging or issue-tracker connection. A suggested inspection is unrun, and any real investigation or filing requires a separate authorized human action."
+        },
+        {
+          "question": "What can I share and what does it cost?",
+          "answer": "Share only authorized redacted evidence after checking provider data controls and your organizational policy. AgentGrid instruction access is free; host access and pricing depend on your account. The custom license permits internal use and attributed AgentGrid forks, but reserves general redistribution rights."
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI ChatGPT Data Controls",
+          "url": "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt",
+          "supports": "Provider data controls inform the privacy review before sharing authorized, redacted software observations; available controls depend on account and workspace settings.",
+          "checked_on": "2026-10-09"
+        }
+      ],
+      "related_agent_slugs": ["pull-request-reviewer", "project-dependency-planner"],
+      "discovery": {
+        "keywords": [
+          "bug report",
+          "reproduction steps",
+          "issue triage",
+          "defect evidence",
+          "unknown root cause"
+        ],
+        "capability_tags": ["evidence-review", "bug-triage"]
+      },
+      "reviewed_on": "2026-10-09",
+      "review": {
+        "standalone_value": true,
+        "task_specific_instructions": true,
+        "cost_disclosure": true,
+        "security_and_privacy": true,
+        "distribution_steps": true,
+        "reuse_rights": true
+      }
+    }
   }
 ]

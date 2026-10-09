@@ -1,14 +1,20 @@
 {
   "contract_version": "0.1",
-  "source_revision": 11,
-  "captured_at": "2026-10-09T18:25:35.488Z",
-  "catalogue_sha256": "b133f466e3af51985233425a7269a8cc3067974596390b9a4503b8627685ffec",
+  "source_revision": 13,
+  "captured_at": "2026-10-09T19:24:30.078Z",
+  "catalogue_sha256": "071d7bcd3b3b764de6e3c82eb1156cc774867da590746c9a2914f387bacb8a65",
   "resources": [
     {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
       "versionId": "8f8b913c-9184-4e46-8740-e3a6ab73786f",
       "slug": "project-dependency-planner",
       "tag": "4f40fd7685c9c3fcb4a00c2181f321bd4aaef10ed6ef831f9ed026ff5d262468"
+    },
+    {
+      "resourceId": "a7bbfd0f-90bc-4595-bddc-7396ce1ab8b6",
+      "versionId": "246b5299-3217-4feb-9850-f26c8681b22a",
+      "slug": "bug-reproduction-brief",
+      "tag": "bedda83d32cfc4e4d285afa1a26d77df8479276080767c8cf90e039a9d555bc0"
     },
     {
       "resourceId": "af5ba8ae-9437-4ef0-a7bd-ca4f6324eb85",
