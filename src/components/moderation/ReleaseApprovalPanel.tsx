@@ -7,10 +7,12 @@ import { ReleaseRequestList } from './ReleaseRequestList';
 import { useReleaseApproval } from './useReleaseApproval';
 export default function ReleaseApprovalPanel({
   submission,
+  administrator = false,
   email,
   csrf,
 }: {
   submission: StaffSubmission;
+  administrator?: boolean;
   email: string;
   csrf: string;
 }) {
@@ -75,6 +77,7 @@ export default function ReleaseApprovalPanel({
         <>
           <ReleaseRequestList
             approvals={data.requests.approvals}
+            {...(administrator ? { publicationCsrf: csrf } : {})}
             busy={busy || uncertain}
             cancel={(id) => void mutate(id)}
           />

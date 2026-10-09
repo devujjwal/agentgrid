@@ -122,6 +122,33 @@ insert into agentgrid_fixture_manifest select jsonb_build_object('contract_versi
 'specification_sha256',repeat('a',64),'editorial_sha256',repeat('b',64),
 'host_run_sha256',jsonb_build_array(repeat('c',64),repeat('d',64),repeat('e',64))) from public.agentgrid_agent_versions where id='30000000-0000-4000-8000-000000000001';
 grant select on agentgrid_fixture_manifest to service_role;
+-- Server-only publication refuses browser roles and rechecks the actual actor.
+set local role anon;
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000001'',''inspect'',''50000000-0000-4000-8000-000000000002'',null)','42501');
+reset role;
+set local role authenticated;
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000001'',''prepare'',''50000000-0000-4000-8000-000000000002'',null)','42501');
+reset role;
+set local role service_role;
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000002'',''prepare'',''50000000-0000-4000-8000-000000000002'',null)','42501');
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(null,''inspect'',''50000000-0000-4000-8000-000000000002'',null)','42501');
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000001'',''prepare'',''50000000-0000-4000-8000-000000000002'',''{}'')','23514');
+select pg_temp.agentgrid_assert(public.agentgrid_server_publication('00000000-0000-4000-8000-000000000001','prepare','50000000-0000-4000-8000-000000000002',null)->'approval'->>'state'='requested','server prepares persisted evidence');
+reset role;
+update public.agentgrid_profiles set status='suspended' where id='10000000-0000-4000-8000-000000000001';
+set local role service_role;
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000001'',''publish'',''50000000-0000-4000-8000-000000000002'',(select document from agentgrid_fixture_manifest))','42501');
+reset role;
+update public.agentgrid_profiles set status='active' where id='10000000-0000-4000-8000-000000000001';
+delete from public.agentgrid_user_roles where user_id='10000000-0000-4000-8000-000000000001' and role='administrator';
+set local role service_role;
+select pg_temp.agentgrid_expect_error('select public.agentgrid_server_publication(''00000000-0000-4000-8000-000000000001'',''publish'',''50000000-0000-4000-8000-000000000002'',(select document from agentgrid_fixture_manifest))','42501');
+reset role;
+insert into public.agentgrid_user_roles(user_id,role) values('10000000-0000-4000-8000-000000000001','administrator');
+set local role service_role;
+select pg_temp.agentgrid_assert(public.agentgrid_server_publication('00000000-0000-4000-8000-000000000001','publish','50000000-0000-4000-8000-000000000002',(select document from agentgrid_fixture_manifest))->>'state'='released','server releases validated manifest');
+select pg_temp.agentgrid_assert(public.agentgrid_server_publication('00000000-0000-4000-8000-000000000001','inspect','50000000-0000-4000-8000-000000000002',null)->>'state'='released','server recovers historical outcome');
+reset role;
 set local role service_role;
 select pg_temp.agentgrid_assert(public.agentgrid_execute_release_request('50000000-0000-4000-8000-000000000002',(select document from agentgrid_fixture_manifest))->>'state'='released','publication bound to persisted reviewer');
 select public.agentgrid_execute_release_request('50000000-0000-4000-8000-000000000002',(select document from agentgrid_fixture_manifest));

@@ -32,6 +32,7 @@ for (const path of [
   '/api/moderation/reviews/',
   '/api/admin/profile/',
   '/api/admin/profile-decision/',
+  '/api/admin/publication/',
   '/api/community/reviews/',
   '/auth/callback/',
   '/auth/callback',
@@ -176,6 +177,18 @@ try {
     }),
   });
   assert.equal(deniedProfileDecision.status, 401);
+  const closedPublisher = await send('/api/admin/publication/', {
+    method: 'POST',
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'x-agentgrid-synthetic-origin': origin,
+      'x-agentgrid-csrf': identity.csrf,
+    },
+    body: JSON.stringify({ action: 'prepare', requestId: '50000000-0000-4000-8000-000000000001' }),
+  });
+  assert.equal(closedPublisher.status, 404);
+  assert.deepEqual(await closedPublisher.json(), { error: 'not-found' });
   const workspace = await send('/api/workspace/');
   assert.equal(workspace.status, 401);
   assert.deepEqual(await workspace.json(), { error: 'not-signed-in' });

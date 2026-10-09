@@ -8,6 +8,8 @@ import { identityRuntime } from '../backend/auth/runtime.ts';
 import { identityHandler } from '../backend/http/identity.ts';
 import { workspaceHandler } from '../backend/http/workspace.ts';
 import { moderationHandler } from '../backend/http/moderation.ts';
+import { publicationHandler } from '../backend/http/publication.ts';
+import { reviewedReleaseFixture } from '../tests/fixtures/reviewed-release.mjs';
 import { administrationHandler } from '../backend/http/administration.ts';
 import { workspaceData } from '../backend/workspace/data.ts';
 import { privateFailure } from '../backend/http/guard.ts';
@@ -861,6 +863,39 @@ export async function syntheticCommunityPreview() {
     runtime,
     (session) => workspaceData(configuration, session, transport).administration,
   );
+  const publicationFixtureData = await reviewedReleaseFixture();
+  let publicationReleased = false;
+  let publicationReleasedAt = null;
+  const publication = publicationHandler(
+    runtime,
+    (session) => workspaceData(configuration, session, transport).identity(),
+    () => ({
+      rpc: async (name, body) => {
+        if (body.request_id !== publicationFixtureData.approval.requestId)
+          return { error: { code: '42501' }, data: null };
+        if (name === 'agentgrid_prepare_release_request')
+          return publicationReleased
+            ? { error: { code: '40001' }, data: null }
+            : { error: null, data: publicationFixtureData.bundle };
+        if (name === 'agentgrid_execute_release_request') {
+          publicationReleased = true;
+          publicationReleasedAt ??= new Date().toISOString();
+          if (failReleaseAck) return { error: { code: '503' }, data: null };
+        }
+        return {
+          error: null,
+          data: publicationReleased
+            ? {
+                ...publicationFixtureData.approval,
+                state: 'released',
+                decidedAt: publicationReleasedAt,
+              }
+            : publicationFixtureData.approval,
+        };
+      },
+    }),
+    true,
+  );
   return {
     async request(incoming, outgoing) {
       try {
@@ -1170,13 +1205,15 @@ export async function syntheticCommunityPreview() {
             ? await creatorApi(request)
             : incoming.url.startsWith('/api/community/')
               ? await community(request)
-              : incoming.url.startsWith('/api/admin/')
-                ? await administration(request)
-                : incoming.url.startsWith('/api/moderation/')
-                  ? await moderation(request)
-                  : incoming.url.startsWith('/api/workspace/')
-                    ? await workspace(request)
-                    : await identity(request, '192.0.2.9');
+              : incoming.url === '/api/admin/publication/'
+                ? await publication(request)
+                : incoming.url.startsWith('/api/admin/')
+                  ? await administration(request)
+                  : incoming.url.startsWith('/api/moderation/')
+                    ? await moderation(request)
+                    : incoming.url.startsWith('/api/workspace/')
+                      ? await workspace(request)
+                      : await identity(request, '192.0.2.9');
         for (const [key, value] of response.headers)
           if (key !== 'set-cookie') outgoing.setHeader(key, value);
         const cookies = response.headers.getSetCookie();

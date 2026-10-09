@@ -21,6 +21,7 @@ const HostEvidencePanel = dynamic(() => import('./HostEvidencePanel'), {
 
 export function StaffSubmissionDetail({
   versionId,
+  administrator = false,
   email,
   csrf,
   notes,
@@ -29,6 +30,7 @@ export function StaffSubmissionDetail({
   recheck,
 }: {
   versionId: string;
+  administrator?: boolean;
   email: string;
   csrf: string;
   notes: { explanation: string } | null;
@@ -224,7 +226,12 @@ export function StaffSubmissionDetail({
             {showRelease ? 'Hide publication review' : 'Review publication'}
           </button>
           {showRelease && (
-            <ReleaseApprovalPanel submission={submission} csrf={csrf} email={email} />
+            <ReleaseApprovalPanel
+              administrator={administrator}
+              submission={submission}
+              csrf={csrf}
+              email={email}
+            />
           )}
           <SubmissionRejectionForm
             submission={submission}
