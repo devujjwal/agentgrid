@@ -7,8 +7,9 @@ indexing through independent editorial value and observed host verification.
 
 ## Representative drafts
 
-The 36 resources below are editorial drafts, not launch inventory. Reuse terms are
-unselected; examples describe expected behavior, not observed test results.
+The 36 resources below are editorial drafts, not launch inventory. First-party reuse terms now use the owner-approved custom internal-use and
+AgentGrid-only fork grant; community drafts still start unselected. Examples
+describe expected behavior, not observed test results.
 Each has normal, missing-context and adversarial examples. All currently target
 interactive instructions, with no invented connector or background execution.
 
@@ -26,7 +27,8 @@ interactive instructions, with no invented connector or background execution.
 | Development         | Pull Request Reviewer; Bug Reproduction Brief Builder                                                         |
 
 The draft count is not the count of quality-approved launch agents. No draft is
-public, licensed for reuse or claimed as host-tested. Each includes a distinct
+publicly released or claimed as host-tested. The selected first-party grant becomes
+available with the reviewed published package, not this private inventory. Each includes a distinct
 bounded task, input/output contract, meaningful normal-case checks, a missing-input
 case and an adversarial source-input case. Curated discovery aliases cover ordinary
 problem language without claiming tool integrations.

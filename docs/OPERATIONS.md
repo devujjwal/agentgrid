@@ -1,5 +1,11 @@
 # Phase 0 operations and acceptance
 
+**Current credential custody:** privileged Supabase, Resend and session keys are
+now exclusively in encrypted Cloudflare staging bindings. Earlier local setup
+steps below are historical evidence and must not be rerun against removed local
+keys. See [staging credentials](STAGING_CREDENTIALS.md) for current custody,
+verified deployments and remaining live authentication gates.
+
 ## Verified ownership
 
 - Personal GitHub login: `devujjwal`.
