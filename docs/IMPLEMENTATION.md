@@ -1413,3 +1413,48 @@ exact-head CI and the existing protected-schema rollout guards.
 Cloudflare now displays the AgentGrid zone as active and public DNS resolves its
 assigned nameservers. Free contact-email DNS additions are prepared for action-time
 authorization; receiving and actual inbox delivery remain unverified.
+
+### Remote publication boundary and first observed package tests
+
+PR43 passed exact-head CI and merged as `ebc79b7041b92f634ef7262e7cef19a04eeb7174`.
+Exact-main CI `37906414648` passed. Guarded migration 030 application and subsequent
+live anonymous/authenticated boundary checks passed; protected PicMagic schema and
+access-denial checks remain unchanged. Publication stays disabled.
+
+Staging workflow `37907142391` passed dependency audits, the full check/build,
+compiled Worker and database rehearsal. Upload succeeded, but its bounded delivery
+readback did not settle. Read-only recovery subsequently confirmed canonical
+deployment `b29eb6b2-d4bd-4fda-ab70-b4cbcd81d901` with the exact main commit and all
+live delivery checks passing. The private recovery receipt is retained locally;
+the failed workflow has not been relabelled successful and no repeat deployment
+was performed. Production domain delivery is unchanged.
+
+With explicit owner authorization, real host testing now uses signed-in Chrome
+ChatGPT, temporary unpersonalized conversations and synthetic inputs. The visible
+host selector is Instant; its underlying model version is not disclosed. Each
+scenario uses a fresh conversation, exact instructions, setup acknowledgement and
+separate input. The in-app browser's failed responses are not verification.
+
+Inbox Priority Triage exposed inconsistent confidence labels for informational
+messages with unknown deadlines. The draft now explicitly distinguishes clear
+informational status from ambiguous ownership. Campaign Message Planner exposed
+incorrect self-reported character counts and default selections in generated
+clarification forms. A repeat also exposed different CTAs in a supposedly controlled
+comparison and a checklist phrased as completed. It now requests text clarification,
+conservative headline lengths, one shared test body/CTA and explicitly pending
+human checks, without unsupported count claims. Compatibility notes describe the
+version-specific review requirement rather than asserting a draft was never tested.
+The recipe dependency was repinned and its inputs now include the required metric.
+
+Both revised specifications pass normal, ambiguous-input and adversarial-input
+host cases. Six private schema-valid observations retain exact outputs, checksum,
+scenario, host context, assertions and reviewer reasoning. Earlier failures are
+retained separately. Campaign headlines were measured independently at 41 and 32
+characters against the 60-character limit. These observations establish six case
+results for two drafts, not publication, a reliability percentage or launch
+inventory approval. Editorial/source review and immutable staff recording remain.
+
+Owner-only seven-day onboarding preparation requires explicit access approval;
+automatic approval review rejected its application. No pilot, legal consent,
+profile or role was created. Public registration remains closed. Contact receiving,
+full real-account community acceptance and production launch remain open gates.
