@@ -104,3 +104,10 @@ provider deployment and its `/agentgrid-release.json` identity before retrying.
 Never infer failure from a lost CLI acknowledgement, and do not automatically
 roll back to a catalogue whose live resource tags no longer match. Real provider
 routing and credential-binding acceptance remain pending until staging deployment.
+
+The staging smoke test also looks up the reserved `admin` creator handle through
+the anonymous live projection. The schema forbids that handle, so the expected
+result is a private/no-store JSON 404 with no cookie. This valid request must reach
+PostgreSQL; a syntactically invalid handle would only test request validation.
+Provider outages, transport failures and accidental exposure fail deployment
+acceptance. The probe creates no data and uses no privileged credential.

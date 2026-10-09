@@ -99,6 +99,17 @@ export async function verifyStagingDelivery(expected, transport = fetch) {
     Object.keys(session).length !== 2
   )
     throw new Error('Unexpected anonymous identity state.');
+  // `admin` is reserved by the profile table constraint, but remains a valid
+  // projection input. Its 404 proves the anonymous RPC transport actually ran;
+  // an invalid username would only exercise request validation.
+  const creator = await get('/api/community/creator/?username=admin');
+  if (
+    creator.status !== 404 ||
+    creator.headers.get('cache-control') !== 'private, no-store' ||
+    creator.headers.has('set-cookie') ||
+    JSON.stringify(await creator.json()) !== JSON.stringify({ error: 'not-found' })
+  )
+    throw new Error('Staging anonymous provider boundary unavailable.');
   for (const path of [
     '/workspace-does-not-exist/',
     '/qa/release-review/',
