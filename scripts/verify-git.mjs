@@ -11,7 +11,8 @@ export function verifyGit() {
   const root = git('rev-parse', '--show-toplevel');
   const baselinePath = resolve(
     root,
-    git('rev-parse', '--git-path', 'agentgrid-global-baseline.json'),
+    git('rev-parse', '--git-common-dir'),
+    'agentgrid-global-baseline.json',
   );
   const baseline = JSON.parse(readFileSync(baselinePath, 'utf8'));
   const globalConfig = execFileSync('git', ['config', '--global', '--list', '--show-origin', '-z']);
