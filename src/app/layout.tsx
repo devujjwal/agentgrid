@@ -14,7 +14,10 @@ export const metadata: Metadata = {
       : 'AgentGrid — The useful intelligence network',
   description:
     'Discover useful AI agents, understand their requirements and make informed choices about how to use them.',
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
   icons: { icon: '/icon.svg' },
   openGraph: { type: 'website', siteName: 'AgentGrid', images: [socialImage] },
   twitter: { card: 'summary_large_image', images: [socialImage] },

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '../../../components/legal/LegalPage';
 import { legalDocuments, legalOperator } from '../../../domain/legal';
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: 'AgentGrid Internal Use and Hosted Fork License 1.0',
   description:
     'Terms for designated AgentGrid first-party instruction packages: personal and commercial internal use, attributed AgentGrid forks, and reserved redistribution rights.',

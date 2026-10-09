@@ -9,7 +9,10 @@ export const metadata: Metadata = {
   description:
     'Find AI agents by task. Compare the supplied instructions, required inputs, platform setup, reuse terms and limits before choosing a starting point.',
   alternates: { canonical: '/agents/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 export default function AgentsPage() {
   const resources = discoveryResources();

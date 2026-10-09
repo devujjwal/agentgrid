@@ -5,7 +5,10 @@ export const metadata: Metadata = {
   description:
     'Prepare useful inputs from GitHub and Google Search Console. Understand the difference between a manual handoff, a connector and permission to act.',
   alternates: { canonical: '/integrations/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 export default function Page() {
   return <ConnectionIndex kind="integration" />;

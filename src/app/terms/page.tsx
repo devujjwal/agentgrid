@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LegalPage } from '../../components/legal/LegalPage';
 import { legalDocuments, legalOperator } from '../../domain/legal';
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: 'Community terms — AgentGrid',
   description:
     'AgentGrid community terms covering accounts, creator ownership, publication, package reuse, attribution, moderation and contact with the individual operator.',

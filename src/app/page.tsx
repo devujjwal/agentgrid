@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   description:
     'Explore AI agents, guided recipes and practical category guides. Understand the inputs, setup and limits before bringing an agent into your work.',
   alternates: { canonical: '/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
 };
 
 export default async function HomePage() {

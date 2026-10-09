@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LegalPage } from '../../components/legal/LegalPage';
 import { legalDocuments, legalOperator } from '../../domain/legal';
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: 'Privacy notice — AgentGrid',
   description:
     'How AgentGrid handles sign-in, profiles, saved resources, submissions, security records and deletion requests, with contact details for the individual operator.',

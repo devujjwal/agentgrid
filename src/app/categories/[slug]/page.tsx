@@ -25,7 +25,10 @@ export async function generateMetadata({
     title: `${item.name} AI agents — ${item.headline}`,
     description: item.summary,
     alternates: { canonical: categoryPath(item.slug) },
-    robots: { index: false, follow: false },
+    robots: {
+      index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+      follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    },
     openGraph: {
       images: [socialImage],
       type: 'website',

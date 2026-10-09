@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   description:
     'Practical guides for choosing an agent, checking a first run and keeping permissions separate from source material. Includes reusable working templates.',
   alternates: { canonical: '/learn/' },
-  robots: { index: false, follow: false },
+  robots: {
+    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+  },
   openGraph: {
     images: [socialImage],
     title: 'A field guide to useful AI agents',
