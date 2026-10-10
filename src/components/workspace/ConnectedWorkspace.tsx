@@ -158,7 +158,8 @@ export function ConnectedWorkspace({
           <>
             <p>
               <Link href="/workspace/runs/">Run an agent</Link>
-              <Link href="/workspace/reels/">Plan a reel</Link>
+              {/* Full document navigation loads the editor's scoped local-media policy. */}
+              <a href="/workspace/reels/">Create a free reel</a>
             </p>
             <WorkspaceResources
               list={snapshot.list}

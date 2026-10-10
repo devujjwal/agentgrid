@@ -16,12 +16,14 @@ function inspect(html) {
   if (errors.length) throw new Error('Malformed generated HTML cannot receive a policy.');
   let head, charset;
   let googleAnalytics = false;
+  let localReels = false;
   const policies = [],
     scripts = new Set(),
     styles = new Set();
   function visit(node) {
     const attributes = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
     if (attributes.get('data-agentgrid-ga4') === 'G-QFECS8NSVF') googleAnalytics = true;
+    if (attributes.get('data-agentgrid-local-reels') === '1') localReels = true;
     if (node.tagName === 'head') head = node;
     if (node.tagName === 'base' || [...attributes.keys()].some((name) => /^on/i.test(name)))
       throw new Error('Generated HTML contains an unsupported executable attribute or base.');
@@ -67,7 +69,8 @@ function inspect(html) {
     // React's declarative styles and bounded network coordinates may set style attributes.
     // This grants no inline script/event-handler authority.
     "style-src-attr 'unsafe-inline'",
-    `img-src 'self' data:${googleAnalytics ? ' https://www.google-analytics.com https://region1.google-analytics.com' : ''}`,
+    `img-src 'self' data:${localReels ? ' blob:' : ''}${googleAnalytics ? ' https://www.google-analytics.com https://region1.google-analytics.com' : ''}`,
+    ...(localReels ? ["media-src 'self' blob:"] : []),
     "font-src 'self'",
     `connect-src 'self'${googleAnalytics ? ' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com' : ''}`,
     "base-uri 'none'",

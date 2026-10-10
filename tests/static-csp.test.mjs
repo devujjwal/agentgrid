@@ -95,3 +95,27 @@ test('static and Function response headers agree and fit provider limits', async
     assert.ok(headers.toLowerCase().includes(`${name}: ${value}`.toLowerCase()));
   assert.ok(headers.split('\n').every((line) => line.length <= 2000));
 });
+
+test('only reel editor documents allow local blob media without granting executable or remote media authority', () => {
+  const normal = verifyDocumentPolicy(hardenDocument(page('<main>Catalogue</main>')));
+  assert.ok(!normal.includes('blob:'));
+  const source = page('<section data-agentgrid-local-reels="1"><canvas></canvas></section>');
+  const hardened = hardenDocument(source),
+    policy = verifyDocumentPolicy(hardened);
+  assert.ok(policy.includes("img-src 'self' data: blob:"));
+  assert.ok(policy.includes("media-src 'self' blob:"));
+  assert.equal(
+    policy
+      .split(';')
+      .find((p) => p.trim().startsWith('script-src '))
+      .trim(),
+    "script-src 'self'",
+  );
+  assert.ok(policy.includes("connect-src 'self'"));
+  assert.ok(!policy.includes('https://'));
+  assert.throws(() =>
+    verifyDocumentPolicy(
+      hardened.replace('data-agentgrid-local-reels="1"', 'data-agentgrid-local-reels="0"'),
+    ),
+  );
+});
