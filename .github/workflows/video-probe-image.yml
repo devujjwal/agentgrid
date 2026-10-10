@@ -1,0 +1,47 @@
+name: Verify private video inspection image
+
+on:
+  pull_request:
+    paths:
+      - backend/video-probe/**
+      - scripts/verify-video-probe-image.py
+      - tests/fixtures/video-probe-portrait.mp4
+      - .github/workflows/video-probe-image.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspection-image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build pinned minimal inspection image
+        run: docker build --tag agentgrid-video-probe:verified backend/video-probe
+      - name: Verify actual decoder and runtime isolation
+        run: python3 scripts/verify-video-probe-image.py agentgrid-video-probe:verified
+      - name: Scan image without Docker socket access
+        run: |
+          mkdir image-verification
+          docker image inspect agentgrid-video-probe:verified --format '{{.Id}}' > image-verification/image-id.txt
+          docker save agentgrid-video-probe:verified --output image-verification/image.tar
+          chmod 644 image-verification/image.tar
+          mkdir image-verification/scan
+          chmod 777 image-verification/scan
+          docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --tmpfs /root/.cache:rw,nosuid,size=2g --tmpfs /tmp:rw,noexec,nosuid,size=64m \
+            --mount type=bind,src="$PWD/image-verification/image.tar",dst=/image.tar,readonly \
+            --mount type=bind,src="$PWD/image-verification/scan",dst=/scan \
+            aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa \
+            image --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln \
+            --severity HIGH,CRITICAL --exit-code 1 --format json --output /scan/report.json --input /image.tar
+      - name: Retain private image and verification report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: video-inspection-${{ github.sha }}
+          path: image-verification/
+          if-no-files-found: error
+          retention-days: 14

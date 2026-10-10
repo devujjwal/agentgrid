@@ -12,6 +12,12 @@ The environment example names the required configuration, callbacks, secrets and
 6. Bind an independently trusted billing reconciler as `AGENTGRID_RENDER_BILLING`; it must implement `verifiedCost(taskId)` from actual provider billing evidence. The Worker passes this binding into `verifiedBilledCost`. Renderer estimates are cost ceilings, not billing receipts. Until actual usage evidence is available, completed renders remain pending and reservations stay held.
 7. Run the read-only preflight after provisioning. Check disabled policies, zero allowances, private bindings, deployment health, cookie/CSRF behavior, account revocation and queue wiring. Run mock tests and the local workspace acceptance fixture; do not substitute them for a real-provider pilot.
 
+## Inspection image provenance and acceptance
+
+The sidecar builds a minimal ffprobe from [FFmpeg's official signed release](https://ffmpeg.org/download.html), version 9.0.2. The source SHA-256 is `8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e`; the release signature was checked against the published fingerprint `FCF986EA15E6E293A5644F10B4322F04D67658D8`. The Dockerfile contains the exact rebuild configuration and includes the LGPL license. Python's official Alpine base is pinned by digest. Build tools stay in the builder; unused Python packaging tools stay out of the runtime.
+
+Only the MOV/MP4 demuxer, H.264/AAC parsers and decoders, and local file/pipe protocols are compiled. Before hosting, scan the exact final image, retain the report and image digest, and verify a synthetic portrait H.264/AAC MP4 and malformed inputs under non-root, read-only, no-network, capability-free execution with resource limits. Confirm the compiled protocol list has no network protocols. A clean dependency scan does not establish that every possible malformed input is safe; preserve isolation and update the pinned source/base when security fixes are available.
+
 ## Later activation sequence — requires a new instruction
 
 Prepare a concrete pilot proposal listing its owner-controlled accounts, exact spending allowances, provider privileges, flags/policies to change and approved publication destinations. No nonzero allowance has been authorized; no pilot is activated by this preparation.
