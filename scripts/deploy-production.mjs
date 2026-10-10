@@ -17,7 +17,7 @@ import {
   productionDeploymentPlan,
   inspectProductionProject,
   assertProductionInventory,
-  verifyProductionDelivery,
+  verifyProductionDeliveryWithRetry,
 } from './production-policy.mjs';
 let failurePhase = 'preflight';
 async function main() {
@@ -149,8 +149,8 @@ async function main() {
     )
       throw new Error('Provider has not confirmed the current exact build.');
     failurePhase = 'delivery-readback';
-    await verifyProductionDelivery(proof, productionAlias);
-    await verifyProductionDelivery(proof, productionOrigin);
+    await verifyProductionDeliveryWithRetry(proof, productionAlias);
+    await verifyProductionDeliveryWithRetry(proof, productionOrigin);
     for (const resource of publication.catalogue.resources) {
       const response = await fetch(
         productionOrigin + '/agents/' + resource.specification.identity.slug + '/',

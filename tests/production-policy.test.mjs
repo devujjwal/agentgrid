@@ -14,6 +14,7 @@ import {
   productionAlias,
   productionRobots,
   verifyProductionDelivery,
+  verifyProductionDeliveryWithRetry,
 } from '../scripts/production-policy.mjs';
 
 test('the reviewed catalogue passes while an undersized fixture and changed guides fail', async () => {
@@ -168,5 +169,70 @@ test('production delivery verifies build identity, crawl/security policy, privat
   await assert.rejects(
     verifyProductionDelivery(alias.proof, productionAlias, alias.transport),
     /alias must reject/,
+  );
+});
+
+test('post-upload readback tolerates a delayed build identity while rerunning the complete policy', async () => {
+  const f = deliveryFixture(productionOrigin);
+  let proofReads = 0;
+  let privatePathReads = 0;
+  const pauses = [];
+  await verifyProductionDeliveryWithRetry(
+    f.proof,
+    productionOrigin,
+    async (url, options) => {
+      assert.equal(options.method, undefined);
+      if (new URL(url).pathname === '/agentgrid-release.json' && ++proofReads < 3)
+        return Response.json({ ...f.proof, commit: 'd'.repeat(40) });
+      if (new URL(url).pathname === '/.env') privatePathReads++;
+      return f.transport(url, options);
+    },
+    async (milliseconds) => pauses.push(milliseconds),
+  );
+  assert.deepEqual(pauses, [10000, 10000]);
+  assert.equal(proofReads, 3);
+  assert.equal(privatePathReads, 1);
+});
+
+test('post-upload readback stays bounded and never accepts persistent security or identity failures', async () => {
+  for (const mutate of [
+    (r) => r.get('/').headers.delete('content-security-policy'),
+    (r) => r.get('/').headers.set('x-robots-tag', 'noindex'),
+    (r, p) => r.set('/agentgrid-release.json', Response.json({ ...p, commit: 'd'.repeat(40) })),
+    (r) => r.set('/.env', new Response('unexpected artifact')),
+    (r) => r.get('/api/identity/').headers.set('cache-control', 'public, max-age=60'),
+  ]) {
+    const f = deliveryFixture(productionOrigin, mutate);
+    let attempts = 0;
+    let pauses = 0;
+    await assert.rejects(
+      verifyProductionDeliveryWithRetry(
+        f.proof,
+        productionOrigin,
+        (url, options) => {
+          if (new URL(url).pathname === '/') attempts++;
+          assert.equal(options.method, undefined);
+          return f.transport(url, options);
+        },
+        async () => pauses++,
+      ),
+    );
+    assert.equal(attempts, 6);
+    assert.equal(pauses, 5);
+  }
+});
+
+test('healthy readback completes immediately and an unknown origin never receives a request', async () => {
+  const f = deliveryFixture(productionAlias);
+  const noPause = async () => assert.fail('Unexpected retry');
+  await verifyProductionDeliveryWithRetry(f.proof, productionAlias, f.transport, noPause);
+  await assert.rejects(
+    verifyProductionDeliveryWithRetry(
+      f.proof,
+      'https://unknown.example',
+      async () => assert.fail('Unexpected destination'),
+      noPause,
+    ),
+    /Unknown production destination/,
   );
 });
