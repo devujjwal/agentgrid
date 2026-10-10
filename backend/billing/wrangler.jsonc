@@ -1,0 +1,17 @@
+{
+  "name": "agentgrid-render-billing",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-09",
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": {
+    "AGENTGRID_EXECUTION_ENABLED": "0",
+    "AGENTGRID_BILLING_RECONCILIATION_ENABLED": "0",
+    "AGENTGRID_SHOTSTACK_OWNER": "",
+  },
+  "r2_buckets": [
+    { "binding": "AGENTGRID_BILLING_EVIDENCE", "bucket_name": "agentgrid-billing-evidence" },
+  ],
+  "limits": { "cpu_ms": 10 },
+  "observability": { "enabled": false },
+}
