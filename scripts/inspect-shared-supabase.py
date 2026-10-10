@@ -101,6 +101,40 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
+def approved_affiliate_transition(before, current, evidence):
+    """Preserve the original baseline; accept one source-verified PicMagic addition."""
+    if (evidence.get("project_ref") != PROJECT_REF
+        or evidence.get("authorization") != "owner-approved-picmagic-affiliate-release-2026-10-10"
+        or evidence.get("source_sha256") != "79dfe26e382a1bd9c9f9e00e88fccd08663cbb2c22ce648cb64f5e1b6898b12f"
+        or evidence.get("source_fixture_verified") is not True
+        or evidence.get("before_digest") != digest(before)
+        or evidence.get("after_digest") != digest(current)
+        or before.keys() != current.keys()):
+        return False
+    for kind, rows in before.items():
+        if any(row not in current[kind] for row in rows):
+            return False  # Existing definitions and ACLs remain exact.
+        for row in current[kind]:
+            if row in rows:
+                continue
+            if kind in ("functions", "function_acls"):
+                valid = row.get("schema") == "public" and row.get("name") in (
+                    "affiliate_public_providers", "affiliate_verification_guard")
+            elif kind in ("tables", "table_acls"):
+                valid = row.get("schema") == "public" and row.get("name") == "affiliate_providers"
+            elif kind in ("columns", "constraints", "indexes", "triggers"):
+                valid = row.get("schema") == "public" and row.get("table") == "affiliate_providers"
+            elif kind == "policies":
+                valid = row.get("schemaname") == "public" and row.get("tablename") == "affiliate_providers"
+            elif kind == "grants":
+                valid = row.get("table_schema") == "public" and row.get("table_name") == "affiliate_providers"
+            else:
+                valid = False
+            if not valid:
+                return False
+    return bool(current.get("tables") != before.get("tables"))
+
+
 def approved_google_transition(original_digest, before, current, evidence):
     """Accept only the explicitly recorded initial Google setup, never broad drift."""
     changed = sorted(key for key in before.keys() | current.keys() if before.get(key) != current.get(key))
@@ -201,6 +235,9 @@ def main():
     if args.verify:
         original = json.loads(path.read_text())
         changed = [key for key in original["inventory"] if original["inventory"][key] != baseline["inventory"][key]]
+        affiliate_path = path.parent / "agentgrid-picmagic-affiliate-transition.json"
+        affiliate_transition = bool(changed and affiliate_path.exists() and approved_affiliate_transition(
+            original["inventory"], baseline["inventory"], json.loads(affiliate_path.read_text())))
         auth_unchanged = original["auth_config_digest"] == baseline["auth_config_digest"]
         approved_transition = False
         if not auth_unchanged:
@@ -224,9 +261,11 @@ def main():
                             json.loads(evidence_path.read_text()), json.loads(staging_path.read_text()),
                             auth, json.loads(production_path.read_text()),
                         )
-        if changed or not (auth_unchanged or approved_transition):
+        if (changed and not affiliate_transition) or not (auth_unchanged or approved_transition):
             raise RuntimeError("Protected shared-project baseline changed: " + ", ".join(changed or ["auth configuration"]))
-        print("Protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only recorded owner-approved authentication deltas differ."))
+        print("Existing protected schema unchanged; " + ("shared auth configuration unchanged." if auth_unchanged else "only recorded owner-approved authentication deltas differ."))
+        if affiliate_transition:
+            print("Only the recorded source-verified PicMagic affiliate addition differs; original baseline preserved.")
     elif not path.exists():
         path.write_text(json.dumps(baseline, indent=2) + "\n")
         path.chmod(0o600)
