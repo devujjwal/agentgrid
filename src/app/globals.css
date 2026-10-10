@@ -1,5 +1,41 @@
 @import './tokens.css';
 
+.analytics-choice {
+  margin: 0 var(--page-gutter) 2rem;
+}
+.analytics-choice-panel {
+  max-width: 48rem;
+  padding: 1.5rem;
+  border: 1px solid var(--control-border);
+  background: var(--surface-bright);
+}
+.analytics-choice-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+.analytics-choice-panel p {
+  line-height: 1.6;
+}
+.analytics-choice-panel a {
+  text-decoration: underline;
+}
+.analytics-choice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.analytics-choice-actions button,
+.analytics-choice-settings {
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--control-border);
+  background: var(--surface);
+}
+.analytics-choice-settings:disabled {
+  color: var(--muted);
+  cursor: default;
+}
+
 * {
   box-sizing: border-box;
 }

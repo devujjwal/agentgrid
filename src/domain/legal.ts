@@ -9,7 +9,7 @@ export const legalOperator = Object.freeze({
 });
 export const legalDocuments = Object.freeze({
   termsVersion: '2026-10-09',
-  privacyVersion: '2026-10-09',
+  privacyVersion: '2026-10-10',
   firstPartyLicenseVersion: '1.0',
   firstPartyLicensePath: '/licenses/agentgrid-internal-use-v1/',
 });

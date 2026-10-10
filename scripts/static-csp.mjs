@@ -15,11 +15,13 @@ function inspect(html) {
   });
   if (errors.length) throw new Error('Malformed generated HTML cannot receive a policy.');
   let head, charset;
+  let googleAnalytics = false;
   const policies = [],
     scripts = new Set(),
     styles = new Set();
   function visit(node) {
     const attributes = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
+    if (attributes.get('data-agentgrid-ga4') === 'G-QFECS8NSVF') googleAnalytics = true;
     if (node.tagName === 'head') head = node;
     if (node.tagName === 'base' || [...attributes.keys()].some((name) => /^on/i.test(name)))
       throw new Error('Generated HTML contains an unsupported executable attribute or base.');
@@ -59,15 +61,15 @@ function inspect(html) {
   if (scripts.size > 128 || styles.size > 128) throw new Error('Unexpected inline block count.');
   const policy = [
     "default-src 'none'",
-    `script-src 'self' ${[...scripts].sort().join(' ')}`.trim(),
+    `script-src 'self' ${googleAnalytics ? 'https://www.googletagmanager.com ' : ''}${[...scripts].sort().join(' ')}`.trim(),
     "script-src-attr 'none'",
     `style-src 'self' ${[...styles].sort().join(' ')}`.trim(),
     // React's declarative styles and bounded network coordinates may set style attributes.
     // This grants no inline script/event-handler authority.
     "style-src-attr 'unsafe-inline'",
-    "img-src 'self' data:",
+    `img-src 'self' data:${googleAnalytics ? ' https://www.google-analytics.com https://region1.google-analytics.com' : ''}`,
     "font-src 'self'",
-    "connect-src 'self'",
+    `connect-src 'self'${googleAnalytics ? ' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com' : ''}`,
     "base-uri 'none'",
     "object-src 'none'",
     "form-action 'self'",

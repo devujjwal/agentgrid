@@ -1,4 +1,5 @@
 import { PublicMeasurement } from '../../analytics/PublicMeasurement';
+import { GoogleAnalytics } from '../../analytics/GoogleAnalytics';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { NetworkMark } from '../brand/NetworkMark';
@@ -53,6 +54,7 @@ export function SiteFrame({
         <PublicMeasurement />
       )}
       {children}
+      {process.env.AGENTGRID_BUILD_STAGE === 'production' && !localPreview && <GoogleAnalytics />}
       <footer className="site-footer">
         <Link prefetch={false} className="brand" href="/">
           <NetworkMark />
