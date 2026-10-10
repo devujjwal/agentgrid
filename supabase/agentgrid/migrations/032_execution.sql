@@ -65,7 +65,7 @@ declare actor uuid; r public.agentgrid_execution_runs; policy public.agentgrid_e
  budget public.agentgrid_execution_budgets; resource uuid; cost bigint; result jsonb;
 begin
  if operation is null or operation not in ('overview','source','prepare','read','approve','claim','finish','cancel')
- or evidence is null or jsonb_typeof(evidence)<>'object' or octet_length(evidence::text)>100000 then
+ or evidence is null or jsonb_typeof(evidence)<>'object' or octet_length(evidence::text)>250000 then
  raise exception 'Invalid execution operation' using errcode='23514'; end if;
  select p.id into actor from public.agentgrid_identities i join public.agentgrid_profiles p on p.id=i.profile_id
  where i.user_id=actor_user_id and p.status='active';

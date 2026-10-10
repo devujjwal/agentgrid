@@ -42,7 +42,8 @@ export function executionStore(
         const chunk = await reader.read();
         if (chunk.done) break;
         size += chunk.value.byteLength;
-        if (size > 2_000_000) {
+        // Twenty bounded records can contain up to 8.2 MB of JSON-escaped text.
+        if (size > 10_000_000) {
           await reader.cancel();
           throw new Error('Execution response exceeds bounds.');
         }

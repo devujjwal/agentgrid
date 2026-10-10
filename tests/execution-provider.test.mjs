@@ -78,3 +78,38 @@ test('persistent store pins verified subject, service RPC and bounded response w
   );
   await assert.rejects(redirected.store.read('', crypto.randomUUID()));
 });
+
+test('valid multilingual histories load within a bounded twenty-record response', async () => {
+  const subject = crypto.randomUUID();
+  const env = {
+    AGENTGRID_STAGE: 'production',
+    AGENTGRID_ORIGIN: 'https://agentgrid.me',
+    NEXT_PUBLIC_SUPABASE_URL: 'https://testproject.supabase.co',
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_' + 'a'.repeat(30),
+    SUPABASE_SECRET_KEY: 'sb_secret_' + 'b'.repeat(30),
+  };
+  const value = {
+    enabled: true,
+    agents: [],
+    budget: { limitMicros: 10000, heldMicros: 0, spentMicros: 1000 },
+    runs: Array.from({ length: 20 }, () => ({
+      id: crypto.randomUUID(),
+      ownerId: subject,
+      idempotencyKey: crypto.randomUUID(),
+      versionId: crypto.randomUUID(),
+      providerIdentity: 'test-only',
+      instructions: '界'.repeat(24000),
+      input: '界'.repeat(12000),
+      output: '界'.repeat(32000),
+      digest: 'a'.repeat(64),
+      maximumCostMicros: 1000,
+      approved: true,
+      state: 'succeeded',
+    })),
+  };
+  assert.ok(new TextEncoder().encode(JSON.stringify(value)).length > 2_000_000);
+  const client = executionStore(env, subject, async () => Response.json(value));
+  assert.equal((await client.overview()).runs.length, 20);
+  const excessive = executionStore(env, subject, async () => new Response('x'.repeat(10_000_001)));
+  await assert.rejects(excessive.overview(), /exceeds bounds/);
+});

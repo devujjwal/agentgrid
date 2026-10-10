@@ -157,6 +157,11 @@ select pg_temp.agentgrid_assert(pg_temp.execution('claim',jsonb_build_object('id
 update public.agentgrid_execution_runs set started_at=now()-interval '3 minutes' where id='40000000-0000-4000-8000-000000000004';
 select pg_temp.execution('read','{"id":"40000000-0000-4000-8000-000000000004"}');
 select pg_temp.agentgrid_assert((select state='uncertain' and reserved from public.agentgrid_execution_runs where id='40000000-0000-4000-8000-000000000004'),'lost worker stays reserved and cannot redispatch');
+-- Valid multilingual instruction/input sizes exceed 100 KB together.
+select pg_temp.execution('prepare',(select data||jsonb_build_object(
+ 'id','40000000-0000-4000-8000-000000000005','idempotencyKey','50000000-0000-4000-8000-000000000005',
+ 'instructions',repeat('界',24000),'input',repeat('界',12000)) from execution_fixture));
+select pg_temp.agentgrid_assert((select length(instructions)=24000 and length(input)=12000 from public.agentgrid_execution_runs where id='40000000-0000-4000-8000-000000000005'),'valid multilingual snapshot preserved');
 set local role authenticated;
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_execution_runs','42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_server_execution('00000000-0000-4000-8000-000000000001','overview')$s$,'42501');
