@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { reviewedEditorialPaths } from '../domain/editorial-discovery';
 import { publicRecipes } from '../data/recipes';
 import { recipePath } from '../domain/recipe';
 import { publicResources } from '../data/resources';
@@ -12,6 +13,9 @@ export const dynamic = 'force-static';
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
+    ...(process.env.AGENTGRID_BUILD_STAGE === 'production' ? reviewedEditorialPaths : []).map(
+      (path) => ({ url: `https://agentgrid.me${path}` }),
+    ),
     ...publicResources().map((resource) => ({
       url: `https://agentgrid.me${resourcePath(resource.specification.identity.slug)}`,
       lastModified: resource.released_at,

@@ -92,6 +92,39 @@ export function resourceStructuredData(resource: PublicResource) {
         abstract: spec.identity.summary,
         description: resource.editorial.overview,
         version: spec.version,
+        mainEntityOfPage: url,
+        isAccessibleForFree: true,
+        genre: 'Interactive instruction package',
+        ...(resource.editorial.discovery
+          ? { keywords: resource.editorial.discovery.keywords.join(', ') }
+          : {}),
+        about: spec.capabilities.map((capability) => ({
+          '@type': 'DefinedTerm',
+          name: capability.name,
+          description: capability.description,
+        })),
+        citation: resource.editorial.sources.map((source) => ({
+          '@type': 'CreativeWork',
+          name: source.title,
+          url: source.url,
+          description: source.supports,
+        })),
+        isPartOf: {
+          '@type': 'CollectionPage',
+          url: `https://agentgrid.me/categories/${spec.category}/`,
+        },
+        ...(resource.lineage.length
+          ? {
+              isBasedOn: resource.lineage.map((source) => ({
+                '@type': 'CreativeWork',
+                name: source.source_slug,
+                version: source.source_version,
+                ...(source.source_available
+                  ? { url: `https://agentgrid.me/agents/${source.source_slug}/` }
+                  : {}),
+              })),
+            }
+          : {}),
         dateModified: resource.released_at,
         inLanguage: 'en',
         ...(spec.license.url ? { license: spec.license.url } : {}),

@@ -55,7 +55,11 @@
       "title": "Your comparison brief",
       "text": "Task and desired output:\nInputs I can provide:\nFacts the output must preserve:\nActions that require my approval:\nPlatform and package version:\nSmall example and expected result:\nObserved errors or missing context:\nDecision and next review:"
     },
-    "related": ["using-agent-instructions", "permissions-and-source-material"],
+    "related": [
+      "using-agent-instructions",
+      "permissions-and-source-material",
+      "create-reels-from-your-own-media"
+    ],
     "sources": []
   },
   {
@@ -189,5 +193,61 @@
         "checked": "2026-10-08"
       }
     ]
+  },
+  {
+    "slug": "create-reels-from-your-own-media",
+    "title": "Create a reel from your own images and videos for free",
+    "summary": "Make a vertical reel in your browser with your own photos and clips. Arrange scenes, add captions, trim footage and download the result without a cloud renderer or automatic posting.",
+    "intent": "Help someone create and download a short vertical video from their own local media without paying for a rendering service.",
+    "updated": "2026-10-10",
+    "sections": [
+      {
+        "id": "what-you-can-make",
+        "title": "What the browser reel editor creates",
+        "paragraphs": [
+          "AgentGrid’s reel workspace turns images and video clips you choose into a vertical 720 × 1280 video, up to 60 seconds long. You arrange the scenes, choose their timing and framing, and add text captions. Video scenes can retain their source sound. This is an editing tool for your own media; it does not generate new footage, write an AI script or connect a social account.",
+          "Editing and export run on your device. The editor uses local files and browser memory rather than a paid cloud renderer. AgentGrid charges nothing for this tool. A slow device, limited memory or a backgrounded browser can affect export, so begin with a short project and keep the tab visible."
+        ]
+      },
+      {
+        "id": "prepare-material",
+        "title": "Prepare a small set of permitted files",
+        "paragraphs": [
+          "Choose photos and video clips that you own or have permission to edit and share. Keep the originals. Avoid including private information, other people’s recordings without permission or music you cannot reuse. The editor cannot decide whether your eventual publication is lawful or whether a platform will accept the content.",
+          "Open the reel workspace and add the files from your device. Start with two or three scenes to check that your browser can decode each file. If a video does not load, convert it with a tool you already trust or choose another file; renaming its extension does not change its codec."
+        ]
+      },
+      {
+        "id": "arrange-scenes",
+        "title": "Arrange scenes, framing and captions",
+        "paragraphs": [
+          "Move the scenes into the order you want. Adjust each scene’s duration; for video, choose a trim within the source clip. Check the displayed total against the 60-second limit. Choose framing that preserves the subject, then add a short caption where it helps explain what the viewer is seeing.",
+          "Preview the sequence before exporting. Check that captions are readable, important details are inside the vertical frame and the cut between scenes makes sense. Review the sound in every video scene. Image scenes are silent; the editor does not supply a music library or automatically license background audio."
+        ]
+      },
+      {
+        "id": "export-review",
+        "title": "Export and inspect the downloaded video",
+        "paragraphs": [
+          "Use the workspace’s export control and keep the browser tab visible until the download is ready. The browser chooses a supported recording format: MP4 where available, or WebM. Export takes time on your device and may take approximately the duration of the reel. Do not assume every browser can produce MP4.",
+          "Play the downloaded file from beginning to end. Check timing, captions, framing and sound, including any transition from a silent image to a video clip. Confirm that your intended destination accepts the downloaded format before sharing. Keep the source files so you can revise the edit later."
+        ]
+      },
+      {
+        "id": "common-questions",
+        "title": "Questions before making your first reel",
+        "paragraphs": [
+          "Do I need a paid provider or a connected social account? No. Local reel editing uses your browser and your own files. Server agent execution, provider rendering and automatic social publishing remain disabled. The downloaded video is yours to review and upload manually if you choose.",
+          "Are my images and videos uploaded to AgentGrid? The local editor uses browser object URLs for selected files and renders the export locally. It does not send the source media to a renderer. Ordinary website delivery still uses AgentGrid’s hosting infrastructure; consult the privacy notice for the website’s other behavior.",
+          "Can it generate footage or guarantee Instagram, Facebook or LinkedIn delivery? No. It edits supplied media and downloads a file. Each destination has its own accepted formats, account rules and publication requirements. Review the final video and those requirements yourself before posting."
+        ]
+      }
+    ],
+    "worksheet": {
+      "title": "First reel review checklist",
+      "text": "Goal: [one clear message].\nSource files and reuse permission: [list].\nScene order and total duration: [check].\nCaptions and vertical framing: [review].\nSound, including silent-image transitions: [play the export].\nDownloaded format and intended destination: [check compatibility].\nFinal human review before any manual upload: [pending]."
+    },
+    "related": ["choosing-an-ai-agent", "permissions-and-source-material"],
+    "sources": []
   }
 ]

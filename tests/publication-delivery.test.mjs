@@ -136,3 +136,14 @@ test('build input gate accepts exact digest and refuses mismatched, unknown or m
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test('bare agent directory redirects to its canonical slash without a database read', async () => {
+  const guard = deliveryGuard(manifest, async () => {
+    throw new Error('Unexpected read');
+  });
+  const response = await guard(request('/agents?task=email'), async () => {
+    throw new Error('Unexpected asset');
+  });
+  assert.equal(response.status, 308);
+  assert.equal(response.headers.get('location'), '/agents/?task=email');
+});

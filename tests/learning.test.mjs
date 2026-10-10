@@ -8,7 +8,7 @@ import {
 } from '../src/domain/learning.ts';
 import { serializeStructuredData } from '../src/domain/public-resource.ts';
 const source = JSON.parse(await readFile('content/learning/guides.json', 'utf8'));
-const now = new Date('2026-10-08T12:00:00Z');
+const now = new Date('2026-10-10T12:00:00Z');
 test('learning content has resolvable routes, section citations and related reading', () => {
   const guides = parseLearningGuides(source, now);
   for (const guide of guides) {
