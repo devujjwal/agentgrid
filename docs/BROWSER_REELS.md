@@ -17,6 +17,7 @@ Chrome, optimized and hardened local export, synthetic owned fixtures:
 - Image + video with caption and contain framing: silent H.264 MP4, 720 × 1280, 4.027133 seconds for a 4-second timeline, 66,820 bytes; no audio stream.
 - Reordered and trimmed video (start 0.25, duration 0.5 seconds) + image, original sound enabled: H.264/AAC MP4, 720 × 1280, 3.525100 seconds for 3.5 seconds, 109,137 bytes, 48 kHz audio.
 - Downloaded files inspected using the existing FFprobe image with network disabled, read-only filesystem and resource caps.
+- Image followed by video with sound: corrected H.264/AAC export at 4.020900 seconds, 50,675 bytes. The audio track spans 3.986604 seconds; median AAC packet size is 6 bytes during the image and 68 bytes during the video. A continuously active zero-valued Web Audio source preserves silent gaps and prevents audio being moved to the start.
 - Editing removed the previous download; invalid source trim disabled creation; cancel released controls and produced no download.
 - No horizontal overflow at 320, 768, 1024 and 1440 CSS pixels. Anonymous workspace editor accepted the local image with the hardened CSP.
 - Other browsers and WebM export are not independently verified. No paid calls or live posts were made.

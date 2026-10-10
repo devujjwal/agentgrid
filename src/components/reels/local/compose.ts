@@ -25,6 +25,7 @@ export async function composeLocalReel(options: {
     outputBytes = 0;
   const chunks: Blob[] = [];
   let optionsAudioDestination: MediaStreamAudioDestinationNode | undefined;
+  let silence: ConstantSourceNode | undefined;
   const checkpoint = () => {
     if (options.signal.aborted) throw Error('Reel creation cancelled.');
     if (document.hidden) throw Error('Keep this tab visible while creating your reel.');
@@ -54,8 +55,15 @@ export async function composeLocalReel(options: {
       if (!mimeType) throw Error('This browser has no supported MP4 or WebM recorder.');
       stream = options.canvas.captureStream(24);
       const destination = audio?.createMediaStreamDestination();
-      if (destination)
+      if (destination && audio) {
+        // A continuously active zero-valued source preserves audio timestamps
+        // across image clips and silent gaps between source videos.
+        silence = audio.createConstantSource();
+        silence.offset.value = 0;
+        silence.connect(destination);
+        silence.start();
         for (const track of destination.stream.getAudioTracks()) stream.addTrack(track);
+      }
       recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 2_500_000 });
       recorded = new Promise<Blob>((resolve, reject) => {
         recorder!.ondataavailable = (event) => {
@@ -152,13 +160,15 @@ export async function composeLocalReel(options: {
     options.onProgress(total);
     if (recorder && recorded) {
       recorder.stop();
-      return await recorded;
+      return await localWait(recorded, options.signal);
     }
     return null;
   } finally {
     if (recorder && recorder.state !== 'inactive') recorder.stop();
     stream?.getTracks().forEach((track) => track.stop());
     audioNode?.disconnect();
+    silence?.stop();
+    silence?.disconnect();
     if (video) releaseVideo(video);
     if (image) image.removeAttribute('src');
     await audio?.close();
