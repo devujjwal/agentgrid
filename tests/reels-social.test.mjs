@@ -436,12 +436,12 @@ test('global execution off wins over individual reel and social flags', () => {
       AGENTGRID_REEL_GENERATION_ENABLED: '1',
       AGENTGRID_SOCIAL_PUBLISHING_ENABLED: '1',
     }),
-    { render: false, publish: false },
+    { connect: false, render: false, publish: false },
   );
-  assert.deepEqual(mediaCapabilities({}), { render: false, publish: false });
+  assert.deepEqual(mediaCapabilities({}), { connect: false, render: false, publish: false });
   assert.deepEqual(
     mediaCapabilities({ AGENTGRID_EXECUTION_ENABLED: '1', AGENTGRID_REEL_GENERATION_ENABLED: '1' }),
-    { render: true, publish: false },
+    { connect: false, render: true, publish: false },
   );
 });
 

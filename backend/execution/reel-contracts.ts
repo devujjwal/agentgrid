@@ -89,6 +89,14 @@ export interface SocialPublisher {
     deliveryId: string;
     signal: AbortSignal;
   }): Promise<{ postId: string }>;
+  /** Explicit continuation of a saved, fully uploaded asset. Never recreates uploads. */
+  resume?(input: {
+    connectionId: string;
+    caption: string;
+    asset: MediaAsset;
+    deliveryId: string;
+    signal: AbortSignal;
+  }): Promise<{ postId: string }>;
   /** Confirm the actual destination and media via provider readback, not HTTP success. */
   verify(input: {
     connectionId: string;

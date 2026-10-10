@@ -1,3 +1,4 @@
+import { dispatchMediaJob } from '../integrations/dispatch.ts';
 import { z } from 'zod';
 import { executionStore } from './store.ts';
 import { openaiTextProvider } from './openai.ts';
@@ -16,6 +17,16 @@ interface Message {
 export default {
   async queue(batch: { messages: Message[] }, env: Record<string, unknown>) {
     for (const message of batch.messages) {
+      // Media mutations are never automatically redelivered after an ambiguous outcome.
+      if (message.body && typeof message.body === 'object' && 'kind' in message.body) {
+        try {
+          await dispatchMediaJob(message.body, env);
+        } catch {
+          /* Private history retains the task/receipt for explicit reconciliation. */
+        }
+        message.ack();
+        continue;
+      }
       const parsed = JobSchema.safeParse(message.body);
       if (!parsed.success || env.AGENTGRID_EXECUTION_ENABLED !== '1') {
         message.ack();

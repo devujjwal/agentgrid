@@ -9,12 +9,18 @@ export async function deliverPublication(options: {
   store: DeliveryStore;
   publisher: SocialPublisher;
   now: Date;
+  resumeUpload?: boolean;
 }): Promise<void> {
   if (!options.enabled) throw new ExecutionError('disabled');
   if (!options.actor.active) throw new ExecutionError('membership_required');
   const record = await options.store.read(options.actor.profileId, options.deliveryId);
   if (!record || record.ownerId !== options.actor.profileId) throw new ExecutionError('not_found');
-  if (record.state !== 'pending') return;
+  if (
+    options.resumeUpload
+      ? record.state !== 'uncertain' || record.providerPostId !== null
+      : record.state !== 'pending'
+  )
+    return;
   const context = await options.store.context(record.ownerId, record.id);
   const asset = MediaAssetSchema.safeParse(context.asset);
   const destination = record.preview.destinations.find(
@@ -38,9 +44,18 @@ export async function deliverPublication(options: {
     }))
   )
     throw new ExecutionError('approval_mismatch');
-  if (!(await options.store.claim(record.ownerId, record.id, record.digest))) return;
+  if (
+    !options.resumeUpload &&
+    !(await options.store.claim(record.ownerId, record.id, record.digest))
+  )
+    return;
+  if (options.resumeUpload && !options.publisher.resume)
+    throw new ExecutionError('provider_unavailable');
   try {
-    const posted = await options.publisher.publish({
+    const operation = options.resumeUpload
+      ? options.publisher.resume!.bind(options.publisher)
+      : options.publisher.publish.bind(options.publisher);
+    const posted = await operation({
       connectionId: destination.connectionId,
       caption: destination.caption,
       asset: asset.data,
@@ -62,7 +77,8 @@ export async function deliverPublication(options: {
       throw new Error('Delivery not confirmed.');
     await options.store.finish(record.ownerId, record.id, posted.postId);
   } catch {
-    await options.store.finish(record.ownerId, record.id, null);
+    // A competing continuation may already own dispatching; never overwrite its state.
+    if (!options.resumeUpload) await options.store.finish(record.ownerId, record.id, null);
     throw new ExecutionError('provider_unavailable');
   }
 }

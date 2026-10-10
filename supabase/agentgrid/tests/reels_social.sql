@@ -182,6 +182,50 @@ select pg_temp.media('claim',jsonb_build_object('id','42000000-0000-4000-8000-00
 update public.agentgrid_reels set started_at=now()-interval '3 minutes' where id='42000000-0000-4000-8000-000000000002';
 select pg_temp.media('read','{"id":"42000000-0000-4000-8000-000000000002"}');
 select pg_temp.agentgrid_assert((select state='uncertain' and reserved from public.agentgrid_reels where id='42000000-0000-4000-8000-000000000002'),'lost submit is uncertain with held budget');
+
+-- Provider control plane remains private, replay-safe and independently disabled.
+create function pg_temp.integration(op text,data jsonb default '{}') returns jsonb language sql as $$
+ select public.agentgrid_server_integrations('00000000-0000-4000-8000-000000000001',op,data);
+$$;
+create temp table oauth_fixture(data jsonb);
+insert into oauth_fixture values(jsonb_build_object('digest',repeat('e',64),'ownerId','10000000-0000-4000-8000-000000000001',
+ 'sessionDigest',repeat('f',64),'platform','instagram','redirectUri','https://agentgrid.me/api/social/instagram/callback/','expiresAt',now()+interval '5 minutes'));
+select pg_temp.agentgrid_expect_error($s$select pg_temp.integration('create-flow',(select data from oauth_fixture))$s$,'42501');
+update public.agentgrid_media_policy set oauth_enabled=true;
+select pg_temp.integration('create-flow',(select data from oauth_fixture));
+select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data||jsonb_build_object('sessionDigest',repeat('a',64)) from oauth_fixture))='null','wrong session cannot consume flow');
+select pg_temp.agentgrid_assert(public.agentgrid_server_integrations('00000000-0000-4000-8000-000000000002','consume-flow',(select data from oauth_fixture))='null','wrong owner cannot consume flow');
+select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data from oauth_fixture))->>'platform'='instagram','correct session consumes flow');
+select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data from oauth_fixture))='null','flow cannot replay');
+select pg_temp.integration('connect',jsonb_build_object('id','44000000-0000-4000-8000-000000000003','ownerId','10000000-0000-4000-8000-000000000001','platform','instagram','accountId','123',
+ 'expiresAt',now()+interval '1 day','sealedTokens','v1.000000000000000000000000.00','scopes','["instagram_basic"]'::jsonb));
+select pg_temp.agentgrid_assert((select not publishing_enabled from public.agentgrid_social_connections where id='44000000-0000-4000-8000-000000000003'),'new OAuth connection cannot publish');
+-- Reset only this synthetic delivery to exercise receipt stages without external requests.
+update public.agentgrid_social_deliveries set state='dispatching' where connection_id='44000000-0000-4000-8000-000000000001';
+create temp table receipt_fixture(data jsonb);
+insert into receipt_fixture values(jsonb_build_object('deliveryId',(select id from public.agentgrid_social_deliveries where connection_id='44000000-0000-4000-8000-000000000001'),
+ 'connectionId','44000000-0000-4000-8000-000000000001','mediaId','43000000-0000-4000-8000-000000000001','sha256',repeat('c',64),'caption','Synthetic IG'));
+select pg_temp.agentgrid_expect_error($s$select pg_temp.integration('begin',(select data||'{"caption":"Altered"}'::jsonb from receipt_fixture))$s$,'23514');
+select pg_temp.agentgrid_assert(pg_temp.integration('begin',(select data from receipt_fixture))='true','one outbound attempt can begin');
+select pg_temp.agentgrid_assert(pg_temp.integration('begin',(select data from receipt_fixture))='false','duplicate outbound attempt refused');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.integration('save',(select data||'{"stage":"published","providerId":"999"}'::jsonb from receipt_fixture))$s$,'23514');
+select pg_temp.integration('save',(select data||'{"stage":"upload","providerId":"888"}'::jsonb from receipt_fixture));
+select pg_temp.agentgrid_expect_error($s$select pg_temp.integration('save',(select data||'{"stage":"publishing","providerId":"777"}'::jsonb from receipt_fixture))$s$,'23514');
+update public.agentgrid_social_deliveries set state='uncertain',provider_post_id=null where connection_id='44000000-0000-4000-8000-000000000001';
+select pg_temp.agentgrid_assert(pg_temp.integration('pending',(select data||jsonb_build_object('checksum',repeat('c',64)) from receipt_fixture))->>'mediaId'='888','saved uploaded container is resumable');
+select pg_temp.integration('save',(select data||'{"stage":"publishing","providerId":"888"}'::jsonb from receipt_fixture));
+select pg_temp.agentgrid_assert((select state='dispatching' from public.agentgrid_social_deliveries where connection_id='44000000-0000-4000-8000-000000000001'),'continuation atomically restores claimed dispatch');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.integration('save',(select data||'{"stage":"publishing","providerId":"888"}'::jsonb from receipt_fixture))$s$,'23514');
+
+select pg_temp.integration('save',(select data||'{"stage":"published","providerId":"999"}'::jsonb from receipt_fixture));
+select pg_temp.agentgrid_assert(pg_temp.integration('published',(select data||jsonb_build_object('postId','999','checksum',repeat('c',64)) from receipt_fixture))->>'mediaId'='888','readback uses original uploaded media receipt');
+update public.agentgrid_social_deliveries set state='uncertain',provider_post_id=null where connection_id='44000000-0000-4000-8000-000000000001';
+select pg_temp.agentgrid_assert(pg_temp.integration('recover',(select data from receipt_fixture))='"999"','durable receipt recovers a lost return without posting');
+select pg_temp.agentgrid_assert((select provider_post_id='999' and state='uncertain' from public.agentgrid_social_deliveries where connection_id='44000000-0000-4000-8000-000000000001'),'recovered candidate still needs provider readback');
+set local role service_role;
+select pg_temp.agentgrid_expect_error('select * from public.agentgrid_social_oauth_states','42501');
+select pg_temp.agentgrid_expect_error('select * from public.agentgrid_social_receipts','42501');
+reset role;
 set local role authenticated;
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_social_connections','42501');
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_media_assets','42501');
