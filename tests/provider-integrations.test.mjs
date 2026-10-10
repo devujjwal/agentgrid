@@ -617,3 +617,36 @@ test('explicit continuation reuses a pending Instagram container and concurrent 
   assert.equal(publications, 1);
   await assert.rejects(f.publisher.resume(f.input), /resumable/);
 });
+
+test('revocation between initialization and upload blocks private byte transfer', async () => {
+  let revoked = false;
+  let uploads = 0;
+  const f = publishing(
+    'facebook',
+    async (url) => {
+      if (String(url).includes('rupload')) {
+        uploads++;
+        return reply({ success: true });
+      }
+      revoked = true;
+      return reply({
+        video_id: '888',
+        upload_url: 'https://rupload.facebook.com/video-upload/v23.0/888',
+      });
+    },
+    {
+      connection: async () => ({
+        id: connectionId,
+        ownerId,
+        platform: 'facebook',
+        accountId: '123',
+        accessToken: 'fixture-token',
+        expiresAt: '2026-10-11T12:00:00Z',
+        publishingEnabled: !revoked,
+        scopes: ['pages_manage_posts', 'pages_read_engagement'],
+      }),
+    },
+  );
+  await assert.rejects(f.publisher.publish(f.input));
+  assert.equal(uploads, 0);
+});

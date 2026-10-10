@@ -62,7 +62,7 @@ export function socialPublisher(
 ): SocialPublisher {
   if (platform !== 'linkedin' && !/^v[0-9]{1,2}\.0$/.test(options.metaVersion))
     throw new Error('Reviewed Meta API version required.');
-  async function connection(id: string, asset: MediaAsset) {
+  async function connection(id: string, asset: Pick<MediaAsset, 'ownerId'>) {
     requireEnabled(options.enabled);
     const value = ConnectionSecretSchema.parse(await options.connection(id));
     if (
@@ -92,7 +92,7 @@ export function socialPublisher(
   async function api(c: ConnectionSecret, path: string, body?: unknown, signal?: AbortSignal) {
     requireEnabled(options.enabled);
     // Re-resolve revocation and expiry immediately before each provider request.
-    const current = ConnectionSecretSchema.parse(await options.connection(c.id));
+    const current = await connection(c.id, { ownerId: c.ownerId });
     if (
       current.ownerId !== c.ownerId ||
       current.platform !== c.platform ||
@@ -220,6 +220,7 @@ export function socialPublisher(
           new URL(uploadUrl).pathname !== `/video-upload/${options.metaVersion}/${created.video_id}`
         )
           throw new Error('Unexpected upload destination.');
+        await connection(c.id, asset);
         requireEnabled(options.enabled);
         const uploaded = await providerJson(options.transport, uploadUrl, {
           method: 'POST',
@@ -296,6 +297,7 @@ export function socialPublisher(
           throw new Error('Invalid upload ranges.');
         offset = part.lastByte + 1;
         const url = approvedUrl(part.uploadUrl, ['www.linkedin.com'], '/dms-uploads/');
+        await connection(c.id, asset);
         requireEnabled(options.enabled);
         const response = await providerFetch(options.transport, url, {
           method: 'PUT',
