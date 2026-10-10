@@ -2,6 +2,7 @@
 import { readFile, readdir, lstat } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 import { parse } from 'parse5';
+import { reviewedEditorialPaths } from '../src/domain/editorial-discovery.ts';
 import { readPublication } from './verify-publication.mjs';
 import { readRecipePublication } from './verify-recipe-publication.mjs';
 
@@ -206,6 +207,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(import.meta.filename
   const { catalogue } = await readPublication(resolve('content/publication'));
   const recipes = await readRecipePublication();
   const result = await verifyCrawlExport(resolve('out'), [
+    ...(process.env.AGENTGRID_BUILD_STAGE === 'production' ? reviewedEditorialPaths : []),
     ...catalogue.resources.map((resource) => `/agents/${resource.specification.identity.slug}/`),
     ...recipes.map(({ recipe }) => `/recipes/${recipe.slug}/`),
   ]);

@@ -52,7 +52,10 @@ export function ResourceDetail({
         <header className="resource-hero">
           <div>
             <p className="eyebrow">
-              {categoryLabel(spec.category)} <span aria-hidden="true">/</span>{' '}
+              <Link prefetch={false} href={`/categories/${spec.category}/`}>
+                {categoryLabel(spec.category)}
+              </Link>{' '}
+              <span aria-hidden="true">/</span>{' '}
               {spec.execution.mode === 'interactive'
                 ? 'Interactive instructions'
                 : 'Workflow resource'}

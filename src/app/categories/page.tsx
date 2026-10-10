@@ -1,3 +1,4 @@
+import { socialImage } from '../../domain/social-metadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFrame } from '../../components/layout/SiteFrame';
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Explore AI agents by the work you want to do — AgentGrid',
   description:
     'Choose a useful starting point across work, learning and everyday life. Category guides explain suitable tasks, required inputs and how to check the result.',
+  openGraph: { images: [socialImage], type: 'website', url: '/categories/' },
   alternates: { canonical: '/categories/' },
   robots: {
     index: process.env.AGENTGRID_BUILD_STAGE === 'production',

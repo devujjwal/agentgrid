@@ -109,6 +109,10 @@ test('structured information is factual, canonical and safe inside an HTML scrip
   assert.deepEqual(JSON.parse(encoded), data);
   assert.equal(data['@graph'][0]['@type'], 'CreativeWork');
   assert.equal(data['@graph'][0].url, 'https://agentgrid.me/agents/inbox-priority-triage/');
+  assert.equal(data['@graph'][0].isAccessibleForFree, true);
+  assert.equal(data['@graph'][0].citation[0].url, resource.editorial.sources[0].url);
+  assert.equal(data['@graph'][0].isPartOf.url, 'https://agentgrid.me/categories/productivity/');
+  assert.equal('dateTested' in data['@graph'][0], false);
   assert.equal('aggregateRating' in data['@graph'][0], false);
   assert.equal('interactionStatistic' in data['@graph'][0], false);
   assert.throws(() => resourcePath('../private'));

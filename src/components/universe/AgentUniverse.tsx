@@ -106,7 +106,7 @@ export function AgentUniverse({
             );
           })}
         </g>
-        {model.nodes.map(({ resource, x, y, label, labelLines, matched, related }) => {
+        {model.nodes.map(({ resource, x, y, labelLines, matched, related }) => {
           const selected = resource.slug === selectedSlug;
           return (
             <g
@@ -117,7 +117,8 @@ export function AgentUniverse({
               <a
                 href="#resource-inspector"
                 tabIndex={matched ? 0 : -1}
-                aria-label={`${label} ${resource.category.replaceAll('-', ' ')} — Inspect ${resource.title}, ${resource.state === 'editorial' ? 'editorial guide' : resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
+                aria-labelledby={`universe-name-${resource.slug} universe-category-${resource.slug}`}
+                aria-description={`Inspect ${resource.title}, ${resource.state === 'editorial' ? 'editorial guide' : resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
                 aria-current={selected ? 'true' : undefined}
                 onClick={(event) => {
                   event.preventDefault();
@@ -133,7 +134,12 @@ export function AgentUniverse({
                 <circle className="node-outer" r="20" />
                 <circle className="node-ring" r="13" />
                 <AgentGlyph category={resource.category} />
-                <text className="node-name" y="43" textAnchor="middle">
+                <text
+                  id={`universe-name-${resource.slug}`}
+                  className="node-name"
+                  y="43"
+                  textAnchor="middle"
+                >
                   {labelLines.map((line, index) => (
                     <tspan key={index} x="0" dy={index ? 17 : 0}>
                       {line}
@@ -141,6 +147,7 @@ export function AgentUniverse({
                   ))}
                 </text>
                 <text
+                  id={`universe-category-${resource.slug}`}
                   className="node-category"
                   y={labelLines.length > 1 ? 78 : 61}
                   textAnchor="middle"

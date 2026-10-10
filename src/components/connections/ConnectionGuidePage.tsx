@@ -1,3 +1,4 @@
+import { reviewedEditorialPaths } from '../../domain/editorial-discovery';
 import { socialImage } from '../../domain/social-metadata';
 import { DeclaredResources } from './DeclaredResources';
 import type { Metadata } from 'next';
@@ -27,7 +28,13 @@ export function connectionMetadata(kind: ConnectionKind, slug: string): Metadata
     title: `${item.name} — setup and connection guidance | AgentGrid`,
     description: item.summary,
     alternates: { canonical: connectionPath(item) },
-    robots: { index: false, follow: false },
+    robots: {
+      index:
+        process.env.AGENTGRID_BUILD_STAGE === 'production' &&
+        reviewedEditorialPaths.includes(connectionPath(item)) &&
+        !needsConnectionReview(item),
+      follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    },
     openGraph: {
       images: [socialImage],
       type: 'article',

@@ -83,6 +83,13 @@ export default async function LearningPage({ params }: { params: Promise<{ slug:
             <span>About {minutes} min read</span>
           </div>
         </header>
+        {guide.slug === 'create-reels-from-your-own-media' && (
+          <p>
+            <Link prefetch={false} href="/workspace/reels/">
+              Open the free browser reel editor ↗
+            </Link>
+          </p>
+        )}
         <div className="learning-layout">
           <nav aria-label="In this guide" className="learning-toc">
             <p className="eyebrow">In this guide</p>

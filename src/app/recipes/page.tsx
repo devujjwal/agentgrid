@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     'Connect a concrete problem to a sequence of agent resources, with explicit inputs, human review and handoff checkpoints.',
   alternates: { canonical: '/recipes/' },
   robots: {
-    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    index: false,
     follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
   },
 };

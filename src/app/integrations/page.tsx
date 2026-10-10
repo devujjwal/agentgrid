@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     'Prepare useful inputs from GitHub and Google Search Console. Understand the difference between a manual handoff, a connector and permission to act.',
   alternates: { canonical: '/integrations/' },
   robots: {
-    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    index: false,
     follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
   },
 };

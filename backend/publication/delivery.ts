@@ -58,6 +58,8 @@ export function deliveryGuard(manifest: DeliveryManifest, read: DeliveryStateRea
     if (!['GET', 'HEAD'].includes(request.method)) return failure(404, request.method);
     // Encoded path aliases cannot bypass the canonical resource lookup.
     const path = url.pathname;
+    if (path === '/agents')
+      return new Response(null, { status: 308, headers: { location: '/agents/' + url.search } });
     if (!path.startsWith('/agents/') || /[%\\]/.test(path)) return failure(404, request.method);
     const relative = path.slice('/agents/'.length);
     if (listingFiles.has(relative)) return secureAssets(await assets());

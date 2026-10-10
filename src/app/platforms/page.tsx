@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     'Compare how to bring agent instructions into ChatGPT, Claude and Gemini, including setup, permission boundaries and platform-specific limitations.',
   alternates: { canonical: '/platforms/' },
   robots: {
-    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    index: false,
     follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
   },
 };

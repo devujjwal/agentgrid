@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     'Understand Model Context Protocol before connecting an agent to tools: review server trust, data access, tool permissions and human approval boundaries.',
   alternates: { canonical: '/mcp/' },
   robots: {
-    index: process.env.AGENTGRID_BUILD_STAGE === 'production',
+    index: false,
     follow: process.env.AGENTGRID_BUILD_STAGE === 'production',
   },
 };
