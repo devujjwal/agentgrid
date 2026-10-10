@@ -165,6 +165,27 @@ export function inspectProductionProject(project, { requireBindings = false } = 
 export const productionRobots =
   'User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /auth/\nDisallow: /workspace/\nDisallow: /sign-in/\nDisallow: /saves/\nDisallow: /qa/\nSitemap: https://agentgrid.me/sitemap.xml\n';
 
+// Recheck only public delivery after a confirmed upload. Each attempt enforces
+// the complete policy; this never retries an upload or changes provider state.
+export async function verifyProductionDeliveryWithRetry(
+  expected,
+  origin = productionOrigin,
+  transport = fetch,
+  pause = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+) {
+  if (![productionOrigin, productionAlias].includes(origin))
+    throw new Error('Unknown production destination.');
+  for (let attempt = 0; attempt < 6; attempt++) {
+    try {
+      await verifyProductionDelivery(expected, origin, transport);
+      return;
+    } catch (error) {
+      if (attempt === 5) throw error;
+      await pause(10000);
+    }
+  }
+}
+
 export async function verifyProductionDelivery(
   expected,
   origin = productionOrigin,
