@@ -1,0 +1,24 @@
+.run-card {
+  border: 1px solid var(--border, #d5d9df);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-block: 1rem;
+  min-width: 0;
+}
+.run-output {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  max-height: 32rem;
+  overflow: auto;
+}
+.identity-panel select,
+.identity-panel textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  margin-block: 0.5rem 1rem;
+  padding: 0.65rem;
+}

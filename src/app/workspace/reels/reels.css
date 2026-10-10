@@ -1,0 +1,81 @@
+.reel-scene {
+  min-width: 0;
+  margin-block: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--control-border);
+}
+.reel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.reel-preview {
+  padding-block: 1rem;
+  border-top: 2px solid var(--signal);
+}
+.reel-preview li {
+  padding-block: 0.5rem;
+}
+.reel-script,
+.reel-preview p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.media-workbench > section {
+  margin-block: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--control-border);
+}
+.media-notice {
+  border-left: 3px solid var(--signal);
+  padding: 1rem;
+  background: var(--surface);
+}
+.media-help {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.media-list {
+  padding: 0;
+  list-style: none;
+}
+.identity-panel .media-check {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.identity-panel .media-check input {
+  width: 1.25rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.25rem;
+  padding: 0;
+}
+.reel-video {
+  display: block;
+  width: min(100%, 18rem);
+  aspect-ratio: 9 / 16;
+  background: var(--ink);
+  margin-block: 1rem;
+}
+.media-workbench h3,
+.media-workbench h4 {
+  overflow-wrap: anywhere;
+}
+.media-workbench details summary {
+  cursor: pointer;
+  padding-block: 0.75rem;
+}
+@media (max-width: 480px) {
+  .media-workbench .reel-actions > button {
+    width: 100%;
+  }
+  .media-workbench .reel-scene {
+    padding: 0.75rem;
+  }
+}

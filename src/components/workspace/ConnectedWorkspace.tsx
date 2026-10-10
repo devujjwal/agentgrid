@@ -156,6 +156,10 @@ export function ConnectedWorkspace({
         )}
         {snapshot.identity?.profile?.status === 'active' && (
           <>
+            <p>
+              <Link href="/workspace/runs/">Run an agent</Link>
+              <Link href="/workspace/reels/">Plan a reel</Link>
+            </p>
             <WorkspaceResources
               list={snapshot.list}
               pending={pending}
