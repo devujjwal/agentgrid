@@ -72,6 +72,7 @@ begin
  if actor is null then raise exception 'Active member required' using errcode='42501'; end if;
  -- Every operation follows the same lock order, including cancellation/settlement.
  select * into policy from public.agentgrid_execution_policy where singleton for update;
+ if not found then raise exception 'Execution policy unavailable' using errcode='42501'; end if;
  insert into public.agentgrid_execution_budgets(profile_id) values(actor) on conflict do nothing;
  select * into budget from public.agentgrid_execution_budgets where profile_id=actor for update;
  -- A lost worker must never cause an automatic second provider dispatch.

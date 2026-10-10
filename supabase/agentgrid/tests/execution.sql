@@ -166,4 +166,7 @@ set local role authenticated;
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_execution_runs','42501');
 select pg_temp.agentgrid_expect_error($s$select public.agentgrid_server_execution('00000000-0000-4000-8000-000000000001','overview')$s$,'42501');
 reset role;
+-- Missing configuration must fail closed, including against privileged callers.
+delete from public.agentgrid_execution_policy;
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_server_execution('00000000-0000-4000-8000-000000000001','overview')$s$,'42501');
 rollback;
