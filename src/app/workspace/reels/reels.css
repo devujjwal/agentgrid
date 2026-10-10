@@ -1,0 +1,24 @@
+.reel-scene {
+  min-width: 0;
+  margin-block: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--control-border);
+}
+.reel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.reel-preview {
+  padding-block: 1rem;
+  border-top: 2px solid var(--signal);
+}
+.reel-preview li {
+  padding-block: 0.5rem;
+}
+.reel-script,
+.reel-preview p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

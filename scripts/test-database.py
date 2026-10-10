@@ -213,7 +213,7 @@ def main():
         )
         sql(
             "begin; set constraints all deferred;\n"
-            "delete from public.agentgrid_execution_policy; delete from public.agentgrid_configuration; delete from public.agentgrid_categories; delete from public.agentgrid_platforms; delete from public.agentgrid_publication_state;\n"
+            "delete from public.agentgrid_media_policy; delete from public.agentgrid_execution_policy; delete from public.agentgrid_configuration; delete from public.agentgrid_categories; delete from public.agentgrid_platforms; delete from public.agentgrid_publication_state;\n"
             # Suppress only owned user triggers during the deliberate offline import.
             # Constraints stay enabled/deferred; protected tables/triggers are untouched.
             + "\n".join(f"alter table public.{table} disable trigger user;" for table in tables)

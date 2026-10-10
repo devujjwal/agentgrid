@@ -61,11 +61,11 @@ tool-free resources. Review license grants and provider compatibility per versio
    private workspace runner. Include provider/input disclosure, cost cap, empty,
    loading, failure and cancellation states. Verify real host behavior for each
    execution-approved resource. Gate activation behind separate environment flags.
-3. **Reel generation.** Implement script/storyboard and video job adapters, private
+3. **Reel generation — control plane and planner implemented; live renderer pending.** Implement script/storyboard and video job adapters, private
    media storage, verified webhooks or polling, output validation, preview, download
    and regenerate. Start with one video provider and one portrait format; record
    actual generation cost. Existing Transcript Clip Planner only produces edit plans.
-4. **Social connections and manual publish.** Add Meta and LinkedIn developer apps,
+4. **Social connections and manual publish — delivery ledger implemented; OAuth/API integration pending.** Add Meta and LinkedIn developer apps,
    callbacks and minimally scoped publishing permissions. Complete required platform
    reviews. Ship connection status/expiry/disconnect and final preview approval.
    Test each destination with consenting test accounts and actual post readback.
@@ -101,8 +101,13 @@ Both HTTP/worker flags default off; the database policy is off, allowances are z
 and the execution allowlist is empty. This change does not migrate the live database,
 provision queues, install a provider key, make paid calls or publish social posts.
 Real provider acceptance and privacy/retention rollout remain activation prerequisites.
-Reel rendering, private media storage, social OAuth and publishing adapters remain
-subsequent phases; the text pilot can produce scripts and captions, not video files.
+Migration 033 now adds disabled reel/media/social ledgers, server storage adapters,
+private bucket validation, token encryption and tested render/delivery orchestration.
+The manual reel planner previews storyboards without provider calls. Live rendering,
+media HTTP delivery, social OAuth, platform publishers and durable scheduling remain
+pending. See [reel/social operations](REELS_SOCIAL_OPERATIONS.md); synthetic tests
+do not establish real generation or posting. The owner has requested that all
+execution remain disabled and allowances stay at zero.
 See [execution operations](EXECUTION_OPERATIONS.md) for configuration and recovery.
 
 ## Provider references checked 10 October 2026

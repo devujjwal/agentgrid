@@ -4,6 +4,8 @@
   "compatibility_date": "2026-10-09",
   "vars": {
     "AGENTGRID_EXECUTION_ENABLED": "0",
+    "AGENTGRID_REEL_GENERATION_ENABLED": "0",
+    "AGENTGRID_SOCIAL_PUBLISHING_ENABLED": "0",
     "AGENTGRID_STAGE": "production",
     "AGENTGRID_ORIGIN": "https://agentgrid.me",
   },

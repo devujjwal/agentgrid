@@ -158,6 +158,7 @@ export function ConnectedWorkspace({
           <>
             <p>
               <Link href="/workspace/runs/">Run an agent</Link>
+              <Link href="/workspace/reels/">Plan a reel</Link>
             </p>
             <WorkspaceResources
               list={snapshot.list}

@@ -13,6 +13,7 @@ export function signInReturnPath(value: unknown): string {
   if (
     value === '/workspace/' ||
     value === '/workspace/runs/' ||
+    value === '/workspace/reels/' ||
     value === '/workspace/account/' ||
     value === '/saves/' ||
     value === '/workspace/reports/' ||

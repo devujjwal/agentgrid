@@ -88,3 +88,7 @@ IDs, durable polling, verified media formats and a preview. Social publishing th
 adds encrypted OAuth connections, per-platform delivery records and approvals
 pinned to the exact media checksum, caption, destination and schedule. No social
 access tokens, video calls or posting integrations are activated by this text pilot.
+
+Reel/social migration 033 and offline implementation are described in
+[reel and social operations](REELS_SOCIAL_OPERATIONS.md). The owner has explicitly
+chosen to keep all execution disabled and allowances at zero. Preserve that state.
