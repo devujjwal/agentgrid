@@ -1,30 +1,7 @@
-import { z } from 'zod';
 import { executionDigest } from './text-run.ts';
 
-const checksum = z.string().regex(/^[a-f0-9]{64}$/);
-export const PublicationPreviewSchema = z.strictObject({
-  runId: z.uuid(),
-  revision: z.int().positive(),
-  // Private immutable object + checksum, not an arbitrary URL supplied to a publisher.
-  mediaId: z.uuid(),
-  mediaSha256: checksum,
-  destinations: z
-    .array(
-      z.strictObject({
-        platform: z.enum(['instagram', 'facebook', 'linkedin']),
-        connectionId: z.uuid(),
-        caption: z.string().trim().min(1).max(3000),
-      }),
-    )
-    .min(1)
-    .max(3)
-    .refine(
-      (destinations) =>
-        new Set(destinations.map((d) => d.connectionId)).size === destinations.length,
-      'Each destination must be distinct.',
-    ),
-  scheduledAt: z.iso.datetime(),
-});
+import { PublicationPreviewSchema } from '../../src/domain/media-workspace.ts';
+export { PublicationPreviewSchema };
 
 export interface PublishApproval {
   ownerId: string;

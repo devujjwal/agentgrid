@@ -8,7 +8,20 @@ const empty: ReelDraft = {
   scenes: [{ seconds: 5, visual: '', onScreenText: '' }],
   format: 'portrait-720p',
 };
-export function ReelPlanner({ initial = empty }: { initial?: ReelDraft }) {
+export function ReelPlanner({
+  initial = empty,
+  sources = [],
+  enabled = false,
+  busy = false,
+  onPrepare,
+}: {
+  initial?: ReelDraft;
+  sources?: { id: string }[];
+  enabled?: boolean;
+  busy?: boolean;
+  onPrepare?: (draft: ReelDraft, sourceRunId: string) => Promise<void>;
+}) {
+  const [source, setSource] = useState('');
   const [draft, setDraft] = useState(initial);
   const [preview, setPreview] = useState<ReelDraft | null>(null);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -32,8 +45,9 @@ export function ReelPlanner({ initial = empty }: { initial?: ReelDraft }) {
   return (
     <>
       <p role="status">
-        Generation and posting are disabled. This plan stays in this tab and is cleared when you
-        leave. Nothing is sent to a provider.
+        {enabled
+          ? 'Preview your storyboard, then save it to review its maximum charge before approving generation.'
+          : 'Generation and posting are disabled. This plan stays in this tab and is cleared when you leave. Nothing is sent to a provider.'}
       </p>
       {!preview && (
         <form
@@ -155,18 +169,42 @@ export function ReelPlanner({ initial = empty }: { initial?: ReelDraft }) {
             ))}
           </ol>
           <p>This is a storyboard preview. No video has been rendered.</p>
+          {onPrepare && (
+            <>
+              <label htmlFor="reel-source">Completed text run</label>
+              <select
+                id="reel-source"
+                value={source}
+                disabled={!enabled || busy}
+                onChange={(e) => setSource(e.target.value)}
+              >
+                <option value="">Choose your source run</option>
+                {sources.map((run) => (
+                  <option key={run.id} value={run.id}>
+                    Text run {run.id.slice(0, 8)}
+                  </option>
+                ))}
+              </select>
+              <p>
+                Saved reels must use one of your completed text runs. No completed runs are
+                available while text execution is closed.
+              </p>
+              <button
+                type="button"
+                className="action-primary"
+                disabled={!enabled || busy || !source}
+                onClick={() => void onPrepare(preview, source)}
+              >
+                Save storyboard and review cost
+              </button>
+            </>
+          )}
+
           <button type="button" className="action-secondary" onClick={() => setPreview(null)}>
             Edit plan
           </button>
         </section>
       )}
-      <section>
-        <h2>Publishing destinations</h2>
-        <p>
-          Instagram, Facebook and LinkedIn connections are not available yet. Publishing will
-          require a finished video and your approval of each account, caption and schedule.
-        </p>
-      </section>
     </>
   );
 }

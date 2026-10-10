@@ -24,6 +24,7 @@ export interface OAuthStore {
     ownerId: string;
     platform: SocialPlatform;
     accountId: string;
+    label: string;
     expiresAt: string;
     sealedTokens: string;
     scopes: string[];
@@ -180,18 +181,25 @@ export function socialOAuth(options: {
         signal: input.signal,
       };
       let granted: string[];
-      const accounts: { accountId: string; token: string }[] = [];
+      const accounts: { accountId: string; token: string; label: string }[] = [];
       if (linkedin) {
         granted = token.scope?.split(/[ ,]+/).filter(Boolean) ?? [];
         if (!linkedinScopes.every((s) => granted.includes(s)))
           throw new Error('LinkedIn permissions incomplete.');
         const identity = z
-          .object({ sub: z.string().regex(/^[A-Za-z0-9_-]{1,160}$/) })
+          .object({
+            sub: z.string().regex(/^[A-Za-z0-9_-]{1,160}$/),
+            name: z.string().trim().min(1).max(160).optional(),
+          })
           .parse(
             (await providerJson(options.transport, 'https://api.linkedin.com/v2/userinfo', auth))
               .body,
           );
-        accounts.push({ accountId: `urn:li:person:${identity.sub}`, token: token.access_token });
+        accounts.push({
+          accountId: `urn:li:person:${identity.sub}`,
+          token: token.access_token,
+          label: identity.name ?? 'LinkedIn member',
+        });
       } else {
         const base = `https://graph.facebook.com/${options.metaVersion}/`;
         const permissions = z
@@ -208,6 +216,7 @@ export function socialOAuth(options: {
               .array(
                 z.object({
                   id: z.string().regex(/^[0-9]{1,80}$/),
+                  name: z.string().trim().min(1).max(120).optional(),
                   access_token: z.string().min(1).max(8000),
                   tasks: z.array(z.string()),
                   instagram_business_account: z
@@ -222,7 +231,7 @@ export function socialOAuth(options: {
               await providerJson(
                 options.transport,
                 base +
-                  'me/accounts?fields=id,access_token,tasks,instagram_business_account&limit=100',
+                  'me/accounts?fields=id,name,access_token,tasks,instagram_business_account&limit=100',
                 auth,
               )
             ).body,
@@ -231,7 +240,15 @@ export function socialOAuth(options: {
           if (!page.tasks.includes('CREATE_CONTENT') && !page.tasks.includes('MANAGE')) continue;
           const accountId =
             input.platform === 'facebook' ? page.id : page.instagram_business_account?.id;
-          if (accountId) accounts.push({ accountId, token: page.access_token });
+          if (accountId)
+            accounts.push({
+              accountId,
+              token: page.access_token,
+              label:
+                input.platform === 'facebook'
+                  ? (page.name ?? 'Facebook Page')
+                  : `Instagram linked to ${page.name ?? 'Facebook Page'}`,
+            });
         }
       }
       // All discovered connections remain disabled; later explicit selection/approval is required.
@@ -253,6 +270,7 @@ export function socialOAuth(options: {
           ownerId: input.ownerId,
           platform: input.platform,
           accountId: account.accountId,
+          label: account.label,
           expiresAt,
           sealedTokens,
           scopes: granted,

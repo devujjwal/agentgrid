@@ -1,3 +1,4 @@
+import { mediaWorkspaceHandler } from './media-workspace.ts';
 import { providerMediaHandler } from './provider-media.ts';
 import { socialHandler } from './social.ts';
 import { executionHandler } from './execution.ts';
@@ -61,6 +62,8 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
       return await providerMediaHandler(configuration.origin, context.env)(context.request);
     if (new URL(context.request.url).pathname.startsWith('/api/social/'))
       return await socialHandler(runtime, context.env)(context.request);
+    if (new URL(context.request.url).pathname.startsWith('/api/media/'))
+      return await mediaWorkspaceHandler(runtime, context.env)(context.request);
     if (new URL(context.request.url).pathname.startsWith('/api/execution/'))
       return await executionHandler(runtime, context.env)(context.request);
     if (new URL(context.request.url).pathname === '/api/admin/publication/')

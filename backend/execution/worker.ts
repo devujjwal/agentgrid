@@ -1,3 +1,4 @@
+import { enqueueDuePublications } from '../integrations/scheduler.ts';
 import { dispatchMediaJob } from '../integrations/dispatch.ts';
 import { z } from 'zod';
 import { executionStore } from './store.ts';
@@ -15,12 +16,23 @@ interface Message {
   retry(): void;
 }
 export default {
+  async scheduled(_event: unknown, env: Record<string, unknown>) {
+    await enqueueDuePublications(env);
+  },
   async queue(batch: { messages: Message[] }, env: Record<string, unknown>) {
     for (const message of batch.messages) {
       // Media mutations are never automatically redelivered after an ambiguous outcome.
       if (message.body && typeof message.body === 'object' && 'kind' in message.body) {
         try {
-          await dispatchMediaJob(message.body, env);
+          const billing = env.AGENTGRID_RENDER_BILLING as
+            { verifiedCost?: (taskId: string) => Promise<number | null> } | undefined;
+          await dispatchMediaJob(
+            message.body,
+            env,
+            billing?.verifiedCost
+              ? { verifiedBilledCost: (taskId) => billing.verifiedCost!(taskId) }
+              : {},
+          );
         } catch {
           /* Private history retains the task/receipt for explicit reconciliation. */
         }

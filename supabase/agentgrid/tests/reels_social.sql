@@ -197,7 +197,7 @@ select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data|
 select pg_temp.agentgrid_assert(public.agentgrid_server_integrations('00000000-0000-4000-8000-000000000002','consume-flow',(select data from oauth_fixture))='null','wrong owner cannot consume flow');
 select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data from oauth_fixture))->>'platform'='instagram','correct session consumes flow');
 select pg_temp.agentgrid_assert(pg_temp.integration('consume-flow',(select data from oauth_fixture))='null','flow cannot replay');
-select pg_temp.integration('connect',jsonb_build_object('id','44000000-0000-4000-8000-000000000003','ownerId','10000000-0000-4000-8000-000000000001','platform','instagram','accountId','123',
+select pg_temp.integration('connect',jsonb_build_object('id','44000000-0000-4000-8000-000000000003','ownerId','10000000-0000-4000-8000-000000000001','platform','instagram','accountId','123','label','Synthetic Instagram',
  'expiresAt',now()+interval '1 day','sealedTokens','v1.000000000000000000000000.00','scopes','["instagram_basic"]'::jsonb));
 select pg_temp.agentgrid_assert((select not publishing_enabled from public.agentgrid_social_connections where id='44000000-0000-4000-8000-000000000003'),'new OAuth connection cannot publish');
 -- Reset only this synthetic delivery to exercise receipt stages without external requests.
@@ -222,6 +222,31 @@ select pg_temp.agentgrid_assert(pg_temp.integration('published',(select data||js
 update public.agentgrid_social_deliveries set state='uncertain',provider_post_id=null where connection_id='44000000-0000-4000-8000-000000000001';
 select pg_temp.agentgrid_assert(pg_temp.integration('recover',(select data from receipt_fixture))='"999"','durable receipt recovers a lost return without posting');
 select pg_temp.agentgrid_assert((select provider_post_id='999' and state='uncertain' from public.agentgrid_social_deliveries where connection_id='44000000-0000-4000-8000-000000000001'),'recovered candidate still needs provider readback');
+
+-- Workspace controls expose no provider ID, sealed token, object key or post ID.
+create function pg_temp.media_workspace(op text,data jsonb default '{}') returns jsonb language sql as $$
+ select public.agentgrid_server_media_workspace('00000000-0000-4000-8000-000000000001',op,data);
+$$;
+select pg_temp.agentgrid_assert(pg_temp.media_workspace('overview')::text not like '%sealed_tokens%' and pg_temp.media_workspace('overview')::text not like '%provider_account_id%' and pg_temp.media_workspace('overview')::text not like '%owners/%','overview omits secrets and storage keys');
+select pg_temp.agentgrid_assert(jsonb_array_length(public.agentgrid_server_media_workspace('00000000-0000-4000-8000-000000000002','overview','{}')->'reels')=0,'other member sees no reels');
+select pg_temp.agentgrid_expect_error($s$select public.agentgrid_server_media_workspace('00000000-0000-4000-8000-000000000002','disable-connection','{"id":"44000000-0000-4000-8000-000000000001"}')$s$,'42501');
+-- Scope and explicit confirmation are required, using synthetic encrypted blobs only.
+update public.agentgrid_social_connections set scopes='["instagram_basic","instagram_content_publish","pages_read_engagement"]' where id='44000000-0000-4000-8000-000000000003';
+create temp table enable_fixture(data jsonb);
+insert into enable_fixture select jsonb_build_object('id',id,'platform',platform,'label',display_label,'expiresAt',expires_at,'confirmed',true) from public.agentgrid_social_connections where id='44000000-0000-4000-8000-000000000003';
+-- The deliberately invalid tombstone cannot be enabled.
+select pg_temp.agentgrid_expect_error($s$select pg_temp.media_workspace('enable-connection',(select data from enable_fixture))$s$,'42501');
+update public.agentgrid_social_connections set sealed_tokens='v1.000000000000000000000000.11' where id='44000000-0000-4000-8000-000000000003';
+select pg_temp.agentgrid_expect_error($s$select pg_temp.media_workspace('enable-connection',(select data||'{"confirmed":false}'::jsonb from enable_fixture))$s$,'42501');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.media_workspace('enable-connection',(select data||'{"label":"Changed"}'::jsonb from enable_fixture))$s$,'42501');
+select pg_temp.media_workspace('enable-connection',(select data from enable_fixture));
+select pg_temp.agentgrid_assert((select publishing_enabled from public.agentgrid_social_connections where id='44000000-0000-4000-8000-000000000003'),'confirmed matching connection can enable under synthetic policy');
+update public.agentgrid_execution_policy set enabled=false;
+select pg_temp.agentgrid_assert(public.agentgrid_due_social_jobs()='[]'::jsonb,'scheduler returns no jobs while disabled');
+select pg_temp.media_workspace('disable-connection','{"id":"44000000-0000-4000-8000-000000000003"}');
+select pg_temp.media_workspace('cancel-publication','{"id":"45000000-0000-4000-8000-000000000001"}');
+select pg_temp.agentgrid_assert((select not publishing_enabled from public.agentgrid_social_connections where id='44000000-0000-4000-8000-000000000003'),'revocation works with execution off');
+select pg_temp.agentgrid_expect_error($s$select pg_temp.media_workspace('enable-connection',(select data from enable_fixture))$s$,'42501');
 set local role service_role;
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_social_oauth_states','42501');
 select pg_temp.agentgrid_expect_error('select * from public.agentgrid_social_receipts','42501');

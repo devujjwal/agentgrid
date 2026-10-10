@@ -5,7 +5,7 @@ import '../../identity.css';
 import '../runs/runs.css';
 import './reels.css';
 export const metadata: Metadata = {
-  title: 'Plan a reel — AgentGrid',
+  title: 'Reels and publishing — AgentGrid',
   robots: { index: false, follow: false },
 };
 export default function ReelsPage() {

@@ -7,10 +7,13 @@
     "AGENTGRID_REEL_GENERATION_ENABLED": "0",
     "AGENTGRID_SOCIAL_PUBLISHING_ENABLED": "0",
     "AGENTGRID_SOCIAL_OAUTH_ENABLED": "0",
+    "AGENTGRID_SOCIAL_SCHEDULER_ENABLED": "0",
     "AGENTGRID_STAGE": "production",
     "AGENTGRID_ORIGIN": "https://agentgrid.me",
   },
+  "triggers": { "crons": ["* * * * *"] },
   "queues": {
+    "producers": [{ "binding": "AGENTGRID_EXECUTION_QUEUE", "queue": "agentgrid-execution" }],
     "consumers": [
       {
         "queue": "agentgrid-execution",

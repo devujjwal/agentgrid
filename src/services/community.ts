@@ -40,6 +40,10 @@ export async function communityRequest<T>(
     );
   if (
     !/^\/api\/execution\/(?:prepare\/|approve\/|cancel\/)?$/.test(path) &&
+    !/^\/api\/media\/(?:prepare-reel\/|approve-reel\/|cancel-reel\/|prepare-publication\/|approve-publication\/|cancel-publication\/|enable-connection\/|disable-connection\/|disconnect\/|inspect\/|resume\/|reconcile\/)?$/.test(
+      path,
+    ) &&
+    !/^\/api\/social\/(?:instagram|facebook|linkedin)\/start\/$/.test(path) &&
     !creatorPath &&
     !staffPath &&
     !/^\/api\/admin\/(?:profile\/\?username=[a-z][a-z0-9_]{2,29}|profile-decision\/|publication\/)$/.test(

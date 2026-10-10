@@ -1,0 +1,42 @@
+{
+  "AGENTGRID_STAGE": "production",
+  "AGENTGRID_ORIGIN": "https://agentgrid.me",
+  "AGENTGRID_EXECUTION_ENABLED": "0",
+  "AGENTGRID_REEL_GENERATION_ENABLED": "0",
+  "AGENTGRID_SOCIAL_PUBLISHING_ENABLED": "0",
+  "AGENTGRID_SOCIAL_OAUTH_ENABLED": "0",
+  "AGENTGRID_SOCIAL_SCHEDULER_ENABLED": "0",
+  "AGENTGRID_META_API_VERSION": "",
+  "AGENTGRID_META_CLIENT_ID": "",
+  "AGENTGRID_LINKEDIN_CLIENT_ID": "",
+  "AGENTGRID_VIDEO_PROBE_ORIGIN": "",
+  "AGENTGRID_RENDER_OUTPUT_HOSTS": "[]",
+  "AGENTGRID_RENDER_RATE_CEILING": "",
+  "secretNamesOnly": [
+    "SUPABASE_SECRET_KEY",
+    "SHOTSTACK_API_KEY",
+    "AGENTGRID_PROBE_KEY",
+    "AGENTGRID_META_CLIENT_SECRET",
+    "AGENTGRID_LINKEDIN_CLIENT_SECRET",
+    "AGENTGRID_SOCIAL_TOKEN_KEY",
+    "AGENTGRID_MEDIA_GRANT_KEY"
+  ],
+  "bindings": {
+    "privateMedia": "AGENTGRID_MEDIA_BUCKET",
+    "queue": "AGENTGRID_EXECUTION_QUEUE",
+    "trustedBilling": "AGENTGRID_RENDER_BILLING"
+  },
+  "billing": "Trusted service binding implements verifiedCost(taskId) from actual provider billing evidence; absence leaves reservations held.",
+  "spending": {
+    "siteLimitMicros": 0,
+    "memberLimitMicros": 0
+  },
+  "callbacks": [
+    "https://agentgrid.me/api/social/instagram/callback/",
+    "https://agentgrid.me/api/social/facebook/callback/",
+    "https://agentgrid.me/api/social/linkedin/callback/"
+  ],
+  "status": "Preparation only. Do not import this example directly as deployment environment variables.",
+  "NEXT_PUBLIC_SUPABASE_URL": "",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": ""
+}
