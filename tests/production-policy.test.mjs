@@ -16,10 +16,18 @@ import {
   verifyProductionDelivery,
 } from '../scripts/production-policy.mjs';
 
-test('the current undersized staging capture cannot pass the production launch gate', async () => {
+test('the reviewed catalogue passes while an undersized fixture and changed guides fail', async () => {
   const publication = await readPublication('content/publication');
   const editorial = JSON.parse(await readFile('content/launch/reviewed-editorial.json', 'utf8'));
-  assert.throws(() => assertProductionInventory(publication, editorial), /requires at least 36/);
+  assert.doesNotThrow(() => assertProductionInventory(publication, editorial));
+  const undersized = structuredClone(publication);
+  undersized.catalogue.resources = undersized.catalogue.resources.slice(0, 35);
+  const retainedVersions = new Set(undersized.catalogue.resources.map((row) => row.version_id));
+  const undersizedEditorial = editorial.filter((row) => retainedVersions.has(row.version_id));
+  assert.throws(
+    () => assertProductionInventory(undersized, undersizedEditorial),
+    /requires at least 36/,
+  );
   assert.throws(() => assertProductionInventory(publication, []), /bundle is required/);
   const changed = structuredClone(editorial);
   changed[0].editorial.overview += ' Unreviewed changed text.';

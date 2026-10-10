@@ -1,9 +1,15 @@
 {
   "contract_version": "0.1",
-  "source_revision": 63,
-  "captured_at": "2026-10-09T23:36:09.743Z",
-  "catalogue_sha256": "23af165436f1b47b129327c7578898904562eb09253a2badd51afe9009916a1c",
+  "source_revision": 77,
+  "captured_at": "2026-10-10T00:23:10.893Z",
+  "catalogue_sha256": "15473880886892f2d4f4cbfda4f77ff8d27bed20c879bc0b489cfc5c23afb75e",
   "resources": [
+    {
+      "resourceId": "061d6ee8-07b0-4ad7-8706-7fc4390c998a",
+      "versionId": "aafc7ae2-cb11-468a-bd7c-d4c855e4d889",
+      "slug": "household-meal-planner",
+      "tag": "0dbba95788137aaaf9c779b8a3fe7af9a2eaca7f704642924f2115998ac5ad0d"
+    },
     {
       "resourceId": "0624b454-ff07-4380-8730-c59b3d3579ce",
       "versionId": "987330e3-9d18-46cc-8c0f-84d555a41709",
@@ -47,6 +53,12 @@
       "tag": "61e53ca32aaf40c1d06db4c5c8fcc1d4d0666abfe3fda9e56b80575831bb64d8"
     },
     {
+      "resourceId": "2ed6cab9-fc28-4dec-b2ea-20429df5f7c4",
+      "versionId": "e1c87130-dd45-46f7-8e79-53807aa9a485",
+      "slug": "vendor-quote-comparator",
+      "tag": "481ccb582098077bb8f13e8397040cc61d4e033b6ca00d533053d1f86317da03"
+    },
+    {
       "resourceId": "2ee5952d-5451-4712-b27c-47e656ddbf24",
       "versionId": "c0c8e4ac-2959-49f1-8d3f-250f780f11de",
       "slug": "sop-gap-reviewer",
@@ -77,10 +89,22 @@
       "tag": "995c564b5b7e53ea0ecb9f92e0db949a109806a28a71bf97809b66799b0e1cce"
     },
     {
+      "resourceId": "4388af3e-4af0-418f-b284-ffb804031d46",
+      "versionId": "9a07395c-4fc4-4996-89e3-8ce76394de31",
+      "slug": "household-chore-coordinator",
+      "tag": "38e5471b990b2fb13a09e2c4fac7d8a69f1cd19790e6ea5b3f5180fd0c2b75ea"
+    },
+    {
       "resourceId": "53329a64-1423-4de8-9885-410fc3b36af7",
       "versionId": "8f8b913c-9184-4e46-8740-e3a6ab73786f",
       "slug": "project-dependency-planner",
       "tag": "4f40fd7685c9c3fcb4a00c2181f321bd4aaef10ed6ef831f9ed026ff5d262468"
+    },
+    {
+      "resourceId": "59df626b-9bc1-49da-b677-5fef54bf56e0",
+      "versionId": "70da16f3-cde3-4f7f-beb8-ad55805bbffe",
+      "slug": "packing-checklist-planner",
+      "tag": "b74003b20965c646da84ac76ffabf27e5ad17a010da5989e0d5eca90a6240bd1"
     },
     {
       "resourceId": "69c28c6b-97c2-43c8-8ec1-ba25b37eab7d",
@@ -143,6 +167,18 @@
       "tag": "18e0ae5bb5812cdc2ed2956732dc5376df57fc84f16e759239c9bafad503ea35"
     },
     {
+      "resourceId": "b87bc481-883c-4bb1-a0e4-170786b573dd",
+      "versionId": "168c0f31-026e-46bf-9b58-da9452c049ca",
+      "slug": "interview-guide-designer",
+      "tag": "b297193ccfcbf5b4c2157ab847f2cf068919c164a823b6eb8008b39e22137474"
+    },
+    {
+      "resourceId": "c34cca36-b9e5-4b37-ab27-f70e917fbfae",
+      "versionId": "e64d59c1-1a80-496f-b914-188c59b622fd",
+      "slug": "calendar-conflict-checker",
+      "tag": "dd5747e34fd3c849536de2d3fcf3aaf5628c96085221f9766f780617bb892e99"
+    },
+    {
       "resourceId": "c6a6f99d-9e3c-45d5-97f7-399e9c6d8703",
       "versionId": "a10dd451-733f-46f7-9817-6dd321c09781",
       "slug": "inbox-priority-triage",
@@ -177,6 +213,12 @@
       "versionId": "3b72430d-a195-454f-8a2a-3fda819c496e",
       "slug": "search-opportunity-auditor",
       "tag": "1a9c23e5d3305d87437ff65440da280895f6183e50788c65858256ca1dafc43e"
+    },
+    {
+      "resourceId": "e23fc285-6273-4751-afd2-26749a5fd93b",
+      "versionId": "f4463e2d-9624-48a1-88b3-96a761373198",
+      "slug": "moving-task-organizer",
+      "tag": "4044075365a6deab0ad4be246f9f533d0440e4230bc35d7dd352006c6655ca37"
     },
     {
       "resourceId": "e782c062-59b0-4dcf-b695-41c41ab864f6",
