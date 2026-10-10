@@ -1,0 +1,20 @@
+{
+  "name": "agentgrid-execution",
+  "main": "worker.ts",
+  "compatibility_date": "2026-10-09",
+  "vars": {
+    "AGENTGRID_EXECUTION_ENABLED": "0",
+    "AGENTGRID_STAGE": "production",
+    "AGENTGRID_ORIGIN": "https://agentgrid.me",
+  },
+  "queues": {
+    "consumers": [
+      {
+        "queue": "agentgrid-execution",
+        "max_batch_size": 1,
+        "max_retries": 3,
+        "dead_letter_queue": "agentgrid-execution-dead",
+      },
+    ],
+  },
+}

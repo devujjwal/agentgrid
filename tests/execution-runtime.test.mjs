@@ -18,7 +18,10 @@ const specification = JSON.parse(
   ),
 );
 function fixture(
-  generate = async () => ({ text: 'Synthetic adapter test output; not a real model run.' }),
+  generate = async () => ({
+    text: 'Synthetic adapter test output; not a real model run.',
+    billedMicros: 100,
+  }),
 ) {
   const records = new Map();
   const store = {
@@ -46,7 +49,7 @@ function fixture(
       if (r?.ownerId === owner && r.state === 'running') Object.assign(r, { state, output });
     },
   };
-  const provider = { identity: 'test-only/model-v1', generate };
+  const provider = { identity: 'test-only/model-v1', estimate: () => 1000, generate };
   const actor = { profileId: ownerId, active: true };
   const setup = {
     enabled: true,
@@ -104,7 +107,7 @@ test('idempotent preparation rejects changed input and concurrent execution call
     assert.equal(request.maxOutputTokens, 2048);
     assert.equal(request.instructions, specification.execution.instructions);
     assert.equal(request.input, f.setup.request.input);
-    return { text: 'Synthetic result.' };
+    return { text: 'Synthetic result.', billedMicros: 100 };
   });
   const run = await prepareTextRun(f.setup);
   assert.equal((await prepareTextRun(f.setup)).id, run.id);
@@ -122,7 +125,7 @@ test('other members, changed approvals and changed providers cannot execute a pr
   let calls = 0;
   const f = fixture(async () => {
     calls++;
-    return { text: 'Synthetic result.' };
+    return { text: 'Synthetic result.', billedMicros: 100 };
   });
   const run = await prepareTextRun(f.setup);
   await assert.rejects(
@@ -132,7 +135,11 @@ test('other members, changed approvals and changed providers cannot execute a pr
   await assert.rejects(f.execute(run, { approvedDigest: 'a'.repeat(64) }), /approval_mismatch/);
   await assert.rejects(
     f.execute(run, {
-      provider: { identity: 'different-provider', generate: f.setup.provider.generate },
+      provider: {
+        identity: 'different-provider',
+        estimate: () => 1000,
+        generate: f.setup.provider.generate,
+      },
     }),
     /approval_mismatch/,
   );
@@ -155,7 +162,7 @@ test('unknown provider outcome is sanitized and never retried automatically', as
 test('cancellation while provider is running discards the returned output', async () => {
   const f = fixture(async () => {
     f.records.get(run.id).state = 'cancelled';
-    return { text: 'Must not retain cancelled output.' };
+    return { text: 'Must not retain cancelled output.', billedMicros: 100 };
   });
   const run = await prepareTextRun(f.setup);
   const result = await f.execute(run);

@@ -1,3 +1,4 @@
+import { executionHandler } from './execution.ts';
 import { analyticsHandler } from '../analytics/collector.ts';
 import { analyticsStore } from '../analytics/store.ts';
 import { authConfiguration } from '../auth/configuration.ts';
@@ -54,6 +55,8 @@ export async function pagesIdentityRequest(context: PagesIdentityContext): Promi
       }),
       managedIdentity(configuration),
     );
+    if (new URL(context.request.url).pathname.startsWith('/api/execution/'))
+      return await executionHandler(runtime, context.env)(context.request);
     if (new URL(context.request.url).pathname === '/api/admin/publication/')
       return await publicationHandler(
         runtime,

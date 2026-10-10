@@ -23,16 +23,17 @@ export interface RuntimePackage {
 export interface TextProvider {
   /** Stable server-configured provider/model revision displayed before approval. */
   identity: string;
+  estimate(instructions: string, input: string): number;
   generate(request: {
     instructions: string;
     input: string;
     maxOutputTokens: number;
     idempotencyKey: string;
     signal: AbortSignal;
-  }): Promise<{ text: string }>;
+  }): Promise<{ text: string; billedMicros: number }>;
 }
 
-export type RunState = 'queued' | 'running' | 'succeeded' | 'cancelled' | 'uncertain';
+export type RunState = 'queued' | 'running' | 'succeeded' | 'cancelled' | 'uncertain' | 'blocked';
 export interface RunRecord {
   id: string;
   ownerId: string;
@@ -42,6 +43,8 @@ export interface RunRecord {
   instructions: string;
   input: string;
   digest: string;
+  maximumCostMicros: number;
+  approved: boolean;
   state: RunState;
   output: string | null;
 }
@@ -60,6 +63,7 @@ export interface RunStore {
     runId: string,
     state: 'succeeded' | 'uncertain',
     output: string | null,
+    billedMicros?: number,
   ): Promise<void>;
 }
 

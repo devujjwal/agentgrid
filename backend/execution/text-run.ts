@@ -20,9 +20,7 @@ function requireRuntime(enabled: boolean, actor: RuntimeActor): void {
   if (!actor.active) throw new ExecutionError('membership_required');
 }
 
-/** This service is deliberately not wired to production HTTP. A durable store,
- * budget reservation and provider adapter are release prerequisites, not fallbacks.
- */
+/** Prepare persists a private immutable snapshot; it performs no provider call. */
 export async function prepareTextRun(options: {
   enabled: boolean;
   actor: RuntimeActor;
@@ -54,6 +52,10 @@ export async function prepareTextRun(options: {
     providerIdentity: options.provider.identity,
     instructions: specification.execution.instructions,
     input: request.input,
+    maximumCostMicros: options.provider.estimate(
+      specification.execution.instructions,
+      request.input,
+    ),
   };
   const digest = await executionDigest(snapshot);
   const record = await options.store.createOrRead({
@@ -63,6 +65,7 @@ export async function prepareTextRun(options: {
     idempotencyKey: request.idempotencyKey,
     digest,
     state: 'queued',
+    approved: false,
     output: null,
   });
   if (record.ownerId !== options.actor.profileId || record.digest !== digest)
@@ -104,9 +107,16 @@ export async function executeTextRun(options: {
       idempotencyKey: record.id,
       signal: AbortSignal.timeout(60_000),
     });
-    if (typeof result.text !== 'string' || !result.text.trim() || result.text.length > 32_000)
+    if (
+      typeof result.text !== 'string' ||
+      !result.text.trim() ||
+      result.text.length > 32_000 ||
+      !Number.isSafeInteger(result.billedMicros) ||
+      result.billedMicros < 0 ||
+      result.billedMicros > record.maximumCostMicros
+    )
       throw new Error('Invalid provider output.');
-    await options.store.finish(owner, record.id, 'succeeded', result.text);
+    await options.store.finish(owner, record.id, 'succeeded', result.text, result.billedMicros);
   } catch {
     // Timeout/disconnect can happen after billing or successful generation.
     // Preserve a reconciliation state; do not leak provider responses or retry blindly.

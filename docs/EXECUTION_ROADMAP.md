@@ -21,7 +21,8 @@ tool-free resources. Review license grants and provider compatibility per versio
 - Store private run records in AgentGrid-owned tables with owner-scoped RPCs and RLS.
   Add no shared-auth changes, global grants or scheduler jobs to the shared Supabase
   project. Follow `SHARED_BACKEND.md`; test non-AgentGrid access independently.
-- Use a separate Cloudflare execution Worker with Workflows for long-running jobs,
+- Use a separate Cloudflare execution Worker with Queues for text dispatch and
+  Workflows for long-running video jobs,
   durable steps and provider polling. Pages requests enqueue and return; they must
   not keep video generation alive with request-lifetime callbacks.
 - Use a private AgentGrid R2 bucket for media and short-lived owner download links.
@@ -49,12 +50,12 @@ tool-free resources. Review license grants and provider compatibility per versio
 
 ## Delivery sequence and acceptance gates
 
-1. **Runtime foundation — this change.** Implement bounded run contracts, immutable
+1. **Runtime foundation — implemented.** Implement bounded run contracts, immutable
    execution fingerprints, owner-scoped storage interface, atomic execution claims,
    unknown-outcome handling, cancellation semantics and exact publication approvals.
    Test concurrency, ownership, edited approvals and provider failures without making
-   external calls. This library is not mounted to HTTP or enabled on production.
-2. **Direct text runs.** Add versioned AgentGrid migrations for runs, budget
+   external calls. The foundation now has a private HTTP adapter; production execution remains disabled.
+2. **Direct text runs — implemented, activation pending.** Add versioned AgentGrid migrations for runs, budget
    reservations and audit events; implement the durable store and one server-side
    text adapter. Add authenticated prepare/confirm/status/cancel endpoints and a
    private workspace runner. Include provider/input disclosure, cost cap, empty,
@@ -79,26 +80,35 @@ tool-free resources. Review license grants and provider compatibility per versio
 
 ## Configuration and decisions still needed
 
-The first implementation does not require credentials or new service permissions.
+The tested implementation performs no paid calls without activation.
 Real execution needs an approved provider/model, funded provider account and a
 per-member spending policy; reel generation also needs a video provider credential.
-Production scheduling needs provisioned Workflows/R2 resources. Social publishing
+Text dispatch needs provisioned Queues; video scheduling needs Workflows/R2 resources. Social publishing
 needs platform developer apps, their approved OAuth permissions, and consenting
 connected accounts. Human entry is required when creating new credentials in UI.
 Do not describe these integrations as active until actual acceptance succeeds.
 
 ## Current implementation limits
 
-`backend/execution` is a server library with test adapters only. Its `RunStore`
-contract requires transactional owner isolation, unique owner/idempotency keys,
-queued-to-running compare-and-set, and cancellation-preserving completion. There
-is no production persistence adapter, billing reservation, provider credential,
-runtime route, Run button, rendered media or posting adapter in this change.
-No schema or live configuration is changed. The already-live catalogue/community
-continues using its existing execution behavior until the next slice is verified.
+Migration 032 adds private run snapshots, a site policy, per-member allowances,
+a reviewed package allowlist and spending events. Only the service-role RPC may
+operate them, using a subject verified by the existing HTTP session boundary.
+The static `/workspace/runs/` interface supports preparation, exact confirmation,
+status/result recovery and cancellation. The Queue consumer uses a pinned OpenAI
+Responses model and makes at most one dispatch per claimed run.
+
+Both HTTP/worker flags default off; the database policy is off, allowances are zero,
+and the execution allowlist is empty. This change does not migrate the live database,
+provision queues, install a provider key, make paid calls or publish social posts.
+Real provider acceptance and privacy/retention rollout remain activation prerequisites.
+Reel rendering, private media storage, social OAuth and publishing adapters remain
+subsequent phases; the text pilot can produce scripts and captions, not video files.
+See [execution operations](EXECUTION_OPERATIONS.md) for configuration and recovery.
 
 ## Provider references checked 10 October 2026
 
+- [OpenAI Responses text generation](https://developers.openai.com/api/docs/guides/text-generation)
+- [Pinned text model and pricing](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
 - [Cloudflare durable Workflows](https://developers.cloudflare.com/workflows/get-started/guide/)
 - [Runway API](https://docs.dev.runwayml.com/guides/using-the-api/)
 - [Meta Instagram publishing](https://developers.facebook.com/docs/instagram-platform/content-publishing/)

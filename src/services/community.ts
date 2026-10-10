@@ -39,6 +39,7 @@ export async function communityRequest<T>(
       path,
     );
   if (
+    !/^\/api\/execution\/(?:prepare\/|approve\/|cancel\/)?$/.test(path) &&
     !creatorPath &&
     !staffPath &&
     !/^\/api\/admin\/(?:profile\/\?username=[a-z][a-z0-9_]{2,29}|profile-decision\/|publication\/)$/.test(
