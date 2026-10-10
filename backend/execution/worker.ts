@@ -20,6 +20,10 @@ export default {
     await enqueueDuePublications(env);
   },
   async queue(batch: { messages: Message[] }, env: Record<string, unknown>) {
+    if (env.AGENTGRID_EXECUTION_ENABLED !== '1') {
+      for (const message of batch.messages) message.ack();
+      return;
+    }
     for (const message of batch.messages) {
       // Media mutations are never automatically redelivered after an ambiguous outcome.
       if (message.body && typeof message.body === 'object' && 'kind' in message.body) {

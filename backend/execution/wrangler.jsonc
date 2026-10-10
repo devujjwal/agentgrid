@@ -2,6 +2,11 @@
   "name": "agentgrid-execution",
   "main": "worker.ts",
   "compatibility_date": "2026-10-09",
+  "workers_dev": false,
+  "preview_urls": false,
+  "limits": { "cpu_ms": 10 },
+  "services": [{ "binding": "AGENTGRID_RENDER_BILLING", "service": "agentgrid-render-billing" }],
+  "r2_buckets": [{ "binding": "AGENTGRID_MEDIA_BUCKET", "bucket_name": "agentgrid-private-media" }],
   "vars": {
     "AGENTGRID_EXECUTION_ENABLED": "0",
     "AGENTGRID_REEL_GENERATION_ENABLED": "0",
