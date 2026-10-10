@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import type { PublicResource } from '../../domain/public-resource';
 import type { AgentSpecification } from '../../domain/agent-specification';
 import { platformLabel } from '../../domain/platforms';
+import { compatibilityNote } from '../../domain/compatibility-note';
 import {
   distributionPolicy,
   attributedInstructionText,
@@ -24,6 +25,9 @@ export function ResourceSetup({
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'manual'>('idle');
   const policy = distributionPolicy(spec, published, platform);
   const selected = spec.platforms.find((item) => item.slug === platform);
+  const compatibility = selected
+    ? compatibilityNote(selected.compatibility_notes, published)
+    : null;
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_AGENTGRID_ANALYTICS !== '1') return;
     if (!publication) return;
@@ -105,7 +109,17 @@ export function ResourceSetup({
       </select>
       {selected && (
         <>
-          <p className="setup-compatibility">{selected.compatibility_notes}</p>
+          <p className="setup-compatibility">{compatibility?.current}</p>
+          {compatibility?.original && (
+            <details className="instruction-disclosure">
+              <summary>Original pre-release authoring note</summary>
+              <p>
+                This note was written before publication. The version is now released; check the
+                examples in your own host before use.
+              </p>
+              <p>{compatibility.original}</p>
+            </details>
+          )}
           <ol className="setup-steps">
             {selected.setup_steps.map((step, index) => (
               <li key={`${selected.slug}-${index}`}>
