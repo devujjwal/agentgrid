@@ -40,6 +40,10 @@ export function Workspace() {
           </button>
         </>
       )}
+      <p>
+        Create a portrait video from your own media without signing in.{' '}
+        <a href="/workspace/reels/">Create a free reel →</a>
+      </p>
       {!pending && !error && (
         <>
           <p>Sign in to keep your saved agents and work in progress together.</p>

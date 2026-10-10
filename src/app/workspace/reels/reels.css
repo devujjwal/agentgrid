@@ -79,3 +79,138 @@
     padding: 0.75rem;
   }
 }
+
+.local-reel-editor {
+  margin-block: 2rem 3rem;
+  padding-block: 1.5rem;
+  border-block: 1px solid var(--control-border);
+}
+.local-reel-heading,
+.local-reel-clip-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.local-reel-heading h2,
+.local-reel-clip-heading h3 {
+  margin: 0;
+}
+.local-reel-badge {
+  border: 1px solid var(--signal);
+  color: var(--signal);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+}
+.local-reel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+.local-reel-layout > div {
+  min-width: 0;
+}
+.local-reel-picker {
+  padding: 1rem;
+  border: 1px dashed var(--control-border);
+  background: var(--surface);
+}
+.local-reel-clips {
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+.local-reel-clip {
+  border: 1px solid var(--control-border);
+  padding: 1rem;
+}
+.local-reel-clip-heading > span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.local-reel-filename {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+.local-reel-clip fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.local-reel-timing {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.local-reel-monitor {
+  min-width: 0;
+}
+.local-reel-canvas {
+  width: min(100%, 20rem);
+  height: auto;
+  aspect-ratio: 9 / 16;
+  display: block;
+  background: var(--ink);
+  border: 1px solid var(--control-border);
+}
+.local-reel-empty {
+  padding-block: 1rem;
+  color: var(--muted);
+}
+.local-reel-monitor progress {
+  width: 100%;
+  accent-color: var(--signal);
+}
+.local-reel-download {
+  display: inline-block;
+  background: var(--signal);
+  color: var(--surface-bright);
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+.local-reel-output {
+  border-top: 2px solid var(--signal);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
+.cloud-reel-controls > summary {
+  cursor: pointer;
+  padding-block: 1rem;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .local-reel-layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .local-reel-timing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .local-reel-monitor .reel-actions > button {
+    width: 100%;
+  }
+}
+.local-reel-editor button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--control-border);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.local-reel-editor button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.local-reel-editor button:focus-visible,
+.local-reel-download:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
