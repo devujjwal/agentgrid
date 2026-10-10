@@ -117,7 +117,6 @@ export function AgentUniverse({
               <a
                 href="#resource-inspector"
                 tabIndex={matched ? 0 : -1}
-                aria-labelledby={`universe-name-${resource.slug} universe-category-${resource.slug}`}
                 aria-description={`Inspect ${resource.title}, ${resource.state === 'editorial' ? 'editorial guide' : resource.state === 'draft' ? 'unpublished draft' : 'published resource'}`}
                 aria-current={selected ? 'true' : undefined}
                 onClick={(event) => {
@@ -142,7 +141,7 @@ export function AgentUniverse({
                 >
                   {labelLines.map((line, index) => (
                     <tspan key={index} x="0" dy={index ? 17 : 0}>
-                      {line}
+                      {line}{' '}
                     </tspan>
                   ))}
                 </text>
