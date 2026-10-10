@@ -12,6 +12,24 @@ spec.loader.exec_module(audit)
 
 
 class SharedSupabaseAuditTests(unittest.TestCase):
+    def test_affiliate_transition_rejects_existing_changes_and_unrelated_additions(self):
+        before = {"tables": [{"schema": "public", "name": "prompts", "rls": True}], "functions": []}
+        current = {"tables": before["tables"] + [{"schema": "public", "name": "affiliate_providers", "rls": True}], "functions": []}
+        evidence = {"project_ref": audit.PROJECT_REF,
+            "authorization": "owner-approved-picmagic-affiliate-release-2026-10-10",
+            "source_sha256": "79dfe26e382a1bd9c9f9e00e88fccd08663cbb2c22ce648cb64f5e1b6898b12f",
+            "source_fixture_verified": True, "before_digest": audit.digest(before), "after_digest": audit.digest(current)}
+        self.assertTrue(audit.approved_affiliate_transition(before, current, evidence))
+        for changed in (
+            {"tables": [current["tables"][1]], "functions": []},
+            {"tables": [{"schema": "public", "name": "prompts", "rls": False}, current["tables"][1]], "functions": []},
+            {"tables": current["tables"], "functions": [{"schema": "public", "name": "unrelated"}]},
+        ):
+            evidence["after_digest"] = audit.digest(changed)
+            self.assertFalse(audit.approved_affiliate_transition(before, changed, evidence))
+        evidence["source_fixture_verified"] = False
+        self.assertFalse(audit.approved_affiliate_transition(before, current, evidence))
+
     def google_transition_fixture(self):
         before = {
             "site_url": "https://picmagic.in",
