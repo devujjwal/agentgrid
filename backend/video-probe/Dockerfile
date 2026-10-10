@@ -10,7 +10,7 @@ RUN ./configure --disable-everything --disable-autodetect --disable-network --di
 
 FROM python:3.13-alpine@sha256:2d9aefe2fef018a7eb2c13064c89c71929800fd2e5dccdbf52ea5da5bb8d929a
 # The server uses only Python's standard library; packaging tools are unused.
-RUN rm -rf /usr/local/lib/python3.13/site-packages/*
+RUN apk add --no-cache zlib=1.3.2-r1 && rm -rf /usr/local/lib/python3.13/site-packages/*
 COPY --from=build /src/ffprobe /usr/bin/ffprobe
 COPY --from=build /src/COPYING.LGPLv2.1 /usr/share/licenses/ffprobe/COPYING.LGPLv2.1
 WORKDIR /app

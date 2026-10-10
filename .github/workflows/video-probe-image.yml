@@ -36,7 +36,7 @@ jobs:
             --mount type=bind,src="$PWD/image-verification/scan",dst=/scan \
             aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa \
             image --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln \
-            --severity HIGH,CRITICAL --exit-code 1 --format json --output /scan/report.json --input /image.tar
+            --severity MEDIUM,HIGH,CRITICAL --exit-code 1 --format json --output /scan/report.json --input /image.tar
       - name: Retain private image and verification report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
