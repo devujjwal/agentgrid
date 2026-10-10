@@ -40,10 +40,46 @@ export default function PrivacyPage() {
                 does not send your raw search wording to an AI provider.
               </p>
               <p>
-                Optional product analytics and advertising are currently disabled. AgentGrid does
-                not currently use advertising cookies or sell personal information. Any future
-                measurement or advertising change will be described before activation, with choices
-                where required.
+                Task search stays in your browser. AgentGrid does not sell personal information or
+                use advertising cookies. Optional analytics is described below and is off until you
+                choose to allow it.
+              </p>
+            </>
+          ),
+        },
+        {
+          id: 'analytics',
+          title: 'Optional Google Analytics',
+          body: (
+            <>
+              <p>
+                From 10 October 2026, production visitors can choose whether to allow Google
+                Analytics 4. Before consent, AgentGrid does not load the Google tag or send
+                analytics requests, including consent pings. Rejecting analytics does not affect
+                community access. Do Not Track and Global Privacy Control signals keep measurement
+                off.
+              </p>
+              <p>
+                If you allow analytics, Google receives public catalogue page visits and technical
+                connection and browser information. Analytics cookies identify a browser for visit
+                measurement for up to 90 days; cookies are not refreshed on each visit. URLs are
+                sent without query strings or fragments, and referrers are omitted. AgentGrid does
+                not send email addresses, profile identifiers, search wording, reviews, reports,
+                drafts, sign-in activity or private workspace paths. Automatic enhanced measurement,
+                Google signals and advertising personalization are disabled.
+              </p>
+              <p>
+                Use “Analytics choices” to change your choice. Rejecting stops future measurement
+                and clears accessible analytics cookies; it does not erase information already
+                processed by Google. The choice itself is stored locally in your browser. Google may
+                process measurement information in other countries under its safeguards. See{' '}
+                <a href="https://policies.google.com/privacy">Google’s privacy policy</a> and{' '}
+                <a href="https://support.google.com/analytics/answer/6004245">
+                  Analytics data safeguards
+                </a>
+                . Event-level retention is set to two months. Contact the operator about information
+                requests. Google Search Console separately reports aggregated search and indexing
+                information and does not require a visitor tracking tag.
               </p>
             </>
           ),
