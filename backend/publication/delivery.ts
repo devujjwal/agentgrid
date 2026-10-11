@@ -4,6 +4,7 @@ import {
   type DeliveryManifest,
 } from '../../src/domain/publication-snapshot.ts';
 import { documentSecurityHeaders } from '../../src/domain/document-security.ts';
+import { directoryPages } from '../../src/domain/directory-pagination.ts';
 function secureAssets(response: Response) {
   const headers = new Headers(response.headers);
   for (const [name, value] of Object.entries(documentSecurityHeaders)) headers.set(name, value);
@@ -51,8 +52,10 @@ const listingFiles = new Set([
   '__next._full.txt',
   '__next.agents.__PAGE__.txt',
 ]);
+const directoryFiles = new Set([...listingFiles, '__next.agents.page.$d$page.__PAGE__.txt']);
 export function deliveryGuard(manifest: DeliveryManifest, read: DeliveryStateReader) {
   const resources = new Map(manifest.resources.map((item) => [item.slug, item]));
+  const pages = new Set(directoryPages(resources.size));
   return async (request: Request, assets: () => Promise<Response>) => {
     const url = new URL(request.url);
     if (!['GET', 'HEAD'].includes(request.method)) return failure(404, request.method);
@@ -63,6 +66,12 @@ export function deliveryGuard(manifest: DeliveryManifest, read: DeliveryStateRea
     if (!path.startsWith('/agents/') || /[%\\]/.test(path)) return failure(404, request.method);
     const relative = path.slice('/agents/'.length);
     if (listingFiles.has(relative)) return secureAssets(await assets());
+    // Finite static directory pages only. This never authorizes detail delivery.
+    const listing = relative.match(/^page\/([1-9][0-9]*)(?:\/(.*))?$/);
+    if (listing && pages.has(Number(listing[1]))) {
+      const file = listing[2] ?? '';
+      if (directoryFiles.has(file)) return secureAssets(await assets());
+    }
     const segment = relative.split('/')[0] ?? '';
     const slug = segment.replace(/\.(?:html|txt)$/, '');
     const expected = resources.get(slug);

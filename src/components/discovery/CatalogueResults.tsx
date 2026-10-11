@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { directoryPagePath } from '../../domain/directory-pagination';
 import type { DiscoveryPage, DiscoveryResource } from '../../domain/discovery';
 import { categoryLabel } from './ResourceInspector';
 export function CatalogueResults({
@@ -17,6 +18,7 @@ export function CatalogueResults({
   onInspect,
   onReset,
   onPage,
+  directoryPagination = false,
 }: {
   searchPage: DiscoveryPage;
   pending: boolean;
@@ -33,6 +35,7 @@ export function CatalogueResults({
   onInspect: (slug: string) => void;
   onReset: () => void;
   onPage: (page: number) => void;
+  directoryPagination?: boolean;
 }) {
   const matches = searchPage.matches;
   const page = Math.floor(searchPage.offset / 30);
@@ -198,27 +201,44 @@ export function CatalogueResults({
       </div>
       {searchPage.total > 30 && (
         <nav className="result-pagination" aria-label="Resource result pages">
-          <button
-            type="button"
-            disabled={pending || page === 0}
-            onClick={() => {
-              onPage(page - 1);
-            }}
-          >
-            Previous page
-          </button>
+          {directoryPagination && !query && !category && !kind && !pending && page > 0 ? (
+            <Link prefetch={false} href={directoryPagePath(page)}>
+              Previous page
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled={pending || page === 0}
+              onClick={() => {
+                onPage(page - 1);
+              }}
+            >
+              Previous page
+            </button>
+          )}
           <span aria-live="polite">
             Page {page + 1} of {Math.ceil(searchPage.total / 30)}
           </span>
-          <button
-            type="button"
-            disabled={pending || (page + 1) * 30 >= searchPage.total}
-            onClick={() => {
-              onPage(page + 1);
-            }}
-          >
-            Next page
-          </button>
+          {directoryPagination &&
+          !query &&
+          !category &&
+          !kind &&
+          !pending &&
+          (page + 1) * 30 < searchPage.total ? (
+            <Link prefetch={false} href={directoryPagePath(page + 2)}>
+              Next page
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled={pending || (page + 1) * 30 >= searchPage.total}
+              onClick={() => {
+                onPage(page + 1);
+              }}
+            >
+              Next page
+            </button>
+          )}
         </nav>
       )}
     </section>

@@ -21,6 +21,46 @@ const manifest = {
   resources: [resource],
 };
 const request = (path, method = 'GET') => new Request('https://agentgrid.me' + path, { method });
+test('finite directory pages and their RSC payloads cannot bypass detail or publication guards', async () => {
+  const paginated = {
+    ...manifest,
+    resources: Array.from({ length: 31 }, (_, index) => ({
+      ...resource,
+      slug: `synthetic-${index}`,
+    })),
+  };
+  const guard = deliveryGuard(paginated, async () =>
+    assert.fail('Directory requested a detail RPC'),
+  );
+  const assets = async () => new Response('synthetic directory');
+  for (const path of [
+    '/agents/page/2/',
+    '/agents/page/2',
+    '/agents/page/2/index.html',
+    '/agents/page/2/index.txt',
+    '/agents/page/2/__next.agents.page.$d$page.__PAGE__.txt',
+  ]) {
+    assert.equal((await guard(request(path), assets)).status, 200);
+  }
+  for (const path of [
+    '/agents/page/1/',
+    '/agents/page/3/',
+    '/agents/page/02/',
+    '/agents/page/%32/',
+    '/agents/page/2/private.json',
+    '/agents/page/2/arbitrary.txt',
+  ]) {
+    assert.equal(
+      (await guard(request(path), async () => assert.fail('Unknown directory reached assets')))
+        .status,
+      404,
+    );
+  }
+  assert.equal(
+    (await deliveryGuard(manifest, async () => null)(request('/agents/page/2/'), assets)).status,
+    404,
+  );
+});
 test('detail aliases and RSC payloads require current delivery identity and never cache instructions', async () => {
   let reads = 0,
     deliveries = 0;

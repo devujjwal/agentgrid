@@ -12,20 +12,31 @@ import { UniverseViewport } from '../universe/UniverseViewport';
 import { ResourceInspector } from './ResourceInspector';
 import { TaskCommand } from './TaskCommand';
 
-export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[] }) {
+export function DiscoveryConsole({
+  resources,
+  initialPage = 0,
+  directoryPagination = false,
+}: {
+  resources: DiscoveryResource[];
+  initialPage?: number;
+  directoryPagination?: boolean;
+}) {
   const relations = useMemo(() => universeRelations(resources), [resources]);
   const drafts = resources.every((resource) => resource.state === 'draft');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [kind, setKind] = useState<DiscoveryResource['kind'] | ''>('');
   const kinds = useMemo(() => [...new Set(resources.map((item) => item.kind))], [resources]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(initialPage);
   const [selectedSlug, setSelectedSlug] = useState('source-evidence-mapper');
   const categories = useMemo(
     () => [...new Set(resources.map((item) => item.category))].sort(),
     [resources],
   );
-  const provider = useMemo(() => createCatalogueSearch(resources), [resources]);
+  const provider = useMemo(
+    () => createCatalogueSearch(resources, { text: '', offset: initialPage * 30 }),
+    [resources, initialPage],
+  );
   const searchQuery = useMemo(
     () => ({
       text: query,
@@ -123,6 +134,7 @@ export function DiscoveryConsole({ resources }: { resources: DiscoveryResource[]
       </section>
 
       <CatalogueResults
+        directoryPagination={directoryPagination}
         searchPage={searchPage}
         pending={search.pending}
         failed={search.failed}

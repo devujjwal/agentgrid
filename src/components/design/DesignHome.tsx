@@ -22,8 +22,7 @@ export function DesignHome({
           </div>
           <div className="hero-copy">
             <h1 id="hero-heading">
-              What do you want
-              <br />
+              What do you want <br />
               an AI agent to <em>do?</em>
             </h1>
             <p>

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { directoryPages, directoryPagePath } from '../domain/directory-pagination';
 import { reviewedEditorialPaths } from '../domain/editorial-discovery';
 import { publicRecipes } from '../data/recipes';
 import { recipePath } from '../domain/recipe';
@@ -12,11 +13,14 @@ export const dynamic = 'force-static';
  * Discovery/editorial landing URLs join this list at their own indexing gate.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (process.env.AGENTGRID_BUILD_STAGE !== 'production') return [];
+  const resources = publicResources();
   return [
-    ...(process.env.AGENTGRID_BUILD_STAGE === 'production' ? reviewedEditorialPaths : []).map(
-      (path) => ({ url: `https://agentgrid.me${path}` }),
-    ),
-    ...publicResources().map((resource) => ({
+    ...reviewedEditorialPaths.map((path) => ({ url: `https://agentgrid.me${path}` })),
+    ...directoryPages(resources.length).map((page) => ({
+      url: `https://agentgrid.me${directoryPagePath(page)}`,
+    })),
+    ...resources.map((resource) => ({
       url: `https://agentgrid.me${resourcePath(resource.specification.identity.slug)}`,
       lastModified: resource.released_at,
     })),

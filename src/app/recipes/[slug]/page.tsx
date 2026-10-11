@@ -1,4 +1,5 @@
 import { socialImage } from '../../../domain/social-metadata';
+import { publicationRobots } from '../../../domain/search-indexing';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -28,7 +29,7 @@ export async function generateMetadata({
     title: `${document.recipe.title} — AgentGrid Recipe`,
     description: document.recipe.summary,
     alternates: { canonical: recipePath(slug) },
-    robots: { index: Boolean(document.publication), follow: Boolean(document.publication) },
+    robots: publicationRobots(Boolean(document.publication)),
     openGraph: {
       images: [socialImage],
       type: 'article',
