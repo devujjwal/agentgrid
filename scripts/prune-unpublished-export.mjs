@@ -8,6 +8,7 @@ import { resolve } from 'node:path';
 const root = resolve('out');
 for (const path of [
   'agents/__agentgrid_unpublished__',
+  'agents/page/__agentgrid_unpublished__',
   'recipes/__agentgrid_unpublished__',
   'qa/distribution',
   'qa/reviews',

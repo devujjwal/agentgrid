@@ -38,7 +38,7 @@ export default function AgentsPage() {
           </Link>
         </header>
         {resources.length ? (
-          <DiscoveryConsole resources={resources} />
+          <DiscoveryConsole resources={resources} directoryPagination />
         ) : (
           <p>The reviewed library has not been published yet.</p>
         )}

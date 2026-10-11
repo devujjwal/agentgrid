@@ -1,5 +1,10 @@
 # Discovery and distribution acceptance
 
+Historical prelaunch acceptance record. Its zero-release and crawler-exclusion
+statements describe that phase, not the current production site. See
+[the 11 October search audit](SEARCH_AUDIT_20261011.md) for the current verified
+state and the fixes awaiting deployment.
+
 ## Generated crawl output gate — 9 October 2026
 
 `pnpm build` now checks the exported documents as well as source contracts.

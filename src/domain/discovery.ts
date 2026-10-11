@@ -141,9 +141,12 @@ export function searchCatalogue(
 ): DiscoveryMatch[] {
   return [...searchCataloguePage(resources, query).matches];
 }
-export function createCatalogueSearch(resources: readonly DiscoveryResource[]): SearchProvider {
+export function createCatalogueSearch(
+  resources: readonly DiscoveryResource[],
+  initialQuery: DiscoveryQuery = { text: '' },
+): SearchProvider {
   return {
-    initialPage: searchCataloguePage(resources, { text: '' }),
+    initialPage: searchCataloguePage(resources, initialQuery),
     search: async (query, signal) => {
       signal?.throwIfAborted();
       return searchCataloguePage(resources, query);

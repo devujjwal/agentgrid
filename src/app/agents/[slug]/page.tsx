@@ -1,4 +1,5 @@
 import { socialImage } from '../../../domain/social-metadata';
+import { publicationRobots } from '../../../domain/search-indexing';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { resourceDocuments } from '../../../data/resources';
@@ -28,7 +29,7 @@ export async function generateMetadata({
     title: `${spec.identity.name} — AgentGrid`,
     description: spec.identity.summary,
     alternates: { canonical: resourcePath(slug) },
-    robots: { index: Boolean(document.publication), follow: Boolean(document.publication) },
+    robots: publicationRobots(Boolean(document.publication)),
     openGraph: {
       images: [socialImage],
       type: 'website',

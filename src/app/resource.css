@@ -379,7 +379,7 @@
   margin-block: 2rem;
   font-size: 0.85rem;
 }
-.result-pagination button {
+.result-pagination :is(button, a) {
   min-height: 3rem;
   padding: 0.7rem 1rem;
   border: 1px solid var(--line-strong);
@@ -387,6 +387,9 @@
   color: var(--ink);
   font: inherit;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 .result-pagination button:disabled {
   opacity: 0.5;

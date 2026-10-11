@@ -3,12 +3,13 @@ import { readFile, readdir, lstat } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 import { parse } from 'parse5';
 import { reviewedEditorialPaths } from '../src/domain/editorial-discovery.ts';
+import { directoryPages, directoryPagePath } from '../src/domain/directory-pagination.ts';
 import { readPublication } from './verify-publication.mjs';
 import { readRecipePublication } from './verify-recipe-publication.mjs';
 
 const origin = 'https://agentgrid.me';
 const publicRoute =
-  /^\/(?:$|(?:agents|recipes|categories|learn|platforms|integrations|mcp)\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\/)?)$/;
+  /^\/(?:$|agents\/page\/[1-9][0-9]*\/|(?:agents|recipes|categories|learn|platforms|integrations|mcp)\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\/)?)$/;
 const creatorRoute = /^\/creators\/[a-z][a-z0-9_]{2,29}\/$/;
 const text = (node) => (node.childNodes ?? []).map((child) => child.value ?? text(child)).join('');
 const attrs = (node) =>
@@ -206,11 +207,18 @@ export async function verifyCrawlExport(root, expectedSitemapPaths) {
 if (process.argv[1] && resolve(process.argv[1]) === resolve(import.meta.filename)) {
   const { catalogue } = await readPublication(resolve('content/publication'));
   const recipes = await readRecipePublication();
-  const result = await verifyCrawlExport(resolve('out'), [
-    ...(process.env.AGENTGRID_BUILD_STAGE === 'production' ? reviewedEditorialPaths : []),
-    ...catalogue.resources.map((resource) => `/agents/${resource.specification.identity.slug}/`),
-    ...recipes.map(({ recipe }) => `/recipes/${recipe.slug}/`),
-  ]);
+  const expected =
+    process.env.AGENTGRID_BUILD_STAGE === 'production'
+      ? [
+          ...reviewedEditorialPaths,
+          ...directoryPages(catalogue.resources.length).map(directoryPagePath),
+          ...catalogue.resources.map(
+            (resource) => `/agents/${resource.specification.identity.slug}/`,
+          ),
+          ...recipes.map(({ recipe }) => `/recipes/${recipe.slug}/`),
+        ]
+      : [];
+  const result = await verifyCrawlExport(resolve('out'), expected);
   console.log(
     `Crawl output verified: ${result.documents} documents, ${result.internalLinks} internal links, ${result.sitemapEntries} released sitemap URLs. This does not enable indexing or prove provider delivery.`,
   );
